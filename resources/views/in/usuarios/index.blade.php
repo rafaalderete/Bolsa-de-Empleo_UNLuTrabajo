@@ -3,7 +3,7 @@
 @section('headTitle', 'Usuarios | Tabla de Usuarios')
 
 @section('headContent')
-  
+
   <meta name="description" content="description">
   <meta name="author" content="DevOOPS">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,12 +22,13 @@
 @section('bodyHeader')
 
   @include('template.partials.header')
-  @include('template.partials.modal')
+
 
 @endsection
 
 @section('bodySidebar')
 
+  @include('template.partials.modal')
   @include('template.partials.sidebar')
 
 @endsection

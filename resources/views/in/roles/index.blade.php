@@ -22,13 +22,14 @@
 @section('bodyHeader')
 
   @include('template.partials.header')
-  @include('template.partials.modal')
+
 
 @endsection
 
 @section('bodySidebar')
 
   @include('template.partials.sidebar')
+  @include('template.partials.modal')
 
 @endsection
 
