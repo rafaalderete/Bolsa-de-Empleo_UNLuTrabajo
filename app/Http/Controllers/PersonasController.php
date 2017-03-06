@@ -48,7 +48,7 @@ class PersonasController extends Controller
         $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($persona->fecha_nacimiento_persona));
         $persona->save();
 
-        Flash::success('Persona ' . $persona->nombre_persona . ' agregado');
+        Flash::success('Persona ' . $persona->nombre_persona . ' agregado')->important();
         return redirect()->route('in.personas.index');
     }
 
@@ -94,7 +94,7 @@ class PersonasController extends Controller
         $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($request->fecha_nacimiento_persona));
         $persona->save();
 
-        Flash::warning('Persona ' . $persona->nombre_persona . ' modificado');
+        Flash::warning('Persona ' . $persona->nombre_persona . ' modificado')->important();
         return redirect()->route('in.personas.index');
     }
 
@@ -109,7 +109,7 @@ class PersonasController extends Controller
         $persona = Persona::find($id);
         $persona->delete();
 
-        Flash::error('Persona ' . $persona->nombre_persona . ' eliminada');
+        Flash::error('Persona ' . $persona->nombre_persona . ' eliminada')->important();
         return redirect()->route('in.personas.index');
     }
 }

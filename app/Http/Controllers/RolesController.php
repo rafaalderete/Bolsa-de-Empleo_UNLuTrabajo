@@ -58,7 +58,7 @@ class RolesController extends Controller
         $rol->permissions()->sync($permisos);
 
 
-        Flash::success('Rol ' . $rol->name . ' agregado');
+        Flash::success('Rol ' . $rol->name . ' agregado')->important();
         return redirect()->route('in.roles.index');
     }
 
@@ -116,7 +116,7 @@ class RolesController extends Controller
         $rol->permissions()->sync($permisos);
 
 
-        Flash::warning('Rol ' . $rol->name . ' modificado');
+        Flash::warning('Rol ' . $rol->name . ' modificado')->important();
         return redirect()->route('in.roles.index');
     }
 /*
@@ -164,7 +164,7 @@ class RolesController extends Controller
 
         $rol->delete();
 
-        Flash::error('Rol ' . $rol->name . ' eliminado');
+        Flash::error('Rol ' . $rol->name . ' eliminado')->important();
         return redirect()->route('in.roles.index');
     }
 }

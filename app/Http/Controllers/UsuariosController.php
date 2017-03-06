@@ -73,7 +73,7 @@ class UsuariosController extends Controller
         $roles = $request->input('roles', []);
         $usuario->roles()->sync($roles);
 
-        Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado'); // se muestra el msj de usuario creado
+        Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado')->important(); // se muestra el msj de usuario creado
         return redirect()->route('in.usuarios.index'); // se devuelve al index
     }
 
@@ -143,7 +143,7 @@ class UsuariosController extends Controller
       $roles = $request->input('roles', []);
       $usuario->roles()->sync($roles);
 
-      Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado');
+      Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado')->important();
       return redirect()->route('in.usuarios.index');
     }
 
@@ -216,7 +216,7 @@ class UsuariosController extends Controller
 
         $usuario->delete(); // lo elimina
 
-        Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado');
+        Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado')->important();
         return redirect()->route('in.usuarios.index');
     }
 }
