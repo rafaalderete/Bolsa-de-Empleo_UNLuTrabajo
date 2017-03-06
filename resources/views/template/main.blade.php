@@ -34,6 +34,8 @@
 				</section>
 				<!--End Contenido-->
         	</div>
+        	<!--Agregar Etiqueta para el Modal si es necesario-->
+    		@include('template.partials.modal')
 	    </div>
 	</div>
 	<!--End Container-->

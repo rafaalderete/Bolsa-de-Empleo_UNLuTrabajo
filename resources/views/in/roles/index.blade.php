@@ -29,7 +29,6 @@
 @section('bodySidebar')
 
   @include('template.partials.sidebar')
-  @include('template.partials.modal')
 
 @endsection
 
