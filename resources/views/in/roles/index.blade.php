@@ -23,7 +23,6 @@
 
   @include('template.partials.header')
 
-
 @endsection
 
 @section('bodySidebar')
