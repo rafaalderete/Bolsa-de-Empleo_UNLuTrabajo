@@ -55,10 +55,12 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Usuarios
           @if(count($personas) > 0)
-            <a href="{{ route('in.usuarios.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-              <span><i class="fa fa-plus"></i></span>
-              Registar Usuario
-            </a>
+            @if(Entrust::can('crear_usuario'))
+              <a href="{{ route('in.usuarios.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+                <span><i class="fa fa-plus"></i></span>
+                Registar Usuario
+              </a>
+            @endif
           @endif
         </h4>
         <!-- Mostrar Mensaje -->
@@ -89,11 +91,15 @@
                   <td>{{ $usuario->estado_usuario }}</td>
                   <!-- envio el parametro del metodo edit y destroy-->
                   <td>
-                    <a href="{{ route('in.usuarios.edit', $usuario->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
-                    {!! Form::open(['route' => ['in.usuarios.destroy', $usuario->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Usuario"
-                      data-message="¿Seguro que quiere eliminar el Usuario {{$usuario->nombre_usuario}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
-                    {!! Form::close() !!}
+                    @if(Entrust::can('modificar_usuario'))
+                      <a href="{{ route('in.usuarios.edit', $usuario->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                    @endif
+                    @if(Entrust::can('eliminar_usuario'))
+                      {!! Form::open(['route' => ['in.usuarios.destroy', $usuario->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                      <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Usuario"
+                        data-message="¿Seguro que quiere eliminar el Usuario {{$usuario->nombre_usuario}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                      {!! Form::close() !!}
+                    @endif
                   </td>
                 </tr>
               @endforeach

@@ -35,11 +35,16 @@ Route::get('auth/logout', [
 	'as'	=>	'auth.logout'
 ]);
 
-
 //------------- RUTAS DEL PANEL DE ADMINISTRACION -----------------------------------
 
 // las rutas dentro de este grupo deben cumplir con el middleware auth
 Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
+
+	// pagina para mostrar cuando no se tiene acceso a un lugar
+	Route::get('sinpermisos', ['as' => 'in.sinpermisos.sinpermisos', function () {
+	    return view('in.sinpermisos.sinpermisos');
+	}]);
+
 
 	// pagina de inicio de admin
 	Route::get('/', ['as' => 'in.index', function () {

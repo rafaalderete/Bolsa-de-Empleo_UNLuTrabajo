@@ -24,7 +24,7 @@
   <div class="container-fluid expanded-panel">
     <div class="row">
       <div id="logo" class="col-xs-12 col-sm-2">
-        <a href="index.html">DevOOPS</a>
+        <a href="index.html">UNLu Trabajo</a>
       </div>
       <div id="top-panel" class="col-xs-12 col-sm-10">
         <div class="row">
@@ -32,19 +32,23 @@
             <a href="#" class="show-sidebar">
               <i class="fa fa-bars"></i>
             </a>
-            <div id="search">
-              <input type="text" placeholder="Buscar"/>
-              <i class="fa fa-search"></i>
-            </div>
+            @if(Entrust::hasRole('estudiante'))
+              <div id="search">
+                <input type="text" placeholder="Buscar"/>
+                <i class="fa fa-search"></i>
+              </div>
+            @endif
           </div>
           <div class="col-xs-4 col-sm-8 top-panel-right">
             <ul class="nav navbar-nav pull-right panel-menu">
-              <li class="hidden-xs">
-                <a href="index.html" class="modal-link">
-                  <i class="fa fa-bell"></i>
-                  <span class="badge">7</span>
-                </a>
-              </li>
+              @if(Entrust::hasRole('estudiante'))  
+                <li class="hidden-xs">
+                  <a href="index.html" class="modal-link">
+                    <i class="fa fa-bell"></i>
+                    <span class="badge">7</span>
+                  </a>
+                </li>
+              @endif
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle account" data-toggle="dropdown">
                   <div class="avatar">

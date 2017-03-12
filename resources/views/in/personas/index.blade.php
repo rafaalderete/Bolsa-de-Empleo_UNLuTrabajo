@@ -52,9 +52,13 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Personas <a href="{{ route('in.personas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-          <span><i class="fa fa-plus"></i></span>
-          Registar Persona</a>
+        <h4 class="page-header">Tabla de Personas 
+        @if(Entrust::can('crear_persona'))
+          <a href="{{ route('in.personas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+            <span><i class="fa fa-plus"></i></span>
+            Registar Persona
+          </a>
+        @endif
         </h4>
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -85,11 +89,15 @@
                 <td>{{ $persona->estado_persona }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
-                  <a href="{{ route('in.personas.edit', $persona->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
-                  {!! Form::open(['route' => ['in.personas.destroy', $persona->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                  <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Persona"
+                  @if(Entrust::can('modificar_persona'))
+                    <a href="{{ route('in.personas.edit', $persona->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                  @endif
+                  @if(Entrust::can('eliminar_persona'))
+                    {!! Form::open(['route' => ['in.personas.destroy', $persona->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Persona"
                     data-message="¿Seguro que quiere eliminar la Persona {{$persona->nombre_persona}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
-                  {!! Form::close() !!}
+                    {!! Form::close() !!}
+                  @endif
               </tr>
             @endforeach
           </tbody>

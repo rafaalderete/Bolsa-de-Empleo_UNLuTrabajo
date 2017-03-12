@@ -52,9 +52,13 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Roles <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-          <span><i class="fa fa-plus"></i></span>
-          Registar Rol</a>
+        <h4 class="page-header">Tabla de Roles 
+        @if(Entrust::can('crear_rol'))
+          <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+            <span><i class="fa fa-plus"></i></span>
+            Registar Rol
+          </a>
+        @endif
         </h4>
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -81,11 +85,15 @@
                 <td>{{ $rol->estado_rol }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
-                  <a href="{{ route('in.roles.edit', $rol->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
-                  {!! Form::open(['route' => ['in.roles.destroy', $rol->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                  <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rol"
-                    data-message="¿Seguro que quiere eliminar el Rol {{$rol->name}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
-                  {!! Form::close() !!}
+                 
+                    <a href="{{ route('in.roles.edit', $rol->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                 
+                  @if(Entrust::can('eliminar_rol'))
+                    {!! Form::open(['route' => ['in.roles.destroy', $rol->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rol"
+                      data-message="¿Seguro que quiere eliminar el Rol {{$rol->name}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                    {!! Form::close() !!}
+                  @endif
                 </td>
               </tr>
             @endforeach

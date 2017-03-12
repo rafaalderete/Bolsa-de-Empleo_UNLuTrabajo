@@ -53,9 +53,13 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Permisos <a href="{{ route('in.permisos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-          <span><i class="fa fa-plus"></i></span>
-          Registar Permisos</a>
+        <h4 class="page-header">Tabla de Permisos 
+        @if(Entrust::can('crear_permiso'))
+          <a href="{{ route('in.permisos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+            <span><i class="fa fa-plus"></i></span>
+            Registar Permisos
+          </a>
+        @endif
         </h4>
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -82,11 +86,15 @@
                 <td>{{ $permiso->estado_permiso }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
-                  <a href="{{ route('in.permisos.edit', $permiso->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
-                  {!! Form::open(['route' => ['in.permisos.destroy', $permiso->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                  <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Permiso"
-                    data-message="¿Seguro que quiere eliminar el Permiso {{$permiso->name}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
-                  {!! Form::close() !!}
+                  @if(Entrust::can('modificar_permiso'))
+                    <a href="{{ route('in.permisos.edit', $permiso->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                  @endif
+                  @if(Entrust::can('eliminar_permiso'))
+                    {!! Form::open(['route' => ['in.permisos.destroy', $permiso->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Permiso"
+                      data-message="¿Seguro que quiere eliminar el Permiso {{$permiso->name}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                    {!! Form::close() !!}
+                  @endif
                   </td>
                 </tr>
               @endforeach

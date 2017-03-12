@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<title>Login</title>
 	<meta name="description" content="description">
 	<meta name="author" content="Evgeniya">
 	<meta name="keyword" content="keywords">
@@ -18,7 +19,7 @@
 				<div class="box">
 					<div class="box-content">
 						<div class="text-center">
-							<h3 class="page-header"></h3>
+							<h3 class="page-header">UNLu Trabajo</h3>
 						</div>
 						{!!Form::open(['route' => 'auth.login','method' => 'POST'])!!}
 
@@ -33,7 +34,7 @@
 							<input type="password" name="password" class="form-control" placeholder="Password" autocomplete="off" required>
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Acceder',['class' => 'btn btn-primary']) !!}
+							{!! Form::submit('Acceder',['class' => 'btn btn-success']) !!}
 						</div>
 
 						{!!Form::close()!!}

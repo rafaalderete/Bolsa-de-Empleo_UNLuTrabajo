@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Permission as Permiso;
 use App\Http\Requests\PermisoRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionsController extends Controller
 {
@@ -19,10 +20,15 @@ class PermissionsController extends Controller
    */
   public function index()
   {
-       $permisos = Permiso::orderBy('id','DESC')->paginate();
+      if(Auth::user()->can('listar_permisos')){
+        $permisos = Permiso::orderBy('id','DESC')->paginate();
 
-      return view('in.permisos.index')
-          ->with('permisos',$permisos);
+        return view('in.permisos.index')
+            ->with('permisos',$permisos);
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+
   }
 
   /**
@@ -32,7 +38,11 @@ class PermissionsController extends Controller
    */
   public function create()
   {
-      return view('in.permisos.create');
+      if(Auth::user()->can('crear_permiso')){
+        return view('in.permisos.create');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
   }
 
   /**
@@ -43,12 +53,16 @@ class PermissionsController extends Controller
    */
   public function store(PermisoRequest $request)
   {
-      $permiso = new Permiso($request->all());
+      if(Auth::user()->can('crear_permiso')){
+        $permiso = new Permiso($request->all());
 
-      $permiso->save();
+        $permiso->save();
 
-      Flash::success('Permiso ' . $permiso->name . ' agregado')->important();
-      return redirect()->route('in.permisos.index');
+        Flash::success('Permiso ' . $permiso->name . ' agregado')->important();
+        return redirect()->route('in.permisos.index');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
   }
 
   /**
@@ -70,9 +84,13 @@ class PermissionsController extends Controller
    */
   public function edit($id)
   {
-      $permiso = Permiso::find($id);
-      // retorna una vista con un parametro
-      return view('in.permisos.edit')->with('permiso',$permiso);
+      if(Auth::user()->can('modificar_permiso')){
+        $permiso = Permiso::find($id);
+        // retorna una vista con un parametro
+        return view('in.permisos.edit')->with('permiso',$permiso);
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
   }
 
   /**
@@ -84,14 +102,18 @@ class PermissionsController extends Controller
    */
   public function update(Request $request, $id)
   {
-      $permiso = Permiso::find($id);
+      if(Auth::user()->can('modificar_permiso')){
+        $permiso = Permiso::find($id);
 
-      // pasa todo los valores actializado de request en la user
-      $permiso->fill($request->all());
-      $permiso->save();
+        // pasa todo los valores actializado de request en la user
+        $permiso->fill($request->all());
+        $permiso->save();
 
-      Flash::warning('Permiso ' . $permiso->name . ' modificado')->important();
-      return redirect()->route('in.permisos.index');
+        Flash::warning('Permiso ' . $permiso->name . ' modificado')->important();
+        return redirect()->route('in.permisos.index');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
   }
 
   /**
@@ -102,11 +124,15 @@ class PermissionsController extends Controller
    */
   public function destroy($id)
   {
-      $permiso = Permiso::find($id);
+      if(Auth::user()->can('eliminar_permiso')){
+        $permiso = Permiso::find($id);
 
-      $permiso->delete();
+        $permiso->delete();
 
-      Flash::error('Permiso ' . $permiso->name . ' eliminado')->important();
-      return redirect()->route('in.permisos.index');
+        Flash::error('Permiso ' . $permiso->name . ' eliminado')->important();
+        return redirect()->route('in.permisos.index');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
   }
 }

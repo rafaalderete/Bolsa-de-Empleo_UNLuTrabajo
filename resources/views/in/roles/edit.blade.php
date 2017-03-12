@@ -100,7 +100,7 @@
             <div class="col-sm-2">
               <button type="reset" class="btn btn-default btn-label-left">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
-                Borrar
+                Restablecer
               </button>
             </div>
           </div>

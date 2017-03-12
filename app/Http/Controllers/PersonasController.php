@@ -11,6 +11,7 @@ use App\Persona as Persona;
 use App\Http\Requests\PersonaRequest;
 use Log;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class PersonasController extends Controller
 {
@@ -21,9 +22,13 @@ class PersonasController extends Controller
      */
     public function index()
     {
-        $personas = Persona::orderBy('id','ASC')->paginate();
-        return view('in.personas.index')
-            ->with('personas',$personas);
+        if(Auth::user()->can('listar_personas')){
+            $personas = Persona::orderBy('id','ASC')->paginate();
+            return view('in.personas.index')
+                ->with('personas',$personas);
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -33,7 +38,11 @@ class PersonasController extends Controller
      */
     public function create()
     {
-           return view('in.personas.create');
+        if(Auth::user()->can('crear_persona')){
+            return view('in.personas.create');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -44,12 +53,16 @@ class PersonasController extends Controller
      */
     public function store(PersonaRequest $request)
     {
-        $persona = new Persona($request->all());
-        $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($persona->fecha_nacimiento_persona));
-        $persona->save();
+        if(Auth::user()->can('crear_persona')){
+            $persona = new Persona($request->all());
+            $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($persona->fecha_nacimiento_persona));
+            $persona->save();
 
-        Flash::success('Persona ' . $persona->nombre_persona . ' agregado')->important();
-        return redirect()->route('in.personas.index');
+            Flash::success('Persona ' . $persona->nombre_persona . ' agregado')->important();
+            return redirect()->route('in.personas.index');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -71,12 +84,16 @@ class PersonasController extends Controller
      */
     public function edit($id)
     {
-        $persona = Persona::find($id);
-        // parsear fecha a formato estandar
-        $persona->fecha_nacimiento_persona = date('d-m-Y', strtotime($persona->fecha_nacimiento_persona));
-        //dd($date);
-        // retorna una vista con un parametro
-        return view('in.personas.edit')->with('persona',$persona);
+        if(Auth::user()->can('modificar_persona')){
+            $persona = Persona::find($id);
+            // parsear fecha a formato estandar
+            $persona->fecha_nacimiento_persona = date('d-m-Y', strtotime($persona->fecha_nacimiento_persona));
+            //dd($date);
+            // retorna una vista con un parametro
+            return view('in.personas.edit')->with('persona',$persona);
+        }else{
+            return redirect()->route('sinpermisos.sinpermisos');   
+        }
     }
 
     /**
@@ -88,14 +105,18 @@ class PersonasController extends Controller
      */
     public function update(PersonaRequest $request, $id)
     {
-        $persona = Persona::find($id);
-        // pasa todo los valores actializado de request en la user
-        $persona->fill($request->all());
-        $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($request->fecha_nacimiento_persona));
-        $persona->save();
+        if(Auth::user()->can('modificar_persona')){
+            $persona = Persona::find($id);
+            // pasa todo los valores actializado de request en la user
+            $persona->fill($request->all());
+            $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($request->fecha_nacimiento_persona));
+            $persona->save();
 
-        Flash::warning('Persona ' . $persona->nombre_persona . ' modificado')->important();
-        return redirect()->route('in.personas.index');
+            Flash::warning('Persona ' . $persona->nombre_persona . ' modificado')->important();
+            return redirect()->route('in.personas.index');
+        }else{
+            return redirect()->route('sinpermisos.sinpermisos');   
+        }   
     }
 
     /**
@@ -106,10 +127,14 @@ class PersonasController extends Controller
      */
     public function destroy($id)
     {
-        $persona = Persona::find($id);
-        $persona->delete();
+        if(Auth::user()->can('eliminar_persona')){
+            $persona = Persona::find($id);
+            $persona->delete();
 
-        Flash::error('Persona ' . $persona->nombre_persona . ' eliminada')->important();
-        return redirect()->route('in.personas.index');
+            Flash::error('Persona ' . $persona->nombre_persona . ' eliminada')->important();
+            return redirect()->route('in.personas.index');
+        }else{
+            return redirect()->route('sinpermisos.sinpermisos');   
+        }
     }
 }

@@ -11,6 +11,8 @@ use App\Role as Rol;
 use App\Http\Requests\RolRequest;
 
 use App\Permission as Permiso;
+use Illuminate\Support\Facades\Auth;
+
 
 class RolesController extends Controller
 {
@@ -21,10 +23,14 @@ class RolesController extends Controller
      */
     public function index()
     {
-        $roles = Rol::orderBy('id','DESC')->paginate();
+        if(Auth::user()->can('listar_roles')){
+            $roles = Rol::orderBy('id','DESC')->paginate();
 
-        return view('in.roles.index')
-            ->with('roles',$roles);
+            return view('in.roles.index')
+                ->with('roles',$roles);
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -34,10 +40,13 @@ class RolesController extends Controller
      */
     public function create()
     {
-        $permisos = Permiso::orderBy('name','ASC')->where('estado_permiso', 'activo')->lists('name','id');// devuelve la lista
-
-        return view('in.roles.create')
-             ->with('permisos',$permisos);
+        if(Auth::user()->can('crear_rol')){
+            $permisos = Permiso::orderBy('name','ASC')->where('estado_permiso', 'activo')->lists('name','id');// devuelve la lista
+            return view('in.roles.create')
+                 ->with('permisos',$permisos);
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
 
     }
 
@@ -49,17 +58,21 @@ class RolesController extends Controller
      */
     public function store(RolRequest $request)
     {
-        $rol = new Rol($request->all());
+        if(Auth::user()->can('crear_rol')){
+            $rol = new Rol($request->all());
 
-        $rol->save();
+            $rol->save();
 
-        //sincronizo con la tabla pivot
-        $permisos = $request->input('permisos', []);
-        $rol->permissions()->sync($permisos);
+            //sincronizo con la tabla pivot
+            $permisos = $request->input('permisos', []);
+            $rol->permissions()->sync($permisos);
 
 
-        Flash::success('Rol ' . $rol->name . ' agregado')->important();
-        return redirect()->route('in.roles.index');
+            Flash::success('Rol ' . $rol->name . ' agregado')->important();
+            return redirect()->route('in.roles.index');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -81,18 +94,22 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        $rol = Rol::find($id);
+        if(Auth::user()->can('modificar_rol')){
+            $rol = Rol::find($id);
 
-        $permisos = Permiso::orderBy('name','ASC')->lists('name','id');// devuelve la lista
+            $permisos = Permiso::orderBy('name','ASC')->lists('name','id');// devuelve la lista
 
-        // necesito el array de los permisos q contiene
-        $my_permisos = $rol->permissions->lists('id')->toArray(); // pasa un objeto a un array
+            // necesito el array de los permisos q contiene
+            $my_permisos = $rol->permissions->lists('id')->toArray(); // pasa un objeto a un array
 
-        // retorna una vista con un parametro
-        return view('in.roles.edit')
-          ->with('rol',$rol)
-          ->with('permisos',$permisos)
-          ->with('my_permisos',$my_permisos);
+            // retorna una vista con un parametro
+            return view('in.roles.edit')
+              ->with('rol',$rol)
+              ->with('permisos',$permisos)
+              ->with('my_permisos',$my_permisos);
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -104,20 +121,24 @@ class RolesController extends Controller
      */
     public function update(RolRequest $request, $id)
     {
-        $rol = Rol::find($id);
+        if(Auth::user()->can('modificar_rol')){
+            $rol = Rol::find($id);
 
-        // pasa todo los valores actializado de request en la user
-        $rol->fill($request->all());
-        $rol->save();
-
-
-        //sincronizo con la tabla pivot
-        $permisos = $request->input('permisos', []);
-        $rol->permissions()->sync($permisos);
+            // pasa todo los valores actializado de request en la user
+            $rol->fill($request->all());
+            $rol->save();
 
 
-        Flash::warning('Rol ' . $rol->name . ' modificado')->important();
-        return redirect()->route('in.roles.index');
+            //sincronizo con la tabla pivot
+            $permisos = $request->input('permisos', []);
+            $rol->permissions()->sync($permisos);
+
+
+            Flash::warning('Rol ' . $rol->name . ' modificado')->important();
+            return redirect()->route('in.roles.index');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 /*
     public function asignar_permisos($id)
@@ -160,11 +181,15 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        $rol = Rol::find($id);
+        if(Auth::user()->can('eliminar_rol')){
+            $rol = Rol::find($id);
 
-        $rol->delete();
+            $rol->delete();
 
-        Flash::error('Rol ' . $rol->name . ' eliminado')->important();
-        return redirect()->route('in.roles.index');
+            Flash::error('Rol ' . $rol->name . ' eliminado')->important();
+            return redirect()->route('in.roles.index');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 }

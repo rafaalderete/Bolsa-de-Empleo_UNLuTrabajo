@@ -12,6 +12,7 @@ use App\Usuario as Usuario;
 use App\Persona as Persona;
 use App\Role as Rol;
 use App\Http\Requests\UsuarioRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
 {
@@ -22,21 +23,24 @@ class UsuariosController extends Controller
      */
     public function index() // pantalla principal donde lista los usuarios
     {
+        if(Auth::user()->can('listar_usuarios')){
+          $usuarios = Usuario::orderBy('id','DESC')->paginate(); // trae los usarios los ordena en forma DESC por id
+                                                                  // los pagina trayendolos en un array
 
-        $usuarios = Usuario::orderBy('id','DESC')->paginate(); // trae los usarios los ordena en forma DESC por id
-                                                                // los pagina trayendolos en un array
+         $personas = Persona::orderBy('nombre_persona', 'ASC')->lists('nombre_persona', 'id'); // lista los nombres de las personas asociandolos con sus id  Ej: id => nombre_persona
 
-       $personas = Persona::orderBy('nombre_persona', 'ASC')->lists('nombre_persona', 'id'); // lista los nombres de las personas asociandolos con sus id  Ej: id => nombre_persona
+           $usuarios->each(function($usuarios){ // es un foreach por usuario
+              // se llaman a los metodos del usuario q se relacionan con las otras tablas
+              $usuarios->persona; // recupera los datos de la persona asociada al usuario
+              $usuarios->roles; // recupera los datos de los roles asoaciado al asuario
+          });
 
-         $usuarios->each(function($usuarios){ // es un foreach por usuario
-            // se llaman a los metodos del usuario q se relacionan con las otras tablas
-            $usuarios->persona; // recupera los datos de la persona asociada al usuario
-            $usuarios->roles; // recupera los datos de los roles asoaciado al asuario
-        });
-
-        return view('in.usuarios.index')
-            ->with('usuarios',$usuarios)
-            ->with('personas',$personas); // se lo envia para controlar q no pueda crear usuarios si no hay personas
+          return view('in.usuarios.index')
+              ->with('usuarios',$usuarios)
+              ->with('personas',$personas); // se lo envia para controlar q no pueda crear usuarios si no hay personas
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -46,12 +50,16 @@ class UsuariosController extends Controller
      */
     public function create() // envia a la vista para cargar los datos del nuevo usuario
     {
-      $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
-      $personas = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
-      //dd($roles);
-      return view('in.usuarios.create')
-          ->with('personas',$personas)
-          ->with('roles',$roles);
+        if(Auth::user()->can('crear_usuario')){
+          $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+          $personas = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
+          //dd($roles);
+          return view('in.usuarios.create')
+              ->with('personas',$personas)
+              ->with('roles',$roles);
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
 
     }
 
@@ -63,18 +71,22 @@ class UsuariosController extends Controller
      */
     public function store(UsuarioRequest $request) // almacena los datos en Base y muestra el msj de OK, devuelve al index
     {
-         // se usan los valores de la vista del usuario creado
-        $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
-                                                 // all() solo trae los atributos los usuario para agregar
-        $usuario->password = bcrypt($request->password); // se encripta la contraseña
-        $usuario->save(); // se almacena el objeto en la Base
+        if(Auth::user()->can('crear_usuario')){
+           // se usan los valores de la vista del usuario creado
+          $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
+                                                   // all() solo trae los atributos los usuario para agregar
+          $usuario->password = bcrypt($request->password); // se encripta la contraseña
+          $usuario->save(); // se almacena el objeto en la Base
 
-        //sincronizo con la tabla pivot
-        $roles = $request->input('roles', []);
-        $usuario->roles()->sync($roles);
+          //sincronizo con la tabla pivot
+          $roles = $request->input('roles', []);
+          $usuario->roles()->sync($roles);
 
-        Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado')->important(); // se muestra el msj de usuario creado
-        return redirect()->route('in.usuarios.index'); // se devuelve al index
+          Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado')->important(); // se muestra el msj de usuario creado
+          return redirect()->route('in.usuarios.index'); // se devuelve al index
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -97,30 +109,34 @@ class UsuariosController extends Controller
     public function edit($id) // envia a la vista para evitar los datos del usurio.
                               // No siempre se pueden editar todos los mismos datos que al crear
     {
-      $usuario = Usuario::find($id); // busca al usuario por el id
+        if(Auth::user()->can('modificar_usuario')){
+          $usuario = Usuario::find($id); // busca al usuario por el id
 
-      $personasAct = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de
-      foreach ($personasAct as $persona) {
-        $personas[$persona->id] = "$persona->nombre_persona $persona->apellido_persona";
-      }
-      //dd($personas);
+          $personasAct = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de
+          foreach ($personasAct as $persona) {
+            $personas[$persona->id] = "$persona->nombre_persona $persona->apellido_persona";
+          }
+          //dd($personas);
 
-      $my_persona = $usuario->persona_id; // recupero id de persona asociada
+          $my_persona = $usuario->persona_id; // recupero id de persona asociada
 
-      $roles = Rol::orderBy('name', 'ASC')->lists('name', 'id'); // recupera todos los roles que existen
-      //log::info($roles);
+          $roles = Rol::orderBy('name', 'ASC')->lists('name', 'id'); // recupera todos los roles que existen
+          //log::info($roles);
 
-      // necesito el array de los roles q contiene
-      $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
-      //log::info($my_roles);
+          // necesito el array de los roles q contiene
+          $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
+          //log::info($my_roles);
 
-      // retorna una vista con un parametro
-      return view('in.usuarios.edit')
-        ->with('usuario',$usuario)
-        ->with('roles',$roles)
-        ->with('my_roles',$my_roles)
-        ->with('personas', $personas)
-        ->with('my_persona', $my_persona);
+          // retorna una vista con un parametro
+          return view('in.usuarios.edit')
+            ->with('usuario',$usuario)
+            ->with('roles',$roles)
+            ->with('my_roles',$my_roles)
+            ->with('personas', $personas)
+            ->with('my_persona', $my_persona);
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
 
     }
 
@@ -133,18 +149,22 @@ class UsuariosController extends Controller
      */
     public function update(Request $request, $id) // permite modificar los datos del usuario
     {
-      $usuario = Usuario::find($id); // busca el usario al modificar
+        if(Auth::user()->can('modificar_usuario')){
+          $usuario = Usuario::find($id); // busca el usario al modificar
 
-      // pasa todo los valores actializado de request en la user
-      $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
-      $usuario->save(); // se guarda en BD
+          // pasa todo los valores actializado de request en la user
+          $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
+          $usuario->save(); // se guarda en BD
 
-      //sincronizo con la tabla pivot
-      $roles = $request->input('roles', []);
-      $usuario->roles()->sync($roles);
+          //sincronizo con la tabla pivot
+          $roles = $request->input('roles', []);
+          $usuario->roles()->sync($roles);
 
-      Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado')->important();
-      return redirect()->route('in.usuarios.index');
+          Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado')->important();
+          return redirect()->route('in.usuarios.index');
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
 /*
@@ -212,11 +232,15 @@ class UsuariosController extends Controller
      */
     public function destroy($id) // elimina el usuario de la BD
     {
-        $usuario = Usuario::find($id); // busca el usuario por su id
+        if(Auth::user()->can('eliminar_usuario')){
+          $usuario = Usuario::find($id); // busca el usuario por su id
 
-        $usuario->delete(); // lo elimina
+          $usuario->delete(); // lo elimina
 
-        Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado')->important();
-        return redirect()->route('in.usuarios.index');
+          Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado')->important();
+          return redirect()->route('in.usuarios.index');
+        }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 }
