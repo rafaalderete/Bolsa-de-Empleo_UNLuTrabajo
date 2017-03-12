@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App;
 
@@ -13,7 +13,7 @@ class Role extends EntrustRole
 
     public function permissions() {
 
-    	return $this->belongsToMany('App\Permission');
+    	return $this->belongsToMany('App\Permission')->withTimestamps();
     }
 
     public function users() {
