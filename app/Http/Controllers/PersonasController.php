@@ -8,7 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Persona as Persona;
-use App\Http\Requests\PersonaRequest;
+use App\Http\Requests\StorePersonaRequest;
+use App\Http\Requests\UpdatePersonaRequest;
 use Log;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,7 @@ class PersonasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PersonaRequest $request)
+    public function store(StorePersonaRequest $request)
     {
         if(Auth::user()->can('crear_persona')){
             $persona = new Persona($request->all());
@@ -92,7 +93,7 @@ class PersonasController extends Controller
             // retorna una vista con un parametro
             return view('in.personas.edit')->with('persona',$persona);
         }else{
-            return redirect()->route('sinpermisos.sinpermisos');   
+            return redirect()->route('sinpermisos.sinpermisos');
         }
     }
 
@@ -103,7 +104,7 @@ class PersonasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(PersonaRequest $request, $id)
+    public function update(UpdatePersonaRequest $request, $id)
     {
         if(Auth::user()->can('modificar_persona')){
             $persona = Persona::find($id);
@@ -115,8 +116,8 @@ class PersonasController extends Controller
             Flash::warning('Persona ' . $persona->nombre_persona . ' modificado')->important();
             return redirect()->route('in.personas.index');
         }else{
-            return redirect()->route('sinpermisos.sinpermisos');   
-        }   
+            return redirect()->route('sinpermisos.sinpermisos');
+        }
     }
 
     /**
@@ -134,7 +135,7 @@ class PersonasController extends Controller
             Flash::error('Persona ' . $persona->nombre_persona . ' eliminada')->important();
             return redirect()->route('in.personas.index');
         }else{
-            return redirect()->route('sinpermisos.sinpermisos');   
+            return redirect()->route('sinpermisos.sinpermisos');
         }
     }
 }

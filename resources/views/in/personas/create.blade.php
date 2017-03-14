@@ -79,7 +79,7 @@
             </div>
             {!! Form::label('tipo_documento_persona','Documento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::select('tipo_documento_persona',['' => '', 'DNI' => 'DNI', 'LC' => 'LC', 'CI' => 'CI'], null, ['class' =>'populate placeholder', 'id' => 'selectSimple'])!!}
+              {!! Form::select('tipo_documento_persona',['' => '', 'DNI' => 'DNI', 'LC' => 'LC', 'CI' => 'CI'], null, ['class' =>'populate placeholder', 'id' => 'selectSimple', 'required'])!!}
             </div>
             <div class="col-sm-4">
               {!! Form::text('nro_documento_persona', null, ['class' => 'form-control', 'placeholder' => 'Numero', 'required'])!!}

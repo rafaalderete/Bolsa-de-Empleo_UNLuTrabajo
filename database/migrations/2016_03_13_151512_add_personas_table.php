@@ -20,11 +20,11 @@ class AddPersonasTable extends Migration
             $table->enum('estado_persona', ['activo','inactivo']);
             $table->date('fecha_nacimiento_persona');
             $table->string('tipo_documento_persona');
-            $table->integer('nro_documento_persona');
+            $table->integer('nro_documento_persona')->unique();
             $table->string('domicilio_residencia_persona');
             $table->string('localidad_residencia_persona');
             $table->string('provincia_residencia_persona');
-            $table->string('pais_residencia_persona');       
+            $table->string('pais_residencia_persona');
             $table->string('telefono_contacto_persona');
             $table->timestamps();
         });

@@ -15,10 +15,10 @@ class AddUsuariosTable extends Migration
         Schema::create('usuarios', function (Blueprint $table) {
             $table->increments('id');
             $table->string('password', 60);
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('descripcion_usuario');
             $table->enum('estado_usuario', ['activo','inactivo']);
-            $table->string('nombre_usuario');
+            $table->string('nombre_usuario')->unique();
             $table->integer('persona_id')->unsigned();
             $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
             $table->rememberToken();

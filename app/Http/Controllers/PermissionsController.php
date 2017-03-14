@@ -8,7 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Permission as Permiso;
-use App\Http\Requests\PermisoRequest;
+use App\Http\Requests\StorePermisoRequest;
+use App\Http\Requests\UpdatePermisoRequest;
 use Illuminate\Support\Facades\Auth;
 
 class PermissionsController extends Controller
@@ -51,7 +52,7 @@ class PermissionsController extends Controller
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(PermisoRequest $request)
+  public function store(StorePermisoRequest $request)
   {
       if(Auth::user()->can('crear_permiso')){
         $permiso = new Permiso($request->all());
@@ -100,7 +101,7 @@ class PermissionsController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(UpdatePermisoRequest $request, $id)
   {
       if(Auth::user()->can('modificar_permiso')){
         $permiso = Permiso::find($id);

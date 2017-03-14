@@ -11,7 +11,8 @@ use Laracasts\Flash\Flash;
 use App\Usuario as Usuario;
 use App\Persona as Persona;
 use App\Role as Rol;
-use App\Http\Requests\UsuarioRequest;
+use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\UpdateUsuarioRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UsuariosController extends Controller
@@ -69,7 +70,7 @@ class UsuariosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UsuarioRequest $request) // almacena los datos en Base y muestra el msj de OK, devuelve al index
+    public function store(StoreUsuarioRequest $request) // almacena los datos en Base y muestra el msj de OK, devuelve al index
     {
         if(Auth::user()->can('crear_usuario')){
            // se usan los valores de la vista del usuario creado
@@ -147,7 +148,7 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) // permite modificar los datos del usuario
+    public function update(UpdateUsuarioRequest $request, $id) // permite modificar los datos del usuario
     {
         if(Auth::user()->can('modificar_usuario')){
           $usuario = Usuario::find($id); // busca el usario al modificar

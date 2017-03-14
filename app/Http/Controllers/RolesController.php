@@ -8,8 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Role as Rol;
-use App\Http\Requests\RolRequest;
-
+use App\Http\Requests\StoreRolRequest;
+use App\Http\Requests\UpdateRolRequest;
 use App\Permission as Permiso;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,7 +56,7 @@ class RolesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RolRequest $request)
+    public function store(StoreRolRequest $request)
     {
         if(Auth::user()->can('crear_rol')){
             $rol = new Rol($request->all());
@@ -119,7 +119,7 @@ class RolesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RolRequest $request, $id)
+    public function update(UpdateRolRequest $request, $id)
     {
         if(Auth::user()->can('modificar_rol')){
             $rol = Rol::find($id);
