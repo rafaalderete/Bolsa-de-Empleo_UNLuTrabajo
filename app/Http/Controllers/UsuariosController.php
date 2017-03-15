@@ -44,6 +44,17 @@ class UsuariosController extends Controller
         }
     }
 
+    private function isSuperUsuario ($id)
+    {
+      $usuario = Usuario::find($id);
+      if ($usuario->hasRole('super_usuario')) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -52,7 +63,12 @@ class UsuariosController extends Controller
     public function create() // envia a la vista para cargar los datos del nuevo usuario
     {
         if(Auth::user()->can('crear_usuario')){
-          $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+          if (Auth::user()->hasRole('super_usuario')) {
+            $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+          }
+          else {
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->where('name','<>','super_usuario')->lists('name', 'id');
+          }
           $personas = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
           //dd($roles);
           return view('in.usuarios.create')
@@ -110,7 +126,7 @@ class UsuariosController extends Controller
     public function edit($id) // envia a la vista para evitar los datos del usurio.
                               // No siempre se pueden editar todos los mismos datos que al crear
     {
-        if(Auth::user()->can('modificar_usuario')){
+        if(Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)){
           $usuario = Usuario::find($id); // busca al usuario por el id
 
           $personasAct = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de
@@ -121,8 +137,12 @@ class UsuariosController extends Controller
 
           $my_persona = $usuario->persona_id; // recupero id de persona asociada
 
-          $roles = Rol::orderBy('name', 'ASC')->lists('name', 'id'); // recupera todos los roles que existen
-          //log::info($roles);
+          if (Auth::user()->hasRole('super_usuario')) {
+            $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+          }
+          else {
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->where('name','<>','super_usuario')->lists('name', 'id');
+          }
 
           // necesito el array de los roles q contiene
           $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
@@ -150,7 +170,7 @@ class UsuariosController extends Controller
      */
     public function update(UpdateUsuarioRequest $request, $id) // permite modificar los datos del usuario
     {
-        if(Auth::user()->can('modificar_usuario')){
+        if(Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)){
           $usuario = Usuario::find($id); // busca el usario al modificar
 
           // pasa todo los valores actializado de request en la user
@@ -233,7 +253,7 @@ class UsuariosController extends Controller
      */
     public function destroy($id) // elimina el usuario de la BD
     {
-        if(Auth::user()->can('eliminar_usuario')){
+        if(Auth::user()->can('eliminar_usuario') && !$this->isSuperUsuario($id)){
           $usuario = Usuario::find($id); // busca el usuario por su id
 
           $usuario->delete(); // lo elimina

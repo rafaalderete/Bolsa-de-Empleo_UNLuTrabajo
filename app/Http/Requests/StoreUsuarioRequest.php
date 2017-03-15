@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use App\Persona as Persona;
 use App\Role as Rol;
+use Illuminate\Support\Facades\Auth;
 
 class StoreUsuarioRequest extends Request
 {
@@ -32,7 +33,13 @@ class StoreUsuarioRequest extends Request
      */
     public function rules()
     {
-      $roles = Rol::all()->where('estado_rol', 'activo');
+      //Se traen los roles y personas disponibles para hacer las validaciones.
+      if (Auth::user()->hasRole('super_usuario')) {
+        $roles = Rol::all()->where('estado_rol', 'activo');
+      }
+      else {
+        $roles = Rol::all()->where('estado_rol', 'activo')->where('name','<>','super_usuario');
+      }
       $personas = Persona::all()->where('estado_persona', 'activo');
 
       $roles_disponibles = 'in:'.$roles[0]->id;

@@ -5,10 +5,10 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use App\Permission as Permiso;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateRolRequest extends Request
 {
-
 
     const CAMPO_NOMBRE_ROL = 'Nombre Rol';
     const CAMPO_NOMBRE_AMIGABLE_ROL = 'Nombre Amigable Rol';
@@ -38,7 +38,17 @@ class UpdateRolRequest extends Request
      */
     public function rules()
     {
-      $permisos = Permiso::all()->where('estado_permiso', 'activo');
+      //Se traen los permisos disponibles para hacer las validaciones.
+      if (Auth::user()->hasRole('super_usuario')) {
+        $permisos = Permiso::all()->where('estado_permiso', 'activo');
+      }
+      else {
+        $permisos = Permiso::all()
+        ->where('estado_permiso', 'activo')
+        ->where('name','<>','crear_permiso')
+        ->where('name','<>','eliminar_permiso')
+        ->where('name','<>','modificar_permiso');
+      }
 
       $permisos_disponibles = 'in:'.$permisos[0]->id;
       for ($x = 1; $x < sizeof($permisos); $x++) {

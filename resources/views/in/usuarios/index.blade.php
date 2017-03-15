@@ -91,10 +91,10 @@
                   <td>{{ $usuario->estado_usuario }}</td>
                   <!-- envio el parametro del metodo edit y destroy-->
                   <td>
-                    @if(Entrust::can('modificar_usuario'))
+                    @if( (Entrust::can('modificar_usuario') && (!$usuario->hasRole('super_usuario'))) || (Entrust::hasRole('super_usuario')) )
                       <a href="{{ route('in.usuarios.edit', $usuario->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                     @endif
-                    @if(Entrust::can('eliminar_usuario'))
+                    @if( (Entrust::can('eliminar_usuario') && (!$usuario->hasRole('super_usuario'))) || (Entrust::hasRole('super_usuario')) )
                       {!! Form::open(['route' => ['in.usuarios.destroy', $usuario->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
                       <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Usuario"
                         data-message="¿Seguro que quiere eliminar el Usuario {{$usuario->nombre_usuario}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>

@@ -53,7 +53,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Permisos 
+        <h4 class="page-header">Tabla de Permisos
         @if(Entrust::can('crear_permiso'))
           <a href="{{ route('in.permisos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>

@@ -41,9 +41,19 @@ class RolesController extends Controller
     public function create()
     {
         if(Auth::user()->can('crear_rol')){
-            $permisos = Permiso::orderBy('name','ASC')->where('estado_permiso', 'activo')->lists('name','id');// devuelve la lista
-            return view('in.roles.create')
-                 ->with('permisos',$permisos);
+          if (Auth::user()->hasRole('super_usuario')) {
+            $permisos = Permiso::orderBy('name','ASC')->where('estado_permiso', 'activo')->lists('name','id'); // trae todos los roles activos
+          }
+          else {
+            $permisos = Permiso::orderBy('name','ASC')
+            ->where('estado_permiso', 'activo')
+            ->where('name','<>','crear_permiso')
+            ->where('name','<>','eliminar_permiso')
+            ->where('name','<>','modificar_permiso')
+            ->lists('name','id');
+          }
+          return view('in.roles.create')
+                  ->with('permisos',$permisos);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -94,10 +104,20 @@ class RolesController extends Controller
      */
     public function edit($id)
     {
-        if(Auth::user()->can('modificar_rol')){
+        if((Auth::user()->can('modificar_rol') && ($id != 1)) || Auth::user()->hasRole('super_usuario')){
             $rol = Rol::find($id);
 
-            $permisos = Permiso::orderBy('name','ASC')->lists('name','id');// devuelve la lista
+            if (Auth::user()->hasRole('super_usuario')) {
+              $permisos = Permiso::orderBy('name','ASC')->where('estado_permiso', 'activo')->lists('name','id'); // trae todos los roles activos
+            }
+            else {
+              $permisos = Permiso::orderBy('name','ASC')
+              ->where('estado_permiso', 'activo')
+              ->where('name','<>','crear_permiso')
+              ->where('name','<>','eliminar_permiso')
+              ->where('name','<>','modificar_permiso')
+              ->lists('name','id');
+            }
 
             // necesito el array de los permisos q contiene
             $my_permisos = $rol->permissions->lists('id')->toArray(); // pasa un objeto a un array
@@ -121,7 +141,7 @@ class RolesController extends Controller
      */
     public function update(UpdateRolRequest $request, $id)
     {
-        if(Auth::user()->can('modificar_rol')){
+        if((Auth::user()->can('modificar_rol') && ($id != 1)) || Auth::user()->hasRole('super_usuario')){
             $rol = Rol::find($id);
 
             // pasa todo los valores actializado de request en la user
@@ -181,7 +201,7 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
-        if(Auth::user()->can('eliminar_rol')){
+        if((Auth::user()->can('eliminar_rol') && ($id != 1)) || Auth::user()->hasRole('super_usuario')){
             $rol = Rol::find($id);
 
             $rol->delete();
