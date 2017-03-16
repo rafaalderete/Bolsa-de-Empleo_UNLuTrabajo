@@ -35,14 +35,18 @@ class StoreUsuarioRequest extends Request
     {
       //Se traen los roles y personas disponibles para hacer las validaciones.
       if (Auth::user()->hasRole('super_usuario')) {
-        $roles = Rol::all()->where('estado_rol', 'activo');
+        $roles = Rol::where('estado_rol', 'activo')
+        ->get();
       }
       else {
-        $roles = Rol::all()->where('estado_rol', 'activo')->where('name','<>','super_usuario');
+        $roles = Rol::where('estado_rol', 'activo')
+        ->where('name','<>','super_usuario')
+        ->get();
       }
-      $personas = Persona::all()->where('estado_persona', 'activo');
+      $personas = Persona::where('estado_persona', 'activo')
+      ->get();
 
-      $roles_disponibles = 'in:'.$roles[0]->id;
+      $roles_disponibles = 'array|in:'.$roles[0]->id;
       for ($x = 1; $x < sizeof($roles); $x++) {
           $roles_disponibles = $roles_disponibles.','.$roles[$x]->id;
       }
@@ -55,7 +59,7 @@ class StoreUsuarioRequest extends Request
       return [
           'password' => 'min:6|max:20|required',
           'persona_id' => $personas_disponibles,
-          'roles[]' => $roles_disponibles,
+          'roles' => $roles_disponibles,
           'email' => 'min:4|max:20|email|required|unique:usuarios',
           'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',
       ];
@@ -73,7 +77,7 @@ class StoreUsuarioRequest extends Request
           'email.email' => 'El campo '.self::CAMPO_EMAIL.' no corresponde con una dirección de e-mail válida.',
           'password.min' => 'El campo '.self::CAMPO_PASSWORD.' debe contener al menos 6 caracteres.',
           'password.max' => 'El campo '.self::CAMPO_PASSWORD.' debe contener 20 caracteres como máximo.',
-          'roles[].in' => 'Datos invalidos para el campo '.self::CAMPO_ROLES,
+          'roles.in' => 'Datos invalidos para el campo '.self::CAMPO_ROLES,
           'persona_id.in' => 'Datos invalidos para el campo '.self::CAMPO_PERSONA,
       ];
     }

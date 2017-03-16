@@ -40,25 +40,26 @@ class UpdateRolRequest extends Request
     {
       //Se traen los permisos disponibles para hacer las validaciones.
       if (Auth::user()->hasRole('super_usuario')) {
-        $permisos = Permiso::all()->where('estado_permiso', 'activo');
+        $permisos = Permiso::where('estado_permiso', 'activo')
+        ->get();
       }
       else {
-        $permisos = Permiso::all()
-        ->where('estado_permiso', 'activo')
+        $permisos = Permiso::where('estado_permiso', 'activo')
         ->where('name','<>','crear_permiso')
         ->where('name','<>','eliminar_permiso')
-        ->where('name','<>','modificar_permiso');
+        ->where('name','<>','modificar_permiso')
+        ->get();
       }
 
-      $permisos_disponibles = 'in:'.$permisos[0]->id;
+      $permisos_disponibles = 'array|in:'.$permisos[0]->id;
       for ($x = 1; $x < sizeof($permisos); $x++) {
           $permisos_disponibles = $permisos_disponibles.','.$permisos[$x]->id;
       }
 
       return [
           'name' => 'min:4|max:20|required|unique:roles,name,'.$this->route->getParameter('roles'),
-          'nombre_amigable_rol' => 'min:4|max:20|required',
-          'permisos[]' => $permisos_disponibles,
+          'nombre_amigable_rol' => 'min:4|max:20|required|unique:roles,nombre_amigable_rol,'.$this->route->getParameter('roles'),
+          'permisos' => $permisos_disponibles,
           'estado_rol'=> 'required|in:activo,inactivo'
       ];
     }
@@ -71,7 +72,7 @@ class UpdateRolRequest extends Request
           'name.unique' => 'El elemento '.self::CAMPO_NOMBRE_ROL.' ya está en uso.',
           'nombre_amigable_rol.min' => 'El campo '.self::CAMPO_NOMBRE_AMIGABLE_ROL.' debe contener al menos 4 caracteres.',
           'nombre_amigable_rol.max' => 'El campo '.self::CAMPO_NOMBRE_AMIGABLE_ROL.' debe contener 20 caracteres como máximo.',
-          'permisos[].in' => 'Datos invalidos para el campo '.self::CAMPO_PERMISOS,
+          'permisos.in' => 'Datos invalidos para el campo '.self::CAMPO_PERMISOS,
           'estado_rol.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
       ];
     }
