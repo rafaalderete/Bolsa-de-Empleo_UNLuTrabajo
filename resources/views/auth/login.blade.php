@@ -18,6 +18,9 @@
 			<div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 				<div class="box">
 					<div class="box-content">
+						<div class="text-center logo_login">
+							<img src="./img/escudounlu.png" alt="Logo" />
+						</div>
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
 						</div>

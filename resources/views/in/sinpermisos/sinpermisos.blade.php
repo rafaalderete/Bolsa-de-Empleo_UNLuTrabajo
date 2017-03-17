@@ -15,10 +15,12 @@
 <div class="container-fluid">
 	<div class="row">
 		<div id="page-500" class="col-xs-12 text-center">
-			<h1>Error!</h1>
-			<h3>Tu no tienes acceso a este lugar!</h3>
-			<img src="../img/sinacceso.gif" alt="" />
-			<a href="{{route('in.index')}}" class="btn btn-default btn-label-left"><span><i class="fa fa-reply"></i></span> Volver a inicio</a>
+			<div class="error">
+				<h1>Ups!</h1>
+				<h3>Tu no tienes acceso a este lugar!</h3>
+				<img src="../img/sinacceso.gif" alt="" />
+				<a href="{{route('in.index')}}" class="btn btn-default btn-label-left"><span><i class="fa fa-reply"></i></span> Volver a inicio</a>
+			</div>
 		</div>
 	</div>
 </div>

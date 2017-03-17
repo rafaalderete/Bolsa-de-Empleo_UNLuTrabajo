@@ -2078,6 +2078,13 @@ td.beauty-hover {
 }
 #page-500 {
   background: #ebebeb;
+
+
+}
+.error {
+  position: absolute;
+  top: 15%;
+  left: 28.5%;
 }
 #page-500 img {
   display: block;
@@ -2359,5 +2366,8 @@ td.beauty-hover {
   }
   #dashboard_links .nav-pills > li.active > a:before {
     display: none;
+  }
+  .logo_login {
+    margin-bottom: 10px
   }
 }
