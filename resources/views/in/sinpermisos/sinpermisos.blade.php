@@ -15,7 +15,7 @@
 <div class="container-fluid">
 	<div class="row">
 		<div id="page-500" class="col-xs-12 text-center">
-			<div class="error">
+			<div>
 				<h1>Ups!</h1>
 				<h3>Tu no tienes acceso a este lugar!</h3>
 				<img src="../img/sinacceso.gif" alt="" />

@@ -22,7 +22,7 @@ class PermissionsController extends Controller
   public function index()
   {
       if(Auth::user()->can('listar_permisos')){
-        $permisos = Permiso::orderBy('id','DESC')->paginate();
+        $permisos = Permiso::orderBy('id','DESC')->get();
 
         return view('in.permisos.index')
             ->with('permisos',$permisos);

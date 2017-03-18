@@ -24,7 +24,7 @@ class PersonasController extends Controller
     public function index()
     {
         if(Auth::user()->can('listar_personas')){
-            $personas = Persona::orderBy('id','ASC')->paginate();
+            $personas = Persona::orderBy('id','ASC')->get();
             return view('in.personas.index')
                 ->with('personas',$personas);
         }else{

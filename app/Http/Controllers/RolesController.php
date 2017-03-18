@@ -24,7 +24,7 @@ class RolesController extends Controller
     public function index()
     {
         if(Auth::user()->can('listar_roles')){
-            $roles = Rol::orderBy('id','DESC')->paginate();
+            $roles = Rol::orderBy('id','DESC')->get();
 
             return view('in.roles.index')
                 ->with('roles',$roles);

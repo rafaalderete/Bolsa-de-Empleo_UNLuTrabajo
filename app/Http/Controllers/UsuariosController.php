@@ -25,7 +25,7 @@ class UsuariosController extends Controller
     public function index() // pantalla principal donde lista los usuarios
     {
         if(Auth::user()->can('listar_usuarios')){
-          $usuarios = Usuario::orderBy('id','DESC')->paginate(); // trae los usarios los ordena en forma DESC por id
+          $usuarios = Usuario::orderBy('id','DESC')->get(); // trae los usarios los ordena en forma DESC por id
                                                                   // los pagina trayendolos en un array
 
          $personas = Persona::orderBy('nombre_persona', 'ASC')->lists('nombre_persona', 'id'); // lista los nombres de las personas asociandolos con sus id  Ej: id => nombre_persona
@@ -126,7 +126,7 @@ class UsuariosController extends Controller
     public function edit($id) // envia a la vista para evitar los datos del usurio.
                               // No siempre se pueden editar todos los mismos datos que al crear
     {
-        if(Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)){
+        if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca al usuario por el id
 
           $personasAct = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de
@@ -170,7 +170,7 @@ class UsuariosController extends Controller
      */
     public function update(UpdateUsuarioRequest $request, $id) // permite modificar los datos del usuario
     {
-        if(Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)){
+        if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usario al modificar
 
           // pasa todo los valores actializado de request en la user
@@ -253,7 +253,7 @@ class UsuariosController extends Controller
      */
     public function destroy($id) // elimina el usuario de la BD
     {
-        if(Auth::user()->can('eliminar_usuario') && !$this->isSuperUsuario($id)){
+        if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usuario por su id
 
           $usuario->delete(); // lo elimina
