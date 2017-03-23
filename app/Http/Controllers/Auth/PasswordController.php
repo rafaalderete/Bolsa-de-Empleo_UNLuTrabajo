@@ -25,6 +25,14 @@ class PasswordController extends Controller
      *
      * @return void
      */
+
+    protected $redirectTo = '/in';
+
+    protected function getEmailSubject()
+    {
+        return property_exists($this, 'subject') ? $this->subject : 'Link para restablecer su contraseña';
+    }
+
     public function __construct()
     {
         $this->middleware('guest');

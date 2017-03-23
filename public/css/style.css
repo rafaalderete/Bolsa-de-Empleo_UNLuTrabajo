@@ -2371,3 +2371,17 @@ td.beauty-hover {
     margin-bottom: 10px
   }
 }
+.anuncio {
+  border: 2px solid;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+.empresa_logo {
+  margin-top: 3px;
+}
+.descripcion, .detalle {
+  margin-top: 3px;
+}
+.detalle {
+  border-bottom: 1px solid gray;
+}

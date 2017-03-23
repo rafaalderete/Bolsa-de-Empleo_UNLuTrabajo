@@ -52,7 +52,60 @@
         <div class="box-content dropbox">
             <!-- Titulo del Cuerpo del Box -->
             <h4 class="page-header">Panel de Administracion</h4>
-            <!-- contenido-->
+            @if (session('status'))
+               <p class="alert alert-success">{{ session('status') }}</p>
+            @endif
+            <!-- contenido ejemplo-->
+              <div class="anuncio col-md-12">
+                <div class="empresa_logo col-md-2 text-center">
+                  <img src="{{asset('img/empresa_logo.jpg')}}" class="img-rounded" alt="empresa_logo" />
+                </div>
+                <div class="descripcion col-md-10">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h2>Titulo Oferta</h2>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="detalle col-md-12">
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ull...</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p>Fecha</p>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="anuncio col-md-12">
+              <div class="empresa_logo col-md-2 text-center">
+                <img src="{{asset('img/empresa_logo.jpg')}}" class="img-rounded" alt="empresa_logo" />
+              </div>
+              <div class="descripcion col-md-10">
+                <div class="row">
+                  <div class="col-md-12">
+                    <h2>Titulo Oferta</h2>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="detalle col-md-12">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore
+                      magna aliqua. Ut enim ad minim veniam, quis nostrud
+                      exercitation ull...</p>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p>Fecha</p>
+                  </div>
+                </div>
+              </div>
+          </div>
         </div>
     </div>
 </div>
@@ -72,5 +125,5 @@
     <script src="{{asset('plugins/tinymce/jquery.tinymce.min.js')}}"></script>
     <!-- All functions for this theme + document.ready processing -->
     <script src="{{asset('js/devoops.min.js')}}"></script>
-    
+
 @endsection

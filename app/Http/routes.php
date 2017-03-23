@@ -35,6 +35,26 @@ Route::get('auth/logout', [
 	'as'	=>	'auth.logout'
 ]);
 
+//------------- RUTAS PARA RESTABLECER CONTRASEÑA -----------------------------------
+
+Route::get('password/email', [
+	'uses'	=>	'Auth\PasswordController@getEmail',
+	'as'	=>	'password.email'
+]);
+Route::post('password/email', [
+	'uses'	=>	'Auth\PasswordController@postEmail',
+	'as'	=>	'password.email'
+]);
+
+Route::get('password/reset/{token}', [
+	'uses'	=>	'Auth\PasswordController@getReset',
+	'as'	=>	'password.reset'
+]);
+Route::post('password/reset', [
+	'uses'	=>	'Auth\PasswordController@postReset',
+	'as'	=>	'password.reset'
+]);
+
 //------------- RUTAS DEL PANEL DE ADMINISTRACION -----------------------------------
 
 // las rutas dentro de este grupo deben cumplir con el middleware auth

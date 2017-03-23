@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Login</title>
+	<title>Recuperar Contraseña</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{asset('plugins/bootstrap/bootstrap.css')}}">
 	<link rel="stylesheet" href="{{asset('http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css')}}">
@@ -18,26 +18,27 @@
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
 						</div>
-						{!!Form::open(['route' => 'auth.login','method' => 'POST'])!!}
+            {!! Form::open(['route' => 'password.reset']) !!}
 
 						@include('template.partials.errors')
 
+            {!!Form::hidden('token',$token,null)!!}
+
+            {!!Form::hidden('email',$_GET['email'],null)!!}
+
 						<div class="form-group">
-							{!! Form::label('email','E-mail') !!}
-							{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'example@correo.com', 'autocomplete' => 'off', 'required'])!!}
+              {!! Form::label('password','Password') !!}
+							{!!Form::password('password', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 						</div>
-						<div class="form-group">
-							{!! Form::label('password','Password') !!}
-							<input type="password" name="password" class="form-control" placeholder="Password" autocomplete="off" required>
+            <div class="form-group">
+              {!! Form::label('password_confirmation','Confirmar Password') !!}
+							{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Acceder',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Reestablecer Contraseña',['class' => 'btn btn-success']) !!}
 						</div>
 
 						{!!Form::close()!!}
-						<div class="text-center">
-							{!!link_to('password/email', $title = '¿Olvidaste tu contraseña?', $attributes = null, $secure = null)!!}
-						</div>
 					</div>
 				</div>
 			</div>

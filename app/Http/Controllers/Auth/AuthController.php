@@ -73,20 +73,4 @@ class AuthController extends Controller
         return View::make('auth.login');
     }
 
-    /* public function postLogin()
-    {
-        // Guardamos en un arreglo los datos del usuario.
-        $userdata = array(
-            'email' => Input::get('email'),
-            'password'=> Input::get('password')
-        );
-        if(Auth::attempt($userdata))
-        {
-            // De ser datos válidos nos mandara a la bienvenida
-            return Redirect::to('/admin');
-        }
-
-        Flash::warning('Los datos ingresados no son correctos');
-        return Redirect::to('auth/login');
-    } */
 }

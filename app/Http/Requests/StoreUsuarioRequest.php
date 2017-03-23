@@ -60,7 +60,7 @@ class StoreUsuarioRequest extends Request
           'password' => 'min:6|max:20|required',
           'persona_id' => $personas_disponibles,
           'roles' => $roles_disponibles,
-          'email' => 'min:4|max:20|email|required|unique:usuarios',
+          'email' => 'email|required|unique:usuarios',
           'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',
       ];
     }
@@ -71,8 +71,6 @@ class StoreUsuarioRequest extends Request
           'nombre_usuario.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
           'nombre_usuario.max' => 'El campo '.self::CAMPO_NOMBRE.' debe contener 20 caracteres como máximo.',
           'nombre_usuario.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
-          'email.min' => 'El campo '.self::CAMPO_EMAIL.' debe contener al menos 4 caracteres.',
-          'email.max' => 'El campo '.self::CAMPO_EMAIL.' debe contener 20 caracteres como máximo.',
           'email.unique' => 'El elemento '.self::CAMPO_EMAIL.' ya está en uso.',
           'email.email' => 'El campo '.self::CAMPO_EMAIL.' no corresponde con una dirección de e-mail válida.',
           'password.min' => 'El campo '.self::CAMPO_PASSWORD.' debe contener al menos 6 caracteres.',
