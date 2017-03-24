@@ -59,7 +59,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => ['in.usuarios.update', $usuario], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.usuarios.update', $usuario], 'method' => 'PUT', 'class' => 'form-horizontal', 'files' => true]) !!}
 
           <div class="form-group">
             {!! Form::label('nombre_usuario','Nombre', ['class' => 'col-sm-2 control-label']) !!}
@@ -76,6 +76,11 @@
             {!! Form::label('email','E-mail', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('email', $usuario->email, ['class' => 'form-control', 'placeholder' => 'yyyy@xxxx.zzz', 'required'])!!}
+            </div>
+
+            {!! Form::label('imagen','Imagen', ['class' => 'col-sm-2 control-label'])!!}
+            <div class="col-sm-4">
+              {!! Form::file('imagen') !!}
             </div>
           </div>
 

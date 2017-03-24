@@ -14,6 +14,7 @@ use App\Role as Rol;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use Illuminate\Support\Facades\Auth;
+use File;
 
 class UsuariosController extends Controller
 {
@@ -89,9 +90,19 @@ class UsuariosController extends Controller
     public function store(StoreUsuarioRequest $request) // almacena los datos en Base y muestra el msj de OK, devuelve al index
     {
         if(Auth::user()->can('crear_usuario')){
-           // se usan los valores de la vista del usuario creado
+          // se usan los valores de la vista del usuario creado
           $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
                                                    // all() solo trae los atributos los usuario para agregar
+          
+          //Garda la Imagen. Manipular Imagenes y no coliciones de nombres
+          if ($request->file('imagen')) {
+              $file = $request->file('imagen');
+              $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
+              $path = public_path(). '/img/usuarios/';
+              $file->move($path, $name);
+              $usuario->imagen = $name;
+          }
+
           $usuario->password = bcrypt($request->password); // se encripta la contraseña
           $usuario->save(); // se almacena el objeto en la Base
 
@@ -147,7 +158,6 @@ class UsuariosController extends Controller
           // necesito el array de los roles q contiene
           $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
           //log::info($my_roles);
-
           // retorna una vista con un parametro
           return view('in.usuarios.edit')
             ->with('usuario',$usuario)
@@ -172,9 +182,23 @@ class UsuariosController extends Controller
     {
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usario al modificar
-
+          
+          // se borra en caso de ser actualizada
+          $imagenVieja = $usuario->imagen;
+          
           // pasa todo los valores actializado de request en la user
           $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
+
+          //Garda la Imagen. Manipular Imagenes y no coliciones de nombres
+          if ($request->file('imagen')) {
+              File::delete(public_path().'/img/usuarios/'.$imagenVieja);
+              $file = $request->file('imagen');
+              $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
+              $path = public_path(). '/img/usuarios/';
+              $file->move($path, $name);
+              $usuario->imagen = $name;
+          }
+
           $usuario->save(); // se guarda en BD
 
           //sincronizo con la tabla pivot

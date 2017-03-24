@@ -51,9 +51,15 @@
               @endif
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle account" data-toggle="dropdown">
-                  <div class="avatar">
-                    <img src="{{asset('img/avatar.jpg')}}" class="img-rounded" alt="avatar" />
-                  </div>
+                  @if(Auth::user()->imagen != null)
+                    <div class="avatar">
+                      <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" class="img-rounded" alt="avatar" />
+                    </div>
+                  @else
+                    <div class="avatar">
+                      <img src="{{asset('/img/fotoPerfil.jpg')}}" class="img-rounded" alt="avatar" />
+                    </div>
+                  @endif
                   <i class="fa fa-angle-down pull-right"></i>
                   <div class="user-mini pull-right">
                     <span class="welcome">Bienvenido,</span>

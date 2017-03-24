@@ -23,7 +23,7 @@ class Usuario extends Model implements AuthenticatableContract,
 
     protected $table = "usuarios";
     protected $fillable = ['password','email','descripcion_usuario',
-                          'estado_usuario','nombre_usuario','persona_id'];
+                          'estado_usuario','nombre_usuario','persona_id','imagen'];
 
     protected $hidden = ['password', 'remember_token'];
 

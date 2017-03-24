@@ -59,7 +59,7 @@
       @include('template.partials.errors')
 
       <!-- Formulario -->
-      {!! Form::open(['route' => 'in.usuarios.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+      {!! Form::open(['route' => 'in.usuarios.store', 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
 
         <div class="form-group">
           {!! Form::label('nombre_usuario','Nombre', ['class' => 'col-sm-2 control-label']) !!}
@@ -94,7 +94,11 @@
           <div class="col-sm-4">
             {!! Form::select('roles[]',$roles, null, ['multiple', 'class' =>'populate placeholder', 'id' => 's2_with_tag'])!!}
           </div>
-        </div>
+          {!! Form::label('imagen','Imagen', ['class' => 'col-sm-2 control-label'])!!}
+          <div class="col-sm-4">
+            {!! Form::file('imagen') !!}
+          </div>
+        </div>  
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-2">

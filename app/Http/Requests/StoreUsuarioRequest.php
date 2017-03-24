@@ -61,7 +61,8 @@ class StoreUsuarioRequest extends Request
           'persona_id' => $personas_disponibles,
           'roles' => $roles_disponibles,
           'email' => 'email|required|unique:usuarios',
-          'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',
+          'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',,
+          'imagen' => 'image'
       ];
     }
 

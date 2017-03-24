@@ -67,9 +67,10 @@ class UpdateUsuarioRequest extends Request
        return [
            'persona_id' => $personas_disponibles,
            'roles' => $roles_disponibles,
-           'email' => 'min:4|max:20|email|required|unique:usuarios,email,'.$this->route->getParameter('usuarios'),
+           'email' => 'min:4|max:50|email|required|unique:usuarios,email,'.$this->route->getParameter('usuarios'),
            'nombre_usuario' => 'min:4|max:20|required|unique:usuarios,nombre_usuario,'.$this->route->getParameter('usuarios'),
-           'estado_usuario'=> 'required|in:activo,inactivo'
+           'estado_usuario'=> 'required|in:activo,inactivo',
+           'imagen' => 'image'
        ];
      }
 
