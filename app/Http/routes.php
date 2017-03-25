@@ -35,6 +35,23 @@ Route::get('auth/logout', [
 	'as'	=>	'auth.logout'
 ]);
 
+//------------- RUTAS PARA REGISTRAR Y CONFIRMAR USUARIO -----------------------------------
+
+Route::get('registro', [
+	'uses'	=>	'UsuariosController@getRegistro',
+	'as'	=>	'registro'
+]);
+
+Route::post('registro', [
+	'uses'	=>	'UsuariosController@postRegistro',
+	'as'	=>	'registro'
+]);
+
+Route::get('registro/confirmacion/{token}', [
+	'uses'	=>	'UsuariosController@confirmacionCuenta',
+	'as'	=>	'registro.confirmacion'
+]);
+
 //------------- RUTAS PARA RESTABLECER CONTRASEÑA -----------------------------------
 
 Route::get('password/email', [

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class StoreUsuarioRequest extends Request
 {
 
-    const CAMPO_NOMBRE = 'Nombre Permiso';
+    const CAMPO_NOMBRE = 'Nombre Usuario';
     const CAMPO_PERSONA = 'Persona';
     const CAMPO_EMAIL = 'E-mail';
     const CAMPO_PASSWORD = 'Contraseña';
@@ -61,7 +61,7 @@ class StoreUsuarioRequest extends Request
           'persona_id' => $personas_disponibles,
           'roles' => $roles_disponibles,
           'email' => 'email|required|unique:usuarios',
-          'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',,
+          'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',
           'imagen' => 'image'
       ];
     }
@@ -78,6 +78,7 @@ class StoreUsuarioRequest extends Request
           'password.max' => 'El campo '.self::CAMPO_PASSWORD.' debe contener 20 caracteres como máximo.',
           'roles.in' => 'Datos invalidos para el campo '.self::CAMPO_ROLES,
           'persona_id.in' => 'Datos invalidos para el campo '.self::CAMPO_PERSONA,
+          'persona_id.required' => 'El campo '.self::CAMPO_PERSONA.' es obligatorio'
       ];
     }
 

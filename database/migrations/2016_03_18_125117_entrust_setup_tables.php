@@ -32,7 +32,7 @@ class EntrustSetupTables extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');
-            
+
             $table->timestamps();
         });
 
@@ -41,9 +41,9 @@ class EntrustSetupTables extends Migration
             $table->increments('id');
             $table->string('descripcion_permiso');
             $table->enum('estado_permiso', ['activo','inactivo']);
-            $table->string('funcionalidad_permiso');
+            $table->string('nombre_amigable_permiso');
             $table->string('name')->unique();
-            
+
             $table->timestamps();
         });
 

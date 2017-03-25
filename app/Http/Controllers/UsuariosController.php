@@ -15,6 +15,7 @@ use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use Illuminate\Support\Facades\Auth;
 use File;
+use Illuminate\Support\Facades\Mail;
 
 class UsuariosController extends Controller
 {
@@ -93,8 +94,8 @@ class UsuariosController extends Controller
           // se usan los valores de la vista del usuario creado
           $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
                                                    // all() solo trae los atributos los usuario para agregar
-          
-          //Garda la Imagen. Manipular Imagenes y no coliciones de nombres
+
+          //Guarda la Imagen. Manipular Imagenes y no coliciones de nombres
           if ($request->file('imagen')) {
               $file = $request->file('imagen');
               $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
@@ -182,10 +183,10 @@ class UsuariosController extends Controller
     {
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usario al modificar
-          
+
           // se borra en caso de ser actualizada
           $imagenVieja = $usuario->imagen;
-          
+
           // pasa todo los valores actializado de request en la user
           $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
 
@@ -212,62 +213,54 @@ class UsuariosController extends Controller
         }
     }
 
-/*
-    public function asignar_roles($id)
-    {
-      $usuario = Usuario::find($id);
-      log::info($usuario);
+    protected function getRegistro(){
 
- Ejemplo utilizado para probar DB, Array y JSon esto va en el Modelo
+        return view('auth.registro');
 
-      $result = DB::select("select * from usuarios" );
-      $array = json_decode(json_encode($result), true);
-
-      log::info($array);
-
-      log::info(" El id es: {$array["0"]["id"]}");
-
-      foreach($array as $objeto){
-         log::info("El ID es: {$objeto["id"]}");
-      }
-
-
-      $u = $usuario->roles;
-      log::info($u);
-      $a = $usuario->roles()->toArray();
-      log::info($a);
-
-      $roles = Rol::orderBy('name', 'ASC')->lists('name', 'id'); // recupera todos los roles que existen
-      log::info($roles);
-
-      // necesito el array de los roles q contiene
-      $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
-      log::info($my_roles);
-      // retorna una vista con un parametro
-      return view('admin.usuarios.asignar_roles')
-        ->with('usuario',$usuario)
-        ->with('roles',$roles)
-        ->with('my_roles',$my_roles);
     }
 
-    public function asignar_roles_update(Request $request, $id)
-    {
+    protected function postRegistro(Request $request){
 
-      $usuario = Usuario::find($id);
+        $usuario = new Usuario();
+        $usuario->nombre_usuario = $request->nombre_usuario;
+        $usuario->email = $request->email;
+        $data['email'] = $usuario->email;
+        $usuario->password = bcrypt($request->password);
+        $usuario->estado_usuario = 'inactivo';
+        $usuario->persona_id = 1;
+        $usuario->confirmacion_token = str_random(100);
+        $data['confirmacion_token'] = $usuario->confirmacion_token;
+        $usuario->save();
 
-      // pasa todo los valores actializado de request en la user
-      $usuario->fill($request->all());
-      $usuario->save();
+        Mail::send('emails.confirmacion_usuario', ['data' => $data], function($message) use ($data){
+          $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+          $message->subject('Verificación de Usuario');
+          $message->to($data['email']);
+        });
 
+        Flash::success('¡Registro exitoso, se ha enviado un e-mail para verificar su usuario!')->important();
+        return redirect()->route('registro');
 
-      //sincronizo con la tabla pivot
-      $roles = $request->input('roles', []);
-      $usuario->roles()->sync($roles);
-
-      Flash::warning('Roles asignados a ' . $usuario->nombre_usuario);
-      return redirect()->route('admin.usuarios.index');
     }
-*/
+
+    protected function confirmacionCuenta(Request $request){
+
+        $usuario = Usuario::where('email', '=', $request->email)
+        ->where('confirmacion_token', '=', $request->token)
+        ->get();
+
+        if (count($usuario) > 0) {
+          $usuario[0]->estado_usuario = 'activo';
+          $usuario[0]->confirmacion_token = null;
+          $usuario[0]->save();
+          Flash::success('¡Usuario verificado!')->important();
+          return redirect()->route('auth.login');
+        }
+        else {
+          return redirect()->route('auth.login');
+        }
+
+    }
 
     /**
      * Remove the specified resource from storage.
