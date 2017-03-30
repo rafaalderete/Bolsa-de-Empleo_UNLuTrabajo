@@ -88,34 +88,35 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
     	return view('in.index');
 	}]);
 
-	//  resource: toma los metodos del controlador y los define como rutas
-	// resource('nombre para el conjunto de rutas','nombre del controlador')
-	Route::resource('personas','PersonasController');
-	// se crea la ruta necesaria si no existe
+
+	Route::resource('personas','FisicasController');
 	Route::delete('personas/{id}/destroy', [
-		'uses'	=>	'PersonasController@destroy', // se define el metodo del controlador a utilizar
-		'as'	=>	'in.personas.destroy', // se define la ruta
+		'uses'	=>	'FisicasController@destroy',
+		'as'	=>	'in.personas.destroy',
+	]);
+
+	Route::resource('empresas','JuridicasController');
+	Route::delete('empresas/{id}/destroy', [
+		'uses'	=>	'JuridicasController@destroy',
+		'as'	=>	'in.empresas.destroy',
 	]);
 
 	Route::resource('roles', 'RolesController');
-	// se crea la ruta necesaria si no existe
 	Route::delete('roles/{id}/destroy', [
-		'uses'	=>	'RolesController@destroy', // se define el metodo del controlador a utilizar
-		'as'	=>	'in.roles.destroy', // se define la ruta
+		'uses'	=>	'RolesController@destroy',
+		'as'	=>	'in.roles.destroy',
 	]);
 
 	Route::resource('usuarios', 'UsuariosController');
-	// se crea la ruta necesaria si no existe
 	Route::delete('usuarios/{id}/destroy', [
-		'uses'	=>	'UsuariosController@destroy', // se define el metodo del controlador a utilizar
-		'as'	=>	'in.usuarios.destroy', // se define la ruta para ingresar desde la vista
+		'uses'	=>	'UsuariosController@destroy',
+		'as'	=>	'in.usuarios.destroy',
     ]);
 
   Route::resource('permisos', 'PermissionsController');
-  // se crea la ruta necesaria si no existe
 	Route::delete('permisos/{id}/destroy', [
-		'uses'	=>	'PermissionsController@destroy', // se define el metodo del controlador a utilizar
-			'as'	=>	'in.permisos.destroy', // se define la ruta
+		'uses'	=>	'PermissionsController@destroy', 
+			'as'	=>	'in.permisos.destroy',
 	]);
 
 });

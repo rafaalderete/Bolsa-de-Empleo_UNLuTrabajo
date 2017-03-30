@@ -39,9 +39,9 @@
       		</div>
 
       		<div class="form-group">
-      			{!! Form::label('funcionalidad_permiso','Funcionalidad Permiso', ['class' => 'col-sm-2 control-label'])!!}
+      			{!! Form::label('descripcion_permiso','Descripción Permiso', ['class' => 'col-sm-2 control-label'])!!}
             <div class="col-sm-5">
-      			  {!! Form::text('funcionalidad_permiso', null, ['class' => 'form-control', 'placeholder' => 'Funcionalidad Permiso', 'required'])!!}
+      			  {!! Form::text('descripcion_permiso', null, ['class' => 'form-control', 'placeholder' => 'Descripción Permiso', 'required'])!!}
             </div>
           </div>
 

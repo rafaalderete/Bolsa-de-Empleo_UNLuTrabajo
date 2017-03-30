@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Usuario as Usuario;
 use App\Persona as Persona;
+use App\Tipo_Documento as Tipo_Documento;
 use App\Role as Rol;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
@@ -27,16 +28,9 @@ class UsuariosController extends Controller
     public function index() // pantalla principal donde lista los usuarios
     {
         if(Auth::user()->can('listar_usuarios')){
-          $usuarios = Usuario::orderBy('id','DESC')->get(); // trae los usarios los ordena en forma DESC por id
-                                                                  // los pagina trayendolos en un array
+          $usuarios = Usuario::orderBy('id','DESC')->get();
 
-         $personas = Persona::orderBy('nombre_persona', 'ASC')->lists('nombre_persona', 'id'); // lista los nombres de las personas asociandolos con sus id  Ej: id => nombre_persona
-
-           $usuarios->each(function($usuarios){ // es un foreach por usuario
-              // se llaman a los metodos del usuario q se relacionan con las otras tablas
-              $usuarios->persona; // recupera los datos de la persona asociada al usuario
-              $usuarios->roles; // recupera los datos de los roles asoaciado al asuario
-          });
+          $personas = Persona::all();
 
           return view('in.usuarios.index')
               ->with('usuarios',$usuarios)
@@ -66,13 +60,13 @@ class UsuariosController extends Controller
     {
         if(Auth::user()->can('crear_usuario')){
           if (Auth::user()->hasRole('super_usuario')) {
-            $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
           }
           else {
             $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->where('name','<>','super_usuario')->lists('name', 'id');
           }
-          $personas = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
-          //dd($roles);
+          $personas = Persona::all()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
+
           return view('in.usuarios.create')
               ->with('personas',$personas)
               ->with('roles',$roles);
@@ -141,9 +135,14 @@ class UsuariosController extends Controller
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca al usuario por el id
 
-          $personasAct = Persona::orderBy('nombre_persona', 'ASC')->paginate()->where('estado_persona', 'activo'); // recupero array de
+          $personasAct = Persona::all()->where('estado_persona', 'activo'); // recupero array de
           foreach ($personasAct as $persona) {
-            $personas[$persona->id] = "$persona->nombre_persona $persona->apellido_persona";
+            if($persona->tipo_persona == 'fisica') {
+              $personas[$persona->id] = $persona->fisica->nombre_persona.' '.$persona->fisica->apellido_persona;
+            }
+            else {
+              $personas[$persona->id] = $persona->juridica->nombre_comercial;
+            }
           }
           //dd($personas);
 
@@ -158,7 +157,7 @@ class UsuariosController extends Controller
 
           // necesito el array de los roles q contiene
           $my_roles = $usuario->roles->lists('id')->toArray(); // pasa los roles del usuario (son objetos) a un array
-          //log::info($my_roles);
+
           // retorna una vista con un parametro
           return view('in.usuarios.edit')
             ->with('usuario',$usuario)
@@ -215,7 +214,10 @@ class UsuariosController extends Controller
 
     protected function getRegistro(){
 
-        return view('auth.registro');
+        $tipos_documento = Tipo_Documento::all();
+
+        return view('auth.registro')
+        ->with('tipos_documento',$tipos_documento);
 
     }
 

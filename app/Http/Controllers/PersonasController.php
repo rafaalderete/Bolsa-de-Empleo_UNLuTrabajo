@@ -8,116 +8,108 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Persona as Persona;
-use App\Http\Requests\StorePersonaRequest;
-use App\Http\Requests\UpdatePersonaRequest;
+use App\Telefono as Telefono;
+use App\Direccion as Direccion;
 use Log;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class PersonasController extends Controller
 {
-     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        if(Auth::user()->can('listar_personas')){
-            $personas = Persona::orderBy('id','ASC')->get();
-            return view('in.personas.index')
-                ->with('personas',$personas);
-        }else{
-            return redirect()->route('in.sinpermisos.sinpermisos');
-        }
+
+    protected function storePersona($request, $tipo_persona) {
+
+      $nueva_persona = new Persona();
+      $nueva_persona->tipo_persona = $tipo_persona;
+      $nueva_persona->estado_persona = 'activo';
+      $nueva_persona->save();
+
+      $direccion = new Direccion();
+      $direccion->persona_id = $nueva_persona->id;
+      $direccion->domicilio = $request->domicilio_residencia;
+      $direccion->localidad = $request->localidad_residencia;
+      $direccion->provincia = $request->provincia_residencia;
+      $direccion->pais = $request->pais_residencia;
+      $direccion->save();
+
+      if($request->telefono_fijo != '') {
+        $fijo = new Telefono();
+        $fijo->persona_id = $nueva_persona->id;
+        $fijo->tipo_telefono = 'fijo';
+        $fijo->nro_telefono = $request->telefono_fijo;
+        $fijo->save();
+      }
+
+      if($request->telefono_celular != '') {
+        $celular = new Telefono();
+        $celular->persona_id = $nueva_persona->id;
+        $celular->tipo_telefono = 'celular';
+        $celular->nro_telefono = $request->telefono_celular;
+        $celular->save();
+      }
+
+      return $nueva_persona->id;
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        if(Auth::user()->can('crear_persona')){
-            return view('in.personas.create');
-        }else{
-            return redirect()->route('in.sinpermisos.sinpermisos');
+    protected function updatePersona($request, $id) {
+
+      $persona_actual = Persona::find($id);
+      $direccion = Direccion::find($persona_actual->direccion->id);
+      $direccion->domicilio = $request->domicilio_residencia;
+      $direccion->localidad = $request->localidad_residencia;
+      $direccion->provincia = $request->provincia_residencia;
+      $direccion->pais = $request->pais_residencia;
+      $direccion->save();
+
+      //Verifica si ya tiene un teléfono fijo.
+      $telefono_fijo_actual = Telefono::where('persona_id',$id)
+        ->where('tipo_telefono','fijo')
+        ->get();
+      if(count($telefono_fijo_actual) == 0) {
+        if($request->telefono_fijo != '') { //Si no existe un teléfono fijo y recibe un nuevo teléfono fijo, lo crea.
+          $fijo = new Telefono();
+          $fijo->persona_id = $id;
+          $fijo->tipo_telefono = 'fijo';
+          $fijo->nro_telefono = $request->telefono_fijo;
+          $fijo->save();
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePersonaRequest $request)
-    {
-        if(Auth::user()->can('crear_persona')){
-            $persona = new Persona($request->all());
-            $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($persona->fecha_nacimiento_persona));
-            $persona->save();
-
-            Flash::success('Persona ' . $persona->nombre_persona . ' agregado')->important();
-            return redirect()->route('in.personas.index');
-        }else{
-            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+      else {
+        if($request->telefono_fijo != '')  { //Si ya existe un teléfono fijo y recibe un nuevo teléfono fijo, lo actualiza.
+          $fijo = Telefono::find($telefono_fijo_actual[0]->id);
+          $fijo->nro_telefono = $request->telefono_fijo;
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        if(Auth::user()->can('modificar_persona')){
-            $persona = Persona::find($id);
-            // parsear fecha a formato estandar
-            $persona->fecha_nacimiento_persona = date('d-m-Y', strtotime($persona->fecha_nacimiento_persona));
-            //dd($date);
-            // retorna una vista con un parametro
-            return view('in.personas.edit')->with('persona',$persona);
-        }else{
-            return redirect()->route('sinpermisos.sinpermisos');
+        else{ //Si ya existe un teléfono fijo y NO recibe un telefono fijo, lo borra.
+          $fijo = Telefono::find($telefono_fijo_actual[0]->id);
+          $fijo->delete();
         }
-    }
+      }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePersonaRequest $request, $id)
-    {
-        if(Auth::user()->can('modificar_persona')){
-            $persona = Persona::find($id);
-            // pasa todo los valores actializado de request en la user
-            $persona->fill($request->all());
-            $persona->fecha_nacimiento_persona = date('Y-m-d', strtotime($request->fecha_nacimiento_persona));
-            $persona->save();
-
-            Flash::warning('Persona ' . $persona->nombre_persona . ' modificado')->important();
-            return redirect()->route('in.personas.index');
-        }else{
-            return redirect()->route('sinpermisos.sinpermisos');
+      //Verifica si ya tiene un teléfono celular.
+      $telefono_celular_actual = Telefono::where('persona_id',$id)
+        ->where('tipo_telefono','celular')
+        ->get();
+      if(count($telefono_celular_actual) == 0) {
+        if($request->telefono_celular != '') {
+          $celular = new Telefono();
+          $celular->persona_id = $id;
+          $celular->tipo_telefono = 'celular';
+          $celular->nro_telefono = $request->telefono_celular;
+          $celular->save();
         }
+      }
+      else {
+        if($request->telefono_celular != '')  {
+          $celular = Telefono::find($telefono_celular_actual[0]->id);
+          $celular->nro_telefono = $request->telefono_celular;
+          $celular->save();
+        }
+        else{
+          $celular = Telefono::find($telefono_celular_actual[0]->id);
+          $celular->delete();
+        }
+      }
+
     }
 
     /**
@@ -130,10 +122,23 @@ class PersonasController extends Controller
     {
         if(Auth::user()->can('eliminar_persona')){
             $persona = Persona::find($id);
+            $tipo_persona = $persona->tipo_persona;
+            if ($tipo_persona == 'fisica') {
+              $nombre = $persona->fisica->nombre_persona;
+            }
+            else {
+              $nombre = $persona->juridica->nombre_comercial;
+            }
             $persona->delete();
 
-            Flash::error('Persona ' . $persona->nombre_persona . ' eliminada')->important();
-            return redirect()->route('in.personas.index');
+            if ($tipo_persona == 'fisica') {
+              Flash::error('Persona ' . $nombre . ' eliminada')->important();
+              return redirect()->route('in.personas.index');
+            }
+            else {
+              Flash::error('Empresa ' . $nombre . ' eliminada')->important();
+              return redirect()->route('in.empresas.index');
+            }
         }else{
             return redirect()->route('sinpermisos.sinpermisos');
         }

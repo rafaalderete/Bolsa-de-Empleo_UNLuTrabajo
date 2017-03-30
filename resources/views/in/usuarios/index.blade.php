@@ -56,7 +56,11 @@
                 <tr>
                   <td>{{ $usuario->id }}</td>
                   <td>{{ $usuario->nombre_usuario }}</td>
-                  <td>{{ $usuario->persona->nombre_persona}}</td>
+                  @if($usuario->persona->tipo_persona == 'fisica')
+                    <td>{{ $usuario->persona->fisica->nombre_persona.' '.$usuario->persona->fisica->apellido_persona }}</td>
+                  @else
+                    <td>{{ $usuario->persona->juridica->nombre_comercial }}</td>
+                  @endif
                   <td>{{ $usuario->email }}</td>
                   <td>{{ $usuario->estado_usuario }}</td>
                   <!-- envio el parametro del metodo edit y destroy-->

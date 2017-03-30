@@ -47,9 +47,14 @@
 						</div>
 						<div class="row">
 							<div class="form-group">
-								{!! Form::label('tipo_documento_persona','Documento', ['class' => 'col-sm-3 control-label']) !!}
+								{!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-3 control-label']) !!}
 								<div class="col-sm-3">
-									{!! Form::select('tipo_documento_persona',['' => '', 'DNI' => 'DNI', 'LC' => 'LC', 'CI' => 'CI'], null, ['class' =>'populate placeholder', 'id' => 'selectSimple', 'required'])!!}
+									<select name="tipo_documento" class="populate placeholder" id="selectSimple" required>
+										<option value=""></option>
+										@foreach($tipos_documento as $tipo_documento)
+											<option value="{{$tipo_documento->id}}">{{$tipo_documento->nombre_tipo_documento}}</option>
+										@endforeach
+									</select>
 								</div>
 								<div class="col-sm-6">
 									{!! Form::text('nro_documento_persona', null, ['class' => 'form-control', 'placeholder' => 'N° Documento', 'required'])!!}

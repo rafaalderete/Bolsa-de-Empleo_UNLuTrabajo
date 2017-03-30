@@ -9,7 +9,7 @@ class UpdatePermisoRequest extends Request
 {
 
     const CAMPO_NOMBRE = 'Nombre Permiso';
-    const CAMPO_FUNCIONALIDAD = 'Funcionalidad Permiso';
+    const CAMPO_DESCRIPCION = 'Descripción Permiso';
     const CAMPO_ESTADO = 'Estado';
     private $route;
 
@@ -37,7 +37,7 @@ class UpdatePermisoRequest extends Request
     {
       return [
           'name' => 'min:4|max:20|required|unique:permissions,name,'.$this->route->getParameter('permisos'),
-          'funcionalidad_permiso' => 'required',
+          'descripcion_permiso' => 'required',
           'estado_permiso'=> 'required|in:activo,inactivo'
       ];
     }

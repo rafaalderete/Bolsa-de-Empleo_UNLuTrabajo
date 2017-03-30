@@ -43,44 +43,64 @@
           </div>
 
           <div class="form-group">
-            {!! Form::label('fecha_nacimiento_persona','Fecha Nacimiento', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('fecha_nacimiento','Fecha Nacimiento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::text('fecha_nacimiento_persona', null, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd/mm/aaaa', 'required'])!!}
+              {!! Form::text('fecha_nacimiento', null, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd/mm/aaaa', 'required'])!!}
             </div>
-            {!! Form::label('tipo_documento_persona','Documento', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::select('tipo_documento_persona',['' => '', 'DNI' => 'DNI', 'LC' => 'LC', 'CI' => 'CI'], null, ['class' =>'populate placeholder', 'id' => 'selectSimple', 'required'])!!}
+              <select name="tipo_documento" class="populate placeholder" id="selectSimple" required>
+                <option value=""></option>
+                @foreach($tipos_documento as $tipo_documento)
+                  <option value="{{$tipo_documento->id}}">{{$tipo_documento->nombre_tipo_documento}}</option>
+                @endforeach
+              </select>
             </div>
             <div class="col-sm-4">
-              {!! Form::text('nro_documento_persona', null, ['class' => 'form-control', 'placeholder' => 'N°Documento', 'required'])!!}
+              {!! Form::text('nro_documento', null, ['class' => 'form-control', 'placeholder' => 'N°Documento', 'required'])!!}
             </div>
           </div>
 
           <div class="form-group">
-            {!! Form::label('domicilio_residencia_persona','Domicilio', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-4">
-              {!! Form::text('domicilio_residencia_persona', null, ['class' => 'form-control', 'placeholder' => 'Calle - Numero', 'required'])!!}
-            </div>
-              {!! Form::label('localidad_residencia_persona','Localidad', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-4">
-              {!! Form::text('localidad_residencia_persona', null, ['class' => 'form-control', 'placeholder' => 'Localidad', 'required'])!!}
+            {!! Form::label('cuil','Cuil', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-5">
+              {!! Form::text('cuil', null, ['class' => 'form-control', 'placeholder' => 'Cuil', 'required'])!!}
             </div>
           </div>
 
           <div class="form-group">
-            {!! Form::label('provincia_residencia_persona','Residencia', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
-              {!! Form::text('provincia_residencia_persona', null, ['class' => 'form-control', 'placeholder' => 'Provicia', 'required'])!!}
+            {!! Form::label('domicilio_residencia','Domicilio', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('domicilio_residencia', null, ['class' => 'form-control', 'placeholder' => 'Calle - Numero', 'required'])!!}
             </div>
-            <div class="col-sm-5">
-              {!! Form::text('pais_residencia_persona', null, ['class' => 'form-control', 'placeholder' => 'Pais', 'required'])!!}
+              {!! Form::label('localidad_residencia','Localidad', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('localidad_residencia', null, ['class' => 'form-control', 'placeholder' => 'Localidad', 'required'])!!}
             </div>
           </div>
 
           <div class="form-group">
-            {!! Form::label('telefono_contacto_persona','Telefono', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('provincia_residencia','Provincia', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('provincia_residencia', null, ['class' => 'form-control', 'placeholder' => 'Provincia', 'required'])!!}
+            </div>
+            {!! Form::label('pais_residencia','Pais', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('pais_residencia', null, ['class' => 'form-control', 'placeholder' => 'Pais', 'required'])!!}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {!! Form::label('telefono_fijo','Teléfono Fijo', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-5">
-              {!! Form::text('telefono_contacto_persona', null, ['class' => 'form-control', 'placeholder' => 'Telefono', 'required'])!!}
+              {!! Form::text('telefono_fijo', null, ['class' => 'form-control', 'placeholder' => 'Telefono Fijo'])!!}
+            </div>
+          </div>
+
+          <div class="form-group">
+            {!! Form::label('telefono_celular','Teléfono Celular', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-5">
+              {!! Form::text('telefono_celular', null, ['class' => 'form-control', 'placeholder' => 'Telefono Celular'])!!}
             </div>
           </div>
 
@@ -137,7 +157,7 @@
       dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
       dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
       weekHeader: 'Sm',
-      dateFormat: 'dd/mm/yy',
+      dateFormat: 'dd-mm-yy',
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,

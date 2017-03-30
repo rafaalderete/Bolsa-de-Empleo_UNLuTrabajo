@@ -41,7 +41,7 @@
           </div>
           <div class="col-xs-4 col-sm-8 top-panel-right">
             <ul class="nav navbar-nav pull-right panel-menu">
-              @if(Entrust::hasRole('estudiante'))  
+              @if(Entrust::hasRole('estudiante'))
                 <li class="hidden-xs">
                   <a href="index.html" class="modal-link">
                     <i class="fa fa-bell"></i>

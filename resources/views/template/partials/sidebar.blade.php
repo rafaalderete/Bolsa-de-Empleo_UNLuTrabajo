@@ -21,7 +21,22 @@
         </ul>
       </li>
     @endif
-    
+
+    @if(Entrust::can('listar_empresas'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Empresas</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.empresas.index')}}">Tabla de Empresas</a></li>
+          @if(Entrust::can('crear_empresa'))
+            <li><a href="{{route('in.empresas.create')}}">Registrar Empresa</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
     @if(Entrust::can('listar_usuarios'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
@@ -36,7 +51,7 @@
         </ul>
       </li>
     @endif
-    
+
     @if(Entrust::can('listar_roles'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">

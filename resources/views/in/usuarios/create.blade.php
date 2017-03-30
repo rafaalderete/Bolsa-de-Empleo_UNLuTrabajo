@@ -38,11 +38,14 @@
           </div>
           {!! Form::label('persona_id','Persona', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            <select name="persona_id" class="populate placeholder" id="selectSimple">
+            <select name="persona_id" class="populate placeholder" id="selectPersona">
               <option value=""></option>
               @foreach( $personas as $persona)
-                {{ $nombreApe= "$persona->nombre_persona $persona->apellido_persona"}}
-                <option value="{{$persona->id}}">{{$nombreApe}}</option>
+                @if($persona->tipo_persona == 'fisica')
+                  <option value="{{$persona->id}}">{{$persona->fisica->nombre_persona.' '.$persona->fisica->apellido_persona}}</option>
+                @else
+                  <option value="{{$persona->id}}">{{$persona->juridica->nombre_comercial}}</option>
+                @endif
               @endforeach
             </select>
           </div>
@@ -106,8 +109,8 @@
         placeholder: "Roles",
       });
 
-      $('#selectSimple').select2({
-        placeholder: "Personas"
+      $('#selectPersona').select2({
+        placeholder: "Persona"
       });
     });
 

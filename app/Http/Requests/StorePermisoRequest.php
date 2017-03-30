@@ -8,7 +8,7 @@ class StorePermisoRequest extends Request
 {
 
     const CAMPO_NOMBRE = 'Nombre Permiso';
-    const CAMPO_FUNCIONALIDAD = 'Funcionalidad Permiso';
+    const CAMPO_DESCRIPCION = 'Descripción Permiso';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -29,16 +29,16 @@ class StorePermisoRequest extends Request
     {
       return [
           'name' => 'min:4|max:20|required|unique:permissions',
-          'funcionalidad_permiso' => 'required'
+          'descripcion_permiso' => 'required'
       ];
     }
 
     public function messages()
     {
       return [
-          'name.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-          'name.max' => 'El campo '.self::CAMPO_NOMBRE.' debe contener 20 caracteres como máximo.',
-          'name.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'name.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'name.max' => 'El campo '.self::CAMPO_NOMBRE.' debe contener 20 caracteres como máximo.',
+        'name.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 

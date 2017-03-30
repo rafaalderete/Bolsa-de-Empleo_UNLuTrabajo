@@ -41,7 +41,7 @@
             <tr>
               <th>ID</th>
               <th>Nombre Rol</th>
-              <th>Nombre amigable del Rol</th>
+              <th>Descripción del Rol</th>
               <th>Estado</th>
               <th style="width:75px">Acción</th>
             </tr>
@@ -52,7 +52,7 @@
               <tr>
                 <td>{{ $rol->id }}</td>
                 <td>{{ $rol->name }}</td>
-                <td>{{ $rol->nombre_amigable_rol }}</td>
+                <td>{{ $rol->descripcion_rol }}</td>
                 <td>{{ $rol->estado_rol }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>

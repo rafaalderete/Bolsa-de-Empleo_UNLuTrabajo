@@ -41,7 +41,7 @@
             <tr>
               <th>ID</th>
               <th>Nombre Permiso</th>
-              <th>Funcionalidad del Permiso</th>
+              <th>Descripción del Permiso</th>
               <th>Estado</th>
               <th style="width:75px">Acción</th>
             </tr>
@@ -52,7 +52,7 @@
               <tr>
                 <td>{{ $permiso->id }}</td>
                 <td>{{ $permiso->name }}</td>
-                <td>{{ $permiso->funcionalidad_permiso }}</td>
+                <td>{{ $permiso->descripcion_permiso }}</td>
                 <td>{{ $permiso->estado_permiso }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>

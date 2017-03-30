@@ -39,9 +39,9 @@
       		</div>
 
       		<div class="form-group">
-      			{!! Form::label('nombre_amigable_rol','Nombre Amigable Rol', ['class' => 'col-sm-2 control-label'])!!}
+      			{!! Form::label('descripcion_rol','Descripción Rol', ['class' => 'col-sm-2 control-label'])!!}
             <div class="col-sm-5">
-      			  {!! Form::text('nombre_amigable_rol', null, ['class' => 'form-control', 'placeholder' => 'Nombre Amigable Rol', 'required'])!!}
+      			  {!! Form::text('descripcion_rol', null, ['class' => 'form-control', 'placeholder' => 'Descripción Rol', 'required'])!!}
             </div>
           </div>
 

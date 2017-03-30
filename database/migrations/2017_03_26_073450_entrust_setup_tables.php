@@ -11,12 +11,12 @@ class EntrustSetupTables extends Migration
      */
     public function up()
     {
+
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('descripcion_rol');
             $table->enum('estado_rol', ['activo','inactivo']);
-            $table->string('nombre_amigable_rol')->unique();
             $table->string('name')->unique();
 
             $table->timestamps();
@@ -41,7 +41,6 @@ class EntrustSetupTables extends Migration
             $table->increments('id');
             $table->string('descripcion_permiso');
             $table->enum('estado_permiso', ['activo','inactivo']);
-            $table->string('nombre_amigable_permiso');
             $table->string('name')->unique();
 
             $table->timestamps();
@@ -60,6 +59,7 @@ class EntrustSetupTables extends Migration
 
             $table->timestamps();
         });
+
     }
 
     /**
@@ -69,9 +69,11 @@ class EntrustSetupTables extends Migration
      */
     public function down()
     {
+
         Schema::drop('permission_role');
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
+
     }
 }
