@@ -58,11 +58,11 @@ class CreatePersonasTablas extends Migration
           $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
           $table->string('nombre_persona');
           $table->string('apellido_persona');
-          $table->date('fecha_nacimiento_persona');
+          $table->date('fecha_nacimiento');
           $table->string('cuil')->unique();
           $table->integer('tipo_documento_id')->unsigned();
           $table->foreign('tipo_documento_id')->references('id')->on('tipos_documento');
-          $table->string('nro_documento_persona')->unique();
+          $table->string('nro_documento')->unique();
           $table->timestamps();
       });
 
