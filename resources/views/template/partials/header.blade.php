@@ -31,6 +31,9 @@
           <div class="col-xs-8 col-sm-4">
             <a href="#" class="show-sidebar">
               <i class="fa fa-bars"></i>
+              <div>
+                {!!link_to('in\registro-empleador', $title = 'Registrar Empleador', $attributes = null, $secure = null)!!}
+              </div>
             </a>
             @if(Entrust::hasRole('estudiante'))
               <div id="search">

@@ -59,7 +59,7 @@ class PermissionsController extends Controller
 
         $permiso->save();
 
-        Flash::success('Permiso ' . $permiso->name . ' agregado')->important();
+        Flash::success('Permiso ' . $permiso->name . ' agregado.')->important();
         return redirect()->route('in.permisos.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -110,7 +110,7 @@ class PermissionsController extends Controller
         $permiso->fill($request->all());
         $permiso->save();
 
-        Flash::warning('Permiso ' . $permiso->name . ' modificado')->important();
+        Flash::warning('Permiso ' . $permiso->name . ' modificado.')->important();
         return redirect()->route('in.permisos.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -130,7 +130,7 @@ class PermissionsController extends Controller
 
         $permiso->delete();
 
-        Flash::error('Permiso ' . $permiso->name . ' eliminado')->important();
+        Flash::error('Permiso ' . $permiso->name . ' eliminado.')->important();
         return redirect()->route('in.permisos.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');

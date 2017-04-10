@@ -18,7 +18,7 @@ class Unlu_Estudiante extends Model
     }
 
     public function estudiantes(){
-      return $this->hasMany('App\Estudiante');
+      return $this->hasMany('App\Postulante');
     }
 
 }

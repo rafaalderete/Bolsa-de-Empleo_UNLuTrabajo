@@ -4,18 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Estudiante extends Model
+class Postulante extends Model
 {
 
-    protected $table = "estudiantes";
-    protected $fillable = ['id','fisica_id','unlu_estudiante_id','cv_id'];
+    protected $table = "postulantes";
+    protected $fillable = ['id','fisica_id','unlu_estudiante_id'];
 
     public function fisica(){
       return $this->belongsTo('App\Fisica');
     }
 
     public function cv(){
-      return $this->belongsTo('App\Cv');
+      return $this->hasOne('App\Cv');
     }
 
     public function unluEstudiante(){

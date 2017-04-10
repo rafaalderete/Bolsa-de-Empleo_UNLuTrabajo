@@ -1,6 +1,6 @@
 @extends('template.auth_main')
 
-@section('headTitle', 'Restablecer Contraseña')
+@section('headTitle', 'Registro Empleador | Establecer Contraseña')
 
 @section('bodyContent')
 
@@ -12,7 +12,7 @@
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
 						</div>
-            {!! Form::open(['route' => 'password.reset']) !!}
+            {!! Form::open(['route' => 'registro-empleador.verificacion']) !!}
 
 						@include('flash::message')
 						@include('template.partials.errors')
@@ -30,7 +30,7 @@
 							{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Restablecer Contraseña',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Establecer Contraseña y Verificar',['class' => 'btn btn-success']) !!}
 						</div>
 
 						{!!Form::close()!!}

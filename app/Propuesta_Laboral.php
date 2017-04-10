@@ -24,8 +24,8 @@ class Propuesta_Laboral extends Model
       return $this->belongsTo('App\Tipo_Trabajo');
     }
 
-    public function estudiantes(){
-      return $this->belongsToMany('App\Estudiante')->withPivot('fecha_postulacion');;
+    public function postulantes(){
+      return $this->belongsToMany('App\Postulante')->withPivot('fecha_postulacion');;
     }
 
     public function unluCarreras(){

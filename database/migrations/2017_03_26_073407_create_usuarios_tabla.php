@@ -24,7 +24,7 @@ class CreateUsuariosTabla extends Migration
           $table->integer('persona_id')->unsigned();
           $table->foreign('persona_id')->references('id')->on('personas')->onDelete('cascade');
           $table->rememberToken();
-          $table->string('confirmacion_token', 255);
+          $table->string('verificacion_token', 255);
           $table->timestamps();
       });
 
@@ -39,6 +39,6 @@ class CreateUsuariosTabla extends Migration
     {
 
         Schema::drop('usuarios');
-        
+
     }
 }

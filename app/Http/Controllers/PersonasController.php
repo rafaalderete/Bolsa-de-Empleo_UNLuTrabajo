@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
+use App\Traits\StorePersona;
 use App\Persona as Persona;
 use App\Telefono as Telefono;
 use App\Direccion as Direccion;
@@ -15,41 +16,7 @@ use Illuminate\Support\Facades\Auth;
 
 class PersonasController extends Controller
 {
-
-    protected function storePersona($request, $tipo_persona) {
-
-      $nueva_persona = new Persona();
-      $nueva_persona->tipo_persona = $tipo_persona;
-      $nueva_persona->estado_persona = 'activo';
-      $nueva_persona->save();
-
-      $direccion = new Direccion();
-      $direccion->persona_id = $nueva_persona->id;
-      $direccion->domicilio = $request->domicilio_residencia;
-      $direccion->localidad = $request->localidad_residencia;
-      $direccion->provincia = $request->provincia_residencia;
-      $direccion->pais = $request->pais_residencia;
-      $direccion->save();
-
-      if($request->telefono_fijo != '') {
-        $fijo = new Telefono();
-        $fijo->persona_id = $nueva_persona->id;
-        $fijo->tipo_telefono = 'fijo';
-        $fijo->nro_telefono = $request->telefono_fijo;
-        $fijo->save();
-      }
-
-      if($request->telefono_celular != '') {
-        $celular = new Telefono();
-        $celular->persona_id = $nueva_persona->id;
-        $celular->tipo_telefono = 'celular';
-        $celular->nro_telefono = $request->telefono_celular;
-        $celular->save();
-      }
-
-      return $nueva_persona->id;
-
-    }
+    use StorePersona; //Metodo storePersona()
 
     protected function updatePersona($request, $id) {
 
@@ -132,11 +99,11 @@ class PersonasController extends Controller
             $persona->delete();
 
             if ($tipo_persona == 'fisica') {
-              Flash::error('Persona ' . $nombre . ' eliminada')->important();
+              Flash::error('Persona ' . $nombre . ' eliminada.')->important();
               return redirect()->route('in.personas.index');
             }
             else {
-              Flash::error('Empresa ' . $nombre . ' eliminada')->important();
+              Flash::error('Empresa ' . $nombre . ' eliminada.')->important();
               return redirect()->route('in.empresas.index');
             }
         }else{

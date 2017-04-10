@@ -35,21 +35,33 @@ Route::get('auth/logout', [
 	'as'	=>	'auth.logout'
 ]);
 
-//------------- RUTAS PARA REGISTRAR Y CONFIRMAR USUARIO -----------------------------------
+//------------- RUTAS PARA REGISTRAR Y CONFIRMAR USUARIO POSTULANTE -----------------------------------
 
-Route::get('registro', [
-	'uses'	=>	'UsuariosController@getRegistro',
-	'as'	=>	'registro'
+Route::get('registro-postulante', [
+	'uses'	=>	'UsuariosController@getRegistroPostulante',
+	'as'	=>	'registro-postulante'
 ]);
 
-Route::post('registro', [
-	'uses'	=>	'UsuariosController@postRegistro',
-	'as'	=>	'registro'
+Route::post('registro-postulante', [
+	'uses'	=>	'UsuariosController@postRegistroPostulante',
+	'as'	=>	'registro-postulante'
 ]);
 
-Route::get('registro/confirmacion/{token}', [
-	'uses'	=>	'UsuariosController@confirmacionCuenta',
-	'as'	=>	'registro.confirmacion'
+Route::get('registro-postulante/verificacion/{token}', [
+	'uses'	=>	'UsuariosController@verificacionUsuarioPostulante',
+	'as'	=>	'registro-postulante.verificacion'
+]);
+
+//------------- RUTAS PARA CONFIRMAR USUARIO EMPLEADOR -----------------------------------
+
+Route::get('registro-empleador/verificacion/{token}', [
+	'uses'	=>	'UsuariosController@getVerificacionUsuarioEmpleador',
+	'as'	=>	'registro-empleador.verificacion'
+]);
+
+Route::post('registro-empleador/verificacion/{token}', [
+	'uses'	=>	'UsuariosController@postVerificacionUsuarioEmpleador',
+	'as'	=>	'registro-empleador.verificacion'
 ]);
 
 //------------- RUTAS PARA RESTABLECER CONTRASEÑA -----------------------------------
@@ -115,8 +127,20 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
   Route::resource('permisos', 'PermissionsController');
 	Route::delete('permisos/{id}/destroy', [
-		'uses'	=>	'PermissionsController@destroy', 
+		'uses'	=>	'PermissionsController@destroy',
 			'as'	=>	'in.permisos.destroy',
+	]);
+
+	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
+
+	Route::get('registro-empleador', [
+		'uses'	=>	'UsuariosController@getRegistroEmpleador',
+		'as'	=>	'in.registro-empleador'
+	]);
+
+	Route::post('registro-empleador', [
+		'uses'	=>	'UsuariosController@postRegistroEmpleador',
+		'as'	=>	'in.registro-empleador'
 	]);
 
 });

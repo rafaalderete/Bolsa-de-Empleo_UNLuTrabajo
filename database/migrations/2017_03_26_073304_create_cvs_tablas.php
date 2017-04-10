@@ -15,6 +15,8 @@ class CreateCvsTablas extends Migration
 
       Schema::create('cvs', function (Blueprint $table) {
           $table->increments('id');
+          $table->integer('postulante_id')->unsigned();
+          $table->foreign('postulante_id')->references('id')->on('postulantes')->onDelete('cascade');
           $table->string('carta_presentacion');
           $table->string('sueldo_bruto_pretendido');
           $table->timestamps();

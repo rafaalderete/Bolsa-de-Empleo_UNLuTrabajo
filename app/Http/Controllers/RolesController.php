@@ -78,7 +78,7 @@ class RolesController extends Controller
             $rol->permissions()->sync($permisos);
 
 
-            Flash::success('Rol ' . $rol->name . ' agregado')->important();
+            Flash::success('Rol ' . $rol->name . ' agregado.')->important();
             return redirect()->route('in.roles.index');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -154,45 +154,13 @@ class RolesController extends Controller
             $rol->permissions()->sync($permisos);
 
 
-            Flash::warning('Rol ' . $rol->name . ' modificado')->important();
+            Flash::warning('Rol ' . $rol->name . ' modificado.')->important();
             return redirect()->route('in.roles.index');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
     }
-/*
-    public function asignar_permisos($id)
-    {
-        $rol = Rol::find($id);
 
-        $permisos = Permiso::orderBy('name','ASC')->lists('name','id');// devuelve la lista
-
-        // necesito el array de los permisos q contiene
-        $my_permisos = $rol->permissions->lists('id')->toArray(); // pasa un objeto a un array
-
-        // retorna una vista con un parametro
-        return view('admin.roles.asignar_permisos')
-          ->with('rol',$rol)
-          ->with('permisos',$permisos)
-          ->with('my_permisos',$my_permisos);
-    }
-
-    public function asignar_permisos_update(Request $request, $id)
-    {
-        $rol = Rol::find($id);
-
-        // pasa todo los valores actializado de request en la user
-        $rol->fill($request->all());
-        $rol->save();
-
-        //sincronizo con la tabla pivot
-        $permisos = $request->input('permisos', []);
-        $rol->permissions()->sync($permisos);
-
-        Flash::warning('Permisos asignados a ' . $rol->name);
-        return redirect()->route('admin.roles.index');
-    }
-*/
     /**
      * Remove the specified resource from storage.
      *
@@ -206,7 +174,7 @@ class RolesController extends Controller
 
             $rol->delete();
 
-            Flash::error('Rol ' . $rol->name . ' eliminado')->important();
+            Flash::error('Rol ' . $rol->name . ' eliminado.')->important();
             return redirect()->route('in.roles.index');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

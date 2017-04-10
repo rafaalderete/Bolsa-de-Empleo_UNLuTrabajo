@@ -66,14 +66,12 @@ class CreatePersonasTablas extends Migration
           $table->timestamps();
       });
 
-      Schema::create('estudiantes', function (Blueprint $table) {
+      Schema::create('postulantes', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('fisica_id')->unsigned();
           $table->foreign('fisica_id')->references('id')->on('fisicas')->onDelete('cascade');
           $table->integer('unlu_estudiante_id')->unsigned();
           $table->foreign('unlu_estudiante_id')->references('id')->on('unlu_estudiantes');
-          $table->integer('cv_id')->unsigned();
-          $table->foreign('cv_id')->references('id')->on('cvs');
           $table->timestamps();
       });
 
@@ -92,7 +90,7 @@ class CreatePersonasTablas extends Migration
         Schema::drop('direcciones');
         Schema::drop('juridicas');
         Schema::drop('fisicas');
-        Schema::drop('estudiantes');
+        Schema::drop('postulantes');
 
     }
 }

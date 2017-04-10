@@ -22,7 +22,7 @@
 							{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'example@correo.com', 'autocomplete' => 'off', 'required'])!!}
 						</div>
 						<div class="form-group">
-							{!! Form::label('password','Password') !!}
+							{!! Form::label('password','Contraseña') !!}
 							<input type="password" name="password" class="form-control" placeholder="Password" autocomplete="off" required>
 						</div>
 						<div class="text-center">
@@ -34,7 +34,7 @@
 							{!!link_to('password/email', $title = '¿Olvidaste tu contraseña?', $attributes = null, $secure = null)!!}
 						</div>
 						<div class="text-center">
-							{!!link_to('registro', $title = 'Registrarse', $attributes = null, $secure = null)!!}
+							{!!link_to('registro-postulante', $title = 'Registrarse', $attributes = null, $secure = null)!!}
 						</div>
 					</div>
 				</div>

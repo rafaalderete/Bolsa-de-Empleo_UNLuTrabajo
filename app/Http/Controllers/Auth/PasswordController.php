@@ -32,6 +32,11 @@ class PasswordController extends Controller
      * @return void
      */
 
+    public function getEmail()
+    {
+       return view('auth.password');
+    }
+
     protected $redirectTo = '/in';
 
     protected function getEmailSubject()
@@ -54,11 +59,25 @@ class PasswordController extends Controller
 
         switch ($response) {
             case Password::RESET_LINK_SENT:
-                Flash::success('¡Se envió un e-mail para restablecer su contraseña!')->important();
+                Flash::success('¡Se envió un e-mail para restablecer su contraseña!.')->important();
                 return redirect()->back();
             case Password::INVALID_USER:
                 return redirect()->back()->withErrors(['email' => trans($response)]);
         }
+    }
+
+    public function getReset($token = null)
+    {
+      if(isset($_GET['email'])) {
+        if (is_null($token)) {
+            throw new NotFoundHttpException;
+        }
+
+        return view('auth.reset')->with('token', $token);
+      }
+      else {
+        return redirect()->route('auth.login');
+      }
     }
 
     public function postReset(Request $request)
@@ -79,7 +98,7 @@ class PasswordController extends Controller
 
         switch ($response) {
             case Password::PASSWORD_RESET:
-                Flash::success('Contraseña restablecida')->important();
+                Flash::success('Contraseña restablecida.')->important();
                 return redirect($this->redirectPath());
             default:
                 return redirect()->back()
@@ -87,4 +106,14 @@ class PasswordController extends Controller
                             ->withErrors(['email' => trans($response)]);
         }
     }
+
+    protected function resetPassword($user, $password)
+    {
+        $user->password = bcrypt($password);
+
+        $user->save();
+
+        Auth::login($user);
+    }
+
 }

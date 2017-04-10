@@ -7,26 +7,36 @@ use Log;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PersonasController;
 use Laracasts\Flash\Flash;
+use App\Traits\StorePersona;
 use App\Usuario as Usuario;
 use App\Persona as Persona;
+use App\Juridica as Juridica;
+use App\Fisica as Fisica;
+use App\Postulante as Postulante;
+use App\Cv as Cv;
+use App\Unlu_Estudiante as Unlu_Estudiante;
 use App\Tipo_Documento as Tipo_Documento;
 use App\Role as Rol;
+use App\Rubro_Empresarial as Rubro_Empresarial;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
+use App\Http\Requests\RegistroEmpleadorRequest;
+use App\Http\Requests\RegistroPostulanteRequest;
 use Illuminate\Support\Facades\Auth;
 use File;
 use Illuminate\Support\Facades\Mail;
 
 class UsuariosController extends Controller
 {
+    use StorePersona;//Metodo storePersona()
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() // pantalla principal donde lista los usuarios
-    {
+    public function index(){ // pantalla principal donde lista los usuarios
         if(Auth::user()->can('listar_usuarios')){
           $usuarios = Usuario::orderBy('id','DESC')->get();
 
@@ -40,8 +50,7 @@ class UsuariosController extends Controller
         }
     }
 
-    private function isSuperUsuario ($id)
-    {
+    private function isSuperUsuario ($id){
       $usuario = Usuario::find($id);
       if ($usuario->hasRole('super_usuario')) {
         return true;
@@ -56,8 +65,7 @@ class UsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() // envia a la vista para cargar los datos del nuevo usuario
-    {
+    public function create(){ // envia a la vista para cargar los datos del nuevo usuario
         if(Auth::user()->can('crear_usuario')){
           if (Auth::user()->hasRole('super_usuario')) {
             $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
@@ -82,8 +90,7 @@ class UsuariosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreUsuarioRequest $request) // almacena los datos en Base y muestra el msj de OK, devuelve al index
-    {
+    public function store(StoreUsuarioRequest $request){ // almacena los datos en Base y muestra el msj de OK, devuelve al index
         if(Auth::user()->can('crear_usuario')){
           // se usan los valores de la vista del usuario creado
           $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
@@ -105,7 +112,7 @@ class UsuariosController extends Controller
           $roles = $request->input('roles', []);
           $usuario->roles()->sync($roles);
 
-          Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado')->important(); // se muestra el msj de usuario creado
+          Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado.')->important(); // se muestra el msj de usuario creado
           return redirect()->route('in.usuarios.index'); // se devuelve al index
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
@@ -129,13 +136,12 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) // envia a la vista para evitar los datos del usurio.
+    public function edit($id){ // envia a la vista para evitar los datos del usurio.
                               // No siempre se pueden editar todos los mismos datos que al crear
-    {
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca al usuario por el id
 
-          $personasAct = Persona::all()->where('estado_persona', 'activo'); // recupero array de
+          $personasAct = Persona::all()->where('estado_persona', 'activo');
           foreach ($personasAct as $persona) {
             if($persona->tipo_persona == 'fisica') {
               $personas[$persona->id] = $persona->fisica->nombre_persona.' '.$persona->fisica->apellido_persona;
@@ -178,8 +184,7 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUsuarioRequest $request, $id) // permite modificar los datos del usuario
-    {
+    public function update(UpdateUsuarioRequest $request, $id){
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usario al modificar
 
@@ -212,54 +217,227 @@ class UsuariosController extends Controller
         }
     }
 
-    protected function getRegistro(){
+
+    //------------- REGISTRO DE POSTULANTE -------------------
+
+    protected function getRegistroPostulante(){
 
         $tipos_documento = Tipo_Documento::all();
 
-        return view('auth.registro')
+        return view('auth.registro_postulante')
         ->with('tipos_documento',$tipos_documento);
 
     }
 
-    protected function postRegistro(Request $request){
+    protected function postRegistroPostulante(RegistroPostulanteRequest $request){
+        $error = false;
+        $tipo_documento = Tipo_Documento::find($request->tipo_documento);
+        $estudiante = Unlu_Estudiante::select()->where('legajo','=',$request->legajo)
+          ->where('tipo_documento','=',$tipo_documento->nombre_tipo_documento)
+          ->where('nro_documento','=',$request->nro_documento)
+          ->where('email_estudiante','=',$request->email)
+          ->get(); //Comprobamos que la persona es realmente un estudiante.
+        if (count($estudiante) > 0)  {
+          $nombre_estudiante = strtolower($estudiante[0]->nombre_estudiante);
+          $apellido_estudiante = strtolower($estudiante[0]->apellido_estudiante);
+          $nombre_persona = strtolower($request->nombre_persona);
+          $apellido_persona = strtolower($request->apellido_persona);
+          if ( ($nombre_estudiante == $nombre_persona) && ($apellido_estudiante == $apellido_persona) ) { //Verificamos que el resto de sus datos sean correctos
+            $persona = new \stdClass();
+            $persona->domicilio_residencia = $estudiante[0]->domicilio;
+            $persona->localidad_residencia = $estudiante[0]->localidad;
+            $persona->provincia_residencia = $estudiante[0]->provincia;
+            $persona->pais_residencia = $estudiante[0]->pais;
+            $persona->telefono_fijo = $estudiante[0]->telefono_fijo;
+            $persona->telefono_celular = $estudiante[0]->telefono_celular;
+            $persona_id = $this->storePersona($persona,'Fisica');//Se inserta la persona.
 
-        $usuario = new Usuario();
-        $usuario->nombre_usuario = $request->nombre_usuario;
-        $usuario->email = $request->email;
-        $data['email'] = $usuario->email;
-        $usuario->password = bcrypt($request->password);
-        $usuario->estado_usuario = 'inactivo';
-        $usuario->persona_id = 1;
-        $usuario->confirmacion_token = str_random(100);
-        $data['confirmacion_token'] = $usuario->confirmacion_token;
-        $usuario->save();
+            $pfisica = new Fisica();
+            $pfisica->persona_id = $persona_id;
+            $pfisica->nombre_persona = $estudiante[0]->nombre_estudiante;
+            $pfisica->apellido_persona = $estudiante[0]->apellido_estudiante;
+            $pfisica->fecha_nacimiento = $estudiante[0]->fecha_nacimiento_estudiante;
+            $pfisica->cuil = $estudiante[0]->cuil;
+            $pfisica->tipo_documento_id = $request->tipo_documento;
+            $pfisica->nro_documento = $request->nro_documento;
+            $pfisica->save();//Se inserta la persona fisica.
 
-        Mail::send('emails.confirmacion_usuario', ['data' => $data], function($message) use ($data){
-          $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
-          $message->subject('Verificación de Usuario');
-          $message->to($data['email']);
-        });
+            $postulante = new Postulante();
+            $postulante->fisica_id = $pfisica->id;
+            $postulante->unlu_estudiante_id = $estudiante[0]->id;
+            $postulante->save();//Se inserta el postulante.
 
-        Flash::success('¡Registro exitoso, se ha enviado un e-mail para verificar su usuario!')->important();
-        return redirect()->route('registro');
+            $cv = new Cv();
+            $cv->postulante_id = $postulante->id;
+            $cv->save();//Se inserta el Cv.
 
+            $usuario = new Usuario();
+            $usuario->nombre_usuario = $request->nombre_usuario;
+            $usuario->email = $request->email;
+            $data['email'] = $usuario->email;
+            $usuario->password = bcrypt($request->password);
+            $usuario->estado_usuario = 'inactivo';
+            $usuario->persona_id = $persona_id;
+            $usuario->verificacion_token = str_random(100);
+            $data['verificacion_token'] = $usuario->verificacion_token;
+            $usuario->save();//Se inserta el usuario.
+
+            $rol = Rol::select()->where('name','=','postulante')
+            ->get();
+            $usuario->roles()->sync([$rol[0]->id]);;//Se inserta el rol.
+
+            Mail::send('emails.verificacion_usuario_postulante', ['data' => $data], function($message) use ($data){
+              $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+              $message->subject('Verificación de Usuario');
+              $message->to($data['email']);
+            });//Se manda mail de confirmacion.
+
+            Flash::success('¡Registro exitoso, se ha enviado un e-mail para verificar su usuario!.')->important();
+            return redirect()->route('auth.login');
+          }
+          else {
+            $error = true;
+          }
+        }
+        else {
+          $error = true;
+        }
+
+        if ($error) {
+          Flash::error('Los datos ingresados no coinciden con nuestros registros.')->important();
+          return redirect()->back();
+        }
     }
 
-    protected function confirmacionCuenta(Request $request){
+    protected function verificacionUsuarioPostulante(Request $request){
 
+      if(isset($_GET['email'])) {
         $usuario = Usuario::where('email', '=', $request->email)
-        ->where('confirmacion_token', '=', $request->token)
+        ->where('verificacion_token', '=', $request->token)
         ->get();
 
         if (count($usuario) > 0) {
           $usuario[0]->estado_usuario = 'activo';
-          $usuario[0]->confirmacion_token = null;
+          $usuario[0]->verificacion_token = null;
           $usuario[0]->save();
           Flash::success('¡Usuario verificado!')->important();
           return redirect()->route('auth.login');
         }
         else {
+          Flash::error('Este token de verificación de usuario es inválido.')->important();
           return redirect()->route('auth.login');
+        }
+      }
+      else {
+        return redirect()->route('auth.login');
+      }
+
+    }
+
+    //------------- REGISTRO DE EMPLEADOR -------------------
+
+    protected function getRegistroEmpleador(){
+
+      if( (Auth::user()->can('crear_empresa')) && (Auth::user()->can('crear_usuario')) ){
+        $rubros_empresariales = Rubro_Empresarial::all();
+
+        return view('in.empresas.registro_empleador')
+        ->with('rubros_empresariales',$rubros_empresariales);
+      }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    protected function postRegistroEmpleador(RegistroEmpleadorRequest $request){
+
+      if( (Auth::user()->can('crear_empresa')) && (Auth::user()->can('crear_usuario')) ){
+          if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
+            Flash::error('Debe ingresar al menos un Teléfono.')->important();
+            return redirect()->back();
+          }
+          else {
+            $persona_id = $this->storePersona($request,'juridica');//Inserta la Persona y devuelve el id asignado.
+
+            $pjuridica = new Juridica();
+            $pjuridica->persona_id = $persona_id;
+            $pjuridica->nombre_comercial = $request->nombre_comercial;
+            $pjuridica->cuit = $request->cuit;
+            $pjuridica->fecha_fundacion = date('Y-m-d', strtotime($request->fecha_fundacion));
+            $pjuridica->rubro_empresarial_id = $request->rubro_empresarial;
+            $pjuridica->save();//Inserta la Empresa
+
+            $usuario = new Usuario();
+            $usuario->nombre_usuario = $request->nombre_usuario;
+            $usuario->email = $request->email;
+            $data['email'] = $usuario->email;
+            $usuario->estado_usuario = 'inactivo';
+            $usuario->persona_id = $persona_id;
+            $usuario->verificacion_token = str_random(100);
+            $data['verificacion_token'] = $usuario->verificacion_token;
+            $usuario->save();//Inserta el usuario
+
+            $rol = Rol::select()->where('name','=','empleador')
+            ->get();
+            $usuario->roles()->sync([$rol[0]->id]);;//Se inserta el rol.
+
+            Mail::send('emails.verificacion_usuario_empleador', ['data' => $data], function($message) use ($data){
+              $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+              $message->subject('Registro - Verificación de Usuario');
+              $message->to($data['email']);
+            });//Se manda mail de confirmacion.
+
+            Flash::success('Empresa ' . $pjuridica->nombre_comercial . ' registrada,
+                            se ha enviado un e-mail esperando su verificación.')->important();
+            return redirect()->route('in.index');
+          }
+      }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+
+    }
+
+    protected function getVerificacionUsuarioEmpleador($token = null){
+
+      if(isset($_GET['email'])) {
+        if (is_null($token)) {
+            throw new NotFoundHttpException;
+        }
+
+        return view('auth.password_verificacion_empleador')
+          ->with('token', $token);
+      }
+      else {
+        return redirect()->route('auth.login');
+      }
+
+    }
+
+    protected function postVerificacionUsuarioEmpleador(Request $request){
+        $this->validate($request, [
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $credentials = $request->only(
+            'email', 'password', 'password_confirmation', 'token'
+        );
+
+        $usuario = Usuario::where('email', '=', $request->email)
+        ->where('verificacion_token', '=', $request->token)
+        ->get();
+
+        if (count($usuario) > 0) {
+          $usuario[0]->estado_usuario = 'activo';
+          $usuario[0]->verificacion_token = null;
+          $usuario[0]->password = bcrypt($request->password);
+          $usuario[0]->save();
+          Flash::success('¡Usuario verificado!')->important();
+          return redirect()->route('auth.login');
+        }
+        else {
+          Flash::error('Este token de verificación de usuario es inválido.')->important();
+          return redirect()->back();
         }
 
     }
@@ -270,14 +448,13 @@ class UsuariosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) // elimina el usuario de la BD
-    {
+    public function destroy($id){ // elimina el usuario de la BD
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usuario por su id
 
           $usuario->delete(); // lo elimina
 
-          Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado')->important();
+          Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado.')->important();
           return redirect()->route('in.usuarios.index');
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');

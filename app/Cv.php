@@ -8,7 +8,11 @@ class Cv extends Model
 {
 
     protected $table = "cvs";
-    protected $fillable = ['id','carta_presentacion','sueldo_bruto_pretendido'];
+    protected $fillable = ['id','postulante_id','carta_presentacion','sueldo_bruto_pretendido'];
+
+    public function postulante(){
+      return $this->belongsTo('App\Postulante');
+    }
 
     public function experienciasLaborales(){
       return $this->hasMany('App\Experiencia_Laboral');

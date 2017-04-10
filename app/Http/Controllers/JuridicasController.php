@@ -59,7 +59,7 @@ class JuridicasController extends PersonasController
     {
         if(Auth::user()->can('crear_empresa')){
             if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
-              Flash::error('Debe ingresar al menos un Teléfono')->important();
+              Flash::error('Debe ingresar al menos un Teléfono.')->important();
               return redirect()->back();
             }
             else {
@@ -73,7 +73,7 @@ class JuridicasController extends PersonasController
               $pjuridica->rubro_empresarial_id = $request->rubro_empresarial;
               $pjuridica->save();
 
-              Flash::success('Empresa ' . $pjuridica->nombre_comercial . ' agregado')->important();
+              Flash::success('Empresa ' . $pjuridica->nombre_comercial . ' agregado.')->important();
               return redirect()->route('in.empresas.index');
             }
         }else{
@@ -136,7 +136,7 @@ class JuridicasController extends PersonasController
     {
         if(Auth::user()->can('modificar_empresa')){
           if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
-            Flash::error('Debe ingresar al menos un Teléfono')->important();
+            Flash::error('Debe ingresar al menos un Teléfono.')->important();
             return redirect()->back();
           }
           else {
@@ -149,7 +149,7 @@ class JuridicasController extends PersonasController
 
             $this->updatePersona($request, $pjuridica->persona_id);
 
-            Flash::warning('Empresa ' . $pjuridica->nombre_comercial . ' modificado')->important();
+            Flash::warning('Empresa ' . $pjuridica->nombre_comercial . ' modificado.')->important();
             return redirect()->route('in.empresas.index');
           }
         }else{

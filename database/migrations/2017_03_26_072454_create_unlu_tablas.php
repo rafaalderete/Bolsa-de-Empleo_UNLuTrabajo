@@ -27,16 +27,16 @@ class CreateUnluTablas extends Migration
           $table->string('nombre_estudiante');
           $table->string('apellido_estudiante');
           $table->date('fecha_nacimiento_estudiante');
-          $table->string('cuil');
+          $table->string('cuil')->unique();
           $table->string('tipo_documento');
-          $table->string('nro_documento');
-          $table->string('email_estudiante');
-          $table->string('telefono');
-          $table->string('celular');
+          $table->string('nro_documento')->unique();
+          $table->string('email_estudiante')->unique();
+          $table->string('telefono_fijo');
+          $table->string('telefono_celular');
           $table->string('domicilio');
           $table->string('localidad');
-          $table->string('residencia_provincia');
-          $table->string('residencia_pais');
+          $table->string('provincia');
+          $table->string('pais');
           $table->timestamps();
       });
 

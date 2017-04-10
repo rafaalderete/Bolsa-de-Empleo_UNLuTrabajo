@@ -32,11 +32,11 @@
       {!! Form::open(['route' => 'in.usuarios.store', 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
 
         <div class="form-group">
-          {!! Form::label('nombre_usuario','Nombre', ['class' => 'col-sm-2 control-label']) !!}
+          {!! Form::label('nombre_usuario','Nombre Usuario', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
             {!! Form::text('nombre_usuario',null,['class' => 'form-control', 'placeholder' => 'Nombre Usuario', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
           </div>
-          {!! Form::label('persona_id','Persona', ['class' => 'col-sm-2 control-label']) !!}
+          {!! Form::label('persona_id','Persona/Empresa', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
             <select name="persona_id" class="populate placeholder" id="selectPersona">
               <option value=""></option>

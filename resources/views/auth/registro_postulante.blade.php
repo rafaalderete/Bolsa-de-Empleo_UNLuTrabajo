@@ -12,7 +12,7 @@
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
 						</div>
-						{!!Form::open(['route' => 'registro','method' => 'POST'])!!}
+						{!!Form::open(['route' => 'registro-postulante','method' => 'POST'])!!}
 
 						@include('flash::message')
 						@include('template.partials.errors')
@@ -39,14 +39,6 @@
 						</div>
 						<div class="row">
 							<div class="form-group">
-									{!! Form::label('email','Email', ['class' => 'col-sm-2 control-label']) !!}
-								<div class="col-sm-10">
-									{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'example@correo.com', 'autocomplete' => 'off', 'required'])!!}
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="form-group">
 								{!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-3 control-label']) !!}
 								<div class="col-sm-3">
 									<select name="tipo_documento" class="populate placeholder" id="selectSimple" required>
@@ -57,7 +49,15 @@
 									</select>
 								</div>
 								<div class="col-sm-6">
-									{!! Form::text('nro_documento_persona', null, ['class' => 'form-control', 'placeholder' => 'N° Documento', 'required'])!!}
+									{!! Form::text('nro_documento', null, ['class' => 'form-control', 'placeholder' => 'N° Documento', 'required'])!!}
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group">
+									{!! Form::label('email','Email', ['class' => 'col-sm-2 control-label']) !!}
+								<div class="col-sm-10">
+									{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'example@correo.com', 'autocomplete' => 'off', 'required'])!!}
 								</div>
 							</div>
 						</div>
@@ -71,7 +71,7 @@
 						</div>
 						<div class="row">
 							<div class="form-group">
-								{!! Form::label('password','Password', ['class' => 'col-sm-3 control-label']) !!}
+								{!! Form::label('password','Contraseña', ['class' => 'col-sm-3 control-label']) !!}
 								<div class="col-sm-5">
 									{!!Form::password('password', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 								</div>
@@ -79,7 +79,7 @@
 						</div>
 						<div class="row">
 							<div class="form-group">
-								{!! Form::label('password_confirmation','Confirmar Password', ['class' => 'col-sm-3 control-label']) !!}
+								{!! Form::label('password_confirmation','Confirmar Contraseña', ['class' => 'col-sm-3 control-label']) !!}
 								<div class="col-sm-5">
 										{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 								</div>

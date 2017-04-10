@@ -59,7 +59,7 @@ class FisicasController extends PersonasController
     {
         if(Auth::user()->can('crear_persona')){
             if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
-              Flash::error('Debe ingresar al menos un Teléfono')->important();
+              Flash::error('Debe ingresar al menos un Teléfono.')->important();
               return redirect()->back();
             }
             else {
@@ -75,7 +75,7 @@ class FisicasController extends PersonasController
               $pfisica->nro_documento = $request->nro_documento;
               $pfisica->save();
 
-              Flash::success('Persona ' . $pfisica->nombre_persona . ' agregado')->important();
+              Flash::success('Persona ' . $pfisica->nombre_persona . ' agregado.')->important();
               return redirect()->route('in.personas.index');
             }
         }else{
@@ -138,7 +138,7 @@ class FisicasController extends PersonasController
     {
         if(Auth::user()->can('modificar_persona')){
           if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
-            Flash::error('Debe ingresar al menos un Teléfono')->important();
+            Flash::error('Debe ingresar al menos un Teléfono.')->important();
             return redirect()->back();
           }
           else {
@@ -153,7 +153,7 @@ class FisicasController extends PersonasController
 
             $this->updatePersona($request, $pfisica->persona_id);
 
-            Flash::warning('Persona ' . $pfisica->nombre_persona . ' modificado')->important();
+            Flash::warning('Persona ' . $pfisica->nombre_persona . ' modificado.')->important();
             return redirect()->route('in.personas.index');
           }
         }else{
