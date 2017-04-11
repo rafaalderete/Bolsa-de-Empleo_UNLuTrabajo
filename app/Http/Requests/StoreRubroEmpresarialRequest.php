@@ -4,11 +4,10 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class StorePermisoRequest extends Request
+class StoreRubroEmpresarialRequest extends Request
 {
 
-    const CAMPO_NOMBRE = 'Nombre Permiso';
-    const CAMPO_DESCRIPCION = 'Descripción Permiso';
+    const CAMPO_NOMBRE = 'Nombre Rubro Empresarial';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -28,16 +27,15 @@ class StorePermisoRequest extends Request
     public function rules()
     {
       return [
-          'name' => 'min:4|required|unique:permissions',
-          'descripcion_permiso' => 'required'
+          'nombre_rubro_empresarial' => 'min:4|required|unique:rubros_empresariales'
       ];
     }
 
     public function messages()
     {
       return [
-        'name.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'name.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'nombre_rubro_empresarial.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_rubro_empresarial.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 

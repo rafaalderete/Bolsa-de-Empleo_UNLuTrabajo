@@ -339,7 +339,7 @@ class UsuariosController extends Controller
     protected function getRegistroEmpleador(){
 
       if( (Auth::user()->can('crear_empresa')) && (Auth::user()->can('crear_usuario')) ){
-        $rubros_empresariales = Rubro_Empresarial::all();
+        $rubros_empresariales = Rubro_Empresarial::all()->where('estado','activo');
 
         return view('in.empresas.registro_empleador')
         ->with('rubros_empresariales',$rubros_empresariales);

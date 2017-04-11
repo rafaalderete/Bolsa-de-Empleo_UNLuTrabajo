@@ -5,11 +5,10 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Routing\Route;
 
-class UpdatePermisoRequest extends Request
+class UpdateRubroEmpresarialRequest extends Request
 {
 
-    const CAMPO_NOMBRE = 'Nombre Permiso';
-    const CAMPO_DESCRIPCION = 'Descripción Permiso';
+    const CAMPO_NOMBRE = 'Nombre Rubro Empresarial';
     const CAMPO_ESTADO = 'Estado';
     private $route;
 
@@ -36,18 +35,17 @@ class UpdatePermisoRequest extends Request
     public function rules()
     {
       return [
-          'name' => 'min:4|required|unique:permissions,name,'.$this->route->getParameter('permisos'),
-          'descripcion_permiso' => 'required',
-          'estado_permiso'=> 'required|in:activo,inactivo'
+          'nombre_rubro_empresarial' => 'min:4|required|unique:rubros_empresariales,nombre_rubro_empresarial,'.$this->route->getParameter('rubros_empresariales'),
+          'estado'=> 'required|in:activo,inactivo'
       ];
     }
 
     public function messages()
     {
       return [
-        'name.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'name.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
-        'estado_permiso.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
+        'nombre_rubro_empresarial.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_rubro_empresarial.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'estado.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
       ];
     }
 }

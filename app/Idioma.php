@@ -8,7 +8,7 @@ class Idioma extends Model
 {
 
     protected $table = "idiomas";
-    protected $fillable = ['id','nombre_idioma'];
+    protected $fillable = ['id','nombre_idioma','estado'];
 
     public function conocimientosIdiomas(){
       return $this->hasMany('App\Conocimiento_Idioma');

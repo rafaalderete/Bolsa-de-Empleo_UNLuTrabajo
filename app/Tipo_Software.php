@@ -8,7 +8,7 @@ class Tipo_Software extends Model
 {
 
     protected $table = "tipos_software";
-    protected $fillable = ['id','nombre_tipo_software'];
+    protected $fillable = ['id','nombre_tipo_software','estado'];
 
     public function conocimientosInformaticos(){
       return $this->hasMany('App\Conocimiento_Informatico');

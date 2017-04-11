@@ -31,11 +31,11 @@
           <div class="col-xs-8 col-sm-4">
             <a href="#" class="show-sidebar">
               <i class="fa fa-bars"></i>
-              <div>
-                {!!link_to('in\registro-empleador', $title = 'Registrar Empleador', $attributes = null, $secure = null)!!}
-              </div>
             </a>
-            @if(Entrust::hasRole('estudiante'))
+            <div>
+              {!!link_to('in\registro-empleador', $title = 'Registrar Empleador', $attributes = null, $secure = null)!!}
+            </div>
+            @if(Entrust::hasRole('postulante'))
               <div id="search">
                 <input type="text" placeholder="Buscar"/>
                 <i class="fa fa-search"></i>
@@ -44,7 +44,7 @@
           </div>
           <div class="col-xs-4 col-sm-8 top-panel-right">
             <ul class="nav navbar-nav pull-right panel-menu">
-              @if(Entrust::hasRole('estudiante'))
+              @if(Entrust::hasRole('postulante'))
                 <li class="hidden-xs">
                   <a href="index.html" class="modal-link">
                     <i class="fa fa-bell"></i>

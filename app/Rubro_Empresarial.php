@@ -8,7 +8,7 @@ class Rubro_Empresarial extends Model
 {
 
     protected $table = "rubros_empresariales";
-    protected $fillable = ['id','nombre_rubro_empresarial'];
+    protected $fillable = ['id','nombre_rubro_empresarial','estado'];
 
     public function juridicas(){
       return $this->hasMany('App\Juridica');

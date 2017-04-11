@@ -41,7 +41,7 @@ class JuridicasController extends PersonasController
     public function create()
     {
         if(Auth::user()->can('crear_empresa')){
-          $rubros_empresariales = Rubro_Empresarial::all();
+          $rubros_empresariales = Rubro_Empresarial::all()->where('estado','activo');
             return view('in.empresas.create')
               ->with('rubros_empresariales',$rubros_empresariales);
         }else{
@@ -113,7 +113,8 @@ class JuridicasController extends PersonasController
                 $telefono_celular = $telefono->nro_telefono;
               }
             }
-            $rubros_empresariales = Rubro_Empresarial::orderBy('id','ASC')->lists('nombre_rubro_empresarial','id');
+            $rubros_empresariales = Rubro_Empresarial::orderBy('id','ASC')
+              ->where('estado','activo')->lists('nombre_rubro_empresarial','id');
 
             return view('in.empresas.edit')
               ->with('pjuridica',$pjuridica)

@@ -131,6 +131,12 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.permisos.destroy',
 	]);
 
+	Route::resource('rubros_empresariales', 'RubrosEmpresarialesController');
+	Route::delete('rubros_empresariales/{id}/destroy', [
+		'uses'	=>	'RubrosEmpresarialesController@destroy',
+			'as'	=>	'in.rubros_empresariales.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [

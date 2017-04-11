@@ -29,7 +29,7 @@
 
 			<!--Start Content-->
 			<div id="content" class="col-xs-12 col-sm-10">
-				
+
 				<!--Start Indice-->
 				@yield('bodyIndice')
 				<!--End Indice-->

@@ -81,5 +81,21 @@
         </ul>
       </li>
     @endif
+
+    @if(Entrust::can('listar_rubros_empresariales'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Rubros Empresariales</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.rubros_empresariales.index')}}">Tabla de Rubros Empresariales</a></li>
+          @if(Entrust::can('crear_rubro_empresarial'))
+            <li><a href="{{route('in.rubros_empresariales.create')}}">Registrar Rubro Empresarial</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
   </ul>
 </div>
