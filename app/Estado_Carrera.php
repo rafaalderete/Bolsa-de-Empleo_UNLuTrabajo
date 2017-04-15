@@ -14,4 +14,8 @@ class Estado_Carrera extends Model
       return $this->hasMany('App\Estudio_Academico');
     }
 
+    public function requisitosCarrera(){
+      return $this->hasMany('App\Requisito_Carrera');
+    }
+
 }

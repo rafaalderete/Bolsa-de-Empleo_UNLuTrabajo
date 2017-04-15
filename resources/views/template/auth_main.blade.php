@@ -12,11 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="{{asset('http://fonts.googleapis.com/css?family=Righteous')}}" >
 	<link rel="stylesheet" href="{{asset('plugins/select2/select2.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
+	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
 
 </head>
 <body>
 
 	@yield('bodyContent')
+
+	@include('template.partials.footer')
 
 	<!--End Container-->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

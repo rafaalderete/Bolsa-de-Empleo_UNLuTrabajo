@@ -106,7 +106,7 @@
           <div class="form-group">
             {!! Form::label('email','E-mail', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'yyyy@xxxx.zzz', 'required'])!!}
+              {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'required'])!!}
             </div>
           </div>
 

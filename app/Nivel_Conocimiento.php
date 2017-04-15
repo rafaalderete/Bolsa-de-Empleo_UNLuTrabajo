@@ -18,4 +18,12 @@ class Nivel_Conocimiento extends Model
       return $this->hasMany('App\Conocimiento_Idioma');
     }
 
+    public function requisitosIdioma(){
+      return $this->hasMany('App\Requisito_Idioma');
+    }
+
+    public function requisitosAdicionales(){
+      return $this->hasMany('App\Requisito_Adicional');
+    }
+
 }

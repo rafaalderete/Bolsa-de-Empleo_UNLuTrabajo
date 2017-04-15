@@ -26,6 +26,12 @@
             @include('flash::message')
             @include('template.partials.errors')
             <!-- contenido ejemplo-->
+            @if(Entrust::hasRole('postulante'))
+              <div id="search">
+                <input type="text" placeholder="Buscar"/>
+                <i class="fa fa-search"></i>
+              </div>
+            @endif
               <div class="anuncio col-md-12">
                 <div class="empresa_logo col-md-2 text-center">
                   <img src="{{asset('img/empresa_logo.jpg')}}" class="img-rounded" alt="empresa_logo" />

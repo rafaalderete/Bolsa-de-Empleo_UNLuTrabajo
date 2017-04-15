@@ -5,17 +5,24 @@
 @section('bodyContent')
 
 	<div class="container-fluid">
-		<div id="page-login" class="row">
-			<div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+		<div id="page-login" class="row fondo">
+			<div class="col-xs-12 col-md-6 col-md-offset-3">
 				<div class="box">
 					<div class="box-content">
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
+							<a href={{ route('auth.login') }}><img src="{{asset('img/escudounlu.png')}}" class="img-rounded logo-login" alt="Logo" /></a>
 						</div>
 						{!!Form::open(['route' => 'registro-postulante','method' => 'POST'])!!}
 
 						@include('flash::message')
 						@include('template.partials.errors')
+
+						<div class="form-group">
+							<div class="mensaje-login text-center">
+								<p>Brindar exactamente los mismos datos con los que se encuentra registrado en la UNLu.</p>
+							</div>
+						</div>
 
 						<div class="row">
 							<div class="form-group">
@@ -32,15 +39,11 @@
 						<div class="row">
 							<div class="form-group">
 								{!! Form::label('legajo','Legajo', ['class' => 'col-sm-2 control-label']) !!}
-								<div class="col-sm-4">
+								<div class="col-sm-3">
 									{!! Form::text('legajo',null,['class' => 'form-control', 'placeholder' => 'N°Legajo', 'required'])!!}
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="form-group">
-								{!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-3 control-label']) !!}
-								<div class="col-sm-3">
+								{!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-2 control-label']) !!}
+								<div class="col-sm-2">
 									<select name="tipo_documento" class="populate placeholder" id="selectSimple" required>
 										<option value=""></option>
 										@foreach($tipos_documento as $tipo_documento)
@@ -48,7 +51,7 @@
 										@endforeach
 									</select>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-3">
 									{!! Form::text('nro_documento', null, ['class' => 'form-control', 'placeholder' => 'N° Documento', 'required'])!!}
 								</div>
 							</div>
@@ -56,33 +59,30 @@
 						<div class="row">
 							<div class="form-group">
 									{!! Form::label('email','Email', ['class' => 'col-sm-2 control-label']) !!}
-								<div class="col-sm-10">
-									{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'example@correo.com', 'autocomplete' => 'off', 'required'])!!}
+								<div class="col-sm-4">
+									{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'autocomplete' => 'off', 'required'])!!}
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="form-group">
-								{!! Form::label('nombre_usuario','Nombre de Usuario', ['class' => 'col-sm-3 control-label']) !!}
-								<div class="col-sm-7">
+								{!! Form::label('nombre_usuario','Nombre de Usuario', ['class' => 'col-sm-2 control-label']) !!}
+								<div class="col-sm-4">
 									{!! Form::text('nombre_usuario',null,['class' => 'form-control', 'placeholder' => 'Nombre de Usuario', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group">
-								{!! Form::label('password','Contraseña', ['class' => 'col-sm-3 control-label']) !!}
-								<div class="col-sm-5">
+								{!! Form::label('password','Contraseña', ['class' => 'col-sm-2 control-label']) !!}
+								<div class="col-sm-4">
 									{!!Form::password('password', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
+								</div>
+								{!! Form::label('password_confirmation','Confirmar Contraseña', ['class' => 'col-sm-2 control-label']) !!}
+								<div class="col-sm-4">
+										{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="form-group">
-								{!! Form::label('password_confirmation','Confirmar Contraseña', ['class' => 'col-sm-3 control-label']) !!}
-								<div class="col-sm-5">
-										{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
-								</div>
+
 							</div>
 						</div>
 						<div class="text-center">

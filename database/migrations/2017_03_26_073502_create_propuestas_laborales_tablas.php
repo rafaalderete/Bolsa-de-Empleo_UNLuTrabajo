@@ -19,9 +19,10 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->foreign('juridica_id')->references('id')->on('juridicas')->onDelete('cascade');
           $table->string('titulo');
           $table->string('descripcion');
-          $table->string('requisito');
           $table->date('fecha_inicio_propuesta');
           $table->date('fecha_fin_propuesta');
+          $table->integer('vacantes')->unsigned();
+          $table->integer('requisito_años_experiencia_laboral')->unsigned();
           $table->enum('estado_propuesta', ['activo','inactivo']);
           $table->integer('tipo_jornada_id')->unsigned();
           $table->foreign('tipo_jornada_id')->references('id')->on('tipos_jornada');
@@ -30,22 +31,59 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->timestamps();
       });
 
-      Schema::create('estudiante_propuesta_laboral', function (Blueprint $table) {
+      Schema::create('postulante_propuesta_laboral', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('propuesta_laboral_id')->unsigned();
           $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
-          $table->integer('persona_id')->unsigned();
-          $table->foreign('persona_id')->references('id')->on('personas')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('postulante_id')->unsigned();
+          $table->foreign('postulante_id')->references('id')->on('postulantes')->onUpdate('cascade')->onDelete('cascade');
           $table->date('fecha_postulacion');
           $table->timestamps();
       });
 
-      Schema::create('propuesta_unlu_carrera', function (Blueprint $table) {
+      Schema::create('requisitos_carrera', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('propuesta_laboral_id')->unsigned();
           $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
-          $table->integer('unlu_carrera_id')->unsigned();
-          $table->foreign('unlu_carrera_id')->references('id')->on('unlu_carreras')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('carrera_id')->unsigned();
+          $table->foreign('carrera_id')->references('id')->on('carreras')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('estado_carrera_id')->unsigned();
+          $table->foreign('estado_carrera_id')->references('id')->on('estados_carrera')->onUpdate('cascade')->onDelete('cascade');
+          $table->boolean('excluyente');
+          $table->timestamps();
+      });
+
+      Schema::create('requisitos_idioma', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('propuesta_laboral_id')->unsigned();
+          $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('idioma_id')->unsigned();
+          $table->foreign('idioma_id')->references('id')->on('idiomas')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('tipo_conocimiento_idioma_id')->unsigned();
+          $table->foreign('tipo_conocimiento_idioma_id')->references('id')->on('tipos_conocimiento_idioma')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('nivel_conocimiento_id')->unsigned();
+          $table->foreign('nivel_conocimiento_id')->references('id')->on('niveles_conocimiento')->onUpdate('cascade')->onDelete('cascade');
+          $table->boolean('excluyente');
+          $table->timestamps();
+      });
+
+      Schema::create('requisitos_residencia', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('propuesta_laboral_id')->unsigned();
+          $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
+          $table->string('lugar');
+          $table->boolean('excluyente');
+          $table->timestamps();
+      });
+
+      Schema::create('requisitos_adicionales', function (Blueprint $table) {
+          $table->increments('id');
+          $table->integer('propuesta_laboral_id')->unsigned();
+          $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
+          $table->string('nombre_requisito');
+          $table->integer('nivel_conocimiento_id')->unsigned();
+          $table->foreign('nivel_conocimiento_id')->references('id')->on('niveles_conocimiento')->onUpdate('cascade')->onDelete('cascade');
+          $table->boolean('excluyente');
           $table->timestamps();
       });
 
@@ -60,8 +98,11 @@ class CreatePropuestasLaboralesTablas extends Migration
     {
 
         Schema::drop('propuestas_laborales');
-        Schema::drop('estudiante_propuestalaboral');
-        Schema::drop('propuesta_unlucarrera');
+        Schema::drop('postulante_propuesta_laboral');
+        Schema::drop('requisitos_carrera');
+        Schema::drop('requisitos_idioma');
+        Schema::drop('requisitos_residencia');
+        Schema::drop('requisitos_adicionales');
 
     }
 }

@@ -8,7 +8,7 @@ class Postulante extends Model
 {
 
     protected $table = "postulantes";
-    protected $fillable = ['id','fisica_id','unlu_estudiante_id'];
+    protected $fillable = ['id','fisica_id','estudiante_id'];
 
     public function fisica(){
       return $this->belongsTo('App\Fisica');
@@ -18,8 +18,8 @@ class Postulante extends Model
       return $this->hasOne('App\Cv');
     }
 
-    public function unluEstudiante(){
-      return $this->belongsTo('App\Unlu_Estudiante');
+    public function estudiante(){
+      return $this->belongsTo('App\Estudiante');
     }
 
     public function propuestasLaborales(){

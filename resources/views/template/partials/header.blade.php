@@ -28,30 +28,31 @@
       </div>
       <div id="top-panel" class="col-xs-12 col-sm-10">
         <div class="row">
-          <div class="col-xs-8 col-sm-4">
-            <a href="#" class="show-sidebar">
-              <i class="fa fa-bars"></i>
-            </a>
-            <div>
-              {!!link_to('in\registro-empleador', $title = 'Registrar Empleador', $attributes = null, $secure = null)!!}
-            </div>
-            @if(Entrust::hasRole('postulante'))
-              <div id="search">
-                <input type="text" placeholder="Buscar"/>
-                <i class="fa fa-search"></i>
-              </div>
+          <div class="col-xs-10 col-sm-10">
+            @if(Entrust::hasRole('super_usuario') || Entrust::hasRole('administrador') )
+              <a href="#" class="show-sidebar">
+                <i class="fa fa-bars"></i>
+              </a>
             @endif
+            <div class="top-menu">
+              <ul>
+                @if(Entrust::hasRole('super_usuario') || Entrust::hasRole('administrador') )
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.registro-empleador') }}><i class="fa fa-building-o"></i>Registrar Empleador</a></li>
+                @endif
+                @if(Entrust::hasRole('postulante') )
+                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-building-o"></i>Buscar Ofertas</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-file-text-o"></i>Mi Cv</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
+                @endif
+                @if(Entrust::hasRole('empleador') )
+                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-briefcase"></i>Realizar Propuesta</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
+                @endif
+              </ul>
+            </div>
           </div>
-          <div class="col-xs-4 col-sm-8 top-panel-right">
+          <div class="col-xs-2 col-sm-2 top-panel-right">
             <ul class="nav navbar-nav pull-right panel-menu">
-              @if(Entrust::hasRole('postulante'))
-                <li class="hidden-xs">
-                  <a href="index.html" class="modal-link">
-                    <i class="fa fa-bell"></i>
-                    <span class="badge">7</span>
-                  </a>
-                </li>
-              @endif
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle account" data-toggle="dropdown">
                   @if(Auth::user()->imagen != null)
@@ -72,14 +73,19 @@
                 <ul class="dropdown-menu">
                   <li>
                     <a href="#">
-                      <i class="fa fa-user"></i>
-                      <span class="hidden-sm text">Perfil</span>
+                      @if (Auth::user()->persona->tipo_persona == 'fisica')
+                        <i class="fa fa-user"></i>
+                        <span class="hidden-sm text">Datos Personales</span>
+                      @else
+                        <i class="fa fa-building-o"></i>
+                        <span class="hidden-sm text">Datos de la Empresa</span>
+                      @endif
                     </a>
                   </li>
                   <li>
-                    <a href="#">
+                    <a href={{ route('in.configurar-cuenta-email') }}>
                       <i class="fa fa-cog"></i>
-                      <span class="hidden-sm text">Configuración</span>
+                      <span class="hidden-sm text">Configurar Cuenta</span>
                     </a>
                   </li>
                   <li>

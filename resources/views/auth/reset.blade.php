@@ -5,12 +5,13 @@
 @section('bodyContent')
 
 	<div class="container-fluid">
-		<div id="page-login" class="row">
+		<div id="page-login" class="row fondo">
 			<div class="col-xs-12 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
 				<div class="box">
 					<div class="box-content">
 						<div class="text-center">
 							<h3 class="page-header">UNLu Trabajo</h3>
+							<a href={{ route('auth.login') }}><img src="{{asset('img/escudounlu.png')}}" class="img-rounded logo-login" alt="Logo" /></a>
 						</div>
             {!! Form::open(['route' => 'password.reset']) !!}
 

@@ -70,8 +70,8 @@ class CreatePersonasTablas extends Migration
           $table->increments('id');
           $table->integer('fisica_id')->unsigned();
           $table->foreign('fisica_id')->references('id')->on('fisicas')->onDelete('cascade');
-          $table->integer('unlu_estudiante_id')->unsigned();
-          $table->foreign('unlu_estudiante_id')->references('id')->on('unlu_estudiantes');
+          $table->integer('estudiante_id')->unsigned();
+          $table->foreign('estudiante_id')->references('id')->on('estudiantes');
           $table->timestamps();
       });
 

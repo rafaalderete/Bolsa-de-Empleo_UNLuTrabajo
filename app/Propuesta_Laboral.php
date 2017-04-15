@@ -8,9 +8,9 @@ class Propuesta_Laboral extends Model
 {
 
     protected $table = "propuestas_laborales";
-    protected $fillable = ['id','juridica_id','titulo','descripcion','requisito',
-                            'fecha_inicio_propuesta','fecha_fin_propuesta','estado_propuesta',
-                            'tipo_trabajo_id','tipo_jornada_id'];
+    protected $fillable = ['id','juridica_id','titulo','descripcion','vacantes',
+                            'requisito_años_experiencia_laboral','fecha_inicio_propuesta',
+                            'fecha_fin_propuesta','estado_propuesta','tipo_trabajo_id','tipo_jornada_id'];
 
     public function juridica(){
       return $this->belongsTo('App\Juridica');
@@ -28,8 +28,20 @@ class Propuesta_Laboral extends Model
       return $this->belongsToMany('App\Postulante')->withPivot('fecha_postulacion');;
     }
 
-    public function unluCarreras(){
-      return $this->belongsToMany('App\Unlu_Carrera');
+    public function requisitosCarrera(){
+      return $this->hasMany('App\Requisito_Carrera');
+    }
+
+    public function requisitosIdioma(){
+      return $this->hasMany('App\Requisito_Idioma');
+    }
+
+    public function requisitosResidencia(){
+      return $this->hasMany('App\Requisito_Residencia');
+    }
+
+    public function requisitosAdicionales(){
+      return $this->hasMany('App\Requisito_Adicional');
     }
 
 }

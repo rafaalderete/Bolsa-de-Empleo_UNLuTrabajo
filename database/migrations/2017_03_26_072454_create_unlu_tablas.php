@@ -13,17 +13,17 @@ class CreateUnluTablas extends Migration
     public function up()
     {
 
-      Schema::create('unlu_carreras', function (Blueprint $table) {
+      Schema::create('carreras', function (Blueprint $table) {
           $table->increments('id');
           $table->string('nombre_carrera');
           $table->timestamps();
       });
 
-      Schema::create('unlu_estudiantes', function (Blueprint $table) {
+      Schema::create('estudiantes', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('legajo')->unsigned();
-          $table->integer('unlu_carrera_id')->unsigned();
-          $table->foreign('unlu_carrera_id')->references('id')->on('unlu_carreras');
+          $table->integer('carrera_id')->unsigned();
+          $table->foreign('carrera_id')->references('id')->on('carreras');
           $table->string('nombre_estudiante');
           $table->string('apellido_estudiante');
           $table->date('fecha_nacimiento_estudiante');
@@ -50,8 +50,8 @@ class CreateUnluTablas extends Migration
     public function down()
     {
 
-        Schema::drop('unlu_carreras');
-        Schema::drop('unlu_estudiantes');
+        Schema::drop('carreras');
+        Schema::drop('estudiantes');
 
     }
 }

@@ -1,0 +1,84 @@
+.footer {
+  clear: both;
+  position: absolute;
+  z-index: 10;
+  padding: 0;
+  width: 100%;
+  bottom: 10px;
+  background: #fcfcfc;
+}
+
+.footer-content {
+  margin-top: 10px;
+}
+
+.fondo { /* FONDO LOGIN */
+  background-image: url(../img/fondo_login.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.anuncio {
+  border: 2px solid;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+
+.empresa_logo {
+  margin-top: 3px;
+}
+
+.descripcion,
+.detalle {
+  margin-top: 3px;
+}
+
+.detalle {
+  border-bottom: 1px solid gray;
+}
+
+.top-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  margin-left: 30px;
+}
+
+.top-menu li {
+  float: left;
+  border-left: 1px solid #bdbdbd;
+  border-right: 1px solid #bdbdbd;
+}
+
+.top-menu li i {
+  padding: 0 5px;
+}
+
+.top-menu li a {
+  display: block;
+  color: black;
+  text-align: center;
+  margin: 0 15px;
+  text-decoration: none;
+}
+
+.top-menu li:hover {
+  background-color: #d8d8d8;
+}
+
+.mensaje-login {
+  padding-top: 5px;
+  border: 2px solid #64a481;
+  border-radius: 5px;
+}
+
+#sidebar-configuracion {
+  background-color: #fcfcfc;
+  border-right: 2px dashed #64a481;
+}
+
+#sidebar-configuracion span,
+#sidebar-configuracion i {
+  color: black;
+}

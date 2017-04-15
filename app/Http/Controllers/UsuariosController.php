@@ -16,7 +16,7 @@ use App\Juridica as Juridica;
 use App\Fisica as Fisica;
 use App\Postulante as Postulante;
 use App\Cv as Cv;
-use App\Unlu_Estudiante as Unlu_Estudiante;
+use App\Estudiante as Estudiante;
 use App\Tipo_Documento as Tipo_Documento;
 use App\Role as Rol;
 use App\Rubro_Empresarial as Rubro_Empresarial;
@@ -217,6 +217,25 @@ class UsuariosController extends Controller
         }
     }
 
+    public function getConfigurarCuentaEmail(){
+
+      return view('in.usuarios.configurar-cuenta-email');
+
+    }
+
+    public function postConfigurarCuentaEmail(Request $request){
+
+    }
+
+    public function getConfigurarCuentaPassword(){
+
+      return view('in.usuarios.configurar-cuenta-password');
+
+    }
+
+    public function postConfigurarCuentaPassword(Request $request){
+
+    }
 
     //------------- REGISTRO DE POSTULANTE -------------------
 
@@ -232,7 +251,7 @@ class UsuariosController extends Controller
     protected function postRegistroPostulante(RegistroPostulanteRequest $request){
         $error = false;
         $tipo_documento = Tipo_Documento::find($request->tipo_documento);
-        $estudiante = Unlu_Estudiante::select()->where('legajo','=',$request->legajo)
+        $estudiante = Estudiante::select()->where('legajo','=',$request->legajo)
           ->where('tipo_documento','=',$tipo_documento->nombre_tipo_documento)
           ->where('nro_documento','=',$request->nro_documento)
           ->where('email_estudiante','=',$request->email)
@@ -264,7 +283,7 @@ class UsuariosController extends Controller
 
             $postulante = new Postulante();
             $postulante->fisica_id = $pfisica->id;
-            $postulante->unlu_estudiante_id = $estudiante[0]->id;
+            $postulante->estudiante_id = $estudiante[0]->id;
             $postulante->save();//Se inserta el postulante.
 
             $cv = new Cv();

@@ -14,4 +14,8 @@ class Tipo_Conocimiento_Idioma extends Model
       return $this->hasMany('App\Conocimiento_Idioma');
     }
 
+    public function requisitosIdioma(){
+      return $this->hasMany('App\Requisito_Idioma');
+    }
+
 }

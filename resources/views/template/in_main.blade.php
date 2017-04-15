@@ -15,6 +15,7 @@
 	<link rel="stylesheet" href="{{asset('plugins/xcharts/xcharts.min.css')}}">
 	<link rel="stylesheet" href="{{asset('plugins/select2/select2.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
+	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
 
 </head>
 <body>
@@ -24,12 +25,13 @@
 	<!--Start Container-->
 	<div id="main" class="container-fluid">
 		<div class="row">
-
-			@include('template.partials.sidebar')
-
-			<!--Start Content-->
-			<div id="content" class="col-xs-12 col-sm-10">
-
+			@if (Auth::user()->hasRole('super_usuario') || Auth::user()->hasRole('administrador'))
+				@include('template.partials.sidebar')
+				<!--Start Content-->
+				<div id="content" class="col-xs-12 col-sm-10">
+			@else
+				<div id="content" class="col-xs-12 col-sm-12">
+			@endif
 				<!--Start Indice-->
 				@yield('bodyIndice')
 				<!--End Indice-->
@@ -40,6 +42,7 @@
 						@yield('bodyContent')
 					</div>
 				</section>
+
 				<!--End Contenido-->
 			</div>
 			<!--Agregar Etiqueta para el Modal si es necesario-->

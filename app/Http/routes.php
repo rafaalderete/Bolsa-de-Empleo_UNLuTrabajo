@@ -149,4 +149,24 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.registro-empleador'
 	]);
 
+	Route::get('configurar-cuenta-email', [
+		'uses'	=>	'UsuariosController@getConfigurarCuentaEmail',
+		'as'	=>	'in.configurar-cuenta-email'
+	]);
+
+	Route::post('configurar-cuenta-email', [
+		'uses'	=>	'UsuariosController@postConfigurarCuentaEmail',
+		'as'	=>	'in.configurar-cuenta-email'
+	]);
+
+	Route::get('configurar-cuenta-password', [
+		'uses'	=>	'UsuariosController@getConfigurarCuentaPassword',
+		'as'	=>	'in.configurar-cuenta-password'
+	]);
+
+	Route::post('configurar-cuenta-password', [
+		'uses'	=>	'UsuariosController@postConfigurarCuentaPassword',
+		'as'	=>	'in.configurar-cuenta-password'
+	]);
+
 });
