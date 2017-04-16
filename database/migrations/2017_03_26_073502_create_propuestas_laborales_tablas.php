@@ -21,6 +21,7 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->string('descripcion');
           $table->date('fecha_inicio_propuesta');
           $table->date('fecha_fin_propuesta');
+          $table->string('lugar_de_trabajo');
           $table->integer('vacantes')->unsigned();
           $table->integer('requisito_años_experiencia_laboral')->unsigned();
           $table->enum('estado_propuesta', ['activo','inactivo']);

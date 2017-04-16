@@ -72,7 +72,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li>
-                    <a href="#">
+                    <a href={{ route('in.configurar-datos') }}>
                       @if (Auth::user()->persona->tipo_persona == 'fisica')
                         <i class="fa fa-user"></i>
                         <span class="hidden-sm text">Datos Personales</span>

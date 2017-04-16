@@ -75,7 +75,14 @@
 
 #sidebar-configuracion {
   background-color: #fcfcfc;
-  border-right: 2px dashed #64a481;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+#sidebar-configuracion .nav.main-menu > li > a:hover,
+#sidebar-configuracion .nav.main-menu > li > a:focus,
+#sidebar-configuracion .nav.main-menu > li.active > a {
+  border-radius: 10px;
 }
 
 #sidebar-configuracion span,

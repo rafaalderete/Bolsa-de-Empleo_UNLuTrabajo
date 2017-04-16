@@ -400,7 +400,6 @@ a.show-sidebar:hover {
   display: block;
   z-index: 1999;
   position: relative;
-  border: 1px solid #f8f8f8;
   box-shadow: 0 0 4px #d8d8d8;
   background: transparent;
   margin-bottom: 20px;

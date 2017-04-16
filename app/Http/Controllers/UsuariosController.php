@@ -217,6 +217,60 @@ class UsuariosController extends Controller
         }
     }
 
+    //------------- CONFIGURACION -------------------
+
+    public function getConfigurarDatos(){
+
+      if (Auth::user()->hasRole('empleador')){
+        $pjuridica = Juridica::find(Auth::user()->persona->juridica->id);
+        $telefono_fijo = '';
+        $telefono_celular = '';
+        foreach ($pjuridica->persona->telefonos as $telefono) {
+          if ($telefono->tipo_telefono == 'fijo') {
+            $telefono_fijo = $telefono->nro_telefono;
+          }
+          if ($telefono->tipo_telefono == 'celular') {
+            $telefono_celular = $telefono->nro_telefono;
+          }
+        }
+        $rubros_empresariales = Rubro_Empresarial::orderBy('id','ASC')
+          ->where('estado','activo')->lists('nombre_rubro_empresarial','id');
+
+        return view('in.empresas.configurar-datos')
+          ->with('pjuridica',$pjuridica)
+          ->with('telefono_fijo',$telefono_fijo)
+          ->with('telefono_celular',$telefono_celular)
+          ->with('rubros_empresariales',$rubros_empresariales);
+      }
+      else {
+        $pfisica = Fisica::find(Auth::user()->persona->fisica->id);
+        $telefono_fijo = '';
+        $telefono_celular = '';
+        foreach ($pfisica->persona->telefonos as $telefono) {
+          if ($telefono->tipo_telefono == 'fijo') {
+            $telefono_fijo = $telefono->nro_telefono;
+          }
+          if ($telefono->tipo_telefono == 'celular') {
+            $telefono_celular = $telefono->nro_telefono;
+          }
+        }
+
+        return view('in.personas.configurar-datos')
+          ->with('pfisica',$pfisica)
+          ->with('telefono_fijo',$telefono_fijo)
+          ->with('telefono_celular',$telefono_celular);
+      }
+
+    }
+
+    public function postConfigurarDatosEmpresa(Request $request){
+
+    }
+
+    public function postConfigurarDatosPersona(Request $request){
+
+    }
+
     public function getConfigurarCuentaEmail(){
 
       return view('in.usuarios.configurar-cuenta-email');

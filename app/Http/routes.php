@@ -149,6 +149,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.registro-empleador'
 	]);
 
+	//------------- RUTAS PARA CONFIGURACION DE MAIL ---------------------
 	Route::get('configurar-cuenta-email', [
 		'uses'	=>	'UsuariosController@getConfigurarCuentaEmail',
 		'as'	=>	'in.configurar-cuenta-email'
@@ -159,6 +160,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.configurar-cuenta-email'
 	]);
 
+	//------------- RUTAS PARA CONFIGURACION DE PASSWORD ---------------------
 	Route::get('configurar-cuenta-password', [
 		'uses'	=>	'UsuariosController@getConfigurarCuentaPassword',
 		'as'	=>	'in.configurar-cuenta-password'
@@ -167,6 +169,22 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::post('configurar-cuenta-password', [
 		'uses'	=>	'UsuariosController@postConfigurarCuentaPassword',
 		'as'	=>	'in.configurar-cuenta-password'
+	]);
+
+	//------------- RUTAS PARA CONFIGURACION DE DATOS ---------------------
+	Route::get('configurar-datos', [
+		'uses'	=>	'UsuariosController@getConfigurarDatos',
+		'as'	=>	'in.configurar-datos'
+	]);
+
+	Route::post('configurar-datos-persona', [
+		'uses'	=>	'UsuariosController@postConfigurarDatosPersona',
+		'as'	=>	'in.configurar-datos-persona'
+	]);
+
+	Route::post('configurar-datos-empresa', [
+		'uses'	=>	'UsuariosController@postConfigurarDatosEmpresa',
+		'as'	=>	'in.configurar-datos-empresa'
 	]);
 
 });
