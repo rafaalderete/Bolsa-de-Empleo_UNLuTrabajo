@@ -65,11 +65,45 @@
         <div class="form-group">
           {!! Form::label('roles','Roles Asignados', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::select('roles[]',$roles, null, ['multiple', 'class' =>'populate placeholder', 'id' => 's2_with_tag'])!!}
+            {!! Form::select('roles[]',['none'], null, ['multiple', 'disabled', 'class' =>'populate placeholder', 'id' => 'selectRoles'])!!}
           </div>
+        </div>
+
+        <div class="form-group">
           {!! Form::label('imagen','Imagen', ['class' => 'col-sm-2 control-label'])!!}
           <div class="col-sm-4">
-            {!! Form::file('imagen') !!}
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="row">
+                  <div class="col-sm-12">
+                    {!!Form::hidden('img_default',asset('/img/fotoPerfil.jpg'),['id' => 'img_default'])!!}
+                    <div class="avatar-grande">
+                      <img id="imagen_usuario" src={{asset('/img/fotoPerfil.jpg')}} class='img-rounded' alt="Avatar" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row eliminar_imagen">
+                  <div class="col-sm-12">
+                    <span class="fa fa-trash-o" aria-hidden="true"><a>Eliminar Imagen</a></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="imagen-info">
+                  <p>La imagen debe ser jpeg, png, bmp, gif, o svg y no pesar más de 500kb</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                {!! Form::file('imagen', ['id' => 'imgInp']) !!}
+              </div>
+            </div>
+            <div class="row error-imagen">
+              <div class="col-sm-12">
+                <span>La imagen debe pesar menos de 500kb</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -81,7 +115,7 @@
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="reset" class="btn btn-default btn-label-left">
+            <button type="reset" class="btn btn-default btn-label-left" id="reset">
               <span><i class="fa fa-times-circle txt-danger"></i></span>
               Borrar
             </button>
@@ -101,19 +135,72 @@
 
 @section('bodyJS')
 
-  <script type="text/javascript">
+<script type="text/javascript">
 
-    $(document).ready(function() {
-      // Select
-      $('#s2_with_tag').select2({
-        placeholder: "Roles",
-      });
+  $(document).ready(function() {
 
-      $('#selectPersona').select2({
-        placeholder: "Persona"
-      });
+    $('#selectPersona').on('change', function() {
+      var select = $("#selectRoles");
+      select.select2('data', null);
+      var url = 'http://localhost:8080/Proyecto/public/in/getRoles';
+      var data = {
+        "persona_id": this.value
+      }
+
+      $.get (url,data,function (result) {
+
+        select.empty(); // remove old options
+        $.each(result.roles, function(index,value) {
+          select.append($("<option></option>")
+             .attr("value", index).text(value));
+          select.prop('disabled', false);
+        });
+      })
     });
 
-  </script>
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        if (input.files[0].size > 512000) {
+          $('.error-imagen').css('visibility', 'visible');
+          $('#imgInp').val(null);
+        }
+        else {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            $('#imagen_usuario').attr('src', e.target.result);
+            $('.error-imagen').css('visibility', 'hidden');
+          }
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    }
+
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
+
+    $('.eliminar_imagen').click(function() {
+      $('#imgInp').val(null);
+      $('#imagen_usuario').attr('src', $('#img_default').val());
+    });
+
+    $('#reset').click(function() {
+      $('#imgInp').val(null);
+      $('#imagen_usuario').attr('src', $('#img_default').val());
+    });
+
+    $('#selectRoles').select2({
+      placeholder: "Roles",
+    });
+
+    $('#selectPersona').select2({
+      placeholder: "Persona"
+    });
+
+  });
+
+</script>
 
 @endsection

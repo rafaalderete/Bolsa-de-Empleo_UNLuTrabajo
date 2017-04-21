@@ -40,7 +40,7 @@
 
       		<div class="form-group">
       			{!! Form::label('descripcion_permiso','Descripción Permiso', ['class' => 'col-sm-2 control-label'])!!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
       			  {!! Form::text('descripcion_permiso', $permiso->descripcion_permiso, ['class' => 'form-control', 'placeholder' => 'Descripción Permiso', 'required'])!!}
             </div>
           </div>

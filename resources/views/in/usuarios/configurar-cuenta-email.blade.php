@@ -51,7 +51,7 @@
         <div class="form-group">
           {!! Form::label('email_confirmation','Confirmar Nuevo E-mail', ['class' => 'col-sm-4 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::text('email_confirmation', null, ['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'required'])!!}
+            {!! Form::text('email_confirmation', null, ['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'autocomplete' => 'off', 'required'])!!}
           </div>
         </div>
 

@@ -15,6 +15,7 @@ class StoreUsuarioRequest extends Request
     const CAMPO_EMAIL = 'E-mail';
     const CAMPO_PASSWORD = 'Contraseña';
     const CAMPO_ROLES = 'Roles';
+    const CAMPO_IMAGEN = 'Imagen';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -62,7 +63,7 @@ class StoreUsuarioRequest extends Request
           'roles' => $roles_disponibles,
           'email' => 'email|required|unique:usuarios',
           'nombre_usuario' => 'min:4|max:20|required|unique:usuarios',
-          'imagen' => 'image'
+          'imagen' => 'image|max:500'
       ];
     }
 
@@ -76,9 +77,11 @@ class StoreUsuarioRequest extends Request
           'email.email' => 'El campo '.self::CAMPO_EMAIL.' no corresponde con una dirección de e-mail válida.',
           'password.min' => 'El campo '.self::CAMPO_PASSWORD.' debe contener al menos 6 caracteres.',
           'password.max' => 'El campo '.self::CAMPO_PASSWORD.' debe contener 20 caracteres como máximo.',
-          'roles.in' => 'Datos invalidos para el campo '.self::CAMPO_ROLES,
-          'persona_id.in' => 'Datos invalidos para el campo '.self::CAMPO_PERSONA,
-          'persona_id.required' => 'El campo '.self::CAMPO_PERSONA.' es obligatorio'
+          'roles.in' => 'Datos invalidos para el campo '.self::CAMPO_ROLES.'.',
+          'persona_id.in' => 'Datos invalidos para el campo '.self::CAMPO_PERSONA.'.',
+          'persona_id.required' => 'El campo '.self::CAMPO_PERSONA.' es obligatorio.',
+          'imagen.max' => 'La imagen no debe pesar más de 500kb.',
+          'imagen.image' => 'La imagen debe ser jpeg, png, bmp, gif, o svg.'
       ];
     }
 

@@ -40,14 +40,14 @@
 
       		<div class="form-group">
       			{!! Form::label('descripcion_rol','Descripción Rol', ['class' => 'col-sm-2 control-label'])!!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
       			  {!! Form::text('descripcion_rol', $rol->descripcion_rol, ['class' => 'form-control', 'placeholder' => 'Descripción Rol', 'required'])!!}
             </div>
           </div>
 
           <div class="form-group">
             {!! Form::label('permisos','Permisos', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-8">
               {!! Form::select('permisos[]',$permisos, $my_permisos, ['multiple', 'id' => 'selectPermisos'])!!}
             </div>
           </div>

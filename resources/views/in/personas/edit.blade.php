@@ -36,7 +36,7 @@
             <div class="col-sm-4">
               {!! Form::text('nombre_persona',$pfisica->nombre_persona,['class' => 'form-control', 'placeholder' => 'Nombre', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
             </div>
-            {!! Form::label('apellido_persona','Apellido', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('apellido_persona','Apellido', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('apellido_persona',$pfisica->apellido_persona,['class' => 'form-control', 'placeholder' => 'Apellido', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
             </div>
@@ -51,14 +51,14 @@
             <div class="col-sm-2">
               {!! Form::select('tipo_documento',$tipos_documento, $pfisica->tipo_documento_id, ['class' =>'populate placeholder', 'id' => 'selectSimple'])!!}
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
               {!! Form::text('nro_documento', $pfisica->nro_documento, ['class' => 'form-control', 'placeholder' => 'Numero', 'required'])!!}
             </div>
           </div>
 
           <div class="form-group">
             {!! Form::label('cuil','Cuil', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               {!! Form::text('cuil', $pfisica->cuil, ['class' => 'form-control', 'placeholder' => 'Cuil', 'required'])!!}
             </div>
           </div>
@@ -68,7 +68,7 @@
             <div class="col-sm-4">
               {!! Form::text('domicilio_residencia', $pfisica->persona->direccion->domicilio, ['class' => 'form-control', 'placeholder' => 'Calle - Numero', 'required'])!!}
             </div>
-              {!! Form::label('localidad_residencia','Localidad', ['class' => 'col-sm-2 control-label']) !!}
+              {!! Form::label('localidad_residencia','Localidad', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('localidad_residencia', $pfisica->persona->direccion->localidad, ['class' => 'form-control', 'placeholder' => 'Localidad', 'required'])!!}
             </div>
@@ -79,7 +79,7 @@
             <div class="col-sm-4">
               {!! Form::text('provincia_residencia', $pfisica->persona->direccion->provincia, ['class' => 'form-control', 'placeholder' => 'Provicia', 'required'])!!}
             </div>
-            {!! Form::label('pais_residencia','Pais', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('pais_residencia','Pais', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('pais_residencia', $pfisica->persona->direccion->pais, ['class' => 'form-control', 'placeholder' => 'Pais', 'required'])!!}
             </div>
@@ -87,7 +87,7 @@
 
           <div class="form-group">
             {!! Form::label('telefono_fijo','Teléfono Fijo', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               @if ($telefono_fijo == '')
                 {!! Form::text('telefono_fijo', null, ['class' => 'form-control', 'placeholder' => 'Telefono Fijo'])!!}
               @else
@@ -98,7 +98,7 @@
 
           <div class="form-group">
             {!! Form::label('telefono_celular','Teléfono Celular', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               @if ($telefono_celular == '')
                   {!! Form::text('telefono_celular', null, ['class' => 'form-control', 'placeholder' => 'Telefono Celular'])!!}
               @else

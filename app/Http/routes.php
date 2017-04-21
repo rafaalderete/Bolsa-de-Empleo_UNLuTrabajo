@@ -84,7 +84,14 @@ Route::post('password/reset', [
 	'as'	=>	'password.reset'
 ]);
 
-//------------- RUTAS DEL PANEL DE ADMINISTRACION -----------------------------------
+//------------- RUTA PARA VERIFICACION DE CAMBIO DE EMAIL ---------------------------
+
+Route::get('configurar-cuenta-email/verificacion/{token}', [
+	'uses'	=>	'EmailController@verificacionCambioEmail',
+	'as'	=>	'configurar-cuenta-email.verificacion'
+]);
+
+//------------- RUTAS DE USUARIOS AUTENTICADOS -----------------------------------
 
 // las rutas dentro de este grupo deben cumplir con el middleware auth
 Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
@@ -125,6 +132,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.usuarios.destroy',
     ]);
 
+	Route::get('getRoles', [
+		'uses'	=>	'UsuariosController@getRoles',
+		'as'	=>	'in.getRoles'
+	]);
+
   Route::resource('permisos', 'PermissionsController');
 	Route::delete('permisos/{id}/destroy', [
 		'uses'	=>	'PermissionsController@destroy',
@@ -151,12 +163,12 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
 	//------------- RUTAS PARA CONFIGURACION DE MAIL ---------------------
 	Route::get('configurar-cuenta-email', [
-		'uses'	=>	'UsuariosController@getConfigurarCuentaEmail',
+		'uses'	=>	'EmailController@getConfigurarCuentaEmail',
 		'as'	=>	'in.configurar-cuenta-email'
 	]);
 
 	Route::post('configurar-cuenta-email', [
-		'uses'	=>	'UsuariosController@postConfigurarCuentaEmail',
+		'uses'	=>	'EmailController@postConfigurarCuentaEmail',
 		'as'	=>	'in.configurar-cuenta-email'
 	]);
 

@@ -55,7 +55,7 @@
 
           <div class="form-group">
             {!! Form::label('cuit','Cuit', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               {!! Form::text('cuit', null, ['class' => 'form-control', 'placeholder' => 'Cuit', 'required'])!!}
             </div>
           </div>
@@ -65,7 +65,7 @@
             <div class="col-sm-4">
               {!! Form::text('domicilio_residencia', null, ['class' => 'form-control', 'placeholder' => 'Calle - Numero', 'required'])!!}
             </div>
-              {!! Form::label('localidad_residencia','Localidad', ['class' => 'col-sm-2 control-label']) !!}
+              {!! Form::label('localidad_residencia','Localidad', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('localidad_residencia', null, ['class' => 'form-control', 'placeholder' => 'Localidad', 'required'])!!}
             </div>
@@ -76,7 +76,7 @@
             <div class="col-sm-4">
               {!! Form::text('provincia_residencia', null, ['class' => 'form-control', 'placeholder' => 'Provincia', 'required'])!!}
             </div>
-            {!! Form::label('pais_residencia','Pais', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('pais_residencia','Pais', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('pais_residencia', null, ['class' => 'form-control', 'placeholder' => 'Pais', 'required'])!!}
             </div>
@@ -84,14 +84,14 @@
 
           <div class="form-group">
             {!! Form::label('telefono_fijo','Teléfono Fijo', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               {!! Form::text('telefono_fijo', null, ['class' => 'form-control', 'placeholder' => 'Telefono Fijo'])!!}
             </div>
           </div>
 
           <div class="form-group">
             {!! Form::label('telefono_celular','Teléfono Celular', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-5">
+            <div class="col-sm-4">
               {!! Form::text('telefono_celular', null, ['class' => 'form-control', 'placeholder' => 'Telefono Celular'])!!}
             </div>
           </div>

@@ -9,7 +9,6 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\PersonasController;
 use Laracasts\Flash\Flash;
-use App\Traits\StorePersona;
 use App\Usuario as Usuario;
 use App\Persona as Persona;
 use App\Juridica as Juridica;
@@ -24,13 +23,17 @@ use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Http\Requests\RegistroEmpleadorRequest;
 use App\Http\Requests\RegistroPostulanteRequest;
+use App\Http\Requests\ConfigurarDatosPersonaFisicaRequest;
+use App\Http\Requests\ConfigurarDatosPersonaJuridicaRequest;
+use App\Http\Requests\ConfigurarPasswordRequest;
 use Illuminate\Support\Facades\Auth;
 use File;
+use Hash;
 use Illuminate\Support\Facades\Mail;
 
-class UsuariosController extends Controller
+class UsuariosController extends PersonasController
 {
-    use StorePersona;//Metodo storePersona()
+
     /**
      * Display a listing of the resource.
      *
@@ -67,17 +70,10 @@ class UsuariosController extends Controller
      */
     public function create(){ // envia a la vista para cargar los datos del nuevo usuario
         if(Auth::user()->can('crear_usuario')){
-          if (Auth::user()->hasRole('super_usuario')) {
-            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
-          }
-          else {
-            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->where('name','<>','super_usuario')->lists('name', 'id');
-          }
           $personas = Persona::all()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
 
           return view('in.usuarios.create')
-              ->with('personas',$personas)
-              ->with('roles',$roles);
+              ->with('personas',$personas);
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -92,42 +88,55 @@ class UsuariosController extends Controller
      */
     public function store(StoreUsuarioRequest $request){ // almacena los datos en Base y muestra el msj de OK, devuelve al index
         if(Auth::user()->can('crear_usuario')){
-          // se usan los valores de la vista del usuario creado
-          $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
-                                                   // all() solo trae los atributos los usuario para agregar
-
-          //Guarda la Imagen. Manipular Imagenes y no coliciones de nombres
-          if ($request->file('imagen')) {
-              $file = $request->file('imagen');
-              $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
-              $path = public_path(). '/img/usuarios/';
-              $file->move($path, $name);
-              $usuario->imagen = $name;
+          $error = false;
+          $persona = Persona::find($request->persona_id);
+          $roles_seleccionados = $request->roles;
+          $rol_empleador = false;
+          $rol_postulante = false;
+          foreach ($roles_seleccionados as $rol_seleccionado) {
+            $rol = Rol::find($rol_seleccionado);
+            if ($rol->name == 'empleador'){
+              $rol_empleador = true;
+            }
           }
+          //Control de que una persona fisica no puede ser empleador y una persona juridica solo puede ser empleador.
+          if ($persona->tipo_persona == 'fisica' && $rol_empleador) {
+            $error = true;
+          }
+          if ( (count($roles_seleccionados) == 1) && ($persona->tipo_persona == 'juridica' && !$rol_empleador) ) {
+            $error = true;
+          }
+          if ($error) {
+            Flash::error('Datos invalidos para el campo Roles')->important(); // se muestra el msj de usuario creado
+            return redirect()->back();
+          }
+          else {
+            // se usan los valores de la vista del usuario creado
+            $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
+                                                     // all() solo trae los atributos los usuario para agregar
 
-          $usuario->password = bcrypt($request->password); // se encripta la contraseña
-          $usuario->save(); // se almacena el objeto en la Base
+            //Guarda la Imagen. Manipular Imagenes y no coliciones de nombres
+            if ($request->file('imagen')) {
+                $file = $request->file('imagen');
+                $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
+                $path = public_path(). '/img/usuarios/';
+                $file->move($path, $name);
+                $usuario->imagen = $name;
+            }
 
-          //sincronizo con la tabla pivot
-          $roles = $request->input('roles', []);
-          $usuario->roles()->sync($roles);
+            $usuario->password = bcrypt($request->password); // se encripta la contraseña
+            $usuario->save(); // se almacena el objeto en la Base
 
-          Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado.')->important(); // se muestra el msj de usuario creado
-          return redirect()->route('in.usuarios.index'); // se devuelve al index
+            //sincronizo con la tabla pivot
+            $roles = $request->input('roles', []);
+            $usuario->roles()->sync($roles);
+
+            Flash::success('Usuario ' . $usuario->nombre_usuario . ' agregado.')->important(); // se muestra el msj de usuario creado
+            return redirect()->route('in.usuarios.index'); // se devuelve al index
+          }
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -154,11 +163,24 @@ class UsuariosController extends Controller
 
           $my_persona = $usuario->persona_id; // recupero id de persona asociada
 
-          if (Auth::user()->hasRole('super_usuario')) {
-            $roles = Rol::orderBy('name', 'ASC')->paginate()->where('estado_rol', 'activo')->lists('name', 'id'); // trae todos los roles activos
+          $persona = $usuario->persona;
+          if ($persona->tipo_persona == 'fisica') {//Obtengo los roles dependiendo el tipo de persona.
+            if (Auth::user()->hasRole('super_usuario')) {
+              $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+                ->where('name','<>','empleador')
+                ->lists('name', 'id');
+            }
+            else {
+              $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+                ->where('name','<>','empleador')
+                ->where('name','<>','super_usuario')
+                ->lists('name', 'id');
+            }
           }
           else {
-            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')->where('name','<>','super_usuario')->lists('name', 'id');
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+              ->where('name','=','empleador')
+              ->lists('name', 'id');
           }
 
           // necesito el array de los roles q contiene
@@ -177,6 +199,30 @@ class UsuariosController extends Controller
 
     }
 
+    private function updateImagen($imagenVieja, $usuario, $request){
+
+      //Guarda la Imagen. Manipular Imagenes y no colisiones de nombres
+      if ($request->imagen == null) {
+        if ($request->imagen_cambiada == 1) {
+          $usuario->imagen = null;
+          File::delete(public_path().'/img/usuarios/'.$imagenVieja);
+        }
+      }
+      else {
+        if ($request->file('imagen')) {
+            File::delete(public_path().'/img/usuarios/'.$imagenVieja);
+            $file = $request->file('imagen');
+            $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
+            $path = public_path(). '/img/usuarios/';
+            $file->move($path, $name);
+            $usuario->imagen = $name;
+        }
+      }
+
+      return $usuario;
+
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -186,35 +232,83 @@ class UsuariosController extends Controller
      */
     public function update(UpdateUsuarioRequest $request, $id){
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
-          $usuario = Usuario::find($id); // busca el usario al modificar
-
-          // se borra en caso de ser actualizada
-          $imagenVieja = $usuario->imagen;
-
-          // pasa todo los valores actializado de request en la user
-          $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
-
-          //Garda la Imagen. Manipular Imagenes y no coliciones de nombres
-          if ($request->file('imagen')) {
-              File::delete(public_path().'/img/usuarios/'.$imagenVieja);
-              $file = $request->file('imagen');
-              $name = 'image_' . time().'.'. $file->getClientOriginalExtension();
-              $path = public_path(). '/img/usuarios/';
-              $file->move($path, $name);
-              $usuario->imagen = $name;
+          $error = false;
+          $persona = Persona::find($request->persona_id);
+          $roles_seleccionados = $request->roles;
+          $rol_empleador = false;
+          $rol_postulante = false;
+          foreach ($roles_seleccionados as $rol_seleccionado) {
+            $rol = Rol::find($rol_seleccionado);
+            if ($rol->name == 'empleador'){
+              $rol_empleador = true;
+            }
           }
+          //Control de que una persona fisica no puede ser empleador y una persona juridica solo puede ser empleador.
+          if ($persona->tipo_persona == 'fisica' && $rol_empleador) {
+            $error = true;
+          }
+          if ( (count($roles_seleccionados) == 1) && ($persona->tipo_persona == 'juridica' && !$rol_empleador) ) {
+            $error = true;
+          }
+          if ($error) {
+            Flash::error('Datos invalidos para el campo Roles')->important(); // se muestra el msj de usuario creado
+            return redirect()->back();
+          }
+          else {
+            $usuario = Usuario::find($id); // busca el usario al modificar
 
-          $usuario->save(); // se guarda en BD
+            // se borra en caso de ser actualizada
+            $imagenVieja = $usuario->imagen;
 
-          //sincronizo con la tabla pivot
-          $roles = $request->input('roles', []);
-          $usuario->roles()->sync($roles);
+            // pasa todo los valores actializado de request en la user
+            $usuario->fill($request->all()); // se asignan todos los valores modificados del usuario al usuario
 
-          Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado')->important();
-          return redirect()->route('in.usuarios.index');
+            $usuario = $this->updateImagen($imagenVieja, $usuario, $request);
+
+            $usuario->save(); // se guarda en BD
+
+            //sincronizo con la tabla pivot
+            $roles = $request->input('roles', []);
+            $usuario->roles()->sync($roles);
+
+            Flash::warning('Usuario ' . $usuario->nombre_usuario . ' modificado')->important();
+            return redirect()->route('in.usuarios.index');
+          }
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
+    }
+
+    public function getRoles(Request $request){
+
+      if($request->ajax()){
+        $persona = Persona::find($request->persona_id);
+        if ($persona->tipo_persona == 'fisica') {//Obtengo los roles dependiendo el tipo de persona.
+          if (Auth::user()->hasRole('super_usuario')) {
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+              ->where('name','<>','empleador')
+              ->lists('name', 'id');
+          }
+          else {
+            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+              ->where('name','<>','empleador')
+              ->where('name','<>','super_usuario')
+              ->lists('name', 'id');
+          }
+        }
+        else {
+          $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+            ->where('name','=','empleador')
+            ->lists('name', 'id');
+        }
+        return response()->json([
+          'roles' => $roles
+        ]);
+      }
+      else {
+        return redirect()->back();
+      }
+
     }
 
     //------------- CONFIGURACION -------------------
@@ -263,21 +357,48 @@ class UsuariosController extends Controller
 
     }
 
-    public function postConfigurarDatosEmpresa(Request $request){
+    public function postConfigurarDatosEmpresa(ConfigurarDatosPersonaJuridicaRequest $request){
+
+      if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
+        Flash::error('Debe ingresar al menos un Teléfono.')->important();
+        return redirect()->back();
+      }
+      else {
+        $this->updatePersona($request, Auth::user()->persona->id);
+
+        $pjuridica = Juridica::find(Auth::user()->persona->juridica->id);
+        $pjuridica->rubro_empresarial_id = $request->rubro_empresarial;
+        $pjuridica->save();
+
+        $usuario = Usuario::find(Auth::user()->id);
+        $imagenVieja = $usuario->imagen;
+        $usuario = $this->updateImagen($imagenVieja, $usuario, $request);
+        $usuario->save();
+
+
+        Flash::warning('Datos Modificados.')->important();
+        return redirect()->route('in.configurar-datos');
+      }
 
     }
 
-    public function postConfigurarDatosPersona(Request $request){
+    public function postConfigurarDatosPersona(ConfigurarDatosPersonaFisicaRequest $request){
 
-    }
+      if( ($request->telefono_fijo == '') && ($request->telefono_celular == '') ){
+        Flash::error('Debe ingresar al menos un Teléfono.')->important();
+        return redirect()->back();
+      }
+      else {
+        $this->updatePersona($request, Auth::user()->persona->id);
 
-    public function getConfigurarCuentaEmail(){
+        $usuario = Usuario::find(Auth::user()->id);
+        $imagenVieja = $usuario->imagen;
+        $usuario = $this->updateImagen($imagenVieja, $usuario, $request);
+        $usuario->save();
 
-      return view('in.usuarios.configurar-cuenta-email');
-
-    }
-
-    public function postConfigurarCuentaEmail(Request $request){
+        Flash::warning('Datos Modificados.')->important();
+        return redirect()->route('in.configurar-datos');
+      }
 
     }
 
@@ -287,7 +408,20 @@ class UsuariosController extends Controller
 
     }
 
-    public function postConfigurarCuentaPassword(Request $request){
+    public function postConfigurarCuentaPassword(ConfigurarPasswordRequest $request){
+
+      if (Hash::check($request->password_actual, Auth::user()->password)) {
+        $user = Auth::user();
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        Flash::warning('Contraseña Modificada.')->important();
+        return redirect()->route('in.configurar-cuenta-password');
+      }
+      else {
+        Flash::error('Contraseña Incorrecta.')->important();
+        return redirect()->route('in.configurar-cuenta-password');
+      }
 
     }
 
@@ -303,6 +437,7 @@ class UsuariosController extends Controller
     }
 
     protected function postRegistroPostulante(RegistroPostulanteRequest $request){
+
         $error = false;
         $tipo_documento = Tipo_Documento::find($request->tipo_documento);
         $estudiante = Estudiante::select()->where('legajo','=',$request->legajo)
@@ -525,6 +660,7 @@ class UsuariosController extends Controller
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $usuario = Usuario::find($id); // busca el usuario por su id
 
+          File::delete(public_path().'/img/usuarios/'.$usuario->imagen);
           $usuario->delete(); // lo elimina
 
           Flash::error('Usuario ' . $usuario->nombre_usuario . ' eliminado.')->important();

@@ -64,7 +64,7 @@ class RegistroEmpleadorRequest extends Request
         'nombre_comercial.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
         'nombre_comercial.max' => 'El campo '.self::CAMPO_NOMBRE.' debe contener 20 caracteres como máximo.',
         'fecha_fundacion.date_format' => 'El campo '.self::CAMPO_FECHA_FUNDACION.' debe ser una fecha válida.',
-        'rubro_empresarial.in' => 'Datos invalidos para el campo '.self::CAMPO_RUBRO,
+        'rubro_empresarial.in' => 'Datos invalidos para el campo '.self::CAMPO_RUBRO.'.',
         'cuit.min' => 'El campo '.self::CAMPO_CUIT.' debe contener 11 caracteres.',
         'cuit.max' => 'El campo '.self::CAMPO_CUIT.' debe contener 11 caracteres.',
         'cuit.unique' => 'El elemento '.self::CAMPO_CUIT.' ya está en uso.',

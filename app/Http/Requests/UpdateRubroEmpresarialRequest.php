@@ -45,7 +45,7 @@ class UpdateRubroEmpresarialRequest extends Request
       return [
         'nombre_rubro_empresarial.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
         'nombre_rubro_empresarial.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
-        'estado.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
+        'estado.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO.'.',
       ];
     }
 }

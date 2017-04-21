@@ -47,7 +47,7 @@ class UpdatePermisoRequest extends Request
       return [
         'name.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
         'name.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
-        'estado_permiso.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
+        'estado_permiso.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO.'.',
       ];
     }
 }

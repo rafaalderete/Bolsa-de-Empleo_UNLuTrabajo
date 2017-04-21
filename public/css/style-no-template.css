@@ -89,3 +89,34 @@
 #sidebar-configuracion i {
   color: black;
 }
+
+.imagen-info {
+  background-color: #fcf8ee;
+  border: 1px solid #f7ebcc;
+  border-radius: 5px;
+  text-align: center;
+  padding: 8px;
+}
+
+.imagen-info p {
+  margin-top: 5px;
+}
+
+.error-imagen {
+  visibility: hidden;
+}
+
+.error-imagen span {
+  color: red;
+  font-weight: bold;
+}
+
+.eliminar_imagen {
+  cursor: pointer;
+}
+
+.avatar-grande > img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #f8f8f8;
+}

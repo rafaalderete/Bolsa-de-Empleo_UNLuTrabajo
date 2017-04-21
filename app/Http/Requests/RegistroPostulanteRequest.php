@@ -52,7 +52,7 @@ class RegistroPostulanteRequest extends Request
         'nombre_persona.max' => 'El campo '.self::CAMPO_NOMBRE.' debe contener 20 caracteres como máximo.',
         'apellido_persona.min' => 'El campo '.self::CAMPO_APELLIDO.' debe contener al menos 4 caracteres.',
         'apellido_persona.max' => 'El campo '.self::CAMPO_APELLIDO.' debe contener 20 caracteres como máximo.',
-        'tipo_documento.exists' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_DOCUMENTO,
+        'tipo_documento.exists' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_DOCUMENTO.'.',
         'nro_documento.min' => 'El campo '.self::CAMPO_NRO_DOCUMENTO.' debe contener al menos 5 caracteres.',
         'nro_documento.max' => 'El campo '.self::CAMPO_NRO_DOCUMENTO.' debe contener 12 caracteres como máximo.',
         'email.unique' => 'El elemento '.self::CAMPO_EMAIL.' ya está en uso.',
@@ -61,7 +61,7 @@ class RegistroPostulanteRequest extends Request
         'nombre_usuario.max' => 'El campo '.self::CAMPO_USUARIO.' debe contener 20 caracteres como máximo.',
         'nombre_usuario.unique' => 'El elemento '.self::CAMPO_USUARIO.' ya está en uso.',
         'password.min' => 'El campo '.self::CAMPO_PASSWORD.' debe contener al menos 4 caracteres.',
-        'password.confirmed' => 'La contraseña debe y coincidir con la confirmación.'
+        'password.confirmed' => 'La contraseña debe coincidir con la confirmación.'
       ];
     }
 }

@@ -61,7 +61,7 @@
 	<script src="{{asset('plugins/tinymce/tinymce.min.js')}}"></script>
 	<script src="{{asset('plugins/tinymce/jquery.tinymce.min.js')}}"></script>
 	<!-- All functions for this theme + document.ready processing -->
-	<script src="{{asset('js/devoops.min.js')}}"></script>
+	<script src="{{asset('js/devoops.js')}}"></script>
 	<!-- Se Agregaron -->
 	<script src="{{asset('plugins/select2/select2.js')}}"></script>
 

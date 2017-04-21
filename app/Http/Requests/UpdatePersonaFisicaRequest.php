@@ -64,7 +64,7 @@ class UpdatePersonaFisicaRequest extends Request
           'apellido_persona.min' => 'El campo '.self::CAMPO_APELLIDO.' debe contener al menos 4 caracteres.',
           'apellido_persona.max' => 'El campo '.self::CAMPO_APELLIDO.' debe contener 20 caracteres como máximo.',
           'fecha_nacimiento.date_format' => 'El campo '.self::CAMPO_FECHA_NACIMIENTO.' debe ser una fecha válida.',
-          'tipo_documento.exists' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_DOCUMENTO,
+          'tipo_documento.exists' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_DOCUMENTO.'.',
           'nro_documento.min' => 'El campo '.self::CAMPO_NRO_DOCUMENTO.' debe contener al menos 5 caracteres.',
           'nro_documento.max' => 'El campo '.self::CAMPO_NRO_DOCUMENTO.' debe contener 12 caracteres como máximo.',
           'nro_documento.unique' => 'El elemento '.self::CAMPO_NRO_DOCUMENTO.' ya está en uso.',

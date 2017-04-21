@@ -70,8 +70,8 @@ class UpdateRolRequest extends Request
           'name.min' => 'El campo '.self::CAMPO_NOMBRE_ROL.' debe contener al menos 4 caracteres.',
           'name.max' => 'El campo '.self::CAMPO_NOMBRE_ROL.' debe contener 20 caracteres como máximo.',
           'name.unique' => 'El elemento '.self::CAMPO_NOMBRE_ROL.' ya está en uso.',
-          'permisos.in' => 'Datos invalidos para el campo '.self::CAMPO_PERMISOS,
-          'estado_rol.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO,
+          'permisos.in' => 'Datos invalidos para el campo '.self::CAMPO_PERMISOS.'.',
+          'estado_rol.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO.'.',
       ];
     }
 
