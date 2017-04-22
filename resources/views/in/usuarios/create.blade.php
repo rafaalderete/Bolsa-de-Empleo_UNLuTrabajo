@@ -142,7 +142,7 @@
     $('#selectPersona').on('change', function() {
       var select = $("#selectRoles");
       select.select2('data', null);
-      var url = 'http://localhost:8080/Proyecto/public/in/getRoles';
+      var url = '../getRoles';
       var data = {
         "persona_id": this.value
       }
