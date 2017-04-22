@@ -120,3 +120,19 @@
   height: 100px;
   border: 1px solid #f8f8f8;
 }
+
+.requisitos-label p {
+  font-weight: bold;
+  border-bottom: 3px ridge #f8f8f8;
+  padding-bottom: 5px;
+}
+
+.requisitos-tabla {
+  border: 1px solid #fcfcfc;
+  border-top: 1px solid #fcfcfc;
+}
+
+.requisitos-tabla-checkbox {
+  box-shadow: none;
+  margin: 0 !important;
+}

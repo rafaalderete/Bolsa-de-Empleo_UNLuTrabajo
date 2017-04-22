@@ -199,4 +199,15 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.configurar-datos-empresa'
 	]);
 
+	//------------- RUTAS PARA REALIZACION DE PROPUESTA LABORAL ---------------------
+	Route::get('realizar-propuesta', [
+		'uses'	=>	'PropuestasController@getRealizarPropuesta',
+		'as'	=>	'in.realizar-propuesta'
+	]);
+
+	Route::post('realizar-propuesta', [
+		'uses'	=>	'PropuestasController@postRealizarPropuesta',
+		'as'	=>	'in.realizar-propuesta'
+	]);
+
 });
