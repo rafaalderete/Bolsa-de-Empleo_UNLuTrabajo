@@ -13,7 +13,7 @@
 							<h3 class="page-header">UNLu Trabajo</h3>
 							<a href={{ route('auth.login') }}><img src="{{asset('img/escudounlu.png')}}" class="img-rounded logo-login" alt="Logo" /></a>
 						</div>
-						{!!Form::open(['route' => 'registro-postulante','method' => 'POST'])!!}
+						{!!Form::open(['route' => 'registro-estudiante','method' => 'POST'])!!}
 
 						@include('flash::message')
 						@include('template.partials.errors')

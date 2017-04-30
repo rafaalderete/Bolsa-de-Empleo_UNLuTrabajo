@@ -13,16 +13,16 @@ use App\Usuario as Usuario;
 use App\Persona as Persona;
 use App\Juridica as Juridica;
 use App\Fisica as Fisica;
-use App\Postulante as Postulante;
-use App\Cv as Cv;
 use App\Estudiante as Estudiante;
+use App\Cv as Cv;
+use App\Unlu_Estudiante as Unlu_Estudiante;
 use App\Tipo_Documento as Tipo_Documento;
 use App\Role as Rol;
 use App\Rubro_Empresarial as Rubro_Empresarial;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Http\Requests\RegistroEmpleadorRequest;
-use App\Http\Requests\RegistroPostulanteRequest;
+use App\Http\Requests\RegistroEstudianteRequest;
 use App\Http\Requests\ConfigurarDatosPersonaFisicaRequest;
 use App\Http\Requests\ConfigurarDatosPersonaJuridicaRequest;
 use App\Http\Requests\ConfigurarPasswordRequest;
@@ -251,7 +251,7 @@ class UsuariosController extends PersonasController
             $error = true;
           }
           if ($error) {
-            Flash::error('Datos invalidos para el campo Roles')->important(); // se muestra el msj de usuario creado
+            Flash::error('Datos invalidos para el campo Roles')->important();
             return redirect()->back();
           }
           else {
@@ -425,58 +425,60 @@ class UsuariosController extends PersonasController
 
     }
 
-    //------------- REGISTRO DE POSTULANTE -------------------
+    //------------- REGISTRO DE Estudiante -------------------
 
-    protected function getRegistroPostulante(){
+    protected function getRegistroEstudiante(){
 
         $tipos_documento = Tipo_Documento::all();
 
-        return view('auth.registro_postulante')
+        return view('auth.registro_estudiante')
         ->with('tipos_documento',$tipos_documento);
 
     }
 
-    protected function postRegistroPostulante(RegistroPostulanteRequest $request){
+    protected function postRegistroEstudiante(RegistroEstudianteRequest $request){
 
         $error = false;
         $tipo_documento = Tipo_Documento::find($request->tipo_documento);
-        $estudiante = Estudiante::select()->where('legajo','=',$request->legajo)
+        $unlu_estudiante = Unlu_Estudiante::select()->where('legajo','=',$request->legajo)
           ->where('tipo_documento','=',$tipo_documento->nombre_tipo_documento)
           ->where('nro_documento','=',$request->nro_documento)
-          ->where('email_estudiante','=',$request->email)
-          ->get(); //Comprobamos que la persona es realmente un estudiante.
-        if (count($estudiante) > 0)  {
-          $nombre_estudiante = strtolower($estudiante[0]->nombre_estudiante);
-          $apellido_estudiante = strtolower($estudiante[0]->apellido_estudiante);
+          ->where('email','=',$request->email)
+          ->get(); //Comprobamos que la persona es realmente un estudiante de la UNLu.
+        if (count($unlu_estudiante) > 0)  {
+          $nombre_unlu_estudiante = strtolower($unlu_estudiante[0]->nombre);
+          $apellido_unlu_estudiante = strtolower($unlu_estudiante[0]->apellido);
           $nombre_persona = strtolower($request->nombre_persona);
           $apellido_persona = strtolower($request->apellido_persona);
-          if ( ($nombre_estudiante == $nombre_persona) && ($apellido_estudiante == $apellido_persona) ) { //Verificamos que el resto de sus datos sean correctos
+          if ( ($nombre_unlu_estudiante == $nombre_persona) && ($apellido_unlu_estudiante == $apellido_persona) ) { //Verificamos que el resto de sus datos sean correctos
             $persona = new \stdClass();
-            $persona->domicilio_residencia = $estudiante[0]->domicilio;
-            $persona->localidad_residencia = $estudiante[0]->localidad;
-            $persona->provincia_residencia = $estudiante[0]->provincia;
-            $persona->pais_residencia = $estudiante[0]->pais;
-            $persona->telefono_fijo = $estudiante[0]->telefono_fijo;
-            $persona->telefono_celular = $estudiante[0]->telefono_celular;
+            $persona->domicilio_residencia = $unlu_estudiante[0]->domicilio;
+            $persona->localidad_residencia = $unlu_estudiante[0]->localidad;
+            $persona->provincia_residencia = $unlu_estudiante[0]->provincia;
+            $persona->pais_residencia = $unlu_estudiante[0]->pais;
+            $persona->telefono_fijo = $unlu_estudiante[0]->telefono_fijo;
+            $persona->telefono_celular = $unlu_estudiante[0]->telefono_celular;
             $persona_id = $this->storePersona($persona,'Fisica');//Se inserta la persona.
 
             $pfisica = new Fisica();
             $pfisica->persona_id = $persona_id;
-            $pfisica->nombre_persona = $estudiante[0]->nombre_estudiante;
-            $pfisica->apellido_persona = $estudiante[0]->apellido_estudiante;
-            $pfisica->fecha_nacimiento = $estudiante[0]->fecha_nacimiento_estudiante;
-            $pfisica->cuil = $estudiante[0]->cuil;
+            $pfisica->nombre_persona = $unlu_estudiante[0]->nombre;
+            $pfisica->apellido_persona = $unlu_estudiante[0]->apellido;
+            $pfisica->fecha_nacimiento = $unlu_estudiante[0]->fecha_nacimiento;
+            $pfisica->cuil = $unlu_estudiante[0]->cuil;
             $pfisica->tipo_documento_id = $request->tipo_documento;
             $pfisica->nro_documento = $request->nro_documento;
             $pfisica->save();//Se inserta la persona fisica.
 
-            $postulante = new Postulante();
-            $postulante->fisica_id = $pfisica->id;
-            $postulante->estudiante_id = $estudiante[0]->id;
-            $postulante->save();//Se inserta el postulante.
+            $estudiante = new Estudiante();
+            $estudiante->fisica_id = $pfisica->id;
+            $estudiante->unlu_estudiante_id = $unlu_estudiante[0]->id;
+            $estudiante->legajo = $unlu_estudiante[0]->legajo;
+            $estudiante->carrera_id = $unlu_estudiante[0]->unlu_carrera_id;
+            $estudiante->save();//Se inserta el postulante.
 
             $cv = new Cv();
-            $cv->postulante_id = $postulante->id;
+            $cv->estudiante_id = $estudiante->id;
             $cv->save();//Se inserta el Cv.
 
             $usuario = new Usuario();
@@ -494,7 +496,7 @@ class UsuariosController extends PersonasController
             ->get();
             $usuario->roles()->sync([$rol[0]->id]);;//Se inserta el rol.
 
-            Mail::send('emails.verificacion_usuario_postulante', ['data' => $data], function($message) use ($data){
+            Mail::send('emails.verificacion_usuario_estudiante', ['data' => $data], function($message) use ($data){
               $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
               $message->subject('Verificación de Usuario');
               $message->to($data['email']);
@@ -517,7 +519,7 @@ class UsuariosController extends PersonasController
         }
     }
 
-    protected function verificacionUsuarioPostulante(Request $request){
+    protected function verificacionUsuarioEstudiante(Request $request){
 
       if(isset($_GET['email'])) {
         $usuario = Usuario::where('email', '=', $request->email)

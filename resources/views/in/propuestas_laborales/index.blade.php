@@ -1,14 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Personas | Tabla de Personas')
+@section('headTitle', 'Mis Propuestas')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Personas</a></li>
-        <li><a>Tabla de Personas</a></li>
+        <li><a>Mis Propuestas</a></li>
       </ol>
     </div>
   </div>
@@ -23,56 +22,73 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Personas
-        @if(Entrust::can('crear_persona'))
-          <a href="{{ route('in.personas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-            <span><i class="fa fa-plus"></i></span>
-            Registar Persona
-          </a>
-        @endif
+        <h4 class="page-header">Mis Propuestas
+          @if(Entrust::can('crear_propuesta_laboral'))
+            <a href="{{ route('in.propuestas_laborales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+              <span><i class="fa fa-plus"></i></span>
+              Realizar Propuesta
+            </a>
+          @endif
         </h4>
-        <!-- Mostrar Mensaje -->
+
         @include('flash::message')
         @include('template.partials.errors')
-        <!-- Tabla -->
-        <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
-          <!-- columnas de la tabla -->
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nombre</th>
-              <th>Apellido</th>
-              <th>Domicilio</th>
-              <th>Telefono</th>
-              <th>Estado</th>
-              <th style="width:75px">Acción</th>
-            </tr>
-          </thead>
-          <!-- contenido de la tabla -->
-          <tbody>
-            @foreach( $pfisicas as $pfisica)
-              <tr>
-                <td>{{ $pfisica->id }}</td>
-                <td>{{ $pfisica->nombre_persona }}</td>
-                <td>{{ $pfisica->apellido_persona }}</td>
-                <td>{{ $pfisica->persona->direccion->domicilio }}</td>
-                <td>{{ $pfisica->persona->telefonos[0]->nro_telefono }}</td>
-                <td>{{ $pfisica->persona->estado_persona }}</td>
-                <!-- envio el parametro del metodo edit y destroy-->
-                <td>
-                  @if(Entrust::can('modificar_persona'))
-                    <a href="{{ route('in.personas.edit', $pfisica->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+
+        <div class="row">
+          <div class="col-sm-2 buscar">
+            <input name="buscar" class="form-control" placeholder="Buscar">
+            <span class="fa fa-search iconspan"></span>
+          </div>
+        </div>
+
+        <div class="anuncios">
+          @if(count($mis_propuestas) > 0)
+            @foreach($mis_propuestas as $propuesta)
+              <a href={{ route('in.propuestas_laborales.detalle', $propuesta->id) }}>
+                <div class="anuncio col-md-12">
+                  @if(Auth::user()->imagen != null)
+                    <div class="avatar-grande col-md-2 text-center logo-anuncio">
+                      <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" class="img-rounded" alt="Logo de la Empresa" />
+                    </div>
+                    <div class="descripcion col-md-10">
+                  @else
+                    <div class="descripcion col-md-12">
                   @endif
-                  @if(Entrust::can('eliminar_persona'))
-                    {!! Form::open(['route' => ['in.personas.destroy', $pfisica->persona_id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Persona"
-                    data-message="¿Seguro que quiere eliminar la Persona {{$pfisica->nombre_persona}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
-                    {!! Form::close() !!}
-                  @endif
-              </tr>
+                    <div class="row">
+                      <div class="col-md-12 anuncio-titulo">
+                        <h2>{{ $propuesta->titulo }}</h2>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 anuncio-subtitulo">
+                        <p>{{ Auth::user()->persona->juridica->nombre_comercial }} - {{ $propuesta->lugar_de_trabajo }} - {{ $propuesta->tipoJornada->nombre_tipo_jornada }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="detalle col-md-12">
+                        <p>{{ $propuesta->descripcion }}</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 anuncio-subtitulo">
+                        <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </a>
             @endforeach
-          </tbody>
-        </table>
+          @else
+            <div class="col-md-12 text-center">
+              <p>No ha realizado Propuestas.</p>
+            </div>
+          @endif
+          </div>
+
+          <div class="text-center">
+           {!! $mis_propuestas->render()!!}
+          </div>
+
       </div>
     </div>
   </div>
@@ -85,65 +101,5 @@
   <script src="{{asset('plugins/datatables/ZeroClipboard.js')}}"></script>
   <script src="{{asset('plugins/datatables/TableTools.js')}}"></script>
   <script src="{{asset('plugins/datatables/dataTables.bootstrap.js')}}"></script>
-
-  <script type="text/javascript">
-  // Run Datables plugin and create 3 variants of settings
-    $(document).ready(function(){
-
-      //Modal
-      $('#delSpk').on('show.bs.modal', function (e) {
-        $message = $(e.relatedTarget).attr('data-message');
-        $(this).find('.modal-body p').text($message);
-        $title = $(e.relatedTarget).attr('data-title');
-        $(this).find('.modal-title').text($title);
-        var form = $(e.relatedTarget).closest('form');
-        $(this).find('.modal-footer #confirm').data('form', form);
-      });
-      $('#delSpk').find('.modal-footer #confirm').on('click', function(){
-        $(this).data('form').submit();
-      });
-
-      // Tabla
-      $('#dev-table').dataTable( {
-        "bStateSave": "false",
-        "aaSorting": [[ 0, "asc" ]],
-        "sDom": "<'pull-left'f><'pull-right'l>rt<'text-center'p>",
-        "sPaginationType": "bootstrap",
-        "oLanguage": {
-          "sProcessing":     "Procesando...",
-          "sLengthMenu":     '<select><option value="5">5</option>'+
-          '<option value="10">10</option>'+
-          '<option value="25">25</option></select>',
-          "sZeroRecords":    "No se encontraron resultados",
-          "sEmptyTable":     "",
-          "sInfo":           "",
-          "sInfoEmpty":      "",
-          "sInfoFiltered":   "",
-          "sInfoPostFix":    "",
-          "sSearch":         "",
-          "sUrl":            "",
-          "sInfoThousands":  ",",
-          "sLoadingRecords": "Cargando...",
-          "oPaginate": {
-            "sFirst":    "Primero",
-            "sLast":     "Último",
-            "sNext":     "Siguiente",
-            "sPrevious": "Anterior"
-          },
-          "oAria": {
-            "sSortAscending":  "",
-            "sSortDescending": ""
-          }
-        },
-      });
-
-      // Multiseletc para la tabla
-      $('select').select2();
-      $('.dataTables_filter').each(function(){
-        $(this).find('label input[type=text]').attr('placeholder', 'Buscar');
-      });
-    });
-
-  </script>
 
 @endsection

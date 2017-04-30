@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class RegistroPostulanteRequest extends Request
+class RegistroEstudianteRequest extends Request
 {
 
     const CAMPO_NOMBRE = 'Nombre';

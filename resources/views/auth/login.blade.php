@@ -35,7 +35,7 @@
 							{!!link_to('password/email', $title = '¿Olvidaste tu contraseña?', $attributes = null, $secure = null)!!}
 						</div>
 						<div class="text-center">
-							{!!link_to('registro-postulante', $title = 'Registrarse', $attributes = null, $secure = null)!!}
+							{!!link_to('registro-estudiante', $title = 'Registrarse', $attributes = null, $secure = null)!!}
 						</div>
 					</div>
 				</div>

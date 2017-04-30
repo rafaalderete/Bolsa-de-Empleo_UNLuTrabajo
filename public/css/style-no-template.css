@@ -18,14 +18,31 @@
   background-size: cover;
 }
 
+.anuncios a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
 .anuncio {
   border: 2px solid;
   border-radius: 5px;
   margin-bottom: 3px;
 }
 
-.empresa_logo {
-  margin-top: 3px;
+.logo-anuncio {
+  margin-top: 30px;
+}
+
+.anuncio-titulo h2 {
+  color: #1e82c4;
+}
+
+.anuncio-subtitulo {
+  color: #949ca9;
+}
+
+.divisor {
+  border-bottom: 3px solid #64a481;
 }
 
 .descripcion,
@@ -35,6 +52,20 @@
 
 .detalle {
   border-bottom: 1px solid gray;
+}
+
+.detalle p,
+.detalle-descripcion p {
+  word-wrap: break-word;
+}
+
+.detalle-titulo,
+.detalle-descripcion {
+  padding: 10px 20px;
+}
+
+.item-no-dot {
+  list-style: none;
 }
 
 .top-menu ul {
@@ -102,11 +133,17 @@
   margin-top: 5px;
 }
 
-.error-imagen {
+.error-imagen,
+.error-imagen,
+.error-idioma,
+.error-carrera {
   visibility: hidden;
 }
 
-.error-imagen span {
+.error-imagen span,
+.error-idioma span,
+.error-carrera span,
+.excluyente {
   color: red;
   font-weight: bold;
 }
@@ -135,4 +172,21 @@
 .requisitos-tabla-checkbox {
   box-shadow: none;
   margin: 0 !important;
+}
+
+#tab_logic_idioma,
+#tab_logic_carrera {
+  margin-bottom: 0;
+}
+
+.buscar {
+  margin-bottom: 15px;
+}
+
+.iconspan {
+  float: right;
+  margin-right: 6px;
+  margin-top: -20px;
+  position: relative;
+  z-index: 2;
 }

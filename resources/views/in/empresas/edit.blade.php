@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Empresa - {{$pjuridica->nombre_Comercial}}</h4>
+        <h4 class="page-header">Editar Empresa - {{$pjuridica->nombre_comercial}}</h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')

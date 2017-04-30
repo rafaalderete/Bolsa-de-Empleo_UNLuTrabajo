@@ -8,17 +8,27 @@ class Estudiante extends Model
 {
 
     protected $table = "estudiantes";
-    protected $fillable = ['id','legajo','carrera_id','nombre_estudiante','apellido_estudiante',
-                            'fecha_nacimiento_estudiante','cuil','tipo_documento','nro_documento',
-                            'email_estudiante','telefono','celular','domicilio','localidad','residencia_provincia',
-                            'residencia_pais'];
+    protected $fillable = ['id','fisica_id','unlu_estudiante_id','carrera_id',
+                            'legajo'];
+
+    public function fisica(){
+      return $this->belongsTo('App\Fisica');
+    }
+
+    public function cv(){
+      return $this->hasOne('App\Cv');
+    }
+
+    public function unluEstudiante(){
+      return $this->belongsTo('App\Unlu_Estudiante');
+    }
 
     public function carrera(){
       return $this->belongsTo('App\Carrera');
     }
 
-    public function postulante(){
-      return $this->hasOne('App\Postulante');
+    public function propuestasLaborales(){
+      return $this->belongsToMany('App\Propuesta_Laboral', 'estudiante_propuesta_laboral', 'propuesta_laboral_id', 'estudiante_id')->withPivot('fecha_postulacion');
     }
 
 }

@@ -8,7 +8,7 @@ class Propuesta_Laboral extends Model
 {
 
     protected $table = "propuestas_laborales";
-    protected $fillable = ['id','juridica_id','titulo','descripcion','vacantes',
+    protected $fillable = ['id','juridica_id','titulo','descripcion','vacantes','lugar_de_trabajo',
                             'requisito_años_experiencia_laboral','fecha_inicio_propuesta',
                             'fecha_fin_propuesta','estado_propuesta','tipo_trabajo_id','tipo_jornada_id'];
 
@@ -24,24 +24,24 @@ class Propuesta_Laboral extends Model
       return $this->belongsTo('App\Tipo_Trabajo');
     }
 
-    public function postulantes(){
-      return $this->belongsToMany('App\Postulante')->withPivot('fecha_postulacion');;
+    public function estudiantes(){
+      return $this->belongsToMany('App\Estudiante', 'estudiante_propuesta_laboral', 'estudiante_id', 'propuesta_laboral_id')->withPivot('fecha_postulacion');;
     }
 
     public function requisitosCarrera(){
-      return $this->hasMany('App\Requisito_Carrera');
+      return $this->hasMany('App\Requisito_Carrera', 'propuesta_laboral_id', 'id');
     }
 
     public function requisitosIdioma(){
-      return $this->hasMany('App\Requisito_Idioma');
+      return $this->hasMany('App\Requisito_Idioma', 'propuesta_laboral_id', 'id');
     }
 
     public function requisitosResidencia(){
-      return $this->hasMany('App\Requisito_Residencia');
+      return $this->hasMany('App\Requisito_Residencia', 'propuesta_laboral_id', 'id');
     }
 
     public function requisitosAdicionales(){
-      return $this->hasMany('App\Requisito_Adicional');
+      return $this->hasMany('App\Requisito_Adicional', 'propuesta_laboral_id', 'id');
     }
 
 }

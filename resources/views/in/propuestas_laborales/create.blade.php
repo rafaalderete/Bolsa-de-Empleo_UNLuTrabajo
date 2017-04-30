@@ -28,7 +28,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.realizar-propuesta', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => 'in.propuestas_laborales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
         <div class="form-group">
           <div class="col-sm-12  requisitos-label">
@@ -46,7 +46,7 @@
         <div class="form-group">
           {!! Form::label('descripcion','Descripción de la Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-8">
-            {!! Form::textarea('descripcion',null, ['class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
+            {!! Form::textarea('descripcion',null, ['id' => 'descripcion_textarea', 'class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
           </div>
         </div>
 
@@ -81,7 +81,7 @@
         <div class="form-group">
           {!! Form::label('vacantes','Vacantes', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::number('vacantes',null,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Vacantes', 'required'])!!}
+            {!! Form::number('vacantes',null,['min' => 1, 'class' => 'form-control', 'placeholder' => 'Vacantes', 'required'])!!}
           </div>
           {!! Form::label('fecha_fin_propuesta','Fecha Finalización Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
@@ -124,7 +124,7 @@
                 <tbody>
                   <tr class="hidden">
                     <td data-name="lugar">
-                      <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control" required/>
+                      <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control"/>
                     </td>
                     <td data-name="excluyente_residencia">
                       <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox"/>
@@ -170,10 +170,15 @@
                 <tbody>
                   <tr class="hidden">
                     <td data-name="idioma">
-                      <input type="text" name='idioma[]' placeholder='Idioma' class="form-control" required/>
+                      <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
+                        <option value="" disabled selected hidden>Idioma</option>
+                        @foreach($idiomas as $idioma)
+                          <option value="{{$idioma->id}}">{{$idioma->nombre_idioma}}</option>
+                        @endforeach
+                      </select>
                     </td>
                     <td data-name="tipo_conocimiento_idioma">
-                      <select name="tipo_conocimiento_idioma[]" placeholder='Tipo de Conocimiento' class="form-control" required>
+                      <select name="tipo_conocimiento_idioma[]" placeholder='Tipo de Conocimiento' class="form-control input_idioma input_idioma_tipo">
                         <option value="" disabled selected hidden>Tipo Conocimiento</option>
                         @foreach($tipos_conocimiento_idioma as $tipo_conocimiento_idioma)
                           <option value="{{$tipo_conocimiento_idioma->id}}">{{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}}</option>
@@ -181,7 +186,7 @@
                       </select>
                     </td>
                     <td data-name="nivel_conocimiento_idioma">
-                      <select name="nivel_conocimiento_idioma[]" placeholder='Nivel' class="form-control" required>
+                      <select name="nivel_conocimiento_idioma[]" placeholder='Nivel' class="form-control">
                         <option value="" disabled selected hidden>Nivel</option>
                         @foreach($niveles_conocimiento as $nivel_conocimiento)
                           <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
@@ -199,6 +204,11 @@
               </table>
             </div>
           </div>
+          <div class="row error-idioma">
+            <div class="col-sm-10 col-sm-offset-2">
+              <span>Idioma y Tipo Conocimiento ya seleccionados.</span>
+            </div>
+          </div>
           <div class="row">
             <div class="col-sm-2 col-sm-offset-2">
               <a id="add_row_idioma" class="btn btn-default">Agregar Idioma</a>
@@ -213,7 +223,7 @@
               <table class="table" id="tab_logic_carrera">
                 <thead>
                   <tr>
-                    <th class="text-center col-sm-3">
+                    <th class="text-center col-sm-4">
                       Carrera
                     </th>
                     <th class="text-center col-sm-3">
@@ -229,10 +239,15 @@
                 <tbody>
                   <tr class="hidden">
                     <td data-name="carrera">
-                      <input type="text" name='carrera[]' placeholder='Carrera' class="form-control" required/>
+                      <select name="carrera[]" placeholder='Carrera' class="form-control input_carrera">
+                        <option value="" disabled selected hidden>Carrera</option>
+                        @foreach($carreras as $carrera)
+                          <option value="{{$carrera->id}}">{{$carrera->nombre_carrera}}</option>
+                        @endforeach
+                      </select>
                     </td>
                     <td data-name="estado_carrera">
-                      <select name="estado_carrera[]" placeholder='Estado Carrera' class="form-control" required>
+                      <select name="estado_carrera[]" placeholder='Estado Carrera' class="form-control">
                         <option value="" disabled selected hidden>Estado Carrera</option>
                         @foreach($estados_carrera as $estado_carrera)
                           <option value="{{$estado_carrera->id}}">{{$estado_carrera->nombre_estado_carrera}}</option>
@@ -248,6 +263,11 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </div>
+          <div class="row error-carrera">
+            <div class="col-sm-10 col-sm-offset-2">
+              <span>Carrera ya seleccionada.</span>
             </div>
           </div>
           <div class="row">
@@ -280,10 +300,10 @@
                 <tbody>
                   <tr class="hidden">
                     <td data-name="nombre_requisito">
-                      <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control" required/>
+                      <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control"/>
                     </td>
                     <td data-name="nivel_conocimiento_adicional">
-                      <select name="nivel_conocimiento_adicional[]" placeholder='Nivel' class="form-control" required>
+                      <select name="nivel_conocimiento_adicional[]" placeholder='Nivel' class="form-control">
                         <option value="" disabled selected hidden>Nivel</option>
                         @foreach($niveles_conocimiento as $nivel_conocimiento)
                           <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
@@ -325,9 +345,9 @@
 
         {!! Form::close()!!}
 
-        <a href="{{ route('in.personas.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.propuestas_laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
-          Volver a la Tabla
+          Volver a Mis Propuestas
         </a>
       </div>
     </div>
@@ -339,8 +359,49 @@
 
   <script type="text/javascript">
 
-    function agregarFila(idTabla) {
+    function eventoIdioma(input) {
+      input.on('change', function() {
+        var error = false;
+        var idioma = input.parent().parent().find($(".input_idioma_idioma")).val();
+        var tipo_conocimiento_idioma = input.parent().parent().find($(".input_idioma_tipo")).val();
+        $.each(input.parent().parent().siblings(), function() {
+            var idioma_sibling = $(this).find($(".input_idioma_idioma")).val();
+            var tipo_conocimiento_idioma_sibling = $(this).find($(".input_idioma_tipo")).val();
+            if ( (idioma == idioma_sibling) && (tipo_conocimiento_idioma == tipo_conocimiento_idioma_sibling) ) {
+              error = true;
+            }
+        });
+        if (error) {
+          $('.error-idioma').css('visibility', 'visible');
+          input.val("");
+        }
+        else {
+          $('.error-idioma').css('visibility', 'hidden');
+        }
+      });
+    }
 
+    function eventoCarrera(input) {
+      input.on('change', function() {
+        var error = false;
+        var carrera = input.val();
+        $.each(input.parent().parent().siblings(), function() {
+            var carrera_sibling = $(this).find($(".input_carrera")).val();
+            if (carrera == carrera_sibling) {
+              error = true;
+            }
+        });
+        if (error) {
+          $('.error-carrera').css('visibility', 'visible');
+          input.val("");
+        }
+        else {
+          $('.error-carrera').css('visibility', 'hidden');
+        }
+      });
+    }
+
+    function agregarFila(idTabla, pos) {
       var tr = $("<tr></tr>");
       // loop through each td and create new elements with name of newid
       $.each($(idTabla+" tbody tr:nth(0) td"), function() {
@@ -355,40 +416,66 @@
 
               var c = $(cur_td).find($(children[0]).prop('tagName')).clone().val("");
               c.attr("name", $(cur_td).data("name")+"[]");
+              if (!c.is(':checkbox')) {
+                c.prop('required',true);
+              }
+              else {
+                c.attr("value", pos); //Posicion de checkbox.
+              }
               c.appendTo($(td));
               td.appendTo($(tr));
+
+              if ( (c.attr('name') == 'idioma[]') || (c.attr('name') == 'tipo_conocimiento_idioma[]') ) {
+                eventoIdioma(c);
+              }
+
+              if (c.attr('name') == 'carrera[]') {
+                eventoCarrera(c);
+              }
+
           } else {
               var td = $("<td></td>", {
                   'text': $(idTabla+' tr').length
               }).appendTo($(tr));
           }
-
       });
 
       // add the new row
       $(tr).appendTo($(idTabla));
+      pos++;
       $(tr).find("td button.row-remove").on("click", function() {
            $(this).closest("tr").remove();
       });
-
     }
 
     $(document).ready(function() {
 
+    //  tinymce.init({ selector:'#descripcion_textarea' });
+
+      //Comienzo de la posición de los checkbox.
+      var pos_residencia = 1;
+      var pos_idioma = 0;
+      var pos_carrera = 0;
+      var pos_adicional = 1;
+
       $("#add_row_residencia").on("click", function() {
-        agregarFila("#tab_logic_residencia");
+        agregarFila("#tab_logic_residencia", pos_residencia);
+        pos_residencia++;
       });
 
       $("#add_row_idioma").on("click", function() {
-        agregarFila("#tab_logic_idioma");
+        agregarFila("#tab_logic_idioma", pos_idioma);
+        pos_idioma++;
       });
 
       $("#add_row_carrera").on("click", function() {
-        agregarFila("#tab_logic_carrera");
+        agregarFila("#tab_logic_carrera", pos_carrera);
+        pos_carrera++;
       });
 
       $("#add_row_adicional").on("click", function() {
-        agregarFila("#tab_logic_adicional");
+        agregarFila("#tab_logic_adicional", pos_adicional);
+        pos_adicional++;
       });
 
       // Fecha Nac.

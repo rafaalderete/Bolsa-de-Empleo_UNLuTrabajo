@@ -45,8 +45,8 @@
                   <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
                 @endif
                 @if(Entrust::hasRole('empleador') )
-                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.realizar-propuesta') }}><i class="fa fa-briefcase"></i>Realizar Propuesta</a></li>
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas_laborales.create') }}><i class="fa fa-briefcase"></i>Realizar Propuesta</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas_laborales.index') }}><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
                 @endif
               </ul>
             </div>

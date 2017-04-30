@@ -18,7 +18,7 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->integer('juridica_id')->unsigned();
           $table->foreign('juridica_id')->references('id')->on('juridicas')->onDelete('cascade');
           $table->string('titulo');
-          $table->string('descripcion');
+          $table->string('descripcion', 5000);
           $table->date('fecha_inicio_propuesta');
           $table->date('fecha_fin_propuesta');
           $table->string('lugar_de_trabajo');
@@ -32,12 +32,12 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->timestamps();
       });
 
-      Schema::create('postulante_propuesta_laboral', function (Blueprint $table) {
+      Schema::create('estudiante_propuesta_laboral', function (Blueprint $table) {
           $table->increments('id');
           $table->integer('propuesta_laboral_id')->unsigned();
           $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
-          $table->integer('postulante_id')->unsigned();
-          $table->foreign('postulante_id')->references('id')->on('postulantes')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('estudiante_id')->unsigned();
+          $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onUpdate('cascade')->onDelete('cascade');
           $table->date('fecha_postulacion');
           $table->timestamps();
       });

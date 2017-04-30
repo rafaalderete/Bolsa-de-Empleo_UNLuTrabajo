@@ -35,21 +35,21 @@ Route::get('auth/logout', [
 	'as'	=>	'auth.logout'
 ]);
 
-//------------- RUTAS PARA REGISTRAR Y CONFIRMAR USUARIO POSTULANTE -----------------------------------
+//------------- RUTAS PARA REGISTRAR Y CONFIRMAR USUARIO ESTUDIANTE -----------------------------------
 
-Route::get('registro-postulante', [
-	'uses'	=>	'UsuariosController@getRegistroPostulante',
-	'as'	=>	'registro-postulante'
+Route::get('registro-estudiante', [
+	'uses'	=>	'UsuariosController@getRegistroEstudiante',
+	'as'	=>	'registro-estudiante'
 ]);
 
-Route::post('registro-postulante', [
-	'uses'	=>	'UsuariosController@postRegistroPostulante',
-	'as'	=>	'registro-postulante'
+Route::post('registro-estudiante', [
+	'uses'	=>	'UsuariosController@postRegistroEstudiante',
+	'as'	=>	'registro-estudiante'
 ]);
 
-Route::get('registro-postulante/verificacion/{token}', [
-	'uses'	=>	'UsuariosController@verificacionUsuarioPostulante',
-	'as'	=>	'registro-postulante.verificacion'
+Route::get('registro-estudiante/verificacion/{token}', [
+	'uses'	=>	'UsuariosController@verificacionUsuarioEstudiante',
+	'as'	=>	'registro-estudiante.verificacion'
 ]);
 
 //------------- RUTAS PARA CONFIRMAR USUARIO EMPLEADOR -----------------------------------
@@ -143,6 +143,10 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.permisos.destroy',
 	]);
 
+	//------------- RUTAS DE CV -----------------------------
+
+	//------------- RUTAS DE PARAMETRIA ---------------------
+
 	Route::resource('rubros_empresariales', 'RubrosEmpresarialesController');
 	Route::delete('rubros_empresariales/{id}/destroy', [
 		'uses'	=>	'RubrosEmpresarialesController@destroy',
@@ -199,7 +203,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.configurar-datos-empresa'
 	]);
 
-	//------------- RUTAS PARA REALIZACION DE PROPUESTA LABORAL ---------------------
+	//------------- RUTAS DE PROPUESTA LABORAL ---------------------
 	Route::get('realizar-propuesta', [
 		'uses'	=>	'PropuestasController@getRealizarPropuesta',
 		'as'	=>	'in.realizar-propuesta'
@@ -208,6 +212,16 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::post('realizar-propuesta', [
 		'uses'	=>	'PropuestasController@postRealizarPropuesta',
 		'as'	=>	'in.realizar-propuesta'
+	]);
+
+	Route::resource('propuestas_laborales', 'PropuestasController');
+	Route::get('propuestas_laborales/{id}/detalle', [
+		'uses'	=>	'PropuestasController@getDetallePropuesta',
+		'as'	=>	'in.propuestas_laborales.detalle'
+	]);
+	Route::delete('propuestas_laborales/{id}/destroy', [
+		'uses'	=>	'PropuestasController@destroy',
+			'as'	=>	'in.propuestas_laborales.destroy',
 	]);
 
 });

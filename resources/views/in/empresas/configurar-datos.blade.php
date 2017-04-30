@@ -132,7 +132,7 @@
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-primary btn-label-left">
                 <span><i class="fa fa-check-square"></i></span>
-                Modificar Datos
+                Modificar
               </button>
             </div>
             <div class="col-sm-2">
