@@ -26,7 +26,6 @@ class AuthController extends Controller
 
     use AuthenticatesAndRegistersUsers, ThrottlesLogins;
 
-    protected $redirectPath = '/in';
     protected $loginPath = 'auth/login';
 
     /**
@@ -112,5 +111,32 @@ class AuthController extends Controller
                 $this->loginUsername() => $this->getFailedLoginMessage(),
             ]);
     }
+
+    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    {
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::user());
+        }
+
+        //Redirects a las paginas de inicio de cada rol.
+        if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')) {
+          $redirectPath = 'in/registro-empleador';
+        }
+        else {
+          if (Auth::user()->hasRole('empleador')) {
+            $redirectPath = 'in/propuestas-laborales';
+          }
+          else {
+            $redirectPath = 'in/buscar-ofertas';
+          }
+        }
+
+        return redirect()->intended($redirectPath);
+    }
+
 
 }

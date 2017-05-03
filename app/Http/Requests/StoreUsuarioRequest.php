@@ -47,7 +47,7 @@ class StoreUsuarioRequest extends Request
       $personas = Persona::where('estado_persona', 'activo')
       ->get();
 
-      $roles_disponibles = 'array|in:'.$roles[0]->id;
+      $roles_disponibles = 'required|array|in:'.$roles[0]->id;
       for ($x = 1; $x < sizeof($roles); $x++) {
           $roles_disponibles = $roles_disponibles.','.$roles[$x]->id;
       }

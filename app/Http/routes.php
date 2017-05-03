@@ -101,13 +101,6 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	    return view('in.sinpermisos.sinpermisos');
 	}]);
 
-
-	// pagina de inicio de admin
-	Route::get('/', ['as' => 'in.index', function () {
-    	return view('in.index');
-	}]);
-
-
 	Route::resource('personas','FisicasController');
 	Route::delete('personas/{id}/destroy', [
 		'uses'	=>	'FisicasController@destroy',
@@ -147,10 +140,10 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
 	//------------- RUTAS DE PARAMETRIA ---------------------
 
-	Route::resource('rubros_empresariales', 'RubrosEmpresarialesController');
-	Route::delete('rubros_empresariales/{id}/destroy', [
+	Route::resource('rubros-empresariales', 'RubrosEmpresarialesController');
+	Route::delete('rubros-empresariales/{id}/destroy', [
 		'uses'	=>	'RubrosEmpresarialesController@destroy',
-			'as'	=>	'in.rubros_empresariales.destroy',
+			'as'	=>	'in.rubros-empresariales.destroy',
 	]);
 
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
@@ -203,7 +196,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.configurar-datos-empresa'
 	]);
 
-	//------------- RUTAS DE PROPUESTA LABORAL ---------------------
+	//------------- RUTAS DEL EMPLEADOR ---------------------
 	Route::get('realizar-propuesta', [
 		'uses'	=>	'PropuestasController@getRealizarPropuesta',
 		'as'	=>	'in.realizar-propuesta'
@@ -214,14 +207,21 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.realizar-propuesta'
 	]);
 
-	Route::resource('propuestas_laborales', 'PropuestasController');
-	Route::get('propuestas_laborales/{id}/detalle', [
+	Route::resource('propuestas-laborales', 'PropuestasController');
+	Route::get('propuestas-laborales/{id}/detalle', [
 		'uses'	=>	'PropuestasController@getDetallePropuesta',
-		'as'	=>	'in.propuestas_laborales.detalle'
+		'as'	=>	'in.propuestas-laborales.detalle'
 	]);
-	Route::delete('propuestas_laborales/{id}/destroy', [
+	Route::delete('propuestas-laborales/{id}/destroy', [
 		'uses'	=>	'PropuestasController@destroy',
-			'as'	=>	'in.propuestas_laborales.destroy',
+			'as'	=>	'in.propuestas-laborales.destroy',
 	]);
+
+	//------------- RUTAS DEL ESTUDIANTE ---------------------
+	Route::get('buscar-ofertas', [
+		'uses'	=>	'EstudianteController@index',
+		'as'	=>	'in.buscar-ofertas'
+	]);
+
 
 });

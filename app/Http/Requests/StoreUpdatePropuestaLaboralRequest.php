@@ -11,7 +11,7 @@ use App\Estado_Carrera as Estado_Carrera;
 use App\Idioma as Idioma;
 use App\Carrera as Carrera;
 
-class StorePropuestaLaboralRequest extends Request
+class StoreUpdatePropuestaLaboralRequest extends Request
 {
 
   const CAMPO_TITULO = 'Titulo de la Propuesta';
@@ -113,7 +113,7 @@ class StorePropuestaLaboralRequest extends Request
         'tipo_jornada_id' => $jornadas_disponibles,
         'vacantes' => 'integer|min:1|required',
         'fecha_fin_propuesta' => 'required|date_format:d-m-Y',
-        'requisito_años_experiencia_laboral' => 'integer|min:0|required',
+        'requisito_años_experiencia_laboral' => 'integer|min:0',
         'lugar' => 'array',
         'idioma' => $idiomas_disponibles,
         'tipo_conocimiento_idioma' => $tipos_conocimiento_disponibles,

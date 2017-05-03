@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="{{asset('plugins/select2/select2.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
+	<link rel="stylesheet" href="{{asset('plugins/summernote/summernote.css')}}">
 
 </head>
 <body>
@@ -58,8 +59,8 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="{{asset('plugins/bootstrap/bootstrap.min.js')}}"></script>
 	<script src="{{asset('plugins/justified-gallery/jquery.justifiedgallery.min.js')}}"></script>
-	<script src="{{asset('plugins/tinymce/tinymce.min.js')}}"></script>
-	<script src="{{asset('plugins/tinymce/jquery.tinymce.min.js')}}"></script>
+	<script src="{{asset('plugins/summernote/summernote.js')}}"></script>
+	<script src="{{asset('plugins/summernote/lang/summernote-es-ES.js')}}"></script>
 	<!-- All functions for this theme + document.ready processing -->
 	<script src="{{asset('js/devoops.js')}}"></script>
 	<!-- Se Agregaron -->

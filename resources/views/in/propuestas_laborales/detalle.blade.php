@@ -86,7 +86,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <p>{{ $propuesta->descripcion }}</p>
+              <p>{!! $propuesta->descripcion !!}</p>
             </div>
           </div>
         </div>
@@ -102,7 +102,10 @@
               <div class="row">
                 <div class="col-md-12">
                   <ul>
-                    <li>Años de Experiencia: {{ $propuesta->requisito_años_experiencia_laboral }}</li>
+
+                    @if($propuesta->requisito_años_experiencia_laboral != 0)
+                      <li>Años de Experiencia: {{ $propuesta->requisito_años_experiencia_laboral }}</li>
+                    @endif
 
                     @if(count($propuesta->requisitosResidencia) > 0)
                       <li>Lugar de Residencia:</li>
@@ -180,13 +183,13 @@
         </div>
 
         @if(Entrust::can('eliminar_propuesta_laboral'))
-          {!! Form::open(['route' => ['in.propuestas_laborales.destroy', $propuesta->id], 'method' => 'DELETE']) !!}
+          {!! Form::open(['route' => ['in.propuestas-laborales.destroy', $propuesta->id], 'method' => 'DELETE']) !!}
           <a href="" class="btn btn-info pull-right" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Propuesta"
             data-message="¿Seguro que quiere eliminar la Propuesta?" style="margin-top: -5px"><span><i class="fa fa-reply"></i></span>Eliminar</a>
           {!! Form::close() !!}
         @endif
         @if(Entrust::can('modificar_propuesta_laboral'))
-          <a href="{{ route('in.propuestas_laborales.edit', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info pull-right">
+          <a href="{{ route('in.propuestas-laborales.edit', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info pull-right">
             <span><i class="fa fa-reply"></i></span>
             Modificar
           </a>

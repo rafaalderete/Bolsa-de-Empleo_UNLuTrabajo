@@ -29,7 +29,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => ['in.rubros_empresariales.update', $rubro], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.rubros-empresariales.update', $rubro], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
       		<div class="form-group">
       			{!! Form::label('nombre_rubro_empresarial','Nombre Rubro Empresarial', ['class' => 'col-sm-2 control-label']) !!}
@@ -62,7 +62,7 @@
 
       	{!! Form::close()!!}
 
-        <a href="{{ route('in.rubros_empresariales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.rubros-empresariales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>

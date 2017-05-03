@@ -62,7 +62,7 @@ class RubrosEmpresarialesController extends Controller
         $rubro->save();
 
         Flash::success('Rubro Empresarial ' . $rubro->nombre_rubro_empresarial . ' agregado.')->important();
-        return redirect()->route('in.rubros_empresariales.index');
+        return redirect()->route('in.rubros-empresariales.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
@@ -111,7 +111,7 @@ class RubrosEmpresarialesController extends Controller
         $rubro->save();
 
         Flash::warning('Rubro ' . $rubro->nombre_rubro_empresarial . ' modificado.')->important();
-        return redirect()->route('in.rubros_empresariales.index');
+        return redirect()->route('in.rubros-empresariales.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
@@ -134,11 +134,11 @@ class RubrosEmpresarialesController extends Controller
           $rubro->delete();
 
           Flash::error('Rubro ' . $rubro->nombre_rubro_empresarial . ' eliminado.')->important();
-          return redirect()->route('in.rubros_empresariales.index');
+          return redirect()->route('in.rubros-empresariales.index');
         }
         else {
           Flash::error('El Rubro ' . $rubro->nombre_rubro_empresarial . ' no se puede eliminar ya que se encuentra en uso.')->important();
-          return redirect()->route('in.rubros_empresariales.index');
+          return redirect()->route('in.rubros-empresariales.index');
         }
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
