@@ -150,7 +150,7 @@ class PropuestasController extends Controller
           $req_carrera->propuesta_laboral_id = $propuestaId;
           $req_carrera->carrera_id = $carrera;
           $req_carrera->estado_carrera_id = $request->estado_carrera[$key];
-          $req_idioma->excluyente = false;
+          $req_carrera->excluyente = false;
           if (isset($request->excluyente_carrera)) {
             foreach ($request->excluyente_carrera as $excluyente) {
               if ($excluyente == $key) {//Se verifica que el checkbox de su posición esté activado.
