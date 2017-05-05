@@ -208,6 +208,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	]);
 
 	Route::resource('propuestas-laborales', 'PropuestasController');
+
 	Route::get('propuestas-laborales/{id}/detalle', [
 		'uses'	=>	'PropuestasController@getDetallePropuesta',
 		'as'	=>	'in.propuestas-laborales.detalle'
@@ -219,8 +220,28 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
 	//------------- RUTAS DEL ESTUDIANTE ---------------------
 	Route::get('buscar-ofertas', [
-		'uses'	=>	'EstudianteController@index',
+		'uses'	=>	'EstudianteController@buscarOferta',
 		'as'	=>	'in.buscar-ofertas'
+	]);
+
+	Route::get('{id}/detalle-oferta', [
+		'uses'	=>	'EstudianteController@getDetalleOferta',
+		'as'	=>	'in.detalle-oferta'
+	]);
+
+	Route::get('{id}/detalle-postulacion', [
+		'uses'	=>	'EstudianteController@getDetallePostulacion',
+		'as'	=>	'in.detalle-postulacion'
+	]);
+
+	Route::get('{id}/postularse', [
+		'uses'	=>	'EstudianteController@postularse',
+		'as'	=>	'in.postularse'
+	]);
+
+	Route::get('mis-postulaciones', [
+		'uses'	=>	'EstudianteController@getPostulaciones',
+		'as'	=>	'in.mis-postulaciones'
 	]);
 
 

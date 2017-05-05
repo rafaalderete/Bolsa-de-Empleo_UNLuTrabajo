@@ -86,7 +86,7 @@
 							</div>
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Registrarse',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Registrarse',['class' => 'btn btn-info']) !!}
 						</div>
 
 						{!!Form::close()!!}

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Visualizar Propuesta')
+@section('headTitle', 'Visualizar Propuesta Laboral')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Mis Propuestas</a></li>
-        <li><a>Visualizar Propuesta</a></li>
+        <li><a>Visualizar Propuesta Laboral</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Visualizar Propuesta - {{ $propuesta->titulo }}</h4>
+        <h4 class="page-header">Visualizar Propuesta Laboral</h4>
 
         @include('flash::message')
         @include('template.partials.errors')
@@ -42,9 +42,9 @@
         </div>
 
         <div class="row detalle-info">
-          @if(Auth::user()->imagen != null)
+          @if($propuesta->juridica->persona->usuarios[0]->imagen != null)
             <div class="avatar-grande col-md-2 text-center logo-anuncio">
-              <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" class="img-rounded" alt="Logo de la Empresa" />
+              <img src="{{asset('img/usuarios').'/'.$propuesta->juridica->persona->usuarios[0]->imagen}}" class="img-rounded" alt="Logo de la Empresa" />
             </div>
             <div class="descripcion col-md-10">
           @else
@@ -52,7 +52,7 @@
           @endif
               <div class="row">
                 <div class="col-md-12">
-                  <h2>{{ Auth::user()->persona->juridica->nombre_comercial }}</h2>
+                  <h2>{{ $propuesta->juridica->nombre_comercial }}</h2>
                 </div>
               </div>
               <div class="row">
@@ -202,11 +202,6 @@
 @endsection
 
 @section('bodyJS')
-
-  <script src="{{asset('plugins/datatables/jquery.dataTables.js')}}"></script>
-  <script src="{{asset('plugins/datatables/ZeroClipboard.js')}}"></script>
-  <script src="{{asset('plugins/datatables/TableTools.js')}}"></script>
-  <script src="{{asset('plugins/datatables/dataTables.bootstrap.js')}}"></script>
 
   <script type="text/javascript">
 

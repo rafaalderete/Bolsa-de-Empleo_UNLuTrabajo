@@ -41,27 +41,28 @@ class PropuestasController extends Controller
         $busqueda = false;
 
         if(isset($request->buscar) && $request->buscar != null) {
+          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
           $busqueda = true;
-          $mis_propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
-            ->where('titulo','LIKE', '%'.$request->buscar.'%')
+          $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+            ->where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
             ->where('estado_propuesta','activo')
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);
         }
         else {
-          $mis_propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
             ->where('estado_propuesta','activo')
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);
         }
 
-        foreach ($mis_propuestas as $key => $propuesta) {
-          $mis_propuestas[$key]->descripcion = substr($mis_propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
-          $mis_propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($mis_propuestas[$key]->fecha_inicio_propuesta));
+        foreach ($propuestas as $key => $propuesta) {
+          $propuestas[$key]->descripcion = substr($propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
+          $propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuestas[$key]->fecha_inicio_propuesta));
         }
 
         return view('in.propuestas_laborales.index')
-          ->with('mis_propuestas',$mis_propuestas)
+          ->with('propuestas',$propuestas)
           ->with('busqueda',$busqueda);
 
       }else{
@@ -270,7 +271,7 @@ class PropuestasController extends Controller
           $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
-          return view('in.propuestas_laborales.detalle')
+          return view('in.propuestas_laborales.detalle-propuesta')
             ->with('propuesta',$propuesta);
         }
 
@@ -413,6 +414,7 @@ class PropuestasController extends Controller
         else {
           if(count($propuesta->estudiantes) > 0) {
             $propuesta->estado_propuesta = "inactivo";
+            $propuesta->save();
           }
           else {
             $propuesta->delete();

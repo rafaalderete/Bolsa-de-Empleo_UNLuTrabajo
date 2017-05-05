@@ -48,12 +48,12 @@
                   <li class="col-xs-3 col-sm-3"><a href={{ route('in.registro-empleador') }}><i class="fa fa-building-o"></i>Registrar Empleador</a></li>
                 @endif
                 @if(Entrust::hasRole('postulante') )
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-building-o"></i>Buscar Ofertas</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.buscar-ofertas') }}><i class="fa fa-suitcase"></i>Buscar Ofertas</a></li>
                   <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-file-text-o"></i>Mi Cv</a></li>
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.mis-postulaciones') }}><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
                 @endif
                 @if(Entrust::hasRole('empleador') )
-                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas-laborales.create') }}><i class="fa fa-briefcase"></i>Realizar Propuesta</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas-laborales.create') }}><i class="fa fa-suitcase"></i>Realizar Propuesta</a></li>
                   <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas-laborales.index') }}><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
                 @endif
               </ul>
