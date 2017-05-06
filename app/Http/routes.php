@@ -145,6 +145,38 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
 	//------------- RUTAS DE CV -----------------------------
 
+	Route::get('gestionar-cv/visualizar-cv', [
+		'uses'	=>	'CvController@visualizarCv',
+		'as'	=>	'in.cv.visualizarcv'
+	]);	
+
+	Route::get('gestionar-cv/datos-personales-cv', [
+		'uses'	=>	'CvController@visualizarDatosPersonales',
+		'as'	=>	'in.cv.datospersonalescv'
+	]);
+
+	Route::get('gestionar-cv/objetivo-laboral-cv', [
+		'uses'	=>	'CvController@visualizarObjetivoLaboral',
+		'as'	=>	'in.cv.objetivolaboralcv'
+	]);
+
+	Route::get('gestionar-cv/objetivo-laboral-cv/edit', [
+		'uses'	=>	'CvController@editObjetivoLaboral',
+		'as'	=>	'in.cv.editobjetivolaboralcv'
+	]);
+
+	Route::post('gestionar-cv/objetivo-laboral-cv', [
+		'uses'	=>	'CvController@postObjetivoLaboral',
+		'as'	=>	'in.cv.updateobjetivolaboralcv'
+	]);
+
+	Route::resource('gestionar-cv/experiencia-laborales', 'ExperienciaLaboralesController');
+	Route::delete('gestionar-cv/experiencia-laborales/{id}/destroy', [
+		'uses'	=>	'ExperienciaLaboralesController@destroy',
+		'as'	=>	'in.cv.experiencia_laborales.destroy',
+	]);
+
+
 	//------------- RUTAS DE PARAMETRIA ---------------------
 
 	Route::resource('rubros_empresariales', 'RubrosEmpresarialesController');

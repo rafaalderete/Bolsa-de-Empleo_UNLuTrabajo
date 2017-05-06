@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="{{asset('plugins/select2/select2.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
-
+	<link rel="stylesheet" href="{{asset('plugins/orbit/css/styles-3.css')}}" >	
 </head>
 <body>
 

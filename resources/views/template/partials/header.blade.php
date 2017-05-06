@@ -41,7 +41,7 @@
                 @endif
                 @if(Entrust::hasRole('postulante') )
                   <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-building-o"></i>Buscar Ofertas</a></li>
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-file-text-o"></i>Mi Cv</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.cv.datospersonalescv') }}><i class="fa fa-file-text-o"></i>Mi Cv</a></li>
                   <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
                 @endif
                 @if(Entrust::hasRole('empleador') )
