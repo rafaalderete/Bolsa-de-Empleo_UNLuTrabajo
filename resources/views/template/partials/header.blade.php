@@ -24,7 +24,15 @@
   <div class="container-fluid expanded-panel">
     <div class="row">
       <div id="logo" class="col-xs-12 col-sm-2">
-        <a href="index.html">UNLu Trabajo</a>
+        @if (Entrust::hasRole('super_usuario') || Entrust::hasRole('administrador'))
+          <a href={{ route('in.registro-empleador') }}>UNLu Trabajo</a>
+        @else
+          @if (Entrust::hasRole('empleador'))
+            <a href={{ route('in.propuestas-laborales.index') }}>UNLu Trabajo</a>
+          @else
+            <a href={{ route('in.buscar-ofertas') }}>UNLu Trabajo</a>
+          @endif
+        @endif
       </div>
       <div id="top-panel" class="col-xs-12 col-sm-10">
         <div class="row">
@@ -40,13 +48,13 @@
                   <li class="col-xs-3 col-sm-3"><a href={{ route('in.registro-empleador') }}><i class="fa fa-building-o"></i>Registrar Empleador</a></li>
                 @endif
                 @if(Entrust::hasRole('postulante') )
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-building-o"></i>Buscar Ofertas</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.buscar-ofertas') }}><i class="fa fa-suitcase"></i>Buscar Ofertas</a></li>
                   <li class="col-xs-3 col-sm-3"><a href={{ route('in.cv.datospersonalescv') }}><i class="fa fa-file-text-o"></i>Mi Cv</a></li>
-                  <li class="col-xs-3 col-sm-3"><a href="#"><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.mis-postulaciones') }}><i class="fa fa-tasks"></i>Mis Postulaciones</a></li>
                 @endif
                 @if(Entrust::hasRole('empleador') )
-                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas_laborales.create') }}><i class="fa fa-briefcase"></i>Realizar Propuesta</a></li>
-                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas_laborales.index') }}><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas-laborales.create') }}><i class="fa fa-suitcase"></i>Realizar Propuesta</a></li>
+                  <li class="col-xs-3 col-sm-3"><a href={{ route('in.propuestas-laborales.index') }}><i class="fa fa-tasks"></i>Mis Propuestas</a></li>
                 @endif
               </ul>
             </div>

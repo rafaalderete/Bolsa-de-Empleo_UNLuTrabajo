@@ -27,7 +27,7 @@
 							<input type="password" name="password" class="form-control" placeholder="********" autocomplete="off" required>
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Acceder',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Acceder',['class' => 'btn btn-info']) !!}
 						</div>
 
 						{!!Form::close()!!}

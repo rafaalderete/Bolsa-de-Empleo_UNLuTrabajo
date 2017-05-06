@@ -28,7 +28,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.propuestas_laborales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => 'in.propuestas-laborales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
         <div class="form-group">
           <div class="col-sm-12  requisitos-label">
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group descripcion">
           {!! Form::label('descripcion','Descripción de la Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-8">
             {!! Form::textarea('descripcion',null, ['id' => 'descripcion_textarea', 'class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
@@ -99,7 +99,7 @@
           <div class="row">
             {!! Form::label('requisito_años_experiencia_laboral','Años de Experiencia', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::number('requisito_años_experiencia_laboral',null,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Años de Experiencia', 'required'])!!}
+              {!! Form::number('requisito_años_experiencia_laboral',null,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Años de Experiencia'])!!}
             </div>
           </div>
         </div>
@@ -330,7 +330,7 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-2">
-            <button type="submit" class="btn btn-primary btn-label-left">
+            <button type="submit" class="btn btn-info btn-label-left">
               <span><i class="fa fa-check-square"></i></span>
               Aceptar
             </button>
@@ -345,7 +345,7 @@
 
         {!! Form::close()!!}
 
-        <a href="{{ route('in.propuestas_laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.propuestas-laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
           Volver a Mis Propuestas
         </a>
@@ -450,7 +450,18 @@
 
     $(document).ready(function() {
 
-    //  tinymce.init({ selector:'#descripcion_textarea' });
+      $('#descripcion_textarea').summernote({
+        lang: 'es-ES',
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['font', ['superscript', 'subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']]
+        ]
+      });
 
       //Comienzo de la posición de los checkbox.
       var pos_residencia = 1;

@@ -35,7 +35,19 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            return redirect('/in');
+          //Redirects a las paginas de inicio de cada rol.
+          if($this->auth->user()->hasRole('administrador') || $this->auth->user()->hasRole('super_usuario')) {
+            $redirectPath = 'in/registro-empleador';
+          }
+          else {
+            if ($this->auth->user()->hasRole('empleador')) {
+              $redirectPath = 'in/propuestas-laborales';
+            }
+            else {
+              $redirectPath = 'in/buscar-ofertas';
+            }
+          }
+          return redirect($redirectPath);
         }
 
         return $next($request);

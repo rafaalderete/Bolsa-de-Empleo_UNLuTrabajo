@@ -38,7 +38,7 @@
           </div>
           {!! Form::label('persona_id','Persona/Empresa', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            <select name="persona_id" class="populate placeholder" id="selectPersona">
+            <select name="persona_id" class="populate placeholder" id="selectPersona" required>
               <option value=""></option>
               @foreach( $personas as $persona)
                 @if($persona->tipo_persona == 'fisica')
@@ -65,7 +65,7 @@
         <div class="form-group">
           {!! Form::label('roles','Roles Asignados', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::select('roles[]',['none'], null, ['multiple', 'disabled', 'class' =>'populate placeholder', 'id' => 'selectRoles'])!!}
+            {!! Form::select('roles[]',['none'], null, ['multiple', 'disabled', 'class' =>'populate placeholder', 'id' => 'selectRoles', 'required'])!!}
           </div>
         </div>
 
@@ -109,7 +109,7 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-2">
-            <button type="submit" class="btn btn-primary btn-label-left">
+            <button type="submit" class="btn btn-info btn-label-left">
               <span><i class="fa fa-check-square"></i></span>
               Aceptar
             </button>

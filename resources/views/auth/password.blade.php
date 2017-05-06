@@ -29,7 +29,7 @@
 							{!! Form::text('email',null,['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'autocomplete' => 'off', 'required'])!!}
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Enviar',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Enviar',['class' => 'btn btn-info']) !!}
 						</div>
 
 						{!!Form::close()!!}

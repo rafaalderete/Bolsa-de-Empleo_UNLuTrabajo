@@ -122,8 +122,11 @@
 }
 
 .imagen-info {
-  background-color: #fcf8ee;
-  border: 1px solid #f7ebcc;
+  color: white;
+  background-color: #64a481;
+  border: 1px solid #1b8048;
+  /* background-color: #fcf8ee;
+    border: 1px solid #f7ebcc; */
   border-radius: 5px;
   text-align: center;
   padding: 8px;
@@ -191,3 +194,63 @@
   z-index: 2;
 }
 
+.descripcion .btn-default {
+  color: black;
+}
+
+#columna {
+  overflow: auto;
+  max-height: 260px;
+}
+
+#columna-buscar {
+  overflow: auto;
+  height: 60px;
+}
+
+.table a {
+  color: black;
+}
+
+.panel-body table {
+  margin-bottom: 0;
+}
+
+.panel-title a {
+  text-decoration: none;
+}
+
+.titulo-filtro {
+  margin-right: 5px;
+}
+
+.primer-elemento-filtro {
+  border: none !important;
+}
+
+.filtro-submit {
+  cursor: pointer;
+}
+
+.elminar-filtro {
+  margin-top: 5px;
+}
+
+.elminar-filtro a {
+  color: black;
+  text-decoration: none;
+}
+
+.elminar-filtro span {
+  color: red;
+}
+
+.label-success,
+.btn-info,
+.btn-info:visited {
+  background-color: #64a481 !important;
+}
+
+.btn-info:hover {
+  background-color: #1b8048 !important;
+}

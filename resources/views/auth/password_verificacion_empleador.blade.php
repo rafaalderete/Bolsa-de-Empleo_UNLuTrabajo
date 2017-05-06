@@ -31,7 +31,7 @@
 							{!!Form::password('password_confirmation', ['class' => 'form-control', 'placeholder' => '********', 'autocomplete' => 'off', 'required'])!!}
 						</div>
 						<div class="text-center">
-							{!! Form::submit('Establecer Contraseña y Verificar',['class' => 'btn btn-success']) !!}
+							{!! Form::submit('Establecer Contraseña y Verificar',['class' => 'btn btn-info']) !!}
 						</div>
 
 						{!!Form::close()!!}

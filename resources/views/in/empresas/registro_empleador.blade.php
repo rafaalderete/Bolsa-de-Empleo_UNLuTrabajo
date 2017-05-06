@@ -1,13 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nuevo Empleador')
+@section('headTitle', 'Registrar Empleador')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nuevo Empleador</a></li>
+        <li><a>Registrar Empleador</a></li>
       </ol>
     </div>
   </div>
@@ -21,7 +21,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Nuevo Empleador</h4>
+        <h4 class="page-header">Registrar Empleador</h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -112,7 +112,7 @@
 
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
-              <button type="submit" class="btn btn-primary btn-label-left">
+              <button type="submit" class="btn btn-info btn-label-left">
                 <span><i class="fa fa-check-square"></i></span>
                 Aceptar
               </button>
@@ -127,10 +127,6 @@
 
         {!! Form::close()!!}
 
-        <a href="{{ route('in.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
-          <span><i class="fa fa-reply"></i></span>
-          Volver
-        </a>
       </div>
     </div>
   </div>

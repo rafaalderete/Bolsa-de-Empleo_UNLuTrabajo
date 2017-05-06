@@ -38,7 +38,7 @@
             </div>
             {!! Form::label('persona_id','Persona/Empresa', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::select('persona_id',$personas, $my_persona, ['id' => 'selectPersona'])!!}
+              {!! Form::select('persona_id',$personas, $my_persona, ['id' => 'selectPersona', 'required'])!!}
             </div>
           </div>
 
@@ -52,7 +52,7 @@
           <div class="form-group">
             {!! Form::label('roles','Roles Asignados', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::select('roles[]',$roles, $my_roles, ['multiple', 'id' => 'selectRoles'])!!}
+              {!! Form::select('roles[]',$roles, $my_roles, ['multiple', 'id' => 'selectRoles', 'required'])!!}
             </div>
           </div>
 
@@ -113,7 +113,7 @@
 
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
-              <button type="submit" class="btn btn-primary btn-label-left">
+              <button type="submit" class="btn btn-info btn-label-left">
                 <span><i class="fa fa-check-square"></i></span>
                 Aceptar
               </button>

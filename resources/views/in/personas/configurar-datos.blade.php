@@ -123,7 +123,7 @@
 
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
-              <button type="submit" class="btn btn-primary btn-label-left">
+              <button type="submit" class="btn btn-info btn-label-left">
                 <span><i class="fa fa-check-square"></i></span>
                 Modificar
               </button>

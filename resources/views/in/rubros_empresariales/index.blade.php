@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Rubros Empresariales
         @if(Entrust::can('crear_rubro_empresarial'))
-          <a href="{{ route('in.rubros_empresariales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.rubros-empresariales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
             Registar Rubros Empresariales
           </a>
@@ -55,10 +55,10 @@
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
                   @if(Entrust::can('modificar_rubro_empresarial'))
-                    <a href="{{ route('in.rubros_empresariales.edit', $rubro->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                    <a href="{{ route('in.rubros-empresariales.edit', $rubro->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
                   @if(Entrust::can('eliminar_rubro_empresarial'))
-                    {!! Form::open(['route' => ['in.rubros_empresariales.destroy', $rubro->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    {!! Form::open(['route' => ['in.rubros-empresariales.destroy', $rubro->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rubro Empresarial"
                       data-message="¿Seguro que quiere eliminar el Rubro Empresarial {{$rubro->nombre_rubro_empresarial}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}

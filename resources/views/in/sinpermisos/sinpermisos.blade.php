@@ -19,7 +19,7 @@
 				<h1>Ups!</h1>
 				<h3>Tu no tienes acceso a este lugar!</h3>
 				<img src="../img/sinacceso.gif" alt="" />
-				<a href="{{route('in.index')}}" class="btn btn-default btn-label-left"><span><i class="fa fa-reply"></i></span> Volver a inicio</a>
+				<a href="{{URL::previous()}}" class="btn btn-default btn-label-left"><span><i class="fa fa-reply"></i></span> Volver a inicio</a>
 			</div>
 		</div>
 	</div>

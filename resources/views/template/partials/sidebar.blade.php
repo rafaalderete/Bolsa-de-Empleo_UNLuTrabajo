@@ -1,7 +1,7 @@
 <div id="sidebar-left" class="col-xs-2 col-sm-2">
   <ul class="nav main-menu">
     <li>
-      <a href="{{route('in.index')}}">
+      <a href="{{route('in.registro-empleador')}}">
         <i class="fa fa-home"></i>
         <span class="hidden-xs">Inicio</span>
       </a>
@@ -89,9 +89,9 @@
           <span class="hidden-xs">Rubros Empresariales</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.rubros_empresariales.index')}}">Tabla de Rubros Empresariales</a></li>
+          <li><a href="{{route('in.rubros-empresariales.index')}}">Tabla de Rubros Empresariales</a></li>
           @if(Entrust::can('crear_rubro_empresarial'))
-            <li><a href="{{route('in.rubros_empresariales.create')}}">Registrar Rubro Empresarial</a></li>
+            <li><a href="{{route('in.rubros-empresariales.create')}}">Registrar Rubro Empresarial</a></li>
           @endif
         </ul>
       </li>

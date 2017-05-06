@@ -29,7 +29,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.propuestas_laborales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.propuestas-laborales.update', $propuesta->id], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
         <div class="form-group">
           <div class="col-sm-12  requisitos-label">
@@ -44,10 +44,10 @@
           </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group descripcion">
           {!! Form::label('descripcion','Descripción de la Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-8">
-            {!! Form::textarea('descripcion',$propuesta->descripcion, ['class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
+            {!! Form::textarea('descripcion',$propuesta->descripcion, ['id' => 'descripcion_textarea', 'class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
           </div>
         </div>
 
@@ -90,7 +90,7 @@
           <div class="row">
             {!! Form::label('requisito_años_experiencia_laboral','Años de Experiencia', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::number('requisito_años_experiencia_laboral',$propuesta->requisito_años_experiencia_laboral,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Años de Experiencia', 'required'])!!}
+              {!! Form::number('requisito_años_experiencia_laboral',$propuesta->requisito_años_experiencia_laboral,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Años de Experiencia'])!!}
             </div>
           </div>
         </div>
@@ -112,13 +112,13 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="body_requisitos_residencia">
                   <tr class="hidden">
                     <td data-name="lugar">
-                      <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control"/>
+                      <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control">
                     </td>
                     <td data-name="excluyente_residencia">
-                      <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox"/>
+                      <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox">
                     </td>
                     <td data-name="del">
                       <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
@@ -126,15 +126,15 @@
                   </tr>
                   <?php $pos_residencia = 1; ?>
                   @foreach ($propuesta->requisitosResidencia as $requisito_residencia)
-                    <tr>
+                    <tr class="tr_requisitos_residencia">
                       <td data-name="lugar">
                         <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control" value={{$requisito_residencia->lugar}}>
                       </td>
                       <td data-name="excluyente_residencia">
                         @if ($requisito_residencia->excluyente)
-                          <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox" value={{$pos_residencia}} checked/>
+                          <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox" value={{$pos_residencia}} checked>
                         @else
-                          <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox" value={{$pos_residencia}}/>
+                          <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox" value={{$pos_residencia}}>
                         @endif
                       </td>
                       <td data-name="del">
@@ -177,7 +177,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="body_requisitos_idioma">
                   <tr class="hidden">
                     <td data-name="idioma">
                       <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
@@ -204,47 +204,36 @@
                       </select>
                     </td>
                     <td data-name="excluyente_idioma">
-                      <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox"/>
+                      <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox">
                     </td>
                     <td data-name="del">
                       <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
                     </td>
                   </tr>
-                  <?php $pos_Idioma = 0; ?>
+                  <?php $pos_idioma = 0; ?>
                   @foreach ($propuesta->requisitosIdioma as $requisito_idioma)
-                    <tr>
+                    <tr class="tr_requisitos_idioma">
                       <td data-name="idioma">
-                        <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
-                          <option value="" disabled selected hidden>Idioma</option>
-                          @foreach($idiomas as $idioma)
-                            <option value="{{$idioma->id}}">{{$idioma->nombre_idioma}}</option>
-                          @endforeach
-                        </select>
+                        {!! Form::select('idioma[]',$array_idiomas, $requisito_idioma->idioma_id, ['id' => 'selectIdioma', 'class' => 'form-control input_idioma input_idioma_idioma'])!!}
                       </td>
                       <td data-name="tipo_conocimiento_idioma">
-                        <select name="tipo_conocimiento_idioma[]" placeholder='Tipo de Conocimiento' class="form-control input_idioma input_idioma_tipo">
-                          <option value="" disabled selected hidden>Tipo Conocimiento</option>
-                          @foreach($tipos_conocimiento_idioma as $tipo_conocimiento_idioma)
-                            <option value="{{$tipo_conocimiento_idioma->id}}">{{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}}</option>
-                          @endforeach
-                        </select>
+                        {!! Form::select('tipo_conocimiento_idioma[]',$array_tipos_conocimiento_idioma, $requisito_idioma->tipo_conocimiento_idioma_id, ['class' => 'form-control input_idioma input_idioma_tipo'])!!}
                       </td>
                       <td data-name="nivel_conocimiento_idioma">
-                        <select name="nivel_conocimiento_idioma[]" placeholder='Nivel' class="form-control">
-                          <option value="" disabled selected hidden>Nivel</option>
-                          @foreach($niveles_conocimiento as $nivel_conocimiento)
-                            <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
-                          @endforeach
-                        </select>
+                        {!! Form::select('nivel_conocimiento_idioma[]',$array_niveles_conocimiento, $requisito_idioma->nivel_conocimiento_id, ['class' => 'form-control'])!!}
                       </td>
                       <td data-name="excluyente_idioma">
-                        <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox"/>
+                        @if ($requisito_idioma->excluyente)
+                          <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox" value={{$pos_idioma}} checked>
+                        @else
+                          <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox" value={{$pos_idioma}}>
+                        @endif
                       </td>
                       <td data-name="del">
                         <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
                       </td>
                     </tr>
-                    <?php $pos_residencia++; ?>
+                    <?php $pos_idioma++; ?>
                   @endforeach
                 </tbody>
               </table>
@@ -282,7 +271,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="body_requisitos_carrera">
                   <tr class="hidden">
                     <td data-name="carrera">
                       <select name="carrera[]" placeholder='Carrera' class="form-control input_carrera">
@@ -301,12 +290,34 @@
                       </select>
                     </td>
                     <td data-name="excluyente_carrera">
-                      <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox"/>
+                      <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox">
                     </td>
                     <td data-name="del">
                       <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
                     </td>
                   </tr>
+                  <?php $pos_carrera = 0; ?>
+                  @foreach ($propuesta->requisitosCarrera as $requisito_carrera)
+                    <tr class="tr_requisitos_carrera">
+                      <td data-name="carrera">
+                        {!! Form::select('carrera[]',$array_carreras, $requisito_carrera->carrera_id, ['class' => 'form-control input_carrera'])!!}
+                      </td>
+                      <td data-name="estado_carrera">
+                        {!! Form::select('estado_carrera[]',$array_estados_carrera, $requisito_carrera->estado_carrera_id, ['class' => 'form-control'])!!}
+                      </td>
+                      <td data-name="excluyente_carrera">
+                        @if ($requisito_carrera->excluyente)
+                          <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox" value={{$pos_carrera}} checked>
+                        @else
+                          <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox" value={{$pos_carrera}}>
+                        @endif
+                      </td>
+                      <td data-name="del">
+                        <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                      </td>
+                    </tr>
+                    <?php $pos_carrera++; ?>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -343,7 +354,7 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody class="body_requisitos_adicional">
                   <tr class="hidden">
                     <td data-name="nombre_requisito">
                       <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control"/>
@@ -357,12 +368,34 @@
                       </select>
                     </td>
                     <td data-name="excluyente_adicional">
-                      <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox"/>
+                      <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox">
                     </td>
                     <td data-name="del">
                       <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
                     </td>
                   </tr>
+                  <?php $pos_adicional = 1; ?>
+                  @foreach ($propuesta->requisitosAdicionales as $requisito_adicional)
+                    <tr class="tr_requisitos_adicional">
+                      <td data-name="nombre_requisito">
+                        <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control" value={{$requisito_adicional->nombre_requisito}}>
+                      </td>
+                      <td data-name="nivel_conocimiento_adicional">
+                        {!! Form::select('nivel_conocimiento_adicional[]',$array_niveles_conocimiento, $requisito_adicional->nivel_conocimiento_id, ['class' => 'form-control'])!!}
+                      </td>
+                      <td data-name="excluyente_adicional">
+                        @if ($requisito_adicional->excluyente)
+                          <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox" value={{$pos_adicional}} checked>
+                        @else
+                          <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox" value={{$pos_adicional}}>
+                        @endif
+                      </td>
+                      <td data-name="del">
+                        <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                      </td>
+                    </tr>
+                    <?php $pos_adicional++; ?>
+                  @endforeach
                 </tbody>
               </table>
             </div>
@@ -376,13 +409,13 @@
 
         <div class="form-group">
           <div class="col-sm-offset-2 col-sm-2">
-            <button type="submit" class="btn btn-primary btn-label-left">
+            <button type="submit" class="btn btn-info btn-label-left">
               <span><i class="fa fa-check-square"></i></span>
               Aceptar
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="reset" class="btn btn-default btn-label-left">
+            <button type="reset" class="btn btn-default btn-label-left" id="reset">
               <span><i class="fa fa-times-circle txt-danger"></i></span>
               Restablecer
             </button>
@@ -391,7 +424,7 @@
 
         {!! Form::close()!!}
 
-        <a href="{{ route('in.propuestas_laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.propuestas-laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
           Volver a Mis Propuestas
         </a>
@@ -496,11 +529,30 @@
 
     $(document).ready(function() {
 
+      $('#descripcion_textarea').summernote({
+        lang: 'es-ES',
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['font', ['superscript', 'subscript']],
+          ['fontsize', ['fontsize']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['height', ['height']]
+        ]
+      });
+
       //Comienzo de la posición de los checkbox.
       var pos_residencia = {{count($propuesta->requisitosResidencia)}}+1;
       var pos_idioma = {{count($propuesta->requisitosIdioma)}};
       var pos_carrera = {{count($propuesta->requisitosCarrera)}};
       var pos_adicional = {{count($propuesta->requisitosAdicionales)}}+1;
+
+      //Se guardan los requisitos.
+      var requisitosResidencia = $('.tr_requisitos_residencia');
+      var requisitosIdioma = $('.tr_requisitos_idioma');
+      var requisitosCarrera = $('.tr_requisitos_carrera');
+      var requisitosAdicional = $('.tr_requisitos_adicional');
 
       $("#add_row_residencia").on("click", function() {
         agregarFila("#tab_logic_residencia", pos_residencia);
@@ -522,6 +574,11 @@
         pos_adicional++;
       });
 
+      //Eliminar fila de la requisitos ya cargados.
+      $('.row-remove').on("click", function() {
+           $(this).closest("tr").remove();
+      });
+
       // Fecha Nac.
       $('#input_date').datepicker({setDate: new Date()});
 
@@ -532,6 +589,29 @@
 
       $('#selectTipoJornada').select2({
         placeholder: "Tipo de Jornada"
+      });
+
+      $('#reset').on("click", function() {
+        $('.body_requisitos_residencia').children().not(':first').remove();
+        $('.body_requisitos_residencia').append(requisitosResidencia);
+
+        $('.body_requisitos_idioma').children().not(':first').remove();
+        $('.body_requisitos_idioma').append(requisitosIdioma);
+
+        $('.body_requisitos_carrera').children().not(':first').remove();
+        $('.body_requisitos_carrera').append(requisitosCarrera);
+
+        $('.body_requisitos_adicional').children().not(':first').remove();
+        $('.body_requisitos_adicional').append(requisitosAdicional);
+
+        $(".tr_requisitos_residencia .row-remove, .tr_requisitos_idioma .row-remove, .tr_requisitos_carrera .row-remove, .tr_requisitos_adicional .row-remove").on("click", function() {
+            $(this).closest("tr").remove();
+        });
+
+        pos_residencia = {{count($propuesta->requisitosResidencia)}}+1;
+        pos_idioma = {{count($propuesta->requisitosIdioma)}};
+        pos_carrera = {{count($propuesta->requisitosCarrera)}};
+        pos_adicional = {{count($propuesta->requisitosAdicionales)}}+1;
       });
 
     });

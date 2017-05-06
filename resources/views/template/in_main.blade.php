@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{{asset('plugins/bootstrap/bootstrap.css')}}">
 	<link rel="stylesheet" href="{{asset('plugins/jquery-ui/jquery-ui.min.css')}}">
-	<link rel="stylesheet" href="{{asset('http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css')}}">
+	<link rel="stylesheet" href="{{asset('fonts/font-awesome-4.7.0/css/font-awesome.css')}}">
 	<link rel="stylesheet" type="text/css" href="{{asset('http://fonts.googleapis.com/css?family=Righteous')}}" >
 	<link rel="stylesheet" href="{{asset('plugins/fancybox/jquery.fancybox.css')}}">
 	<link rel="stylesheet" href="{{asset('plugins/fullcalendar/fullcalendar.css')}}">
@@ -16,7 +16,8 @@
 	<link rel="stylesheet" href="{{asset('plugins/select2/select2.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style.css')}}">
 	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
-	<link rel="stylesheet" href="{{asset('plugins/orbit/css/styles-3.css')}}" >	
+	<link rel="stylesheet" href="{{asset('plugins/orbit/css/styles-3.css')}}" >
+	<link rel="stylesheet" href="{{asset('plugins/summernote/summernote.css')}}">
 </head>
 <body>
 
@@ -58,8 +59,8 @@
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="{{asset('plugins/bootstrap/bootstrap.min.js')}}"></script>
 	<script src="{{asset('plugins/justified-gallery/jquery.justifiedgallery.min.js')}}"></script>
-	<script src="{{asset('plugins/tinymce/tinymce.min.js')}}"></script>
-	<script src="{{asset('plugins/tinymce/jquery.tinymce.min.js')}}"></script>
+	<script src="{{asset('plugins/summernote/summernote.js')}}"></script>
+	<script src="{{asset('plugins/summernote/lang/summernote-es-ES.js')}}"></script>
 	<!-- All functions for this theme + document.ready processing -->
 	<script src="{{asset('js/devoops.js')}}"></script>
 	<!-- Se Agregaron -->
