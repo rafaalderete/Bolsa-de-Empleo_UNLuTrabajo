@@ -16,7 +16,15 @@ class IdiomasController extends Controller
      */
     public function index()
     {
-        //
+        #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
+        if (Auth::user()->can('listar_idiomas')) {
+            $idiomas = Idiomas::orderBy('id', DESC)->get(); #me traigo de la bd los idiomas cargados en id descendentes
+
+            return view('in.idiomas.index')->with('idiomas', $idiomas);
+        } else {
+            return redirect()->route('in.sinpermisos.sinpermisos');
+       
+        }
     }
 
     /**
@@ -26,7 +34,11 @@ class IdiomasController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::user()->can('crear_idiomas')){
+            return view('in.idiomas.create');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -37,7 +49,16 @@ class IdiomasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       if(Auth::user()->can('crear_idiomas')){
+        $idioma = new Idiomas($request->all());
+
+        $rubro->save();
+
+        Flash::success('Idiomas' . $idioma->nombre_idioma . ' agregado.')->important();
+        return redirect()->route('in.idiomas.index');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -59,7 +80,12 @@ class IdiomasController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(Auth::user()->can('modificar_idiomas')){
+        $idioma = Idiomas::find($id);
+        return view('in.idiomas.edit')->with('idioma',$idioma);
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
