@@ -32,7 +32,7 @@
       @include('template.partials.errors')      
       
       <div class="form-group detalle-descripcion col-sm-12">
-          {!! Form::label('nombre_persona','Carta de Presentación: ', ['class' => 'col-sm-3 control-label']) !!}
+          {!! Form::label('nombre_persona','Carta de Presentación:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="row">
             <div class="col-md-6">
               @if($pfisica->estudiante->cv->carta_presentacion != null)
@@ -57,7 +57,7 @@
 
      <div class="form-group">
         <div class="col-sm-offset-5 col-sm-2">
-          <a  href="{{ route('in.cv.editobjetivolaboralcv') }}" ><button class="btn btn-primary btn-label-left">
+          <a  href="{{ route('in.cv.editobjetivolaboralcv') }}" ><button class="btn btn-info btn-label-left">
             <span><i class="fa fa-pencil"></i></span>
             Modificar
           </button></a>

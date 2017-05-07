@@ -9,7 +9,7 @@ class Estudio_Academico extends Model
 
     protected $table = "estudios_academicos";
     protected $fillable = ['id','cv_id','nombre_instituto','titulo','materias_total',
-                            'materias_aprobadas','nivel_educativo_id','estados_carrera',
+                            'materias_aprobadas','nivel_educativo_id','estado_carrera_id',
                             'periodo_fin','periodo_inicio'];
 
     public function cv(){

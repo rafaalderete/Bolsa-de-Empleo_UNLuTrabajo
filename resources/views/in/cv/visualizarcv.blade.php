@@ -26,9 +26,9 @@
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
-    <h4 class="page-header">Visualizar CV</h4>
-    <div class="wrapper">
-      <div class="sidebar-wrapper">
+      <h4 class="page-header">Visualizar CV</h4>
+      <div class="wrapper">
+        <div class="sidebar-wrapper">
           <div class="profile-container">
             @if(Auth::user()->imagen != null)
               <!-- PHOTO (AVATAR) -->
@@ -72,149 +72,139 @@
                       <span>{{Auth::user()->email}}</span>
                   </div><!--//item-->
           </div><!--//education-container-->
-      </div><!--//sidebar-wrapper-->
+        </div><!--//sidebar-wrapper-->
         
         
-      <div class="main-wrapper">
-        @if (($pfisica->estudiante->cv->carta_presentacion != null) || ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null))
-          <section class="section summary-section">
-            <h2 class="section-title2">Objetivo Laboral</h2>
+        <div class="main-wrapper" style="min-height:500px">
+          @if (($pfisica->estudiante->cv->carta_presentacion != null) || ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null))
+            <section class="section summary-section">
+              <h2 class="section-title2">Objetivo Laboral</h2>
             
-            @if ($pfisica->estudiante->cv->carta_presentacion != null)
-              <div class="detalle-descripcion">
-                <div class="row">
-                  <div class="col-md-12">
-                    <span>{{$pfisica->estudiante->cv->carta_presentacion}}</span>
+              @if ($pfisica->estudiante->cv->carta_presentacion != null)
+                <div class="detalle-descripcion">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <p>{{$pfisica->estudiante->cv->carta_presentacion}}</p>
+                    </div>
                   </div>
-                </div>
-              </div><!--//summary-->
-            @endif
+                </div><!--//summary-->
+              @endif
             
-            @if ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null)
-              <div class="sueldo">
-                  <span>Mi Sueldo Bruto Pretendido es</span> : 
-                  <span>{{$pfisica->estudiante->cv->sueldo_bruto_pretendido}}</span> $.
-              </div>
-            @endif
-          </section><!--//section-->
-        @endif
-              
-          <section class="section experiences-section">
+              @if ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null)
+                <div class="sueldo">
+                    <span>Mi Sueldo Bruto Pretendido es</span> : 
+                    <span>{{$pfisica->estudiante->cv->sueldo_bruto_pretendido}}</span> $.
+                </div>
+              @endif
+           </section><!--//section-->
+          @endif
+        
+          @if(count($estudios) > 0 )      
+            <section class="section experiences-section">
               <h2 class="section-title">Estudio Académico</h2>        
-              <div class="item">
+              @foreach( $estudios as $estudio)
+                <div class="item">
                   <div class="meta">
-                      <div class="upper-row">
-                        <h3 class="job-title">Lic. en Sistemas de Informacion</h3>
-                        <div class="time">
-                          <span>2015</span> - <span>Presente</span>
-                        </div>
-                      </div><!--//upper-row-->
-                      <div class="company">
-                        <span>En Curso</span> - 
-                        <span>Universidad Nacional de Luján</span>
+                    <div class="upper-row">
+                      <h3 class="job-title">{{$estudio->titulo}}</h3>
+                      <div class="time">
+                        <span>{{$estudio->periodo_inicio}}</span> / 
+                          @if($estudio->periodo_fin == 0)
+                            <span>Presente</span>
+                          @else
+                            <span>{{$estudio->periodo_fin}}</span>
+                          @endif
                       </div>
-                      <div class="company">
-                        <span>Porcentaje de Avance de la Carrera</span> : 
-                        <span>70</span> %
-                      </div>
+                    </div><!--//upper-row-->
+                    <div class="company">
+                      <span>{{$estudio->estadoCarrera->nombre_estado_carrera}}</span> - 
+                        <span>{{$estudio->nombre_instituto}}</span>
+                    </div>
+                    <div class="company">
+                      <span>Avance de la Carrera</span> : 
+                      <span>{{$estudio->materias_aprobadas}}</span> /
+                      <span>{{$estudio->materias_total}}</span> Materias.
+                    </div>
                   </div><!--//meta-->
-              </div><!--//item-->
-              <div class="item">
-                  <div class="meta">
-                      <div class="upper-row">
-                        <h3 class="job-title">Lic. en Sistemas de Informacion</h3>
-                        <div class="time">
-                          <span>2015</span> - <span>Presente</span>
-                        </div>
-                      </div><!--//upper-row-->
-                      <div class="company">
-                        <span>En Curso</span> - 
-                        <span>Universidad Nacional de Luján</span>
-                      </div>
-                      <div class="company">
-                        <span>Porcentaje de Avance de la Carrera</span> : 
-                        <span>70</span> %
-                      </div>
-                  </div><!--//meta-->
-              </div><!--//item-->        
-          </section><!--//section-->
-              
+                </div><!--//item-->
+              @endforeach
+            </section><!--//section-->
+          @endif
 
-          <section class="section experiences-section">
+          @if(count($expLaborales) > 0 )
+            <section class="section experiences-section">
               <h2 class="section-title"></i>Experiencia Laboral</h2>
-              <div class="item">
+              @foreach( $expLaborales as $expLaboral)
+                <div class="item">
                   <div class="meta">
-                      <div class="upper-row">
-                          <h3 class="job-title">Analista Desarrollador</h3>
-                          <div class="time">
-                            <span>2015</span> - <span>Presente</span>
-                          </div>
-                      </div><!--//upper-row-->
-                      <div class="company">
-                          <span>Besysoft S.A.</span> - 
-                          <span>Software</span>    
+                    <div class="upper-row">
+                      <h3 class="job-title">{{$expLaboral->puesto}}</h3>
+                      <div class="time">
+                        <span>{{$expLaboral->periodo_inicio}}</span> / 
+                        @if($expLaboral->periodo_fin == 0)
+                          <span>Presente</span>
+                        @else
+                          <span>{{$expLaboral->periodo_fin}}</span>
+                        @endif
                       </div>
+                    </div><!--//upper-row-->
+                    <div class="company">
+                      <span>{{$expLaboral->nombre_empresa}}</span> - 
+                      <span>{{$expLaboral->rubroEmpresarial->nombre_rubro_empresarial}}</span>    
+                    </div>
                   </div><!--//meta-->
                   <div class="company-details">
-                      <span>Desarrollador Jr de sistemas bancarios</span>
+                    <span>{{$expLaboral->descripcion_tarea}}</span>
                   </div><!--//details-->
-              </div><!--//item-->
-
-              <div class="item">
-                  <div class="meta">
-                      <div class="upper-row">
-                          <h3 class="job-title">Analista Desarrollador</h3>
-                          <div class="time">
-                            <span>2015</span> - <span>Presente</span>
-                          </div>
-                      </div><!--//upper-row-->
-                      <div class="company">
-                          <span>Besysoft S.A.</span> - 
-                          <span>Software</span>    
-                      </div>
-                  </div><!--//meta-->
-                  <div class="company-details">
-                      <span>Desarrollador Jr de sistemas bancarios</span>
-                  </div><!--//details-->
-              </div><!--//item-->
-             
-          </section><!--//section-->
+                </div><!--//item-->
+              @endforeach
+            </section><!--//section-->
+          @endif
               
-          <section class="skills-section section">
+          @if(count($conocimientosIdiomas) > 0 )
+            <section class="skills-section section">
               <h2 class="section-title">Conocimiento Idioma</h2>
               <div class="skillset">        
+                @foreach( $conocimientosIdiomas as $conocimientoIdioma)
                   <div class="skill">
-                    <span class="job-title">Ingles</span>.
-                    <span class="company">Oral</span>.
-                    <span class="company">Intermedio</span>.
-                  </div><!--//item--> 
-                  <div class="skill">
-                    <span class="job-title">Ingles</span>.
-                    <span class="company">Oral</span>.
-                    <span class="company">Intermedio</span>.
-                  </div><!--//item-->        
-              </dicv><!--//item-->  
-          </section><!--//skills-section-->
-          <section class="skills-section section">
+                    <span class="job-title">{{$conocimientoIdioma->idioma->nombre_idioma}}</span>.
+                    <span class="company">{{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma}}</span>.
+                    <span class="company">{{$conocimientoIdioma->nivelConocimiento->nombre_nivel_conocimiento}}</span>.
+                  </div><!--//item-->
+                @endforeach 
+              </div><!--//item-->  
+            </section><!--//skills-section-->
+          @endif
+
+          @if(count($conocimientosInformaticos) > 0 )
+            <section class="skills-section section">
               <h2 class="section-title">Conocimiento Informático</h2>
               <div class="skillset">        
+                @foreach( $conocimientosInformaticos as $conocimientoInformatico)
                   <div class="skill">
-                  <span class="job-title">Laravel</span>.
-                  <span class="company">Intermedio</span>.
-                  </div>        
-              </dicv><!--//item-->  
-          </section><!--//skills-section-->
-          <section class="skills-section section">
+                    <span class="job-title">{{$conocimientoInformatico->tipoSoftware->nombre_tipo_software}}</span>.
+                    <span class="company">{{$conocimientoInformatico->nivelConocimiento->nombre_nivel_conocimiento}}</span>.
+                  </div>
+                @endforeach        
+              </div><!--//item-->  
+            </section><!--//skills-section-->
+          @endif
+          
+          @if(count($conocimientosAdicionales) > 0 )
+            <section class="skills-section section">
               <h2 class="section-title">Conocimiento Adicional</h2>
               <div class="skillset">        
+                @foreach( $conocimientosAdicionales as $conocimientoAdicional)
                   <div class="skill">
-                      <span class="job-title">Sistema de reporte de incidencia (JIRA)</span>.
-                      <span class="company">Intermedio</span>.
+                    <span class="job-title">{{$conocimientoAdicional->nombre_conocimiento}}</span>.
+                    <span class="company">{{$conocimientoAdicional->descripcion_conocimiento}}</span>.
                   </div>        
-              </dicv><!--//item-->  
-          </section><!--//skills-section-->        
-      </div><!--//main-body-->
-    </div>
+                @endforeach
+              </div><!--//item-->  
+            </section><!--//skills-section-->        
+          @endif
+        </div><!--//main-body-->
+      </div>
     </div>
   </div>
 </div>

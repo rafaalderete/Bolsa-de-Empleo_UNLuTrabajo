@@ -166,9 +166,32 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::resource('gestionar-cv/experiencia-laborales', 'ExperienciaLaboralesController');
 	Route::delete('gestionar-cv/experiencia-laborales/{id}/destroy', [
 		'uses'	=>	'ExperienciaLaboralesController@destroy',
-		'as'	=>	'in.cv.experiencia_laborales.destroy',
+		'as'	=>	'in.gestionar-cv.experiencia-laborales.destroy',
 	]);
 
+	Route::resource('gestionar-cv/estudios-academicos', 'EstudiosAcademicosController');
+	Route::delete('gestionar-cv/estudios-academicos/{id}/destroy', [
+		'uses'	=>	'EstudiosAcademicosController@destroy',
+		'as'	=>	'in.gestionar-cv.estudios-academicos.destroy',
+	]);
+
+	Route::resource('gestionar-cv/conocimientos-idiomas', 'ConocimientosIdiomasController');
+	Route::delete('gestionar-cv/conocimientos-idiomas/{id}/destroy', [
+		'uses'	=>	'ConocimientosIdiomasController@destroy',
+		'as'	=>	'in.gestionar-cv.conocimientos-idiomas.destroy',
+	]);
+
+	Route::resource('gestionar-cv/conocimientos-informaticos', 'ConocimientosInformaticosController');
+	Route::delete('gestionar-cv/conocimientos-informaticos/{id}/destroy', [
+		'uses'	=>	'ConocimientosInformaticosController@destroy',
+		'as'	=>	'in.gestionar-cv.conocimientos-informaticos.destroy',
+	]);
+
+	Route::resource('gestionar-cv/conocimientos-adicionales', 'ConocimientosAdicionalesController');
+	Route::delete('gestionar-cv/conocimientos-adicionales/{id}/destroy', [
+		'uses'	=>	'ConocimientosAdicionalesController@destroy',
+		'as'	=>	'in.gestionar-cv.conocimientos-adicionales.destroy',
+	]);
 
 	//------------- RUTAS DE PARAMETRIA ---------------------
 

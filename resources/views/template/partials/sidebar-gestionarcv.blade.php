@@ -7,31 +7,31 @@
       </a>
     </li>
     <li>
-      <a href="{{route('in.configurar-cuenta-password')}}">
-        <i class="fa fa-briefcase"></i>
-        <span class="hidden-xs">Experiencia Laboral</span>
-      </a>
-    </li>
-    <li>
-      <a href="{{route('in.configurar-cuenta-email')}}">
+      <a href="{{route('in.gestionar-cv.estudios-academicos.index')}}">
         <i class="fa fa-book"></i>
         <span class="hidden-xs">Educación</span>
       </a>
     </li>
     <li>
-      <a href="{{route('in.configurar-cuenta-email')}}">
+      <a href="{{route('in.gestionar-cv.experiencia-laborales.index')}}">
+        <i class="fa fa-briefcase"></i>
+        <span class="hidden-xs">Experiencia Laboral</span>
+      </a>
+    </li>
+    <li>
+      <a href="{{route('in.gestionar-cv.conocimientos-informaticos.index')}}">
         <i class="fa fa-laptop"></i>
         <span class="hidden-xs">Informática</span>
       </a>
     </li>
     <li>
-      <a href="{{route('in.configurar-cuenta-email')}}">
-        <i class="fa fa-comments"></i>
+      <a href="{{route('in.gestionar-cv.conocimientos-idiomas.index')}}">
+        <i class="fa fa-language"></i>
         <span class="hidden-xs">Idioma</span>
       </a>
     </li>
     <li>
-      <a href="{{route('in.cv.objetivolaboralcv')}}">
+      <a href="{{route('in.gestionar-cv.conocimientos-adicionales.index')}}">
         <i class="fa fa-plus-circle"></i>
         <span class="hidden-xs">Adicional</span>
       </a>
