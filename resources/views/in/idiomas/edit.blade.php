@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Idiomas | Registrar Idioma')
+@section('headTitle', 'Idiomas| Editar Idioma')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Idiomas</a></li>
-        <li><a>Registrar Idiomas</a></li>
+        <li><a>Idioma</a></li>
+        <li><a>Editar Idioma</a></li>
       </ol>
     </div>
   </div>
@@ -22,19 +22,26 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Registro de Idioma</h4>
+        <h4 class="page-header">Editar Idioma - {{$idioma->nombre_idioma}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.idioma.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.idiomas.update', $idioma], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+
+      		<div class="form-group">
+      			{!! Form::label('nombre_idioma','Nombre Idioma', ['class' => 'col-sm-2 control-label']) !!}
+            <div class="col-sm-4">
+              {!! Form::text('nombre_idioma', $idioma->nombre_idioma,['class' => 'form-control', 'placeholder' => 'Nombre Idioma', 'required'])!!}
+            </div>
+      		</div>
 
           <div class="form-group">
-            {!! Form::label('nombre_idioma','Nombre Idioma', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('estado','Estado', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_idioma',null,['class' => 'form-control', 'placeholder' => 'Nombre Idioma', 'required'])!!}
+              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $idioma->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
             </div>
           </div>
 
@@ -48,12 +55,12 @@
             <div class="col-sm-2">
               <button type="reset" class="btn btn-default btn-label-left">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
-                Borrar
+                Restablecer
               </button>
             </div>
           </div>
 
-        {!! Form::close()!!}
+      	{!! Form::close()!!}
 
         <a href="{{ route('in.idiomas.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
@@ -62,5 +69,19 @@
       </div>
     </div>
   </div>
+
+@endsection
+
+@section('bodyJS')
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+
+      $('#selectEstado').select2({
+        placeholder: "Estado"
+      });
+
+    });
+  </script>
 
 @endsection

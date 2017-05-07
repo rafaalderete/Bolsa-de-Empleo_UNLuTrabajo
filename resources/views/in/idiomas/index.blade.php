@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Idiomas
         @if(Entrust::can('crear_idiomas'))
-          <a href="{{ route('in.idioma.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.idiomas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
             Registar Idioma
           </a>
@@ -55,12 +55,12 @@
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
                   @if(Entrust::can('modificar_idioma'))
-                    <a href="{{ route('in.idioma.edit', $idioma->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                    <a href="{{ route('in.idiomas.edit', $idioma->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
                   @if(Entrust::can('eliminar_idioma'))
-                    {!! Form::open(['route' => ['in.idioma.destroy', $idioma->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rubro Empresarial"
-                      data-message="¿Seguro que quiere eliminar el Rubro Empresarial {{$rubro->nombre_rubro_empresarial}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                    {!! Form::open(['route' => ['in.idiomas.destroy', $idioma->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Idiomas"
+                      data-message="¿Seguro que quiere eliminar el Idioma {{$idioma->nombre_idioma}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif
                   </td>
