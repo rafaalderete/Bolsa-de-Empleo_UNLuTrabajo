@@ -29,7 +29,7 @@
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.idioma.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => 'in.idiomas.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
           <div class="form-group">
             {!! Form::label('nombre_idioma','Nombre Idioma', ['class' => 'col-sm-2 control-label']) !!}
