@@ -225,6 +225,15 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.idiomas.destroy',
 	]);
 
+	##################################################################
+	//------------------ RUTA PARA IDIOMAS -----------------------   #
+	##################################################################
+	Route::resource('tipos-software','TiposSoftwareController'); 
+	Route::delete('tipo-software/{id}/destroy', [
+		'uses'	=>	'TiposSoftwareController@destroy',
+			'as'	=>	'in.tipo-software.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [
