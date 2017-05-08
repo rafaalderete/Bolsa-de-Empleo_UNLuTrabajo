@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreIdiomaRequest;
+use App\Http\Requests\UpdateIdiomaRequest;
+use App\Idioma as Idiomas;
 
 class IdiomasController extends Controller
 {
@@ -18,9 +23,9 @@ class IdiomasController extends Controller
     {
         #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
         if (Auth::user()->can('listar_idiomas')) {
-            $idiomas = Idioma::orderBy('id', DESC)->get(); #me traigo de la bd los idiomas cargados en id descendentes
+            $idioma = Idiomas::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
 
-            return view('in.idiomas.index')->with('idiomas', $idiomas);
+            return view('in.idiomas.index')->with('idiomas', $idioma);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
        
@@ -34,7 +39,7 @@ class IdiomasController extends Controller
      */
     public function create()
     {
-        if(Auth::user()->can('crear_idiomas')){
+        if(Auth::user()->can('crear_idioma')){
             return view('in.idiomas.create');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -49,10 +54,10 @@ class IdiomasController extends Controller
      */
     public function store(Request $request)
     {
-       if(Auth::user()->can('crear_idiomas')){
-        $idioma = new Idioma($request->all());
+       if(Auth::user()->can('crear_idioma')){
+        $idioma = new Idiomas($request->all());
 
-        $rubro->save();
+        $idioma->save();
 
         Flash::success('Idiomas' . $idioma->nombre_idioma . ' agregado.')->important();
         return redirect()->route('in.idiomas.index');
@@ -80,8 +85,8 @@ class IdiomasController extends Controller
      */
     public function edit($id)
     {
-        if(Auth::user()->can('modificar_idiomas')){
-        $idioma = Idioma::find($id);
+        if(Auth::user()->can('modificar_idioma')){
+        $idioma = Idiomas::find($id);
         return view('in.idiomas.edit')->with('idioma',$idioma);
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -97,8 +102,8 @@ class IdiomasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if(Auth::user()->can('modificar_idiomas')){
-            $idioma = Idioma::find($id);
+        if(Auth::user()->can('modificar_idioma')){
+            $idioma = Idiomas::find($id);
 
             $idioma->fill($request->all());
             $idioma->save();
@@ -116,7 +121,7 @@ class IdiomasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    /*public function destroy($id)
+  /*  public function destroy($id)
     {
         if(Auth::user()->can('eliminar_idiomas')){
             $idioma = Idiomas::find($id);

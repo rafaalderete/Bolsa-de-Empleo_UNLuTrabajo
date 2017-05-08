@@ -216,6 +216,15 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.rubros-empresariales.destroy',
 	]);
 
+	##################################################################
+	//------------------ RUTA PARA IDIOMAS -----------------------   #
+	##################################################################
+	Route::resource('idiomas','IdiomasController'); 
+	Route::delete('idioma/{id}/destroy', [
+		'uses'	=>	'IdiomasController@destroy',
+			'as'	=>	'in.idiomas.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [

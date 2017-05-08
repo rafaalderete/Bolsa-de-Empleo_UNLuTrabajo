@@ -96,6 +96,21 @@
         </ul>
       </li>
     @endif
+  
+    @if(Entrust::can('listar_idiomas'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Idiomas</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.idiomas.index')}}">Tabla de Idioma</a></li>
+          @if(Entrust::can('crear_idioma'))
+            <li><a href="{{route('in.idiomas.create')}}">Registrar Idioma</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
 
   </ul>
 </div>
