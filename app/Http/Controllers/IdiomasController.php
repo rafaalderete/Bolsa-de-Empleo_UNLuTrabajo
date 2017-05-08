@@ -127,7 +127,7 @@ class IdiomasController extends Controller
         if(Auth::user()->can('eliminar_idioma')){
             $idioma = Idiomas::find($id);
             $cidioma = Conocimiento_Idioma::where('idioma_id','=',$id)->get();
-            $experiencias_laborales = Conocimiento_Idioma::where('idioma_id','=',$id)->get();
+            
             if( (count($cidioma) == 0) ) {//Se verifica que no esta uso.
 
               $idioma->delete();

@@ -112,5 +112,20 @@
       </li>
     @endif
 
+    @if(Entrust::can('listar_tipos_software'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Software</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_software.index')}}">Tabla de Tipo Software</a></li>
+          @if(Entrust::can('crear_tipo_software'))
+            <li><a href="{{route('in.tipo_software.create')}}">Registrar Tipo Software</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
   </ul>
 </div>

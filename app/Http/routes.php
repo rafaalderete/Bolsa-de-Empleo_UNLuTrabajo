@@ -226,12 +226,12 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	]);
 
 	##################################################################
-	//------------------ RUTA PARA IDIOMAS -----------------------   #
+	//------------------ RUTA PARA TIPO SOFTWARE -----------------   #
 	##################################################################
-	Route::resource('tipos-software','TiposSoftwareController'); 
-	Route::delete('tipo-software/{id}/destroy', [
+	Route::resource('tipo_software','TiposSoftwareController'); 
+	Route::delete('tipo_software/{id}/destroy', [
 		'uses'	=>	'TiposSoftwareController@destroy',
-			'as'	=>	'in.tipo-software.destroy',
+			'as'	=>	'in.tipo_software.destroy',
 	]);
 
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------

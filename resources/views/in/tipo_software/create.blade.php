@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Rubro Empresariales | Registrar Rubro Empresariales')
+@section('headTitle', 'Tipo Software | Registrar Tipo Software')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Rubros Empresariales</a></li>
-        <li><a>Registrar Rubro Empresarial</a></li>
+        <li><a>Tipo Software</a></li>
+        <li><a>Registrar Tipo Software</a></li>
       </ol>
     </div>
   </div>
@@ -22,19 +22,19 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Registro de Rubro Empresarial</h4>
+        <h4 class="page-header">Registro de Tipo Software</h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => 'in.rubros-empresariales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => 'in.tipo_software.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
           <div class="form-group">
-            {!! Form::label('nombre_rubro_empresarial','Nombre Rubro Empresarial', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('nombre_tipo_software','Nombre Tipo Software', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_rubro_empresarial',null,['class' => 'form-control', 'placeholder' => 'Nombre Rubro Empresarial', 'required'])!!}
+              {!! Form::text('nombre_tipo_software',null,['class' => 'form-control', 'placeholder' => 'Nombre Tipo Software', 'required'])!!}
             </div>
           </div>
 
@@ -55,7 +55,7 @@
 
         {!! Form::close()!!}
 
-        <a href="{{ route('in.rubros-empresariales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.tipo_software.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
@@ -64,4 +64,3 @@
   </div>
 
 @endsection
-
