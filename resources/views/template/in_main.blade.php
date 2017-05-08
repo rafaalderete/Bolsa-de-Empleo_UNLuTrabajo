@@ -6,6 +6,7 @@
 	<title>@yield('headTitle','Default')</title>
 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="{{asset('img/escudounlu.png')}}"/>
 	<link rel="stylesheet" href="{{asset('plugins/bootstrap/bootstrap.css')}}">
 	<link rel="stylesheet" href="{{asset('plugins/jquery-ui/jquery-ui.min.css')}}">
 	<link rel="stylesheet" href="{{asset('fonts/font-awesome-4.7.0/css/font-awesome.css')}}">

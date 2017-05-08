@@ -101,6 +101,21 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	    return view('in.sinpermisos.sinpermisos');
 	}]);
 
+	//Ruta para redirección cuando no tiene el permiso.
+	Route::get('/', ['as' => 'in', function () {
+		if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')) {
+			return redirect()->route('in.registro-empleador');
+		}
+		else {
+			if(Auth::user()->hasRole('empleador')) {
+				return redirect()->route('in.propuestas-laborales.index');
+			}
+			else {
+				return redirect()->route('in.buscar-ofertas');
+			}
+		}
+	}]);
+
 	Route::resource('personas','FisicasController');
 	Route::delete('personas/{id}/destroy', [
 		'uses'	=>	'FisicasController@destroy',
@@ -141,7 +156,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::get('gestionar-cv/visualizar-cv', [
 		'uses'	=>	'CvController@visualizarCv',
 		'as'	=>	'in.cv.visualizarcv'
-	]);	
+	]);
 
 	Route::get('gestionar-cv/datos-personales-cv', [
 		'uses'	=>	'CvController@visualizarDatosPersonales',

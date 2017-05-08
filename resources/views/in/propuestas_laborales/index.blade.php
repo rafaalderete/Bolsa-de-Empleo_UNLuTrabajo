@@ -73,7 +73,11 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12 anuncio-subtitulo">
-                        <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
+                        @if ($propuesta->fecha_fin_propuesta < $fechaActual)
+                          <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                        @else
+                          <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
+                        @endif
                       </div>
                     </div>
                     </div>

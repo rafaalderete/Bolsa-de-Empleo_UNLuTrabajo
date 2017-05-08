@@ -87,10 +87,7 @@
             <div class="col-sm-4">
               {!! Form::text('telefono_fijo', null, ['class' => 'form-control', 'placeholder' => 'Telefono Fijo'])!!}
             </div>
-          </div>
-
-          <div class="form-group">
-            {!! Form::label('telefono_celular','Teléfono Celular', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('telefono_celular','Teléfono Celular', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('telefono_celular', null, ['class' => 'form-control', 'placeholder' => 'Telefono Celular'])!!}
             </div>
@@ -101,10 +98,7 @@
             <div class="col-sm-4">
               {!! Form::text('nombre_usuario',null,['class' => 'form-control', 'placeholder' => 'Nombre Usuario', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
             </div>
-          </div>
-
-          <div class="form-group">
-            {!! Form::label('email','E-mail', ['class' => 'col-sm-2 control-label']) !!}
+            {!! Form::label('email','E-mail', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'ejemplo@correo.com', 'required'])!!}
             </div>

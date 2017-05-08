@@ -148,14 +148,14 @@
       }
 
       $.get (url,data,function (result) {
-
-        select.empty(); // remove old options
+        select.empty();
         $.each(result.roles, function(index,value) {
           select.append($("<option></option>")
              .attr("value", index).text(value));
           select.prop('disabled', false);
         });
       })
+
     });
 
     function readURL(input) {

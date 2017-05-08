@@ -17,7 +17,7 @@
             <h1 class="name">Guerrero</h1>
             <h1 class="tagline">Pedro Emanuel</h1>
         </div><!--//profile-container-->
-            
+
         <div class="education-container container-block">
             <h2 class="container-block-title">Datos Personales</h2>
                 <div class="item">
@@ -36,7 +36,7 @@
                     <span>Localidad</span> :
                     <span>Moreno</span>
                 </div><!--//item-->
-                
+
                 <div class="item">
                     <span>Telefono</span> :
                     <span>03374681649</span>
@@ -50,47 +50,47 @@
                     <span>peg10@live.com.ar</span>
                 </div><!--//item-->
         </div><!--//education-container-->
-            
+
         <div class="education-container container-block">
             <h2 class="container-block-title">Idioma</h2>
             <div class="item">
-                <span>Ingles</span> - 
+                <span>Ingles</span> -
                 <span>Lectura</span>.
                 <span>Intermedio</span>.
             </div><!--//item-->
             <div class="item">
-                <span>Ingles</span> - 
+                <span>Ingles</span> -
                 <span>Oral</span>.
                 <span>Intermedio</span>.
             </div><!--//item-->
         </div><!--//education-container-->
-            
+
         <div class="education-container container-block">
             <h2 class="container-block-title">Informática</h2>
             <div class="item">
-                <span>Laravel</span> - 
+                <span>Laravel</span> -
                 <span>Intermedio</span>.
             </div><!--//item-->
         </div><!--//education-container-->
-        
+
     </div><!--//sidebar-wrapper-->
-        
-        
+
+
     <div class="main-wrapper">
-            
+
         <section class="section summary-section">
             <h2 class="section-title2">Objetivo Laboral</h2>
             <div class="summary">
-                <p>Soy estudiante de la carrera de sistemas y soy re pro jugando al lol</p>     
+                <p>Soy estudiante de la carrera de sistemas y soy re pro jugando al lol</p>
            </div><!--//summary-->
             <div class="sueldo">
-                <span>Mi Sueldo Bruto Pretendido es</span> : 
+                <span>Mi Sueldo Bruto Pretendido es</span> :
                 <span>100.000</span> $.
             </div>
         </section><!--//section-->
-            
+
         <section class="section experiences-section">
-            <h2 class="section-title">Estudio Académico</h2>        
+            <h2 class="section-title">Estudio Académico</h2>
             <div class="item">
                 <div class="meta">
                     <div class="upper-row">
@@ -98,11 +98,11 @@
                         <div class="time">2015 - Present</div>
                     </div><!--//upper-row-->
                     <div class="company">
-                        <span>En Curso</span> - 
+                        <span>En Curso</span> -
                         <span>Universidad Nacional de Luján</span>
                     </div>
                     <div class="company">
-                        <span>Porcentaje de Avance de la Carrera</span> : 
+                        <span>Porcentaje de Avance de la Carrera</span> :
                         <span>70</span> %
                     </div>
                 </div><!--//meta-->
@@ -114,18 +114,18 @@
                         <div class="time">2015 - Present</div>
                     </div><!--//upper-row-->
                     <div class="company">
-                        <span>En Curso</span> - 
+                        <span>En Curso</span> -
                         <span>Universidad Nacional de Luján</span>
                     </div>
                     <div class="company">
-                        <span>Porcentaje de Avance de la Carrera</span> : 
+                        <span>Porcentaje de Avance de la Carrera</span> :
                         <span>70</span> %
                     </div>
 
                 </div><!--//meta-->
-            </div><!--//item-->        
+            </div><!--//item-->
         </section><!--//section-->
-            
+
 
         <section class="section experiences-section">
             <h2 class="section-title"></i>Experiencia Laboral</h2>
@@ -136,8 +136,8 @@
                         <div class="time">2015 - Present</div>
                     </div><!--//upper-row-->
                     <div class="company">
-                        <span>Besysoft S.A.</span> - 
-                        <span>Software</span>    
+                        <span>Besysoft S.A.</span> -
+                        <span>Software</span>
                     </div>
                 </div><!--//meta-->
                 <div class="company-details">
@@ -152,26 +152,26 @@
                         <div class="time">2015 - Present</div>
                     </div><!--//upper-row-->
                     <div class="company">
-                        <span>Besysoft S.A.</span> - 
-                        <span>Software</span>    
+                        <span>Besysoft S.A.</span> -
+                        <span>Software</span>
                     </div>
                 </div><!--//meta-->
                 <div class="company-details">
                     <span>Desarrollador Jr de sistemas bancarios</span>
                 </div><!--//details-->
             </div><!--//item-->
-           
+
         </section><!--//section-->
-            
+
         <section class="skills-section section">
             <h2 class="section-title">Conocimiento Adicional</h2>
-            <div class="skillset">        
+            <div class="skillset">
                 <div class="skill">
-                    <span>Sistema de reporte de incidencia (JIRA)</span> - 
+                    <span>Sistema de reporte de incidencia (JIRA)</span> -
                     <span>Intermedio</span>.
-                </div>        
-            </dicv><!--//item-->  
-        </section><!--//skills-section-->        
+                </div>
+            </dicv><!--//item-->
+        </section><!--//skills-section-->
     </div><!--//main-body-->
 </div>
 

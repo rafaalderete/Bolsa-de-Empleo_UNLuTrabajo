@@ -1,15 +1,36 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  padding-bottom: 6rem;
+  min-height: 100%;
+  background-image: url(../img/fondo_login.jpg);
+  background-repeat: repeat;
+  background-size: cover;
+}
+
 .footer {
-  clear: both;
+  z-index: 90;
   position: absolute;
-  z-index: 10;
-  padding: 0;
-  width: 100%;
-  bottom: 10px;
-  background: #fcfcfc;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  text-align: center;
 }
 
 .footer-content {
-  margin-top: 10px;
+  padding-top: 10px;
 }
 
 .fondo { /* FONDO LOGIN */
@@ -125,8 +146,6 @@
   color: white;
   background-color: #64a481;
   border: 1px solid #1b8048;
-  /* background-color: #fcf8ee;
-    border: 1px solid #f7ebcc; */
   border-radius: 5px;
   text-align: center;
   padding: 8px;
@@ -140,7 +159,7 @@
 .error-imagen,
 .error-idioma,
 .error-carrera {
-  visibility: hidden;
+  display: none;
 }
 
 .error-imagen span,
@@ -175,6 +194,14 @@
 .requisitos-tabla-checkbox {
   box-shadow: none;
   margin: 0 !important;
+}
+
+.form-group-requisito {
+  margin-bottom: 0 !important;
+}
+
+.form-group-requisito-boton {
+  margin-top: 0 !important;
 }
 
 #tab_logic_idioma,

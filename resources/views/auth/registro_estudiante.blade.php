@@ -1,11 +1,11 @@
 @extends('template.auth_main')
 
-@section('headTitle', 'Registro')
+@section('headTitle', 'UNLu Trabajo - Registro Estudiante')
 
 @section('bodyContent')
 
 	<div class="container-fluid">
-		<div id="page-login" class="row fondo">
+		<div id="page-login">
 			<div class="col-xs-12 col-md-6 col-md-offset-3">
 				<div class="box">
 					<div class="box-content">

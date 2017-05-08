@@ -36,7 +36,11 @@
           </div>
           <div class="row">
             <div class="col-md-12 anuncio-subtitulo divisor">
-              <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
+              @if ($propuesta->fecha_fin_propuesta < $fechaActual)
+                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+              @else
+                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
+              @endif
             </div>
           </div>
         </div>
@@ -184,13 +188,13 @@
 
         @if(Entrust::can('eliminar_propuesta_laboral'))
           {!! Form::open(['route' => ['in.propuestas-laborales.destroy', $propuesta->id], 'method' => 'DELETE']) !!}
-          <a href="" class="btn btn-info pull-right" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Propuesta"
-            data-message="¿Seguro que quiere eliminar la Propuesta?" style="margin-top: -5px"><span><i class="fa fa-reply"></i></span>Eliminar</a>
+          <a href="" class="btn btn-default btn-label-left pull-right" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Propuesta"
+            data-message="¿Seguro que quiere eliminar la Propuesta?" style="margin-top: -5px"><span><i class="fa fa-times-circle txt-danger"></i></span>Eliminar</a>
           {!! Form::close() !!}
         @endif
         @if(Entrust::can('modificar_propuesta_laboral'))
-          <a href="{{ route('in.propuestas-laborales.edit', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info pull-right">
-            <span><i class="fa fa-reply"></i></span>
+          <a href="{{ route('in.propuestas-laborales.edit', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
+            <span><i class="fa fa-check-square"></i></span>
             Modificar
           </a>
         @endif

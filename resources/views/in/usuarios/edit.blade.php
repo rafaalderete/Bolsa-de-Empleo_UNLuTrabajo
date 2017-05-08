@@ -148,19 +148,20 @@
       $('#selectPersona').on('change', function() {
         var select = $("#selectRoles");
         select.select2('data', null);
-        var url = '../getRoles';
+        var url = '../../getRoles';
         var data = {
           "persona_id": this.value
         }
 
         $.get (url,data,function (result) {
-          select.empty(); // remove old options
+          select.empty();
           $.each(result.roles, function(index,value) {
             select.append($("<option></option>")
                .attr("value", index).text(value));
             select.prop('disabled', false);
           });
         })
+
       });
 
       function readURL(input) {

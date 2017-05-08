@@ -66,10 +66,10 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12 anuncio-subtitulo">
-                        @if ($propuesta->estado_propuesta == "activo")
-                          <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
-                        @else
+                        @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->fecha_fin_propuesta < $fechaActual) )
                           <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                        @else
+                          <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
                         @endif
                       </div>
                     </div>
@@ -82,7 +82,7 @@
               @if ($busqueda)
                 <p>No se han encontrado coincidencias.</p>
               @else
-                <p>No ha realizado Propuestas.</p>
+                <p>No ha realizado Postulaciones.</p>
               @endif
             </div>
           @endif

@@ -70,8 +70,15 @@ class UsuariosController extends PersonasController
      */
     public function create(){ // envia a la vista para cargar los datos del nuevo usuario
         if(Auth::user()->can('crear_usuario')){
-          $personas = Persona::all()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
+          $personas = [];
+          $personasAux = Persona::all()->where('estado_persona', 'activo'); // recupero array de personas que estan activas
 
+          //Solo trae las personas juridicas que no tengan usuario y las personas físicas.
+          foreach ($personasAux as $key => $personaAux) {
+            if ( ($personaAux->tipo_persona == 'fisica')  || (($personaAux->tipo_persona == 'juridica') && (count($personaAux->usuarios) == 0)) ) {
+              array_push($personas,$personaAux);
+            }
+          }
           return view('in.usuarios.create')
               ->with('personas',$personas);
         }else{
@@ -89,6 +96,7 @@ class UsuariosController extends PersonasController
     public function store(StoreUsuarioRequest $request){ // almacena los datos en Base y muestra el msj de OK, devuelve al index
         if(Auth::user()->can('crear_usuario')){
           $error = false;
+          $errorMsj = "";
           $persona = Persona::find($request->persona_id);
           $roles_seleccionados = $request->roles;
           $rol_empleador = false;
@@ -98,20 +106,56 @@ class UsuariosController extends PersonasController
             if ($rol->name == 'empleador'){
               $rol_empleador = true;
             }
+            if ($rol->name == 'postulante'){
+              $rol_postulante = true;
+            }
           }
+
           //Control de que una persona fisica no puede ser empleador y una persona juridica solo puede ser empleador.
           if ($persona->tipo_persona == 'fisica' && $rol_empleador) {
             $error = true;
+            $errorMnj = 'Datos invalidos para el campo Roles.';
           }
           if ( (count($roles_seleccionados) == 1) && ($persona->tipo_persona == 'juridica' && !$rol_empleador) ) {
             $error = true;
+            $errorMnj = 'Datos invalidos para el campo Roles.';
+          }
+          //Control para que una persona juridica no tenga más de un usuario.
+          if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) > 0) ) {
+            $error = true;
+            $errorMnj = 'Persona inválida.';
+          }
+          if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+            $unlu_estudiante = new Unlu_Estudiante();
+            $unlu_estudiante = Unlu_Estudiante::where('nro_documento',$persona->fisica->nro_documento)
+              ->where('email',$request->email)
+              ->first();
+            if($unlu_estudiante == null){
+              $error = true;
+              $errorMnj = 'No existe un estudiante con los datos ingresados.';
+            }
           }
           if ($error) {
-            Flash::error('Datos invalidos para el campo Roles')->important(); // se muestra el msj de usuario creado
+            Flash::error($errorMnj)->important();
             return redirect()->back();
           }
           else {
-            // se usan los valores de la vista del usuario creado
+            //Si aun no tiene estudiante y tiene rol postulante, se crea el estudiante y el cv.
+            if ($persona->fisica->estudiante == null) {
+              if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+                $estudiante = new Estudiante();
+                $estudiante->fisica_id = $persona->fisica->id;
+                $estudiante->unlu_estudiante_id = $unlu_estudiante->id;
+                $estudiante->legajo = $unlu_estudiante->legajo;
+                $estudiante->carrera_id = $unlu_estudiante->unlu_carrera_id;
+                $estudiante->save();//Se inserta el postulante.
+
+                $cv = new Cv();
+                $cv->estudiante_id = $estudiante->id;
+                $cv->save();//Se inserta el Cv.
+              }
+            }
+
             $usuario = new Usuario($request->all()); // se asignan todos los valores de los atributos al nuevo usuario creado.
                                                      // all() solo trae los atributos los usuario para agregar
 
@@ -156,10 +200,11 @@ class UsuariosController extends PersonasController
               $personas[$persona->id] = $persona->fisica->nombre_persona.' '.$persona->fisica->apellido_persona;
             }
             else {
-              $personas[$persona->id] = $persona->juridica->nombre_comercial;
+              if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) == 0) ) {
+                $personas[$persona->id] = $persona->juridica->nombre_comercial;
+              }
             }
           }
-          //dd($personas);
 
           $my_persona = $usuario->persona_id; // recupero id de persona asociada
 
@@ -233,6 +278,7 @@ class UsuariosController extends PersonasController
     public function update(UpdateUsuarioRequest $request, $id){
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $error = false;
+          $errorMnj = "";
           $persona = Persona::find($request->persona_id);
           $roles_seleccionados = $request->roles;
           $rol_empleador = false;
@@ -242,19 +288,56 @@ class UsuariosController extends PersonasController
             if ($rol->name == 'empleador'){
               $rol_empleador = true;
             }
+            if ($rol->name == 'postulante'){
+              $rol_postulante = true;
+            }
           }
+
           //Control de que una persona fisica no puede ser empleador y una persona juridica solo puede ser empleador.
           if ($persona->tipo_persona == 'fisica' && $rol_empleador) {
             $error = true;
+            $errorMnj = 'Datos invalidos para el campo Roles.';
           }
           if ( (count($roles_seleccionados) == 1) && ($persona->tipo_persona == 'juridica' && !$rol_empleador) ) {
             $error = true;
+            $errorMnj = 'Datos invalidos para el campo Roles.';
+          }
+          //Control para que una persona juridica no tenga más de un usuario.
+          if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) > 0) ) {
+            $error = true;
+            $errorMnj = 'Persona inválida.';
+          }
+          if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+            $unlu_estudiante = new Unlu_Estudiante();
+            $unlu_estudiante = Unlu_Estudiante::where('nro_documento',$persona->fisica->nro_documento)
+              ->where('email',$request->email)
+              ->first();
+            if($unlu_estudiante == null){
+              $error = true;
+              $errorMnj = 'No existe un estudiante con los datos ingresados.';
+            }
           }
           if ($error) {
-            Flash::error('Datos invalidos para el campo Roles')->important();
+            Flash::error($errorMnj)->important(); // se muestra el msj de usuario creado
             return redirect()->back();
           }
           else {
+            //Si aun no tiene estudiante y tiene rol postulante, se crea el estudiante y el cv.
+            if ($persona->fisica->estudiante == null) {
+              if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+                $estudiante = new Estudiante();
+                $estudiante->fisica_id = $persona->fisica->id;
+                $estudiante->unlu_estudiante_id = $unlu_estudiante->id;
+                $estudiante->legajo = $unlu_estudiante->legajo;
+                $estudiante->carrera_id = $unlu_estudiante->unlu_carrera_id;
+                $estudiante->save();//Se inserta el postulante.
+
+                $cv = new Cv();
+                $cv->estudiante_id = $estudiante->id;
+                $cv->save();//Se inserta el Cv.
+              }
+            }
+
             $usuario = Usuario::find($id); // busca el usario al modificar
 
             // se borra en caso de ser actualizada
@@ -281,33 +364,28 @@ class UsuariosController extends PersonasController
 
     public function getRoles(Request $request){
 
-      if($request->ajax()){
-        $persona = Persona::find($request->persona_id);
-        if ($persona->tipo_persona == 'fisica') {//Obtengo los roles dependiendo el tipo de persona.
-          if (Auth::user()->hasRole('super_usuario')) {
-            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
-              ->where('name','<>','empleador')
-              ->lists('name', 'id');
-          }
-          else {
-            $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
-              ->where('name','<>','empleador')
-              ->where('name','<>','super_usuario')
-              ->lists('name', 'id');
-          }
+      $persona = Persona::find($request->persona_id);
+      if ($persona->tipo_persona == 'fisica') {//Obtengo los roles dependiendo el tipo de persona.
+        if (Auth::user()->hasRole('super_usuario')) {
+          $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+            ->where('name','<>','empleador')
+            ->lists('name', 'id');
         }
         else {
           $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
-            ->where('name','=','empleador')
+            ->where('name','<>','empleador')
+            ->where('name','<>','super_usuario')
             ->lists('name', 'id');
         }
-        return response()->json([
-          'roles' => $roles
-        ]);
       }
       else {
-        return redirect()->back();
+        $roles = Rol::orderBy('name', 'ASC')->where('estado_rol', 'activo')
+          ->where('name','=','empleador')
+          ->lists('name', 'id');
       }
+      return response()->json([
+        'roles' => $roles
+      ]);
 
     }
 

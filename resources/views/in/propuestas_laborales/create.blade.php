@@ -90,241 +90,232 @@
         </div>
 
         <div class="form-group">
-          <div class="col-sm-12  requisitos-label">
+          <div class="col-sm-12 requisitos-label">
             <p>Requisitos</p>
           </div>
         </div>
 
         <div class="form-group">
-          <div class="row">
             {!! Form::label('requisito_años_experiencia_laboral','Años de Experiencia', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
               {!! Form::number('requisito_años_experiencia_laboral',null,['min' => 0, 'class' => 'form-control', 'placeholder' => 'Años de Experiencia'])!!}
             </div>
+        </div>
+
+        <div class="form-group form-group-requisito">
+          {!! Form::label('lugar_residencia','Lugar de Residencia', ['class' => 'col-sm-2 control-label']) !!}
+          <div class="col-sm-6 table-responsive">
+            <table class="table" id="tab_logic_residencia">
+              <thead>
+                <tr>
+                  <th class="text-center col-sm-5">
+                    Lugar de Residencia
+                  </th>
+                  <th class="text-center col-sm-1">
+                    Excluyente
+                  </th>
+                  <th class="text-center col-sm-1 requisitos-tabla">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hidden">
+                  <td data-name="lugar">
+                    <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control"/>
+                  </td>
+                  <td data-name="excluyente_residencia">
+                    <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox"/>
+                  </td>
+                  <td data-name="del">
+                    <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-group form-group-requisito-boton">
+          <div class="col-sm-2 col-sm-offset-2">
+            <a id="add_row_residencia" class="btn btn-default">Agregar Lugar de Residencia</a>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="row">
-            {!! Form::label('lugar_residencia','Lugar de Residencia', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-6 table-responsive">
-              <table class="table" id="tab_logic_residencia">
-                <thead>
-                  <tr>
-                    <th class="text-center col-sm-5">
-                      Lugar de Residencia
-                    </th>
-                    <th class="text-center col-sm-1">
-                      Excluyente
-                    </th>
-                    <th class="text-center col-sm-1 requisitos-tabla">
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="hidden">
-                    <td data-name="lugar">
-                      <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control"/>
-                    </td>
-                    <td data-name="excluyente_residencia">
-                      <input type="checkbox" name='excluyente_residencia[]' class="form-control requisitos-tabla-checkbox"/>
-                    </td>
-                    <td data-name="del">
-                      <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-2 col-sm-offset-2">
-              <a id="add_row_residencia" class="btn btn-default">Agregar Lugar de Residencia</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <div class="row">
-            {!! Form::label('idioma','Idioma', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-7 table-responsive">
-              <table class="table" id="tab_logic_idioma">
-                <thead>
-                  <tr>
-                    <th class="text-center col-sm-3">
-                      Idioma
-                    </th>
-                    <th class="text-center col-sm-3">
-                      Tipo Conocimiento
-                    </th>
-                    <th class="text-center col-sm-3">
-                      Nivel
-                    </th>
-                    <th class="text-center col-sm-1">
-                      Excluyente
-                    </th>
-                    <th class="text-center col-sm-1 requisitos-tabla">
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="hidden">
-                    <td data-name="idioma">
-                      <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
-                        <option value="" disabled selected hidden>Idioma</option>
-                        @foreach($idiomas as $idioma)
-                          <option value="{{$idioma->id}}">{{$idioma->nombre_idioma}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="tipo_conocimiento_idioma">
-                      <select name="tipo_conocimiento_idioma[]" placeholder='Tipo de Conocimiento' class="form-control input_idioma input_idioma_tipo">
-                        <option value="" disabled selected hidden>Tipo Conocimiento</option>
-                        @foreach($tipos_conocimiento_idioma as $tipo_conocimiento_idioma)
-                          <option value="{{$tipo_conocimiento_idioma->id}}">{{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="nivel_conocimiento_idioma">
-                      <select name="nivel_conocimiento_idioma[]" placeholder='Nivel' class="form-control">
-                        <option value="" disabled selected hidden>Nivel</option>
-                        @foreach($niveles_conocimiento as $nivel_conocimiento)
-                          <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="excluyente_idioma">
-                      <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox"/>
-                    </td>
-                    <td data-name="del">
-                      <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="form-group form-group-requisito">
+          {!! Form::label('idioma','Idioma', ['class' => 'col-sm-2 control-label']) !!}
+          <div class="col-sm-7 table-responsive">
+            <table class="table" id="tab_logic_idioma">
+              <thead>
+                <tr>
+                  <th class="text-center col-sm-3">
+                    Idioma
+                  </th>
+                  <th class="text-center col-sm-3">
+                    Tipo Conocimiento
+                  </th>
+                  <th class="text-center col-sm-3">
+                    Nivel
+                  </th>
+                  <th class="text-center col-sm-1">
+                    Excluyente
+                  </th>
+                  <th class="text-center col-sm-1 requisitos-tabla">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hidden">
+                  <td data-name="idioma">
+                    <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
+                      <option value="" disabled selected hidden>Idioma</option>
+                      @foreach($idiomas as $idioma)
+                        <option value="{{$idioma->id}}">{{$idioma->nombre_idioma}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="tipo_conocimiento_idioma">
+                    <select name="tipo_conocimiento_idioma[]" placeholder='Tipo de Conocimiento' class="form-control input_idioma input_idioma_tipo">
+                      <option value="" disabled selected hidden>Tipo Conocimiento</option>
+                      @foreach($tipos_conocimiento_idioma as $tipo_conocimiento_idioma)
+                        <option value="{{$tipo_conocimiento_idioma->id}}">{{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="nivel_conocimiento_idioma">
+                    <select name="nivel_conocimiento_idioma[]" placeholder='Nivel' class="form-control">
+                      <option value="" disabled selected hidden>Nivel</option>
+                      @foreach($niveles_conocimiento as $nivel_conocimiento)
+                        <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="excluyente_idioma">
+                    <input type="checkbox" name='excluyente_idioma[]' class="form-control requisitos-tabla-checkbox"/>
+                  </td>
+                  <td data-name="del">
+                    <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="row error-idioma">
             <div class="col-sm-10 col-sm-offset-2">
               <span>Idioma y Tipo Conocimiento ya seleccionados.</span>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-2 col-sm-offset-2">
-              <a id="add_row_idioma" class="btn btn-default">Agregar Idioma</a>
-            </div>
+        </div>
+        <div class="form-group form-group-requisito-boton">
+          <div class="col-sm-2 col-sm-offset-2">
+            <a id="add_row_idioma" class="btn btn-default">Agregar Idioma</a>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="row">
-            {!! Form::label('carrera','Carrera', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-6 table-responsive">
-              <table class="table" id="tab_logic_carrera">
-                <thead>
-                  <tr>
-                    <th class="text-center col-sm-4">
-                      Carrera
-                    </th>
-                    <th class="text-center col-sm-3">
-                      Estado Carrera
-                    </th>
-                    <th class="text-center col-sm-1">
-                      Excluyente
-                    </th>
-                    <th class="text-center col-sm-1 requisitos-tabla">
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="hidden">
-                    <td data-name="carrera">
-                      <select name="carrera[]" placeholder='Carrera' class="form-control input_carrera">
-                        <option value="" disabled selected hidden>Carrera</option>
-                        @foreach($carreras as $carrera)
-                          <option value="{{$carrera->id}}">{{$carrera->nombre_carrera}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="estado_carrera">
-                      <select name="estado_carrera[]" placeholder='Estado Carrera' class="form-control">
-                        <option value="" disabled selected hidden>Estado Carrera</option>
-                        @foreach($estados_carrera as $estado_carrera)
-                          <option value="{{$estado_carrera->id}}">{{$estado_carrera->nombre_estado_carrera}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="excluyente_carrera">
-                      <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox"/>
-                    </td>
-                    <td data-name="del">
-                      <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+
+        <div class="form-group form-group-requisito">
+          {!! Form::label('carrera','Carrera', ['class' => 'col-sm-2 control-label']) !!}
+          <div class="col-sm-6 table-responsive">
+            <table class="table" id="tab_logic_carrera">
+              <thead>
+                <tr>
+                  <th class="text-center col-sm-4">
+                    Carrera
+                  </th>
+                  <th class="text-center col-sm-3">
+                    Estado Carrera
+                  </th>
+                  <th class="text-center col-sm-1">
+                    Excluyente
+                  </th>
+                  <th class="text-center col-sm-1 requisitos-tabla">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hidden">
+                  <td data-name="carrera">
+                    <select name="carrera[]" placeholder='Carrera' class="form-control input_carrera">
+                      <option value="" disabled selected hidden>Carrera</option>
+                      @foreach($carreras as $carrera)
+                        <option value="{{$carrera->id}}">{{$carrera->nombre_carrera}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="estado_carrera">
+                    <select name="estado_carrera[]" placeholder='Estado Carrera' class="form-control">
+                      <option value="" disabled selected hidden>Estado Carrera</option>
+                      @foreach($estados_carrera as $estado_carrera)
+                        <option value="{{$estado_carrera->id}}">{{$estado_carrera->nombre_estado_carrera}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="excluyente_carrera">
+                    <input type="checkbox" name='excluyente_carrera[]' class="form-control requisitos-tabla-checkbox"/>
+                  </td>
+                  <td data-name="del">
+                    <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div class="row error-carrera">
             <div class="col-sm-10 col-sm-offset-2">
               <span>Carrera ya seleccionada.</span>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-2 col-sm-offset-2">
-              <a id="add_row_carrera" class="btn btn-default">Agregar Carrera</a>
-            </div>
+        </div>
+        <div class="form-group form-group-requisito-boton">
+          <div class="col-sm-2 col-sm-offset-2">
+            <a id="add_row_carrera" class="btn btn-default">Agregar Carrera</a>
           </div>
         </div>
 
-        <div class="form-group">
-          <div class="row">
-            {!! Form::label('adicional','Requisito Adicional', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-6 table-responsive">
-              <table class="table" id="tab_logic_adicional">
-                <thead>
-                  <tr>
-                    <th class="text-center col-sm-3">
-                      Nombre Requisito
-                    </th>
-                    <th class="text-center col-sm-3">
-                      Nivel
-                    </th>
-                    <th class="text-center col-sm-1">
-                      Excluyente
-                    </th>
-                    <th class="text-center col-sm-1 requisitos-tabla">
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="hidden">
-                    <td data-name="nombre_requisito">
-                      <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control"/>
-                    </td>
-                    <td data-name="nivel_conocimiento_adicional">
-                      <select name="nivel_conocimiento_adicional[]" placeholder='Nivel' class="form-control">
-                        <option value="" disabled selected hidden>Nivel</option>
-                        @foreach($niveles_conocimiento as $nivel_conocimiento)
-                          <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
-                        @endforeach
-                      </select>
-                    </td>
-                    <td data-name="excluyente_adicional">
-                      <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox"/>
-                    </td>
-                    <td data-name="del">
-                      <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        <div class="form-group form-group-requisito">
+          {!! Form::label('adicional','Requisito Adicional', ['class' => 'col-sm-2 control-label']) !!}
+          <div class="col-sm-6 table-responsive">
+            <table class="table" id="tab_logic_adicional">
+              <thead>
+                <tr>
+                  <th class="text-center col-sm-3">
+                    Nombre Requisito
+                  </th>
+                  <th class="text-center col-sm-3">
+                    Nivel
+                  </th>
+                  <th class="text-center col-sm-1">
+                    Excluyente
+                  </th>
+                  <th class="text-center col-sm-1 requisitos-tabla">
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="hidden">
+                  <td data-name="nombre_requisito">
+                    <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control"/>
+                  </td>
+                  <td data-name="nivel_conocimiento_adicional">
+                    <select name="nivel_conocimiento_adicional[]" placeholder='Nivel' class="form-control">
+                      <option value="" disabled selected hidden>Nivel</option>
+                      @foreach($niveles_conocimiento as $nivel_conocimiento)
+                        <option value="{{$nivel_conocimiento->id}}">{{$nivel_conocimiento->nombre_nivel_conocimiento}}</option>
+                      @endforeach
+                    </select>
+                  </td>
+                  <td data-name="excluyente_adicional">
+                    <input type="checkbox" name='excluyente_adicional[]' class="form-control requisitos-tabla-checkbox"/>
+                  </td>
+                  <td data-name="del">
+                    <button name="del" class='btn btn-danger row-remove'><span class="fa fa-trash-o" aria-hidden="true"></span></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="row">
-            <div class="col-sm-2 col-sm-offset-2">
-              <a id="add_row_adicional" class="btn btn-default">Agregar Requisito Adicional</a>
-            </div>
+        </div>
+        <div class="form-group form-group-requisito-boton">
+          <div class="col-sm-2 col-sm-offset-2">
+            <a id="add_row_adicional" class="btn btn-default">Agregar Requisito Adicional</a>
           </div>
         </div>
 
@@ -372,11 +363,11 @@
             }
         });
         if (error) {
-          $('.error-idioma').css('visibility', 'visible');
+          $('.error-idioma').css('display', 'block');
           input.val("");
         }
         else {
-          $('.error-idioma').css('visibility', 'hidden');
+          $('.error-idioma').css('display', 'none');
         }
       });
     }
@@ -392,11 +383,11 @@
             }
         });
         if (error) {
-          $('.error-carrera').css('visibility', 'visible');
+          $('.error-carrera').css('display', 'block');
           input.val("");
         }
         else {
-          $('.error-carrera').css('visibility', 'hidden');
+          $('.error-carrera').css('display', 'none');
         }
       });
     }
@@ -523,7 +514,7 @@
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {
-      $("#fecha").datepicker();
+      $("#input_date").datepicker();
     });
 
   </script>

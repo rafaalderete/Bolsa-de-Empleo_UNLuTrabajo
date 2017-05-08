@@ -50,12 +50,15 @@
           </div>
           <div class="row">
             <div class="col-md-12 anuncio-subtitulo divisor">
-              @if ($propuesta->estado_propuesta == "activo")
+              @if (!$postulacion)
                 <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
               @else
-                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->fecha_fin_propuesta < $fechaActual) )
+                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                @else
+                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
+                @endif
               @endif
-
             </div>
           </div>
         </div>
@@ -204,8 +207,8 @@
         @if (!$postulacion)
           @if(Entrust::can('postularse'))
             @if ($puede_postularse)
-              <a href="{{ route('in.postularse', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info pull-right">
-                <span><i class="fa fa-reply"></i></span>
+              <a href="{{ route('in.postularse', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
+                <span><i class="fa fa-check-square"></i></span>
                 Postularse
               </a>
             @else

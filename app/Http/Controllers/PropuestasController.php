@@ -39,6 +39,7 @@ class PropuestasController extends Controller
       if(Auth::user()->can('listar_propuestas_laborales')){
 
         $busqueda = false;
+        $fechaActual = Carbon::now();
 
         if(isset($request->buscar) && $request->buscar != null) {
           $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
@@ -63,7 +64,8 @@ class PropuestasController extends Controller
 
         return view('in.propuestas_laborales.index')
           ->with('propuestas',$propuestas)
-          ->with('busqueda',$busqueda);
+          ->with('busqueda',$busqueda)
+          ->with('fechaActual',$fechaActual);
 
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -259,6 +261,8 @@ class PropuestasController extends Controller
     {
       if(Auth::user()->can('listar_detalle_propuesta_laboral')){
 
+        $fechaActual = Carbon::now();
+
         $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
           ->where('id',$id)
           ->where('estado_propuesta','activo')
@@ -272,7 +276,8 @@ class PropuestasController extends Controller
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
           return view('in.propuestas_laborales.detalle-propuesta')
-            ->with('propuesta',$propuesta);
+            ->with('propuesta',$propuesta)
+            ->with('fechaActual',$fechaActual);
         }
 
       }else{

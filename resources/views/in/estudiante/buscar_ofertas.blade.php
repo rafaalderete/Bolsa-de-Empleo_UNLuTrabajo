@@ -183,7 +183,9 @@
 
           <div class="col-sm-9 col-md-9">
             <div class="row">
-              <h4>Filtro - {{ $filtro }}</h4>
+              <div class="col-md-12">
+                <h4>Filtro - {{ $filtro }}</h4>
+              </div>
             </div>
             <div class="anuncios">
               @if(count($propuestas) > 0)
