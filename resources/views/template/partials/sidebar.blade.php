@@ -157,7 +157,7 @@
       </li>
     @endif
 
-   @if(Entrust::can('listar_tipos_trabajo'))
+   @if(Entrust::can('listar_tipo_trabajo'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
           <i class="fa fa-chevron-right"></i>
@@ -171,7 +171,7 @@
         </ul>
       </li>
     @endif
-  </ul>
+
 
    @if(Entrust::can('listar_niveles_conocimiento'))
       <li class="dropdown">
@@ -181,10 +181,12 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{route('in.nivel_conocimiento.index')}}">Tabla de Nivel Conocimiento</a></li>
-          @if(Entrust::can('crear_niveles_conocimiento'))
+          @if(Entrust::can('crear_nivel_conocimiento'))
             <li><a href="{{route('in.nivel_conocimiento.create')}}">Registrar Nivel Conocimiento</a></li>
           @endif
         </ul>
       </li>
     @endif
+    </ul>
 </div>
+

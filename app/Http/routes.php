@@ -235,14 +235,13 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	]);
 
 	##################################################################
-	//------------------ RUTA PARA ESTADO CARRERA ----------------   #
+	//------------------ RUTA PARA TIPO ESTADO CARRERA---------------#
 	##################################################################
 	Route::resource('estados_carrera','EstadoCarreraController'); 
-	Route::delete('estado_carrera/{id}/destroy', [
+	Route::delete('estados_carrera/{id}/destroy', [
 		'uses'	=>	'EstadoCarreraController@destroy',
 			'as'	=>	'in.estado_carrera.destroy',
 	]);
-
 	##################################################################
 	//------------------ RUTA PARA TIPO JORNADA  -----------------   #
 	##################################################################
@@ -253,12 +252,12 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	]);
 
 	##################################################################
-	//------------------ RUTA PARA TIPO TRABAJO  -----------------   #
+	//------------- RUTA PARA NIVEL CONOCIMIENTO -----------------   #
 	##################################################################
-	Route::resource('tipo_trabajo','TipoTrabajoController'); 
-	Route::delete('tipo_trabajo/{id}/destroy', [
-		'uses'	=>	'TipoTrabajoController@destroy',
-			'as'	=>	'in.tipo_trabajo.destroy',
+	Route::resource('nivel_conocimiento','NivelConocimientoController'); 
+	Route::delete('nivel_conocimiento/{id}/destroy', [
+		'uses'	=>	'NivelConocimientoController@destroy',
+			'as'	=>	'in.nivel_conocimiento.destroy',
 	]);
 
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
