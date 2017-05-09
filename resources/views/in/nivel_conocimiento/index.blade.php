@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Conocimiento | Tabla de Nivel Conocimiento)
+@section('headTitle', 'Nivel Conocimiento | Tabla de Nivel Conocimiento')
 
 @section('bodyIndice')
 
@@ -24,10 +24,10 @@
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Nivel Conocimiento
-        @if(Entrust::can('crear_idiomas'))
+        @if(Entrust::can('crear_nivel_conocimiento'))
           <a href="{{ route('in.nivel_conocimiento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
-            Registar Idioma
+            Registar Nivel Conocimiento
           </a>
         @endif
         </h4>
@@ -47,7 +47,7 @@
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $niveles_conocimiento as $nivel_conocimiento)
+            @foreach( $nivel_conocimiento as $nivel_conocimiento)
               <tr>
                 <td>{{ $nivel_conocimiento->id }}</td>
                 <td>{{ $nivel_conocimiento->nombre_nivel_conocimiento }}</td>
@@ -59,7 +59,7 @@
                   @endif
                   @if(Entrust::can('eliminar_nivel_conocimiento'))
                     {!! Form::open(['route' => ['in.nivel_conocimiento.destroy', $nivel_conocimiento->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Idiomas"
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Nivel Conocimiento"
                       data-message="¿Seguro que quiere eliminar el Nivel de Conocimiento {{$nivel_conocimiento->nombre_nivel_conocimiento}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif

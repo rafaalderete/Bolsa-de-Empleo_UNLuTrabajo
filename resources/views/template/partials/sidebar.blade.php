@@ -119,15 +119,16 @@
           <span class="hidden-xs">Tipo Software</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.idiomas.index')}}">Tabla de Tipo Software</a></li>
-          @if(Entrust::can('crear_tipo_conocimiento'))
-            <li><a href="{{route('in.idiomas.create')}}">Registrar Tipo Software</a></li>
+          <li><a href="{{route('in.tipo_software.index')}}">Tabla de Tipo Software</a></li>
+          @if(Entrust::can('crear_tipo_software'))
+            <li><a href="{{route('in.tipo_software.create')}}">Registrar Tipo Software</a></li>
           @endif
         </ul>
       </li>
     @endif
 
-     @if(Entrust::can('listar_estado_carrera'))
+    <!-- ESTA MIERDA NO SE MUESTRA :@ -->
+     @if(Entrust::can('listar_estados_carreras'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
           <i class="fa fa-chevron-right"></i>
@@ -135,7 +136,7 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{route('in.estado_carrera.index')}}">Tabla de Estado Carrera</a></li>
-          @if(Entrust::can('crear_estado_carrera'))
+          @if(Entrust::can('crear_estados_carrera'))
             <li><a href="{{route('in.estado_carrera.create')}}">Registrar Estado Carrera</a></li>
           @endif
         </ul>

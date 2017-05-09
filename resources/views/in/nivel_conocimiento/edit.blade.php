@@ -32,7 +32,7 @@
         {!! Form::open(['route' => ['in.nivel_conocimiento.update', $nivel_conocimiento], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
       		<div class="form-group">
-      			{!! Form::label('nombre_nivel_conocimiento','Nombre INivel Concimiento, ['class' => 'col-sm-2 control-label']) !!}
+      			{!! Form::label('nombre_nivel_conocimiento','Nombre Nivel Concimiento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
               {!! Form::text('nombre_nivel_conocimiento', $nivel_conocimiento->nombre_nivel_conocimiento,['class' => 'form-control', 'placeholder' => 'Nombre Nivel Conocimiento', 'required'])!!}
             </div>

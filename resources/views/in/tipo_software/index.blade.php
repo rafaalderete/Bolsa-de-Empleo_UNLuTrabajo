@@ -47,20 +47,20 @@
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $tipo_software as $tiposoftware)
+            @foreach( $tipo_software as $tipo_software)
               <tr>
-                <td>{{ $tiposoftware->id }}</td>
-                <td>{{ $tiposoftware->nombre_tipo_software }}</td>
-                <td>{{ $tiposoftware->estado }}</td>
+                <td>{{ $tipo_software->id }}</td>
+                <td>{{ $tipo_software->nombre_tipo_software }}</td>
+                <td>{{ $tipo_software->estado }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
                   @if(Entrust::can('modificar_tipo_software'))
-                    <a href="{{ route('in.tipo_software.edit', $tiposoftware->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                    <a href="{{ route('in.tipo_software.edit', $tipo_software->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
                   @if(Entrust::can('eliminar_tipo_software'))
-                    {!! Form::open(['route' => ['in.tipo_software.destroy', $tiposoftware->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    {!! Form::open(['route' => ['in.tipo_software.destroy', $tipo_software->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Tipo Software"
-                      data-message="¿Seguro que quiere eliminar el Tipo de Software {{$tiposoftware->nombre_tipo_software}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                      data-message="¿Seguro que quiere eliminar el Tipo de Software {{$tipo_software->nombre_tipo_software}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif
                   </td>

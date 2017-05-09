@@ -24,7 +24,7 @@
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Estado Carrera
-        @if(Entrust::can('crear_estado_carrera'))
+        @if(Entrust::can('crear_estados_carrera'))
           <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
             Registar Estado Carrera
@@ -47,20 +47,20 @@
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $estado_carrera as $estadocarrera)
+            @foreach( $estado_carrera as $estado_carrera)
               <tr>
-                <td>{{ $estadocarrera->id }}</td>
-                <td>{{ $estadocarrera->nombre_estado_carrera }}</td>
-                <td>{{ $estadocarrera->estado }}</td>
+                <td>{{ $estado_carrera->id }}</td>
+                <td>{{ $estado_carrera->nombre_estado_carrera }}</td>
+                <td>{{ $estado_carrera->estado }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
                   @if(Entrust::can('modificar_estado_carrera'))
-                    <a href="{{ route('in.estado_carrera.edit', $estadocarrera->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                    <a href="{{ route('in.estado_carrera.edit', $estado_carrera->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
                   @if(Entrust::can('eliminar_estado_carrera'))
-                    {!! Form::open(['route' => ['in.estado_carrera.destroy', $estadocarrera->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    {!! Form::open(['route' => ['in.estado_carrera.destroy', $estado_carrera->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Estado Carrera"
-                      data-message="¿Seguro que quiere eliminar el Estado Carrera {{$estadocarrera->nombre_estado_carrera}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                      data-message="¿Seguro que quiere eliminar el Estado Carrera {{$estado_carrera->nombre_estado_carrera}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif
                   </td>

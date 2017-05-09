@@ -4,10 +4,10 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class StoreTipoSoftwareRequest extends Request
+class StoreNivelConocimientoRequest extends Request
 {
 
-    const CAMPO_NOMBRE = 'Nombre Tipo_Software';
+    const CAMPO_NOMBRE = 'Nombre Nivel Conocimiento';
 
     /**
      * Determine if the user is authorized to make this request.
@@ -27,17 +27,16 @@ class StoreTipoSoftwareRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_software' => 'min:4|required|unique:tipos_software'
+          'nombre_nivel_conocimiento' => 'min:4|required|unique:niveles_conocimiento'
       ];
     }
 
     public function messages()
     {
       return [
-        'nombre_tipo_software.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'nombre_tipo_software.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'nombre_nivel_conocimiento.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_niveles_conocimiento.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 
 }
-

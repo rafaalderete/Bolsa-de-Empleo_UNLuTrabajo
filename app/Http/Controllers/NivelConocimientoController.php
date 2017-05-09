@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreNivelConocimientoRequest;
 use App\Http\Requests\UpdateNivelConocimientoRequest;
 use App\Nivel_Conocimiento as Nivel_Conocimiento;
+use App\Conocimiento_Informatico as Conocimiento_Informatico;
+
+#estas clases tienen fk de conocimiento_informatico
+
+use App\Conocimiento_Idioma as Conocimiento_Idioma;
+use App\Requisito_Idioma as Requisito_Idioma;
+use App\Requisito_Adicional as Requisito_Adicional;
 
 class NivelConocimientoController extends Controller
 {
@@ -22,10 +29,10 @@ class NivelConocimientoController extends Controller
     public function index()
     {
         #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
-        if (Auth::user()->can('listar_nivel_conocimiento')) {
+        if (Auth::user()->can('listar_niveles_conocimiento')) {
             $nivel_conocimiento = Nivel_Conocimiento::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
 
-            return view('in.nivel_conocimientos.index')->with('nivel_conocimientos', $nivel_conocimiento);
+            return view('in.nivel_conocimiento.index')->with('nivel_conocimiento', $nivel_conocimiento);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
        
@@ -52,12 +59,12 @@ class NivelConocimientoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreIdiomaRequest $request)
+    public function store(StoreNivelConocimientoRequest $request)
     {
        if(Auth::user()->can('crear_nivel_conocimiento')){
         $nivel_conocimiento= new Nivel_Conocimiento($request->all());
 
-        $nivel_conocimiento>save();
+        $nivel_conocimiento->save();
 
         Flash::success('Nivel Conocimiento' . $nivel_conocimiento->nombre_nivel_conocimiento. ' agregado.')->important();
         return redirect()->route('in.nivel_conocimiento.index');
@@ -87,7 +94,7 @@ class NivelConocimientoController extends Controller
     {
         if(Auth::user()->can('modificar_nivel_conocimiento')){
         $nivel_conocimiento = Nivel_Conocimiento::find($id);
-        return view('in.nivel_conocimientos.edit')->with('nivel_conocimiento',$nivel_conocimiento);
+        return view('in.nivel_conocimiento.edit')->with('nivel_conocimiento',$nivel_conocimiento);
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
@@ -100,7 +107,7 @@ class NivelConocimientoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNivelConocimientoRquest $request, $id)
+    public function update(UpdateNivelConocimientoRequest $request, $id)
     {
         if(Auth::user()->can('modificar_nivel_conocimiento')){
             $nivel_conocimiento = Nivel_Conocimiento::find($id);
@@ -123,6 +130,29 @@ class NivelConocimientoController extends Controller
      */
     public function destroy($id)
     {
-        
+        if(Auth::user()->can('eliminar_nivel_conocimiento')){
+            $nivel_conocimiento = Nivel_Conocimiento::find($id);
+            
+            $conocimientoIdioma = Conocimiento_Idioma::where('nivel_conocimiento_id','=',$id)->get();
+            
+            $requisitoIdioma= Requisito_Idioma::where('nivel_conocimiento_id','=',$id)->get();
+
+            $requisitoAdicional = Requisito_Adicional::where('nivel_conocimiento_id', '='. $id)->get();
+
+            if( (count($conocimientoIdioma) == 0 ) && (count($requisitoIdioma) == 0 ) && (count($requisitoAdicional) == 0) ) {//Se verifica que no esta uso.
+
+                $nivel_conocimiento->delete();
+
+                Flash::error('Nivel Conocimiento ' . $nivel_conocimiento->nombre_nivel_conocimiento . ' eliminado.')->important();
+
+                return redirect()->route('in.nivel_conocimiento.index');
+            }
+            else {
+                Flash::error('El Rubro ' . $nivel_conocimiento->nombre_nivel_conocimiento . ' no se puede eliminar ya que se encuentra en uso.')->important();
+                return redirect()->route('in.nivel_conocimiento.index');
+                }
+            }else{
+                return redirect()->route('in.sinpermisos.sinpermisos');
+            }
     }
 }
