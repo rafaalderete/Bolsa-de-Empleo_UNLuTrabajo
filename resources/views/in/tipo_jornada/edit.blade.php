@@ -22,26 +22,26 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Tipo Jornada - {{$tjornada->nombre_tipo_jornada}} </h4>
+        <h4 class="page-header">Editar Tipo Jornada - {{$tipo_jornada->nombre_tipo_jornada}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => ['in.tipo_jornada.update', $tjornada], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.tipo_jornada.update', $tipo_jornada], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
       		<div class="form-group">
       			{!! Form::label('nombre_tipo_jornada','Nombre Tipo Jornada', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_tipo_jornada', $tjornada->nombre_tipo_jornada,['class' => 'form-control', 'placeholder' => 'Nombre Tipo Jornada', 'required'])!!}
+              {!! Form::text('nombre_tipo_jornada', $tipo_jornada->nombre_tipo_jornada,['class' => 'form-control', 'placeholder' => 'Nombre Tipo Jornada', 'required'])!!}
             </div>
       		</div>
 
           <div class="form-group">
             {!! Form::label('estado','Estado', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $tjornada->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
+              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $tipo_jornada->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
             </div>
           </div>
 

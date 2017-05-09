@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
 use App\Tipo_Jornada as Tipo_Jornada;
+use App\HTTp\Requests\StoreTipoJornadaRequest;
+use App\Http\Requests\UpdateTipoJornadaRequest;
 
 class TipoJornadaController extends Controller
 {
@@ -52,7 +55,7 @@ class TipoJornadaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipoJornadaRequest $request)
     {
         if(Auth::user()->can('crear_tipo_jornada')){
         $tipo_jornada = new Tipo_Jornada($request->all());
@@ -100,9 +103,19 @@ class TipoJornadaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTipoJornadaRequest $request, $id)
     {
-        //
+        if(Auth::user()->can('modificar_tipo_jornada')){
+            $tipo_jornada = Tipo_Jornada::find($id);
+
+            $tipo_jornada->fill($request->all());
+            $tipo_jornada->save();
+
+            Flash::warning('Tipo Jornada ' . $tipo_jornada->nombre_tipo_jornada . ' modificado.')->important();
+            return redirect()->route('in.tipo_jornada.index');
+      }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
