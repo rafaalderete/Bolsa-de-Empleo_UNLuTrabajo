@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Auth;
+use App\Tipo_Jornada as Tipo_Jornada;
 
 class TipoJornadaController extends Controller
 {
@@ -18,7 +21,7 @@ class TipoJornadaController extends Controller
     {
     
         #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
-        if (Auth::user()->can('listar_tipo_jornada')) {
+        if (Auth::user()->can('listar_tipos_jornada')) {
             $tipo_jornada = Tipo_Jornada::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
 
             return view('in.tipo_jornada.index')->with('tipo_jornada', $tipo_jornada);

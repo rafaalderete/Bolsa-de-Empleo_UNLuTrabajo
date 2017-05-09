@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Tipo_Trabajo as Tipo_Trabajo;
@@ -19,7 +20,7 @@ class TipoTrabajoController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->can('listar_tipo_trabajo')){
+        if(Auth::user()->can('listar_tipos_trabajo')){
         $tipo_trabajo = Tipo_Trabajo::orderBy('id','DESC')->get();
 
         return view('in.tipo_trabajo.index')
@@ -50,7 +51,7 @@ class TipoTrabajoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipoTrabajoRequest $request)
     {
         if(Auth::user()->can('crear_tipo_trabajo')){
             $tipo_trabajo = new Tipo_Trabajo($request->all());
@@ -98,7 +99,7 @@ class TipoTrabajoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpsateTipoTrabajoRequest $request, $id)
     {
         //
     }
