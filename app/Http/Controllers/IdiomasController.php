@@ -53,7 +53,7 @@ class IdiomasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreIdiomaRequest $request)
     {
        if(Auth::user()->can('crear_idioma')){
         $idioma = new Idiomas($request->all());
@@ -101,7 +101,7 @@ class IdiomasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateIdiomaRequest $request, $id)
     {
         if(Auth::user()->can('modificar_idioma')){
             $idioma = Idiomas::find($id);

@@ -127,5 +127,49 @@
       </li>
     @endif
 
+     @if(Entrust::can('listar_estado_carrera'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Estado Carrera</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.estado_carrera.index')}}">Tabla de Estado Carrera</a></li>
+          @if(Entrust::can('crear_estado_carrera'))
+            <li><a href="{{route('in.estado_carrera.create')}}">Registrar Estado Carrera</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+     @if(Entrust::can('listar_tipos_jornada'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Jornada</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_jornada.index')}}">Tabla de Tipo Jornada</a></li>
+          @if(Entrust::can('crear_tipo_jornada'))
+            <li><a href="{{route('in.tipo_jornada.create')}}">Registrar Tipo Jornada</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+   @if(Entrust::can('listar_tipos_trabajo'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Trabajo</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_trabajo.index')}}">Tabla de Tipo Trabajo</a></li>
+          @if(Entrust::can('crear_tipo_trabajo'))
+            <li><a href="{{route('in.tipo_trabajo.create')}}">Registrar Tipo Trabajo</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
   </ul>
 </div>

@@ -9,8 +9,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreIdiomaRequest;
-use App\Http\Requests\UpdateIdiomaRequest;
+use App\Http\Requests\StoreTipoSoftwareRequest;
+use App\Http\Requests\UpdateTipoSoftwareRequest;
 use App\Tipo_Software as Tipo_Software;
 use App\Conocimiento_Informatico as Conocimiento_Informatico;
 
@@ -54,7 +54,7 @@ class TiposSoftwareController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipoSoftwareRequest $request)
     {
        if(Auth::user()->can('crear_tipo_software')){
         $tipo_software = new Tipo_Software($request->all());
@@ -102,7 +102,7 @@ class TiposSoftwareController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTipoSoftwareRequest $request, $id)
     {
          if(Auth::user()->can('modificar_tipo_software')){
             $tipo_software = Tipo_Software::find($id);

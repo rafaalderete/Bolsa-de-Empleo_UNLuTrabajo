@@ -234,6 +234,33 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.tipo_software.destroy',
 	]);
 
+	##################################################################
+	//------------------ RUTA PARA ESTADO CARRERA ----------------   #
+	##################################################################
+	Route::resource('estados_carrera','EstadoCarreraController'); 
+	Route::delete('estado_carrera/{id}/destroy', [
+		'uses'	=>	'EstadoCarreraController@destroy',
+			'as'	=>	'in.estado_carrera.destroy',
+	]);
+
+	##################################################################
+	//------------------ RUTA PARA TIPO JORNADA  -----------------   #
+	##################################################################
+	Route::resource('tipo_jornada','TipoJornadaController'); 
+	Route::delete('tipo_jornada/{id}/destroy', [
+		'uses'	=>	'TipoJornadaController@destroy',
+			'as'	=>	'in.tipo_jornada.destroy',
+	]);
+
+	##################################################################
+	//------------------ RUTA PARA TIPO TRABAJO  -----------------   #
+	##################################################################
+	Route::resource('tipo_trabajo','TipoTrabajoController'); 
+	Route::delete('tipo_trabajo/{id}/destroy', [
+		'uses'	=>	'TipoTrabajoController@destroy',
+			'as'	=>	'in.tipo_trabajo.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [
