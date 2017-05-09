@@ -119,9 +119,9 @@
           <span class="hidden-xs">Tipo Software</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_software.index')}}">Tabla de Tipo Software</a></li>
-          @if(Entrust::can('crear_tipo_software'))
-            <li><a href="{{route('in.tipo_software.create')}}">Registrar Tipo Software</a></li>
+          <li><a href="{{route('in.idiomas.index')}}">Tabla de Tipo Software</a></li>
+          @if(Entrust::can('crear_tipo_conocimiento'))
+            <li><a href="{{route('in.idiomas.create')}}">Registrar Tipo Software</a></li>
           @endif
         </ul>
       </li>
@@ -172,4 +172,19 @@
       </li>
     @endif
   </ul>
+
+   @if(Entrust::can('listar_niveles_conocimiento'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Nivel Conocimiento</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.nivel_conocimiento.index')}}">Tabla de Nivel Conocimiento</a></li>
+          @if(Entrust::can('crear_niveles_conocimiento'))
+            <li><a href="{{route('in.nivel_conocimiento.create')}}">Registrar Nivel Conocimiento</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
 </div>

@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Trabajo | Tabla de Tipo Trabajo')
+@section('headTitle', 'Nivel Conocimiento | Tabla de Nivel Conocimiento)
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Trabajo</a></li>
-        <li><a>Tabla de Tipo Trabajo</a></li>
+        <li><a>Nivel Conocimiento</a></li>
+        <li><a>Tabla de Nivel Conocimiento</a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipo Trabajo
-        @if(Entrust::can('crear_tipo_trabajo'))
-          <a href="{{ route('in.tipo_trabajo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <h4 class="page-header">Tabla de Nivel Conocimiento
+        @if(Entrust::can('crear_idiomas'))
+          <a href="{{ route('in.nivel_conocimiento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo Trabajo
+            Registar Idioma
           </a>
         @endif
         </h4>
@@ -40,27 +40,27 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nombre Tipo Trabajo</th>
+              <th>Nombre Nivel Conocimiento</th>
               <th>Estado</th>
               <th style="width:75px">Acción</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $tipos_trabajo as $tipo_trabajo)
+            @foreach( $niveles_conocimiento as $nivel_conocimiento)
               <tr>
-                <td>{{ $tipo_trabajo->id }}</td>
-                <td>{{ $tipo_trabajo->nombre_tipo_trabajo }}</td>
-                <td>{{ $tipo_trabajo->estado }}</td>
+                <td>{{ $nivel_conocimiento->id }}</td>
+                <td>{{ $nivel_conocimiento->nombre_nivel_conocimiento }}</td>
+                <td>{{ $nivel_conocimiento->estado }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
-                  @if(Entrust::can('modificar_tipo_trabajo'))
-                    <a href="{{ route('in.tipo_trabajo.edit', $tipo_trabajo->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                  @if(Entrust::can('modificar_nivel_conocimiento'))
+                    <a href="{{ route('in.nivel_conocimiento.edit', $nivel_conocimiento->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
-                  @if(Entrust::can('eliminar_tipo_trabajo'))
-                    {!! Form::open(['route' => ['in.tipo_trabajo.destroy', $tipo_trabajo->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Tipo Trabajo"
-                      data-message="¿Seguro que quiere eliminar el Tipo Trabajo {{$tipo_trabajo->nombre_tipo_trabajo}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                  @if(Entrust::can('eliminar_nivel_conocimiento'))
+                    {!! Form::open(['route' => ['in.nivel_conocimiento.destroy', $nivel_conocimiento->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Idiomas"
+                      data-message="¿Seguro que quiere eliminar el Nivel de Conocimiento {{$nivel_conocimiento->nombre_nivel_conocimiento}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif
                   </td>

@@ -34,8 +34,8 @@ class StoreTipoTrabajoRequest extends Request
     public function messages()
     {
       return [
-        'nombre_tipo_trabajjo.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'nombre_tipo_trabajjo.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'nombre_tipo_trabajo.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_tipo_trabajo.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 

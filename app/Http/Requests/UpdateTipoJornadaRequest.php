@@ -35,7 +35,7 @@ class UpdateTipoJornadaRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_jornada' => 'min:4|required|unique:tipos_jornada,nombre_tipo_jornada,'.$this->route->getParameter('tipo_jornada'),
+          'nombre_tipo_jornada' => 'min:4|required|unique:tipos_jornadas,nombre_tipo_jornada,'.$this->route->getParameter('tipo_jornada'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }

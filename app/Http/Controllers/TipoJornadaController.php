@@ -42,7 +42,7 @@ class TipoJornadaController extends Controller
      */
     public function create()
     {
-          if(Auth::user()->can('crear_tipo_jornada')){
+          if(Auth::user()->can('crear_tipos_jornada')){
             return view('in.tipo_jornada.create');
             }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

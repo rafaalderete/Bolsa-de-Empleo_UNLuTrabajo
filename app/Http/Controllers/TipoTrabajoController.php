@@ -24,7 +24,7 @@ class TipoTrabajoController extends Controller
         $tipo_trabajo = Tipo_Trabajo::orderBy('id','DESC')->get();
 
         return view('in.tipo_trabajo.index')
-            ->with('tipo_trabajo',$tipo_trabajo);
+            ->with('tipos_trabajo',$tipo_trabajo);
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
@@ -38,7 +38,7 @@ class TipoTrabajoController extends Controller
      */
     public function create()
     {
-        if(Auth::user()->can('crear_tipo_trabajo')){
+        if(Auth::user()->can('crear_tipos_trabajo')){
             return view('in.tipo_trabajo.create');
       }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -99,9 +99,19 @@ class TipoTrabajoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpsateTipoTrabajoRequest $request, $id)
+    public function update(UpdateTipoTrabajoRequest $request, $id)
     {
-        //
+        if(Auth::user()->can('modificar_tipo_trabajo')){
+            $tipo_trabajo = Tipo_Trabajo::find($id);
+
+            $tipo_trabajo->fill($request->all());
+            $tipo_trabajo->save();
+
+            Flash::warning('Tipo Jornada ' . $tipo_trabajo->nombre_tipo_trabajo . ' modificado.')->important();
+            return redirect()->route('in.tipo_trabajo.index');
+      }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**

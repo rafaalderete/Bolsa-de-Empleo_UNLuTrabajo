@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Trabajo | Editar Tipo de Trabajo')
+@section('headTitle', 'Nivel Conocimiento| Editar Nivel Conocimiento')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo de Trabajo</a></li>
-        <li><a>Editar Tipo de Trabajo</a></li>
+        <li><a>Nivel Conocimiento</a></li>
+        <li><a>Editar Nivel Conocimiento</a></li>
       </ol>
     </div>
   </div>
@@ -22,26 +22,26 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Tipo de Trabajo - {{$tipo_trabajo->nombre_tipo_trabajo}} </h4>
+        <h4 class="page-header">Editar Nivel Conocimiento - {{$nivel_conocimiento->nombre_nivel_conocimiento}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => ['in.tipo_trabajo.update', $tipo_trabajo], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.nivel_conocimiento.update', $nivel_conocimiento], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
       		<div class="form-group">
-      			{!! Form::label('nombre_tipo_trabajo','Nombre de Tipo de Trabajo', ['class' => 'col-sm-2 control-label']) !!}
+      			{!! Form::label('nombre_nivel_conocimiento','Nombre INivel Concimiento, ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_rubro_empresarial', $tipo_trabajo->nombre_tipo_trabajo,['class' => 'form-control', 'placeholder' => 'Nombre Tipo de Trabajo', 'required'])!!}
+              {!! Form::text('nombre_nivel_conocimiento', $nivel_conocimiento->nombre_nivel_conocimiento,['class' => 'form-control', 'placeholder' => 'Nombre Nivel Conocimiento', 'required'])!!}
             </div>
       		</div>
 
           <div class="form-group">
             {!! Form::label('estado','Estado', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $tipo_trabajo->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
+              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $nivel_conocimiento->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
             </div>
           </div>
 
@@ -62,7 +62,7 @@
 
       	{!! Form::close()!!}
 
-        <a href="{{ route('in.tipo_trabajo.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <a href="{{ route('in.nivel_conocimiento.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
