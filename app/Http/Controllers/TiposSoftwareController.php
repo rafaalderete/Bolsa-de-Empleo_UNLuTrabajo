@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreIdiomaRequest;
 use App\Http\Requests\UpdateIdiomaRequest;
 use App\Tipo_Software as Tipo_Software;
-
+use App\Conocimiento_Informatico as Conocimiento_Informatico;
 
 class TiposSoftwareController extends Controller
 {
