@@ -12,6 +12,12 @@ use App\Tipo_Trabajo as Tipo_Trabajo;
 use App\Tipo_Jornada as Tipo_Jornada;
 use App\Carrera as Carrera;
 use App\Idioma as Idioma;
+use App\Fisica as Fisica;
+use App\Experiencia_Laboral as Experiencia_Laboral;
+use App\Estudio_Academico as Estudio_Academico;
+use App\Conocimiento_Idioma as Conocimiento_Idioma;
+use App\Conocimiento_Informatico as Conocimiento_Informatico;
+use App\Conocimiento_Adicional as Conocimiento_Adicional;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\PDF;
@@ -217,14 +223,44 @@ class EstudianteController extends Controller
                 mkdir(BUDGETS_DIR, 0755, true);
             }
 
-            $pepito = "pepito";
             $data['nombre_estudiante'] = Auth::user()->persona->fisica->nombre_persona." ".Auth::user()->persona->fisica->apellido_persona;
             $data['titulo_propuesta'] = $propuesta->titulo;
             $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
 
             $outputName = str_random(10);
             $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.$data['titulo_propuesta']."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
-            File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pepito' => $pepito])->output());
+
+            // DATOS DEL CV
+            // Datos Personales y Objetivo Laboral
+            $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+            $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
+            $telefono_fijo = '';
+            $telefono_celular = '';
+            foreach ($pfisica->persona->telefonos as $telefono) {
+              if ($telefono->tipo_telefono == 'fijo') {
+                $telefono_fijo = $telefono->nro_telefono;
+              }
+              if ($telefono->tipo_telefono == 'celular') {
+                $telefono_celular = $telefono->nro_telefono;
+              }
+            }
+
+            //Experiencias Laborales
+            $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+            
+            // Estudios Academicos
+            $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Idiomas
+            $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Informaticos
+            $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Adicionales
+            $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
 
             Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
                 $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
