@@ -237,8 +237,8 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO ESTADO CARRERA---------------#
 	##################################################################
-	Route::resource('estados_carrera','EstadoCarreraController'); 
-	Route::delete('estados_carrera/{id}/destroy', [
+	Route::resource('estado_carrera','EstadoCarreraController'); 
+	Route::delete('estado_carrera/{id}/destroy', [
 		'uses'	=>	'EstadoCarreraController@destroy',
 			'as'	=>	'in.estado_carrera.destroy',
 	]);

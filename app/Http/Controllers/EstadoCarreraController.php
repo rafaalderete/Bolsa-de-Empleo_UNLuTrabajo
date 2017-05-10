@@ -53,7 +53,7 @@ class EstadoCarreraController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->can('crear_estados_carrera')){
+        if(Auth::user()->can('crear_estado_carrera')){
             $estado_carrera = new Estado_Carrera($request->all());
 
             $estado_carrera->save();
