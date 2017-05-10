@@ -158,7 +158,7 @@
       </li>
     @endif
 
-   @if(Entrust::can('listar_tipo_trabajo'))
+   @if(Entrust::can('listar_tipos_trabajo'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
           <i class="fa fa-chevron-right"></i>

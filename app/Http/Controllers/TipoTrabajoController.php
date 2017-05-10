@@ -11,6 +11,9 @@ use App\Tipo_Trabajo as Tipo_Trabajo;
 use App\Http\Requests\StoreTipoTrabajoRequest;
 use App\Http\Requests\UpdateTipoTrabajoRequest;
 
+#dado que tipo_trabajo es fk en conocimiento_informatico
+use App\Propuesta_Laboral as Propuesta_Laboral;
+
 class TipoTrabajoController extends Controller
 {
     /**
@@ -38,7 +41,7 @@ class TipoTrabajoController extends Controller
      */
     public function create()
     {
-        if(Auth::user()->can('crear_tipos_trabajo')){
+        if(Auth::user()->can('crear_tipo_trabajo')){
             return view('in.tipo_trabajo.create');
       }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -122,6 +125,23 @@ class TipoTrabajoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Auth::user()->can('eliminar_tipo_trabajo')){
+            $tipo_trabajo = Tipo_Trabajo::find($id);
+            $propuestaLaboral = Propuesta_Laboral::where('propuesta_laboral_id','=',$id)->get();
+          
+        if( (count($propuestaLaboral) == 0 ) ) {//Se verifica que no esta uso.
+
+          $tipo_trabajo->delete();
+
+          Flash::error('Tipo Trabajo ' . $tipo_trabajo->nombre_tipo_trabajo . ' eliminado.')->important();
+          return redirect()->route('in.tipo_trabajo.index');
+        }
+        else {
+          Flash::error('El Tipo Trabajo ' . $tipo_trabajo->nombre_tipo_trabajo . ' no se puede eliminar ya que se encuentra en uso.')->important();
+          return redirect()->route('in.tipo_trabajo.index');
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 }

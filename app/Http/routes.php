@@ -252,6 +252,16 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	]);
 
 	##################################################################
+	//------------------ RUTA PARA TIPO TRABAJO  -----------------   #
+	##################################################################
+	Route::resource('tipo_trabajo','TipoTrabajoController'); 
+	Route::delete('tipo_trabajo/{id}/destroy', [
+		'uses'	=>	'TipoTrabajoController@destroy',
+			'as'	=>	'in.tipo_trabajo.destroy',
+	]);
+
+
+	##################################################################
 	//------------- RUTA PARA NIVEL CONOCIMIENTO -----------------   #
 	##################################################################
 	Route::resource('nivel_conocimiento','NivelConocimientoController'); 
