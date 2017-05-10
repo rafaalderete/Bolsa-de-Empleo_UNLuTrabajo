@@ -27,7 +27,7 @@ class StoreTipoJornadaRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_jornada' => 'min:4|required|unique:tipo_jornada'
+          'nombre_tipo_jornada' => 'min:4|required|unique:tipos_jornada'
       ];
     }
 

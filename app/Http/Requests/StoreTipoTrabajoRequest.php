@@ -27,7 +27,7 @@ class StoreTipoTrabajoRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_trabajo' => 'min:4|required|unique:tipo_trabajo'
+          'nombre_tipo_trabajo' => 'min:4|required|unique:tipos_trabajo'
       ];
     }
 
