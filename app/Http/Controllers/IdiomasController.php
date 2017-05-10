@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreIdiomaRequest;
 use App\Http\Requests\UpdateIdiomaRequest;
 use App\Idioma as Idiomas;
+use App\Conocimiento_Idioma as Conocimiento_Idioma;
 
 class IdiomasController extends Controller
 {
@@ -52,7 +53,7 @@ class IdiomasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreIdiomaRequest $request)
     {
        if(Auth::user()->can('crear_idioma')){
         $idioma = new Idiomas($request->all());
@@ -100,7 +101,7 @@ class IdiomasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateIdiomaRequest $request, $id)
     {
         if(Auth::user()->can('modificar_idioma')){
             $idioma = Idiomas::find($id);
@@ -121,25 +122,25 @@ class IdiomasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-  /*  public function destroy($id)
+    public function destroy($id)
     {
-        if(Auth::user()->can('eliminar_idiomas')){
+        if(Auth::user()->can('eliminar_idioma')){
             $idioma = Idiomas::find($id);
-            $pjuridicas = Juridica::where('rubro_empresarial_id','=',$id)->get();
-            $experiencias_laborales = Experiencia_Laboral::where('rubro_empresarial_id','=',$id)->get();
-            if( (count($pjuridicas) == 0 ) && (count($experiencias_laborales) == 0 ) ) {//Se verifica que no esta uso.
+            $cidioma = Conocimiento_Idioma::where('idioma_id','=',$id)->get();
+            
+            if( (count($cidioma) == 0) ) {//Se verifica que no esta uso.
 
-              $rubro->delete();
+              $idioma->delete();
 
-              Flash::error('Rubro ' . $rubro->nombre_rubro_empresarial . ' eliminado.')->important();
-              return redirect()->route('in.rubros-empresariales.index');
+              Flash::error('Idioma ' . $idioma->nombre_idioma . ' eliminado.')->important();
+              return redirect()->route('in.idiomas.index');
             }
             else {
-              Flash::error('El Rubro ' . $rubro->nombre_rubro_empresarial . ' no se puede eliminar ya que se encuentra en uso.')->important();
-              return redirect()->route('in.rubros-empresariales.index');
+              Flash::error('El Idioma ' . $idioma->nombre_idioma . ' no se puede eliminar ya que se encuentra en uso.')->important();
+              return redirect()->route('in.idiomas.index');
             }
           }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
           }
-    }*/
+    }
 }

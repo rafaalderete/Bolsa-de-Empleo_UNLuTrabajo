@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Rubros Empresariales | Tabla de Rubros Empresariales')
+@section('headTitle', 'Idioma | Tabla de Idioma')
 
 @section('bodyIndice')
 

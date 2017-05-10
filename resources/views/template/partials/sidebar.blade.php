@@ -112,5 +112,82 @@
       </li>
     @endif
 
-  </ul>
+    @if(Entrust::can('listar_tipos_software'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Software</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_software.index')}}">Tabla de Tipo Software</a></li>
+          @if(Entrust::can('crear_tipo_software'))
+            <li><a href="{{route('in.tipo_software.create')}}">Registrar Tipo Software</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+    <!-- ESTA MIERDA NO SE MUESTRA :@ -->
+     @if(Entrust::can('listar_estados_carreras'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Estado Carrera</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.estado_carrera.index')}}">Tabla de Estado Carrera</a></li>
+          @if(Entrust::can('crear_estados_carrera'))
+            <li><a href="{{route('in.estado_carrera.create')}}">Registrar Estado Carrera</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+     @if(Entrust::can('listar_tipos_jornada'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Jornada</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_jornada.index')}}">Tabla de Tipo Jornada</a></li>
+          @if(Entrust::can('crear_tipo_jornada'))
+            <li><a href="{{route('in.tipo_jornada.create')}}">Registrar Tipo Jornada</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+   @if(Entrust::can('listar_tipo_trabajo'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Trabajo</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_trabajo.index')}}">Tabla de Tipo Trabajo</a></li>
+          @if(Entrust::can('crear_tipo_trabajo'))
+            <li><a href="{{route('in.tipo_trabajo.create')}}">Registrar Tipo Trabajo</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+
+   @if(Entrust::can('listar_niveles_conocimiento'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Nivel Conocimiento</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.nivel_conocimiento.index')}}">Tabla de Nivel Conocimiento</a></li>
+          @if(Entrust::can('crear_nivel_conocimiento'))
+            <li><a href="{{route('in.nivel_conocimiento.create')}}">Registrar Nivel Conocimiento</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+    </ul>
 </div>
+

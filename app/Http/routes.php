@@ -225,6 +225,41 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.idiomas.destroy',
 	]);
 
+	##################################################################
+	//------------------ RUTA PARA TIPO SOFTWARE -----------------   #
+	##################################################################
+	Route::resource('tipo_software','TiposSoftwareController'); 
+	Route::delete('tipo_software/{id}/destroy', [
+		'uses'	=>	'TiposSoftwareController@destroy',
+			'as'	=>	'in.tipo_software.destroy',
+	]);
+
+	##################################################################
+	//------------------ RUTA PARA TIPO ESTADO CARRERA---------------#
+	##################################################################
+	Route::resource('estados_carrera','EstadoCarreraController'); 
+	Route::delete('estados_carrera/{id}/destroy', [
+		'uses'	=>	'EstadoCarreraController@destroy',
+			'as'	=>	'in.estado_carrera.destroy',
+	]);
+	##################################################################
+	//------------------ RUTA PARA TIPO JORNADA  -----------------   #
+	##################################################################
+	Route::resource('tipo_jornada','TipoJornadaController'); 
+	Route::delete('tipo_jornada/{id}/destroy', [
+		'uses'	=>	'TipoJornadaController@destroy',
+			'as'	=>	'in.tipo_jornada.destroy',
+	]);
+
+	##################################################################
+	//------------- RUTA PARA NIVEL CONOCIMIENTO -----------------   #
+	##################################################################
+	Route::resource('nivel_conocimiento','NivelConocimientoController'); 
+	Route::delete('nivel_conocimiento/{id}/destroy', [
+		'uses'	=>	'NivelConocimientoController@destroy',
+			'as'	=>	'in.nivel_conocimiento.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [
