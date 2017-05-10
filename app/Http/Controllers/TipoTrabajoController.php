@@ -127,7 +127,7 @@ class TipoTrabajoController extends Controller
     {
         if(Auth::user()->can('eliminar_tipo_trabajo')){
             $tipo_trabajo = Tipo_Trabajo::find($id);
-            $propuestaLaboral = Propuesta_Laboral::where('propuesta_laboral_id','=',$id)->get();
+            $propuestaLaboral = Propuesta_Laboral::where('id','=',$id)->get();
           
         if( (count($propuestaLaboral) == 0 ) ) {//Se verifica que no esta uso.
 
