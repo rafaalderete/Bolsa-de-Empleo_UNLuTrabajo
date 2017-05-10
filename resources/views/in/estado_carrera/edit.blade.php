@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Estado Carrera - {{$estado_carrera->nombre_estado_carrera}} </h4>
+        <h4 class="page-header">Editar Estado Carrera - {{$estado_carrera->estado}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')

@@ -12,6 +12,7 @@ use App\Http\Requests\StoreEstadoCarreraRequest;
 use App\Http\Requests\UpdateEstadoCarreraRequest;
 use App\Estado_Carrera as Estado_Carrera;
 
+use App\Conocimiento_Informatico as Conocimiento_Informatico;
 
 class EstadoCarreraController extends Controller
 {
@@ -51,7 +52,7 @@ class EstadoCarreraController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEstadoCarreraRequest $request)
     {
         if(Auth::user()->can('crear_estado_carrera')){
             $estado_carrera = new Estado_Carrera($request->all());
@@ -84,7 +85,7 @@ class EstadoCarreraController extends Controller
      */
     public function edit($id)
     {
-        if(Auth::user()->can('modificar_estados_carrera')){
+        if(Auth::user()->can('modificar_estado_carrera')){
             $estado_carrera= Estado_Carrera::find($id);
             return view('in.estado_carrera.edit')->with('estados_carrera,$estado_carrera');
         }else{
@@ -99,7 +100,7 @@ class EstadoCarreraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEstadoCarreraRequest $request, $id)
     {
         if(Auth::user()->can('modificar_estado_carrera')){
             $estado_carrera = Estado_Carrera::find($id);
