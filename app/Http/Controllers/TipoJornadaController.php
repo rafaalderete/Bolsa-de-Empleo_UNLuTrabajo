@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
 use App\Tipo_Jornada as Tipo_Jornada;
-use App\HTTp\Requests\StoreTipoJornadaRequest;
+use App\Http\Requests\StoreTipoJornadaRequest;
 use App\Http\Requests\UpdateTipoJornadaRequest;
 
 class TipoJornadaController extends Controller
@@ -42,7 +42,7 @@ class TipoJornadaController extends Controller
      */
     public function create()
     {
-          if(Auth::user()->can('crear_tipos_jornada')){
+          if(Auth::user()->can('crear_tipo_jornada')){
             return view('in.tipo_jornada.create');
             }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
