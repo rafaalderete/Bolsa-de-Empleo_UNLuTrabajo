@@ -70,7 +70,7 @@ class EstudianteController extends Controller
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
           $propuestas = Propuesta_Laboral::where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
             ->where('estado_propuesta','activo')
-            ->where('fecha_fin_propuesta','>=',Carbon::now())
+            ->where('fecha_fin_propuesta','>=',Carbon::today())
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);
         }
@@ -82,7 +82,7 @@ class EstudianteController extends Controller
                   $query->where('carrera_id',$carreraId);
               })
               ->where('estado_propuesta','activo')
-              ->where('fecha_fin_propuesta','>=',Carbon::now())
+              ->where('fecha_fin_propuesta','>=',Carbon::today())
               ->orderBy('propuestas_laborales.created_at','DESC')
               ->paginate(self::CANT_PAGINA);
             $tipo_carrera_buscado = Carrera::find($request->carrera);
@@ -93,7 +93,7 @@ class EstudianteController extends Controller
             if (isset($request->tipo_trabajo)) {
               $propuestas = Propuesta_Laboral::where('tipo_trabajo_id',$request->tipo_trabajo)
                 ->where('estado_propuesta','activo')
-                ->where('fecha_fin_propuesta','>=',Carbon::now())
+                ->where('fecha_fin_propuesta','>=',Carbon::today())
                 ->orderBy('created_at','DESC')
                 ->paginate(self::CANT_PAGINA);
               $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
@@ -104,7 +104,7 @@ class EstudianteController extends Controller
               if (isset($request->tipo_jornada)) {
                 $propuestas = Propuesta_Laboral::where('tipo_jornada_id',$request->tipo_jornada)
                   ->where('estado_propuesta','activo')
-                  ->where('fecha_fin_propuesta','>=',Carbon::now())
+                  ->where('fecha_fin_propuesta','>=',Carbon::today())
                   ->orderBy('created_at','DESC')
                   ->paginate(self::CANT_PAGINA);
                 $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
@@ -118,7 +118,7 @@ class EstudianteController extends Controller
                         $query->where('idioma_id',$idiomaId);
                     })
                     ->where('estado_propuesta','activo')
-                    ->where('fecha_fin_propuesta','>=',Carbon::now())
+                    ->where('fecha_fin_propuesta','>=',Carbon::today())
                     ->orderBy('propuestas_laborales.created_at','DESC')
                     ->paginate(self::CANT_PAGINA);
                   $idioma_buscado = Idioma::find($request->idioma);
@@ -128,7 +128,7 @@ class EstudianteController extends Controller
                   //Sin filtro, ultimas propuestas.
                   $busqueda = false;
                   $propuestas = Propuesta_Laboral::where('estado_propuesta','activo')
-                    ->where('fecha_fin_propuesta','>=',Carbon::now())
+                    ->where('fecha_fin_propuesta','>=',Carbon::today())
                     ->orderBy('created_at','DESC')
                     ->paginate(self::CANT_PAGINA);
                 }
@@ -257,7 +257,7 @@ class EstudianteController extends Controller
       if(Auth::user()->can('listar_postulaciones')){
 
         $busqueda = false;
-        $fechaActual = Carbon::now();
+        $fechaActual = Carbon::today();
 
         $estudianteId = Auth::user()->persona->fisica->estudiante->id;
         if(isset($request->buscar) && $request->buscar != null) {
@@ -299,7 +299,7 @@ class EstudianteController extends Controller
 
         $puede_postularse = false;
         $postulacion = true;// Para verificar si se visualiza la oferta o la postulacion.
-        $fechaActual = Carbon::now();
+        $fechaActual = Carbon::today();
 
         $propuesta = Propuesta_Laboral::where('id',$id)
           ->first();

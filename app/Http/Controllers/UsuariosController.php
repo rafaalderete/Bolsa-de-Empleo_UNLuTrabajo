@@ -141,8 +141,8 @@ class UsuariosController extends PersonasController
           }
           else {
             //Si aun no tiene estudiante y tiene rol postulante, se crea el estudiante y el cv.
-            if ($persona->fisica->estudiante == null) {
-              if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+            if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+              if ($persona->fisica->estudiante == null) {
                 $estudiante = new Estudiante();
                 $estudiante->fisica_id = $persona->fisica->id;
                 $estudiante->unlu_estudiante_id = $unlu_estudiante->id;
@@ -323,8 +323,8 @@ class UsuariosController extends PersonasController
           }
           else {
             //Si aun no tiene estudiante y tiene rol postulante, se crea el estudiante y el cv.
-            if ($persona->fisica->estudiante == null) {
-              if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+            if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
+              if ($persona->fisica->estudiante == null) {
                 $estudiante = new Estudiante();
                 $estudiante->fisica_id = $persona->fisica->id;
                 $estudiante->unlu_estudiante_id = $unlu_estudiante->id;
@@ -676,7 +676,7 @@ class UsuariosController extends PersonasController
 
             Flash::success('Empresa ' . $pjuridica->nombre_comercial . ' registrada,
                             se ha enviado un e-mail esperando su verificación.')->important();
-            return redirect()->route('in.index');
+            return redirect()->route('in.registro-empleador');
           }
       }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
