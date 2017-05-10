@@ -87,7 +87,7 @@ class EstadoCarreraController extends Controller
     {
         if(Auth::user()->can('modificar_estado_carrera')){
             $estado_carrera= Estado_Carrera::find($id);
-            return view('in.estado_carrera.edit')->with('estados_carrera,$estado_carrera');
+            return view('in.estado_carrera.edit')->with('estado_carrera,$estado_carrera');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
       }

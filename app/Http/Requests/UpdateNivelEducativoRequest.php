@@ -5,10 +5,10 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Routing\Route;
 
-class UpdateEstadoCarreraRequest extends Request
+class UpdateNivelEducativoRequest extends Request
 {
 
-    const CAMPO_NOMBRE = 'Nombre Estado Carrera';
+    const CAMPO_NOMBRE = 'Nombre Nivel Educativo';
     const CAMPO_ESTADO = 'Estado';
     private $route;
 
@@ -35,7 +35,7 @@ class UpdateEstadoCarreraRequest extends Request
     public function rules()
     {
       return [
-          'nombre_estado_carrera' => 'min:4|required|unique:estados_carrera,nombre_estado_carrera,'.$this->route->getParameter('estado_carrera'),
+          'nombre_nivel_educativo' => 'min:4|required|unique:niveles_educativos,nombre_nivel_educativo,'.$this->route->getParameter('nivel_educativo'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }
@@ -43,8 +43,8 @@ class UpdateEstadoCarreraRequest extends Request
     public function messages()
     {
       return [
-        'nombre_estado_carrera.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'nombre_estado_carrera.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'nombre_nivel_educativo.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_nivel_educativo.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
         'estado.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO.'.',
       ];
     }

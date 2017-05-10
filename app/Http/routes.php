@@ -270,6 +270,15 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.nivel_conocimiento.destroy',
 	]);
 
+	##################################################################
+	//------------------ RUTA PARA NIVEL EDUCATIVO ---------------   #
+	##################################################################
+	Route::resource('nivel_educativo','NivelEducativoController'); 
+	Route::delete('nivel_educativo/{id}/destroy', [
+		'uses'	=>	'NivelEducativoController@destroy',
+			'as'	=>	'in.nivel_educativo.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [
