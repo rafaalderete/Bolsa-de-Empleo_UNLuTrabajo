@@ -237,8 +237,8 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO ESTADO CARRERA---------------#
 	##################################################################
-	Route::resource('estados_carrera','EstadoCarreraController'); 
-	Route::delete('estados_carrera/{id}/destroy', [
+	Route::resource('estado_carrera','EstadoCarreraController'); 
+	Route::delete('estado_carrera/{id}/destroy', [
 		'uses'	=>	'EstadoCarreraController@destroy',
 			'as'	=>	'in.estado_carrera.destroy',
 	]);
@@ -268,6 +268,15 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::delete('nivel_conocimiento/{id}/destroy', [
 		'uses'	=>	'NivelConocimientoController@destroy',
 			'as'	=>	'in.nivel_conocimiento.destroy',
+	]);
+
+	##################################################################
+	//------------------ RUTA PARA NIVEL EDUCATIVO ---------------   #
+	##################################################################
+	Route::resource('nivel_educativo','NivelEducativoController'); 
+	Route::delete('nivel_educativo/{id}/destroy', [
+		'uses'	=>	'NivelEducativoController@destroy',
+			'as'	=>	'in.nivel_educativo.destroy',
 	]);
 
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------

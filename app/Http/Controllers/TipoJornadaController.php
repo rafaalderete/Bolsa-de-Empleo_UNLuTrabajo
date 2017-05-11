@@ -9,6 +9,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
+
+#dada la fk
+use App\Propuesta_Laboral as Propuesta_Laboral;
+
 use App\Tipo_Jornada as Tipo_Jornada;
 use App\Http\Requests\StoreTipoJornadaRequest;
 use App\Http\Requests\UpdateTipoJornadaRequest;
@@ -126,6 +130,22 @@ class TipoJornadaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Auth::user()->can('eliminar_tipo_jornada')){
+            $tipo_jornada = Tipo_Jornada::find($id);
+            $propuestaLaboral = Propuesta_Laboral::where('id','=',$id)->get();
+        if( (count($propuestaLaboral) == 0 ) ) {//Se verifica que no esta uso.
+
+          $tipo_jornada->delete();
+
+          Flash::error('Tipo Jornada ' . $tipo_jornada->nombre_tipo_jornada . ' eliminado.')->important();
+          return redirect()->route('in.tipo_jornada.index');
+        }
+        else {
+          Flash::error('El Tipo Jornada ' . $tipo_jornada->nombre_tipo_jornada . ' no se puede eliminar ya que se encuentra en uso.')->important();
+          return redirect()->route('in.tipo_jornada.index');
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 }

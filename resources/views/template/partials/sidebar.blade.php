@@ -128,7 +128,7 @@
     @endif
 
     <!-- ESTA MIERDA NO SE MUESTRA :@ -->
-     @if(Entrust::can('listar_estados_carreras'))
+     @if(Entrust::can('listar_estados_carrera'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
           <i class="fa fa-chevron-right"></i>
@@ -136,7 +136,7 @@
         </a>
         <ul class="dropdown-menu">
           <li><a href="{{route('in.estado_carrera.index')}}">Tabla de Estado Carrera</a></li>
-          @if(Entrust::can('crear_estados_carrera'))
+          @if(Entrust::can('crear_estado_carrera'))
             <li><a href="{{route('in.estado_carrera.create')}}">Registrar Estado Carrera</a></li>
           @endif
         </ul>
@@ -188,6 +188,23 @@
         </ul>
       </li>
     @endif
+    
+     @if(Entrust::can('listar_niveles_educativos'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Nivel Educativo</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.nivel_educativo.index')}}">Tabla de Nivel Educativo</a></li>
+          @if(Entrust::can('crear_nivel_conocimiento'))
+            <li><a href="{{route('in.nivel_educativo.create')}}">Registrar Nivel Educativo</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
     </ul>
+
+
 </div>
 

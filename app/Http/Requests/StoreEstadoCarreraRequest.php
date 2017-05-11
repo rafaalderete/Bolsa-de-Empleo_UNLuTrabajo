@@ -3,20 +3,12 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use Illuminate\Routing\Route;
 
-class UpdateEstadoCarreraRequest extends Request
+class StoreEstadoCarreraRequest extends Request
 {
 
     const CAMPO_NOMBRE = 'Nombre Estado Carrera';
-    const CAMPO_ESTADO = 'Estado';
-    private $route;
 
-    public function __construct(Route $route) {
-
-      $this->route = $route;
-
-    }
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -35,8 +27,7 @@ class UpdateEstadoCarreraRequest extends Request
     public function rules()
     {
       return [
-          'nombre_estado_carrera' => 'min:4|required|unique:estados_carrera,nombre_estado_carrera,'.$this->route->getParameter('estado_carrera'),
-          'estado'=> 'required|in:activo,inactivo'
+          'nombre_estado_carrera' => 'min:4|required|unique:estados_carrera'
       ];
     }
 
@@ -45,7 +36,7 @@ class UpdateEstadoCarreraRequest extends Request
       return [
         'nombre_estado_carrera.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
         'nombre_estado_carrera.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
-        'estado.in' => 'Datos invalidos para el campo '.self::CAMPO_ESTADO.'.',
       ];
     }
+
 }

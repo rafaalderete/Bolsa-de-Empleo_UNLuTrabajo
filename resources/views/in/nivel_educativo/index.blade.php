@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Estado Carrera | Tabla de Estado Carrera')
+@section('headTitle', 'Nivel Educativo | Tabla de Nivel Educativo')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Estado Carrera</a></li>
-        <li><a>Tabla de Estado Carrera</a></li>
+        <li><a>Nivel Educativo</a></li>
+        <li><a>Tabla de Nivel Educativo</a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Estado Carrera
-        @if(Entrust::can('crear_estado_carrera'))
-          <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        <h4 class="page-header">Tabla de Nivel Educativo
+        @if(Entrust::can('crear_nivel_educativo'))
+          <a href="{{ route('in.nivel_educativo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
-            Registar Estado Carrera
+            Registar Nivel Educativo
           </a>
         @endif
         </h4>
@@ -40,27 +40,27 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nombre Estado Carrera</th>
+              <th>Nombre Nivel Educativo</th>
               <th>Estado</th>
               <th style="width:75px">Acción</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $estado_carrera as $estado_carrera)
+            @foreach( $niveles_educativos as $nivel_educativo)
               <tr>
-                <td>{{ $estado_carrera->id }}</td>
-                <td>{{ $estado_carrera->nombre_estado_carrera }}</td>
-                <td>{{ $estado_carrera->estado }}</td>
+                <td>{{ $nivel_educativo->id }}</td>
+                <td>{{ $nivel_educativo->nombre_nivel_educativo}}</td>
+                <td>{{ $nivel_educativo->estado }}</td>
                 <!-- envio el parametro del metodo edit y destroy-->
                 <td>
-                  @if(Entrust::can('modificar_estado_carrera'))
-                    <a href="{{ route('in.estado_carrera.edit', $estado_carrera->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
+                  @if(Entrust::can('modificar_idioma'))
+                    <a href="{{ route('in.nivel_educativo.edit', $nivel_educativo->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                   @endif
-                  @if(Entrust::can('eliminar_estado_carrera'))
-                    {!! Form::open(['route' => ['in.estado_carrera.destroy', $estado_carrera->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Estado Carrera"
-                      data-message="¿Seguro que quiere eliminar el Estado Carrera {{$estado_carrera->nombre_estado_carrera}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
+                  @if(Entrust::can('eliminar_nivel_educativo'))
+                    {!! Form::open(['route' => ['in.nivel_educativo.destroy', $nivel_educativo->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Nivel Educativo"
+                      data-message="¿Seguro que quiere eliminar el Nivel Educativo {{$nivel_educativo->nombre_nivel_educativo}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                     {!! Form::close() !!}
                   @endif
                   </td>
