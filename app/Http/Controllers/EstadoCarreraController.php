@@ -87,7 +87,7 @@ class EstadoCarreraController extends Controller
     {
         if(Auth::user()->can('modificar_estado_carrera')){
             $estado_carrera= Estado_Carrera::find($id);
-            return view('in.estado_carrera.edit')->with('estado_carrera,$estado_carrera');
+            return view('in.estado_carrera.edit')->with('estado_carrera',$estado_carrera);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
       }
@@ -125,17 +125,17 @@ class EstadoCarreraController extends Controller
     {
          if(Auth::user()->can('eliminar_estado_carrera')){
             $estado_carrera = Estado_Carrera::find($id);
-            $cinformatico = Conocimiento_Informatico::where('estado_carrera_id', '=',$id)->get();
+            $cinformatico = Conocimiento_Informatico::where('id', '=',$id)->get();
                        
             if( (count($cinformatico) == 0) ) {//Se verifica que no esta uso.
 
-              $tipo_software->delete();
+              $estado_carrera->delete();
 
-              Flash::error('Tipo Software ' . $estado_carrera->nombre_estado_carrera . ' eliminado.')->important();
+              Flash::error('Estado Carrera ' . $estado_carrera->nombre_estado_carrera . ' eliminado.')->important();
               return redirect()->route('in.estado_carrera.index');
             }
             else {
-              Flash::error('El Tipo Software ' . $estado_carrera->nombre_tipo_software . ' no se puede eliminar ya que se encuentra en uso.')->important();
+              Flash::error('El Estado Carrera  ' . $estado_carrera->nombre_estado_carrera . ' no se puede eliminar ya que se encuentra en uso.')->important();
               return redirect()->route('in.estado_carrera.index');
             }
           }else{
