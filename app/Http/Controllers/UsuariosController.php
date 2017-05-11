@@ -79,6 +79,7 @@ class UsuariosController extends PersonasController
               array_push($personas,$personaAux);
             }
           }
+
           return view('in.usuarios.create')
               ->with('personas',$personas);
         }else{
@@ -200,8 +201,17 @@ class UsuariosController extends PersonasController
               $personas[$persona->id] = $persona->fisica->nombre_persona.' '.$persona->fisica->apellido_persona;
             }
             else {
-              if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) == 0) ) {
-                $personas[$persona->id] = $persona->juridica->nombre_comercial;
+              //Si se desea modificar un usuario con persona física, solo trae las personas juridicas que no tengan usuario.
+              if ($usuario->persona->tipo_persona == 'fisica'){
+                if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) == 0) ) {
+                  $personas[$persona->id] = $persona->juridica->nombre_comercial;
+                }
+              }
+              else {
+                //Si se desea modificar un usuario con persona juridica, solo trae las personas juridicas que no tengan usuario y la persona juridica que se desea modificar.
+                if ( (($persona->tipo_persona == 'juridica') && (count($persona->usuarios) == 0)) || ($persona->juridica->id == $usuario->persona->juridica->id) ) {
+                  $personas[$persona->id] = $persona->juridica->nombre_comercial;
+                }
               }
             }
           }

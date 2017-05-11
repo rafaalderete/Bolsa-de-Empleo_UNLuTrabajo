@@ -510,7 +510,8 @@
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      minDate: 'today'
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {

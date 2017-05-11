@@ -39,7 +39,6 @@ class PropuestasController extends Controller
       if(Auth::user()->can('listar_propuestas_laborales')){
 
         $busqueda = false;
-        $fechaActual = Carbon::now();
 
         if(isset($request->buscar) && $request->buscar != null) {
           $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
@@ -58,14 +57,18 @@ class PropuestasController extends Controller
         }
 
         foreach ($propuestas as $key => $propuesta) {
+          $today = Carbon::today()->toDateString();
+          $propuestas[$key]->finalizada = false;
+          if ($today > $propuestas[$key]->fecha_fin_propuesta) {
+            $propuestas[$key]->finalizada = true;
+          }
           $propuestas[$key]->descripcion = substr($propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
           $propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuestas[$key]->fecha_inicio_propuesta));
         }
 
         return view('in.propuestas_laborales.index')
           ->with('propuestas',$propuestas)
-          ->with('busqueda',$busqueda)
-          ->with('fechaActual',$fechaActual);
+          ->with('busqueda',$busqueda);
 
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -191,6 +194,8 @@ class PropuestasController extends Controller
       if(Auth::user()->can('crear_propuesta_laboral')){
 
         $error = false;
+        $errorMnj = "Datos inválidos.";
+        //Controles requisitos.
         if (isset($request->idioma) && isset($request->tipo_conocimiento_idioma)) {
           for ($i=0; $i < sizeof($request->idioma); $i++) {
             $idioma = $request->idioma[$i];
@@ -223,8 +228,16 @@ class PropuestasController extends Controller
             $error = true;
           }
         }
+        //La fecha fin no puede ser menor que la de creación.
+        $today = Carbon::today()->toDateString();
+        $fecha_fin_propuesta = date('Y-m-d', strtotime($request->fecha_fin_propuesta));
+        if ($today > $fecha_fin_propuesta) {
+          $error = true;
+          $errorMnj = 'Fecha Finalización Propuesta invalida.';
+        }
+
         if ($error) {
-          Flash::error('Datos invalidos.')->important();
+          Flash::error($errorMnj)->important();
           return redirect()->back();
         }
         else { //No hay errores en los datos.
@@ -232,7 +245,7 @@ class PropuestasController extends Controller
           $propuesta = new Propuesta_Laboral($request->all());
           $propuesta->juridica_id = Auth::user()->persona->juridica->id;
           $propuesta->fecha_inicio_propuesta = Carbon::now();
-          $propuesta->fecha_fin_propuesta = date('Y-m-d', strtotime($request->fecha_fin_propuesta));
+          $propuesta->fecha_fin_propuesta = $fecha_fin_propuesta;
           $propuesta->save();//Se inserta la propuesta.
 
           $this->storeRequisitos($propuesta->id, $request);
@@ -261,8 +274,6 @@ class PropuestasController extends Controller
     {
       if(Auth::user()->can('listar_detalle_propuesta_laboral')){
 
-        $fechaActual = Carbon::now();
-
         $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
           ->where('id',$id)
           ->where('estado_propuesta','activo')
@@ -272,12 +283,16 @@ class PropuestasController extends Controller
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {
+          $today = Carbon::today()->toDateString();
+          $propuesta->finalizada = false;
+          if ($today > $propuesta->fecha_fin_propuesta) {
+            $propuesta->finalizada = true;
+          }
           $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
           return view('in.propuestas_laborales.detalle-propuesta')
-            ->with('propuesta',$propuesta)
-            ->with('fechaActual',$fechaActual);
+            ->with('propuesta',$propuesta);
         }
 
       }else{
@@ -304,7 +319,10 @@ class PropuestasController extends Controller
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {
-          $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
+          //Fechas para el datepicker.
+          $minY = date('Y', strtotime($propuesta->fecha_inicio_propuesta));
+          $minM = date('m', strtotime($propuesta->fecha_inicio_propuesta));
+          $minD = date('d', strtotime($propuesta->fecha_inicio_propuesta));
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
           $tipos_trabajo = Tipo_Trabajo::all()->where('estado', 'activo')
@@ -339,7 +357,10 @@ class PropuestasController extends Controller
               ->with('idiomas',$idiomas)
               ->with('array_idiomas',$array_idiomas)
               ->with('carreras',$carreras)
-              ->with('array_carreras',$array_carreras);
+              ->with('array_carreras',$array_carreras)
+              ->with('minY',$minY)
+              ->with('minM',$minM)
+              ->with('minD',$minD);
         }
 
       }else{
@@ -367,32 +388,80 @@ class PropuestasController extends Controller
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {
-          $propuesta ->fill($request->all());
-          $propuesta->fecha_fin_propuesta = date('Y-m-d', strtotime($request->fecha_fin_propuesta));
-          $propuesta ->save();
-
-          //Se borran los requisitos viejos.
-          foreach ($propuesta->requisitosResidencia as $requisito_residencia) {
-            $requisito_residencia->delete();
+          $error = false;
+          $errorMnj = "Datos inválidos.";
+          //Controles Requisitos
+          if (isset($request->idioma) && isset($request->tipo_conocimiento_idioma)) {
+            for ($i=0; $i < sizeof($request->idioma); $i++) {
+              $idioma = $request->idioma[$i];
+              $tipo_conocimiento_idioma = $request->tipo_conocimiento_idioma[$i];
+              $cant = 0;
+              for ($j=0; $j < sizeof($request->idioma); $j++) {
+                $idioma_aux = $request->idioma[$j];
+                $tipo_conocimiento_idioma_aux = $request->tipo_conocimiento_idioma[$j];
+                if ( ($idioma == $idioma_aux) && ($tipo_conocimiento_idioma == $tipo_conocimiento_idioma_aux) ) { //Se controla que no se repita idioma-tipo conocimiento.
+                  $cant++;
+                }
+              }
+            }
+            if ($cant >= 2) {
+              $error = true;
+            }
+          }
+          if (isset($request->carrera)) {
+            for ($i=0; $i < sizeof($request->carrera) ; $i++) {
+              $carrera = $request->carrera[$i];
+              $cant = 0;
+              for ($j=0; $j < sizeof($request->carrera) ; $j++) {
+                $carrera_aux = $request->carrera[$j];
+                if ($carrera == $carrera_aux) { //Se controla que no se repitan las carreras.
+                  $cant++;
+                }
+              }
+            }
+            if ($cant >= 2) {
+              $error = true;
+            }
+          }
+          //La fecha de fin no puede ser mejor que la fecha de creación.
+          $fecha_fin_propuesta = date('Y-m-d', strtotime($request->fecha_fin_propuesta));
+          if ($propuesta->fecha_inicio_propuesta > $fecha_fin_propuesta) {
+            $error = true;
+            $errorMnj = 'Fecha Finalización Propuesta invalida.';
           }
 
-          foreach ($propuesta->requisitosIdioma as $requisito_idioma) {
-            $requisito_idioma->delete();
+          if ($error) {
+            Flash::error($errorMnj)->important();
+            return redirect()->back();
           }
+          else {
+            $propuesta ->fill($request->all());
+            $propuesta->fecha_fin_propuesta = $fecha_fin_propuesta;
+            $propuesta ->save();
 
-          foreach ($propuesta->requisitosCarrera as $requisito_carrera) {
-            $requisito_carrera->delete();
+            //Se borran los requisitos viejos.
+            foreach ($propuesta->requisitosResidencia as $requisito_residencia) {
+              $requisito_residencia->delete();
+            }
+
+            foreach ($propuesta->requisitosIdioma as $requisito_idioma) {
+              $requisito_idioma->delete();
+            }
+
+            foreach ($propuesta->requisitosCarrera as $requisito_carrera) {
+              $requisito_carrera->delete();
+            }
+
+            foreach ($propuesta->requisitosAdicionales as $requisito_adicional) {
+              $requisito_adicional->delete();
+            }
+
+            //Se insertan los requisitos viejos y nuevos.
+            $this->storeRequisitos($propuesta->id, $request);
+
+            Flash::warning('Propuesta Modificada.')->important();
+            return redirect()->route('in.propuestas-laborales.index');
           }
-
-          foreach ($propuesta->requisitosAdicionales as $requisito_adicional) {
-            $requisito_adicional->delete();
-          }
-
-          //Se insertan los requisitos viejos y nuevos.
-          $this->storeRequisitos($propuesta->id, $request);
-
-          Flash::warning('Propuesta Modificada.')->important();
-          return redirect()->route('in.propuestas-laborales.index');
         }
 
       }else{

@@ -53,7 +53,7 @@
               @if (!$postulacion)
                 <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
               @else
-                @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->fecha_fin_propuesta < $fechaActual) )
+                @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->finalizada) )
                   <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
                 @else
                   <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>

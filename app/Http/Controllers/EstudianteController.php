@@ -247,7 +247,7 @@ class EstudianteController extends Controller
 
             //Experiencias Laborales
             $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-            
+
             // Estudios Academicos
             $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
@@ -293,7 +293,6 @@ class EstudianteController extends Controller
       if(Auth::user()->can('listar_postulaciones')){
 
         $busqueda = false;
-        $fechaActual = Carbon::today();
 
         $estudianteId = Auth::user()->persona->fisica->estudiante->id;
         if(isset($request->buscar) && $request->buscar != null) {
@@ -315,14 +314,18 @@ class EstudianteController extends Controller
         }
 
         foreach ($propuestas as $key => $propuesta) {
+          $today = Carbon::today()->toDateString();
+          $propuestas[$key]->finalizada = false;
+          if ($today > $propuestas[$key]->fecha_fin_propuesta) {
+            $propuestas[$key]->finalizada = true;
+          }
           $propuestas[$key]->descripcion = substr($propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
           $propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuestas[$key]->fecha_inicio_propuesta));
         }
 
         return view('in.estudiante.postulaciones')
           ->with('propuestas',$propuestas)
-          ->with('busqueda',$busqueda)
-          ->with('fechaActual',$fechaActual);
+          ->with('busqueda',$busqueda);
 
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -335,7 +338,6 @@ class EstudianteController extends Controller
 
         $puede_postularse = false;
         $postulacion = true;// Para verificar si se visualiza la oferta o la postulacion.
-        $fechaActual = Carbon::today();
 
         $propuesta = Propuesta_Laboral::where('id',$id)
           ->first();
@@ -353,14 +355,18 @@ class EstudianteController extends Controller
           }
 
           if ($postulado) {
+            $today = Carbon::today()->toDateString();
+            $propuesta->finalizada = false;
+            if ($today > $propuesta->fecha_fin_propuesta) {
+              $propuesta->finalizada = true;
+            }
             $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
             $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
             return view('in.estudiante.detalle-oferta')
               ->with('propuesta',$propuesta)
               ->with('postulacion',$postulacion)
-              ->with('puede_postularse',$puede_postularse)
-              ->with('fechaActual',$fechaActual);
+              ->with('puede_postularse',$puede_postularse);
           }
           else{
             return redirect()->route('in.mis-postulaciones');

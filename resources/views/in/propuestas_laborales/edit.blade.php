@@ -623,7 +623,8 @@
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      minDate: new Date({{$minY}},{{$minM}}-1,{{$minD}})
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {

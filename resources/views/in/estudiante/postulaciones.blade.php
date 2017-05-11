@@ -66,8 +66,7 @@
                     </div>
                     <div class="row">
                       <div class="col-md-12 anuncio-subtitulo">
-                        {{$propuesta->fecha_fin_propuesta.' '.$fechaActual}}
-                        @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->fecha_fin_propuesta < $fechaActual) )
+                        @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->finalizada) )
                           <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
                         @else
                           <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
