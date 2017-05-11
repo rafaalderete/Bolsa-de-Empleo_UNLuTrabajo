@@ -3,9 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Laracasts\Flash\Flash;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Tipo_Documento as Tipo_Documento;
+use App\Http\Requests\StoreTipoDocumentoRequest;
+use App\Http\Requests\UpdateTipoDocumentoRequest;
+
+# es fk en Persona Fisica
+use App\Fisica as Fisica;
 
 class TipoDocumentoController extends Controller
 {
@@ -16,7 +23,15 @@ class TipoDocumentoController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->can('listar_tipos_documento')){
+        $tipo_documento = Tipo_Documento::orderBy('id','DESC')->get();
+
+        return view('in.tipo_documento.index')
+            ->with('tipos_documento',$tipo_documento);
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+
     }
 
     /**
@@ -26,7 +41,11 @@ class TipoDocumentoController extends Controller
      */
     public function create()
     {
-        //
+        if(Auth::user()->can('crear_tipo_documento')){
+            return view('in.tipo_documento.create');
+      }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -35,9 +54,18 @@ class TipoDocumentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTipoDocumentoRequest $request)
     {
-        //
+        if(Auth::user()->can('crear_tipo_documento')){
+            $tipo_documento = new Tipo_Documento($request->all());
+
+        $tipo_documento->save();
+
+        Flash::success('Tipo Documento ' . $tipo_documento->nombre_tipo_documento . ' agregado.')->important();
+        return redirect()->route('in.tipo_documento.index');
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -59,7 +87,12 @@ class TipoDocumentoController extends Controller
      */
     public function edit($id)
     {
-        //
+        if(Auth::user()->can('modificar_tipo_documento')){
+         $tipo_documento = Tipo_Documento::find($id);
+        return view('in.tipo_documento.edit')->with('tipo_documento',$tipo_documento);
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -69,9 +102,19 @@ class TipoDocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateTipoDocumentoRequest $request, $id)
     {
-        //
+        if(Auth::user()->can('modificar_tipo_documento')){
+            $tipo_documento = Tipo_Documento::find($id);
+
+            $tipo_documento->fill($request->all());
+            $tipo_documento->save();
+
+            Flash::warning('Tipo Jornada ' . $tipo_documento->nombre_tipo_documento . ' modificado.')->important();
+            return redirect()->route('in.tipo_documento.index');
+      }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**
@@ -82,6 +125,23 @@ class TipoDocumentoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Auth::user()->can('eliminar_tipo_documento')){
+            $tipo_documento = Tipo_Documento::find($id);
+            $fisica = Fisica::where('id','=',$id)->get();
+          
+        if( (count($fisica) == 0 ) ) {//Se verifica que no esta uso.
+
+          $tipo_documento->delete();
+
+          Flash::error('Tipo Fisica ' . $tipo_documento->nombre_tipo_documento . ' eliminado.')->important();
+          return redirect()->route('in.tipo_documento.index');
+        }
+        else {
+          Flash::error('El Tipo Documento ' . $tipo_documento->nombre_tipo_documento . ' no se puede eliminar ya que se encuentra en uso.')->important();
+          return redirect()->route('in.tipo_documento.index');
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 }
