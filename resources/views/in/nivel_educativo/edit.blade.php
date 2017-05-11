@@ -22,26 +22,26 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Nivel Educativo - {{$nivel_educativo->nombre_nivel_educativo}} </h4>
+        <h4 class="page-header">Editar Nivel Educativo - {{$niveles_educativos->nombre_nivel_educativo}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
         @include('template.partials.errors')
 
         <!-- Formulario -->
-        {!! Form::open(['route' => ['in.nivel_educativo.update', $nivel_educativo], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
+        {!! Form::open(['route' => ['in.nivel_educativo.update', $niveles_educativos], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
       		<div class="form-group">
       			{!! Form::label('nombre_nivel_educativo','Nombre Nivel Educativo', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_nivel_educativo', $nivel_educativo->nombre_nivel_educativo,['class' => 'form-control', 'placeholder' => 'Nombre Nivel Educativo', 'required'])!!}
+              {!! Form::text('nombre_nivel_educativo', $niveles_educativos->nombre_nivel_educativo,['class' => 'form-control', 'placeholder' => 'Nombre Nivel Educativo', 'required'])!!}
             </div>
       		</div>
 
           <div class="form-group">
             {!! Form::label('estado','Estado', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $nivel_educativo->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
+              {!! Form::select('estado', ['' => '','activo'=>'Activo', 'inactivo'=>'Inactivo'], $niveles_educativos->estado, ['class'=>'populate placeholder', 'id'=>'selectEstado'] ) !!}﻿
             </div>
           </div>
 
