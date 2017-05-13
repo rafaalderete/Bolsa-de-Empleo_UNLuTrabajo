@@ -2291,7 +2291,6 @@ function DrawFullCalendar(){
 $(document).ready(function () {
 	$('.show-sidebar').on('click', function () {
 		$('div#main').toggleClass('sidebar-show');
-		setTimeout(MessagesMenuWidth, 250);
 	});
 	$('.main-menu').on('click', 'a', function (e) {
 		var parents = $(this).parents('li');
@@ -2337,7 +2336,7 @@ $(document).ready(function () {
 			e.preventDefault();
 		}
 	});
-	var height = window.innerHeight - 49;
+	var height = window.innerHeight - 50;
 	$('#main').css('min-height', height)
 		.on('click', '.expand-link', function (e) {
 			var body = $('body');

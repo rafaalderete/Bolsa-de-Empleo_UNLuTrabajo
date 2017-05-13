@@ -16,7 +16,7 @@
 	<link rel="stylesheet" href="{{asset('css/style-no-template.css')}}">
 
 </head>
-<body>
+<body class="body-auth">
 
 	@yield('bodyContent')
 

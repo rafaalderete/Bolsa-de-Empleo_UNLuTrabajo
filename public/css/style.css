@@ -88,10 +88,6 @@ a.show-sidebar:hover {
   padding-bottom: 3000px !important;
   margin-bottom: -3000px !important;
   background: #64a481 url(../img/devoops_pattern_b10.png) 0 0 repeat;
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
 }
 
 #content {
@@ -102,10 +98,6 @@ a.show-sidebar:hover {
   padding-bottom: 3000px !important;
   margin-bottom: -2980px !important;
   overflow: hidden;
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
 }
 
 .full-content {
@@ -3017,9 +3009,7 @@ fieldset[disabled] .btn-danger.active,
   }
 
   .sidebar-show #sidebar-left.col-sm-2 {
-    opacity: 0;
-    width: 0;
-    padding: 0;
+    display: none;
   }
 
   .sidebar-show #content.col-sm-10 {

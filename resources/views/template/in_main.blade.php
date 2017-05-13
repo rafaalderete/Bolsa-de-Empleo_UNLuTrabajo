@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="{{asset('plugins/orbit/css/styles-3.css')}}" >
 	<link rel="stylesheet" href="{{asset('plugins/summernote/summernote.css')}}">
 </head>
-<body>
+<body class="body-in">
 
 	@include('template.partials.header')
 
@@ -51,6 +51,8 @@
 			@include('template.partials.modal')
 		</div>
 	</div>
+
+	@include('template.partials.footer')
 
 	<!--End Container-->
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

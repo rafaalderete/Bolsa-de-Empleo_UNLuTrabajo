@@ -9,7 +9,15 @@ html {
   box-sizing: inherit;
 }
 
-body {
+.body-in {
+  position: relative;
+  margin: 0;
+  background: #64a481 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.body-auth {
   position: relative;
   margin: 0;
   padding-bottom: 6rem;
@@ -19,8 +27,12 @@ body {
   background-size: cover;
 }
 
-.footer {
-  z-index: 90;
+.#content {
+  padding: 0 !important;
+}
+
+.footer-in-auth {
+  z-index: 3000;
   position: absolute;
   right: 0;
   bottom: 0;
