@@ -279,6 +279,24 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 			'as'	=>	'in.nivel_educativo.destroy',
 	]);
 
+	##################################################################
+	//-------RUTA PARA TIPO CONOCIMIENTO IDIOMA ------------------   #
+	##################################################################
+	Route::resource('tipo_conocimiento_idioma','TipoConocimientoIdiomaController'); 
+	Route::delete('tipo_conocimiento_idioma/{id}/destroy', [
+		'uses'	=>	'TipoConocimientoIdiomaController@destroy',
+			'as'	=>	'in.tipo_conocimiento_idioma.destroy',
+	]);
+
+	##################################################################
+	//-------RUTA PARA TIPO DOCUMENTO -------------------------------#
+	##################################################################
+	Route::resource('tipo_documento','TipoDocumentoController'); 
+	Route::delete('tipo_documento/{id}/destroy', [
+		'uses'	=>	'TipoDocumentoController@destroy',
+			'as'	=>	'in.tipo_documento.destroy',
+	]);
+
 	//------------- RUTAS PARA REGISTRAR USUARIO EMPLEADOR ---------------------
 
 	Route::get('registro-empleador', [

@@ -97,14 +97,14 @@
       </li>
     @endif
   
-    @if(Entrust::can('listar_idiomas'))
+   @if(Entrust::can('listar_idiomas'))
       <li class="dropdown">
         <a href="#" class="dropdown-toggle">
           <i class="fa fa-chevron-right"></i>
           <span class="hidden-xs">Idiomas</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.idiomas.index')}}">Tabla de Idioma</a></li>
+          <li><a href="{{route('in.idiomas.index')}}">Tabla Idioma</a></li>
           @if(Entrust::can('crear_idioma'))
             <li><a href="{{route('in.idiomas.create')}}">Registrar Idioma</a></li>
           @endif
@@ -203,8 +203,38 @@
         </ul>
       </li>
     @endif
+
+    @if(Entrust::can('listar_tipos_conocimiento_idioma'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Conocimiento Idioma</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_conocimiento_idioma.index')}}">Tabla de Tipo Conocimiento Idioma</a></li>
+          @if(Entrust::can('crear_tipo_conocimiento_idioma'))
+            <li><a href="{{route('in.tipo_conocimiento_idioma.create')}}">Registrar Tipo Conocimiento Idioma</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
+
+    @if(Entrust::can('listar_tipos_documento'))
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle">
+          <i class="fa fa-chevron-right"></i>
+          <span class="hidden-xs">Tipo Documento</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="{{route('in.tipo_documento.index')}}">Tabla de Tipo Documento</a></li>
+          @if(Entrust::can('crear_tipo_documento'))
+            <li><a href="{{route('in.tipo_documento.create')}}">Registrar Tipo Documento</a></li>
+          @endif
+        </ul>
+      </li>
+    @endif
+
     </ul>
-
-
 </div>
 

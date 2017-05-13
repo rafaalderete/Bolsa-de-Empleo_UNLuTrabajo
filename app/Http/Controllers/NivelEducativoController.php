@@ -107,8 +107,8 @@ class NivelEducativoController extends Controller
       if(Auth::user()->can('modificar_nivel_educativo')){
         $nivel_educativo = Nivel_Educativo::find($id);
 
-        $rubro->fill($request->all());
-        $rubro->save();
+        $nivel_educativo->fill($request->all());
+        $nivel_educativo->save();
 
         Flash::warning('Nivel Educativo ' . $nivel_educativo->nombre_nivel_educativo . ' modificado.')->important();
         return redirect()->route('in.nivel_educativo.index');
