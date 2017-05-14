@@ -27,7 +27,7 @@ class UpdateObjetivoLaboralRequest extends Request
     {
         return [
             'carta_presentacion' => 'max:500',
-            'sueldo_bruto_pretendido' => 'numeric'
+            'sueldo_bruto_pretendido' => 'numeric|min:0'
         ];
     }
 
@@ -36,6 +36,7 @@ class UpdateObjetivoLaboralRequest extends Request
       return [
         'carta_presentacion.max' => 'El campo '.self::CAMPO_CARTA.' debe contener como máximo 500 caracteres.',
         'sueldo_bruto_pretendido.numeric' => 'El campo '.self::CAMPO_SUELDO.' debe ser numerico.',
+        'sueldo_bruto_pretendido.min' => 'El campo '.self::CAMPO_SUELDO.' debe ser mayor o igual a 0.',
       ];
     }
 }

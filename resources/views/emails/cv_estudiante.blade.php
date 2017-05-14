@@ -62,10 +62,10 @@
               <h2 class="section-title2">Objetivo Laboral</h2>
             
               @if ($pfisica->estudiante->cv->carta_presentacion != null)
-                <div class="detalle-descripcion">
+                <div class="sueldo">
                   <div class="row">
                     <div class="col-md-12">
-                      <p>{{$pfisica->estudiante->cv->carta_presentacion}}</p>
+                       <p>{!!$pfisica->estudiante->cv->carta_presentacion !!}</p>
                     </div>
                   </div>
                 </div><!--//summary-->
@@ -73,7 +73,7 @@
             
               @if ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null)
                 <div class="sueldo">
-                    <span>Mi Sueldo Bruto Pretendido es</span> : 
+                    <span>Mi sueldo bruto pretendido es</span> : 
                     <span>{{$pfisica->estudiante->cv->sueldo_bruto_pretendido}}</span> $.
                 </div>
               @endif

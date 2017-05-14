@@ -57,14 +57,14 @@
           </div>
           {!! Form::label('periodo_inicio','Periodo Inicio:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::text('periodo_inicio', null, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa'])!!}
+            {!! Form::text('periodo_inicio', null, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
           </div>
         </div>
         
         <div class="form-group">
           {!! Form::label('descripcion_tarea','Tareas:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::textarea('descripcion_tarea', null, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            {!! Form::textarea('descripcion_tarea', null, ['class' => 'form-control', 'placeholder' => '', 'id' => 'textarea_tarea', 'required'])!!}
           </div>
           {!! Form::label('periodo_fin','Periodo Fin:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
@@ -122,16 +122,28 @@
       
       // Select
       $('#selectSimple').select2({
-        placeholder: "Tipo"
+        placeholder: "Rubro Empresarial"
       });
 
       $('#checkPresente').on('change', function() {
         if($(this).is(':checked')){           
           $('#input_date_fin').prop('disabled', true);
           $('#input_date_fin').val('');   
+          $('#input_date_fin').prop('required', false);
         }else{          
           $('#input_date_fin').prop('disabled', false);
+          $('#input_date_fin').prop('required', true);
         }    
+      });
+
+      $('#textarea_tarea').summernote({
+        lang: 'es-ES',
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['fontsize', ['fontsize']],
+          ['para', ['ul', 'ol', 'paragraph']],
+        ]
       });
     });
 

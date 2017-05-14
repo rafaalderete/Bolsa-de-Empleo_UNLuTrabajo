@@ -37,7 +37,7 @@
 
 		<div class="form-group">
           {!! Form::label('tipo_software','Tipo Software:', ['class' => 'col-sm-3 control-label']) !!}
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <select name="tipo_software" class="populate placeholder" id="selectSimpleTS" required>
               <option value=""></option>
               @foreach($tiposSoftware as $tipoSoftware)
@@ -49,7 +49,7 @@
 
 		<div class="form-group">
           {!! Form::label('nivel_conocicmiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <select name="nivel_conocicmiento" class="populate placeholder" id="selectSimpleNC" required>
               <option value=""></option>
               @foreach($nivelesConocimientos as $nivelConocimiento)

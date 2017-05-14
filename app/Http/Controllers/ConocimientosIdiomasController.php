@@ -11,6 +11,7 @@ use App\Conocimiento_Idioma as Conocimiento_Idioma;
 use App\Idioma as Idioma;
 use App\Tipo_Conocimiento_Idioma as Tipo_Conocimiento_Idioma;
 use App\Nivel_Conocimiento as Nivel_Conocimiento;
+use App\Http\Requests\StoreConocimientoIdiomaRequest;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -58,9 +59,19 @@ class ConocimientosIdiomasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConocimientoIdiomaRequest $request)
     {
         if(Auth::user()->can('crear_conocimiento_idioma_cv')){
+            $registro = Conocimiento_Idioma::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('idioma_id','=',$request->idioma)
+                ->where('tipo_conocimiento_idioma_id','=',$request->tipo_conocimiento_idioma)
+                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)->get();
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
+                return redirect()->back();
+            }
+
             $conocimientoIdioma = new Conocimiento_Idioma();
             $conocimientoIdioma->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoIdioma->idioma_id = $request->idioma;
@@ -117,9 +128,19 @@ class ConocimientosIdiomasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreConocimientoIdiomaRequest $request, $id)
     {
         if(Auth::user()->can('modificar_conocimiento_idioma_cv')){
+            $registro = Conocimiento_Idioma::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('idioma_id','=',$request->idioma)
+                ->where('tipo_conocimiento_idioma_id','=',$request->tipo_conocimiento_idioma)
+                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)
+                ->where('id','<>',$id)->get();
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
+                return redirect()->back();
+            }
             $conocimientoIdioma = Conocimiento_Idioma::find($id);
             $conocimientoIdioma->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoIdioma->idioma_id = $request->idioma;

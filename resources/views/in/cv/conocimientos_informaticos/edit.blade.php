@@ -35,16 +35,16 @@
       <!-- Formulario -->
       {!! Form::open(['route' => ['in.gestionar-cv.conocimientos-informaticos.update', $conocimientoInformatico], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
-		<div class="form-group">
+		    <div class="form-group">
           {!! Form::label('tipo_software','Tipo Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             {!! Form::select('tipo_software',$tiposSoftware, $conocimientoInformatico->tipo_software_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleTS'])!!}
           </div>
         </div>
 
 		    <div class="form-group">
           {!! Form::label('nivel_conocicmiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             {!! Form::select('nivel_conocicmiento',$nivelesConocimientos, $conocimientoInformatico->nivel_conocimiento_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNC'])!!}
           </div>
         </div>

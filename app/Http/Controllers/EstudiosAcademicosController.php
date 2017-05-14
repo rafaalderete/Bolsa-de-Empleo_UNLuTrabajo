@@ -10,6 +10,8 @@ use Laracasts\Flash\Flash;
 use App\Estudio_Academico as Estudio_Academico;
 use App\Nivel_Educativo as Nivel_Educativo;
 use App\Estado_Carrera as Estado_Carrera;
+use App\Http\Requests\StoreEstudioAcademicoRequest;
+use App\Http\Requests\UpdateEstudioAcademicoRequest;
 use Illuminate\Support\Facades\Auth;
 
 class EstudiosAcademicosController extends Controller
@@ -56,9 +58,38 @@ class EstudiosAcademicosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEstudioAcademicoRequest $request)
     {
         if(Auth::user()->can('crear_estudio_academico_cv')){
+            if ( $request->materias_aprobadas > $request->materias_total){
+                Flash::error('• Las Materias Aprobadas deben ser menor a Materias Total de la carrera.')->important();
+                return redirect()->back();
+            }
+
+            $estadoCarrera = Estado_Carrera::find($request->estados_carrera);
+            if($estadoCarrera->nombre_estado_carrera =='Finalizado'){
+                
+                if(strlen($request->periodo_fin) == 0){
+                    Flash::error('• El campo periodo fin es obligatorio.')->important();
+                    return redirect()->back();
+                }
+
+                $datetime1 = new \DateTime($request->periodo_inicio);
+                $datetime2 = new \DateTime($request->periodo_fin);
+                $interval = $datetime1->diff($datetime2);
+                
+                $esta_bien = false;
+                
+                if(($interval->format('%R%a')) > 0){
+                  $esta_bien = true;
+                }
+                
+                if($esta_bien == false && strlen($request->periodo_fin) != 0){
+                    Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
+                    return redirect()->back();
+                }
+            }
+
             $estudio = new Estudio_Academico();
             $estudio->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $estudio->titulo = $request->titulo;
@@ -68,7 +99,6 @@ class EstudiosAcademicosController extends Controller
             $estudio->materias_total = $request->materias_total;
             $estudio->materias_aprobadas = $request->materias_aprobadas;
             $estudio->periodo_inicio = $request->periodo_inicio;
-            $estadoCarrera = Estado_Carrera::find($estudio->estado_carrera_id);
             if ($estadoCarrera->nombre_estado_carrera =='Finalizado') {
                 $estudio->periodo_fin = $request->periodo_fin;
             }else{
@@ -106,11 +136,13 @@ class EstudiosAcademicosController extends Controller
           $estudio = Estudio_Academico::find($id); // busca el usuario por su id
           $nivelesEducativos = Nivel_Educativo::where('estado','activo')->orderBy('id','ASC')->lists('nombre_nivel_educativo','id');
           $estadosCarrera = Estado_Carrera::where('estado','activo')->orderBy('id','ASC')->lists('nombre_estado_carrera','id');
+          $finalizadoEstado = Estado_Carrera::where('nombre_estado_carrera','Finalizado')->first();
 
           return view('in.cv.estudios_academicos.edit')
                                 ->with('estudio',$estudio)
                                 ->with('nivelesEducativos',$nivelesEducativos)
-                                ->with('estadosCarrera',$estadosCarrera);
+                                ->with('estadosCarrera',$estadosCarrera)
+                                ->with('finalizado',$finalizadoEstado->id);
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -123,9 +155,39 @@ class EstudiosAcademicosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateEstudioAcademicoRequest $request, $id)
     {
         if(Auth::user()->can('modificar_estudio_academico_cv')){
+
+            if ( $request->materias_aprobadas > $request->materias_total){
+                Flash::error('• Las Materias Aprobadas deben ser menor a Materias Total de la carrera.')->important();
+                return redirect()->back();
+            }
+
+            $estadoCarrera = Estado_Carrera::find($request->estado_carrera);
+            if($estadoCarrera->nombre_estado_carrera =='Finalizado'){
+                
+                if(strlen($request->periodo_fin) == 0){
+                    Flash::error('• El campo periodo fin es obligatorio.')->important();
+                    return redirect()->back();
+                }
+
+                $datetime1 = new \DateTime($request->periodo_inicio);
+                $datetime2 = new \DateTime($request->periodo_fin);
+                $interval = $datetime1->diff($datetime2);
+                
+                $esta_bien = false;
+                
+                if(($interval->format('%R%a')) > 0){
+                  $esta_bien = true;
+                }
+                
+                if($esta_bien == false && strlen($request->periodo_fin) != 0){
+                    Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
+                    return redirect()->back();
+                }
+            }
+
             $estudio = Estudio_Academico::find($id);
             $estudio->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $estudio->titulo = $request->titulo;
@@ -135,11 +197,10 @@ class EstudiosAcademicosController extends Controller
             $estudio->materias_total = $request->materias_total;
             $estudio->materias_aprobadas = $request->materias_aprobadas;
             $estudio->periodo_inicio = $request->periodo_inicio;
-            $estadoCarrera = Estado_Carrera::find($estudio->estado_carrera_id);
-            if ($estadoCarrera->nombre_estado_carrera =='En curso') {
-                $estudio->periodo_fin = "00-00-0000"; // Esta en Presente
-            }else{
+            if ($estadoCarrera->nombre_estado_carrera =='Finalizado') {
                 $estudio->periodo_fin = $request->periodo_fin;
+            }else{
+                $estudio->periodo_fin = "00-00-0000"; // Esta en Presente
             }
             $estudio->save();
 

@@ -73,15 +73,15 @@
           <div class="col-sm-2">
             {!! Form::number('materias_aprobadas', $estudio->materias_aprobadas, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
           </div>
-          @if($estudio->estadoCarrera->nombre_estado_carrera == 'En curso')
+          @if($estudio->estadoCarrera->nombre_estado_carrera == 'Finalizado')
             {!! Form::label('periodo_fin','Periodo Fin:', ['class' => 'col-sm-4 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::text('periodo_fin', null, ['id' => 'input_date_fin', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa'])!!}
+              {!! Form::text('periodo_fin', $estudio->periodo_fin, ['id' => 'input_date_fin', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
             </div>
           @else
             {!! Form::label('periodo_fin','Periodo Fin:', ['class' => 'col-sm-4 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::text('periodo_fin', $estudio->periodo_fin, ['id' => 'input_date_fin', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa'])!!}
+              {!! Form::text('periodo_fin', null, ['id' => 'input_date_fin', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'disabled'])!!}
             </div>
           @endif
         </div>
@@ -127,10 +127,21 @@
       
       // Select
       $('#selectSimpleNE').select2({
-        placeholder: "Tipo"
+        placeholder: "Nivel Educativo"
       });
       $('#selectSimpleEC').select2({
-        placeholder: "Tipo"
+        placeholder: "Estado Carrera"
+      });
+
+      $('#selectSimpleEC').on('change', function() {
+        if($(this).val() == {{$finalizado}}){           
+          $('#input_date_fin').prop('disabled', false);
+          $('#input_date_fin').prop('required', true);
+        }else{          
+          $('#input_date_fin').prop('disabled', true);
+          $('#input_date_fin').val('');
+          $('#input_date_fin').prop('required', false);
+        }    
       });
     });
 
