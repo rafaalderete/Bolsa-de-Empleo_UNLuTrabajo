@@ -37,13 +37,14 @@ h3,
   color: #fff;
   font-family: 'Righteous', cursive;
   display: block;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 50px;
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   transition: 0.5s;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 #logo a:hover {
@@ -276,10 +277,6 @@ a.show-sidebar:hover {
 
 .panel-menu {
   margin: 0;
-}
-
-.top-panel-right {
-  padding-left: 0;
 }
 
 .panel-menu > li > a {
@@ -3098,7 +3095,7 @@ fieldset[disabled] .btn-danger.active,
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 350px) {
   .panel-menu a.account {
     padding: 5px 0 5px 0;
   }

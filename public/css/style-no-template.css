@@ -120,7 +120,7 @@ html {
 }
 
 .top-menu li i {
-  padding: 0 5px;
+  padding: 0;
 }
 
 .top-menu li a {
@@ -133,6 +133,10 @@ html {
 
 .top-menu li:hover {
   background-color: #d8d8d8;
+}
+
+.opcion {
+  padding: 0;
 }
 
 .mensaje-login {
@@ -321,5 +325,17 @@ html {
   .btn-registrar-3 {
     margin-top: 5px !important;
     float: none !important;
+  }
+}
+
+@media all and (min-width: 1120px) {
+  .top-menu li i {
+    padding: 0 5px;
+  }
+}
+
+@media all and (max-width: 1120px) {
+  .top-menu li span {
+    display: none;
   }
 }
