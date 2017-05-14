@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Estado Carrera
         @if(Entrust::can('crear_estado_carrera'))
-          <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
             Registar Estado Carrera
           </a>

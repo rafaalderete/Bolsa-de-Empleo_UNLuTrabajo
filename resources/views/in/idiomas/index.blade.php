@@ -24,8 +24,8 @@
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Idiomas
-        @if(Entrust::can('crear_idiomas'))
-          <a href="{{ route('in.idiomas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+        @if(Entrust::can('crear_idioma'))
+          <a href="{{ route('in.idiomas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
             Registar Idioma
           </a>

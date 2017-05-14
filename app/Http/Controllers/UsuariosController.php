@@ -289,6 +289,7 @@ class UsuariosController extends PersonasController
         if( (Auth::user()->can('modificar_usuario') && !$this->isSuperUsuario($id)) ||  Auth::user()->hasRole('super_usuario')){
           $error = false;
           $errorMnj = "";
+          $usuario = Usuario::find($id);
           $persona = Persona::find($request->persona_id);
           $roles_seleccionados = $request->roles;
           $rol_empleador = false;
@@ -312,10 +313,12 @@ class UsuariosController extends PersonasController
             $error = true;
             $errorMnj = 'Datos invalidos para el campo Roles.';
           }
-          //Control para que una persona juridica no tenga más de un usuario.
+          //Control para que una persona juridica no tenga más de un usuario y sea diferente al que se quiere modificar.
           if ( ($persona->tipo_persona == 'juridica') && (count($persona->usuarios) > 0) ) {
-            $error = true;
-            $errorMnj = 'Persona inválida.';
+            if ($usuario->persona->id != $request->persona_id) {
+              $error = true;
+              $errorMnj = 'Persona inválida.';
+            }
           }
           if ($persona->tipo_persona == 'fisica' && $rol_postulante) {
             $unlu_estudiante = new Unlu_Estudiante();

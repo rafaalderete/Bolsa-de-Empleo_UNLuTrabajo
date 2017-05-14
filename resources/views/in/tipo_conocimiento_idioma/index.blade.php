@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipo Conocimiento Idioma 
+        <h4 class="page-header">Tabla de Tipo Conocimiento Idioma
         @if(Entrust::can('crear_tipo_conocimiento_idioma'))
-          <a href="{{ route('in.tipo_conocimiento_idioma.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.tipo_conocimiento_idioma.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo Conocimiento Idioma 
+            Registar Tipo Conocimiento Idioma
           </a>
         @endif
         </h4>

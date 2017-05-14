@@ -32,11 +32,15 @@ class EstudianteController extends Controller
 
     public function buscarOferta(Request $request)
     {
+
+      $today = Carbon::today()->toDateString();
+
       if(Auth::user()->can('buscar_ofertas')){
         $tipos_trabajo = Tipo_Trabajo::all()->where('estado', 'activo');
         foreach ($tipos_trabajo as $key => $tipo_trabajo) {
           $tipos_trabajo[$key]->cantidad = Propuesta_Laboral::where('tipo_trabajo_id',$tipo_trabajo->id)
             ->where('estado_propuesta','activo')
+            ->where('fecha_fin_propuesta','>=',$today)
             ->count();
         }
 
@@ -44,6 +48,7 @@ class EstudianteController extends Controller
         foreach ($tipos_jornada as $key => $tipo_jornada) {
           $tipos_jornada[$key]->cantidad = Propuesta_Laboral::where('tipo_jornada_id',$tipo_jornada->id)
             ->where('estado_propuesta','activo')
+            ->where('fecha_fin_propuesta','>=',$today)
             ->count();
         }
 
@@ -54,6 +59,7 @@ class EstudianteController extends Controller
                 $query->where('carrera_id',$carreraId);
             })
             ->where('estado_propuesta','activo')
+            ->where('fecha_fin_propuesta','>=',$today)
             ->count();
         }
 
@@ -64,6 +70,7 @@ class EstudianteController extends Controller
                 $query->where('idioma_id',$idiomaId);
             })
             ->where('estado_propuesta','activo')
+            ->where('fecha_fin_propuesta','>=',$today)
             ->count();
         }
 
@@ -76,7 +83,7 @@ class EstudianteController extends Controller
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
           $propuestas = Propuesta_Laboral::where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
             ->where('estado_propuesta','activo')
-            ->where('fecha_fin_propuesta','>=',Carbon::today())
+            ->where('fecha_fin_propuesta','>=',$today)
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);
         }
@@ -88,7 +95,7 @@ class EstudianteController extends Controller
                   $query->where('carrera_id',$carreraId);
               })
               ->where('estado_propuesta','activo')
-              ->where('fecha_fin_propuesta','>=',Carbon::today())
+              ->where('fecha_fin_propuesta','>=',$today)
               ->orderBy('propuestas_laborales.created_at','DESC')
               ->paginate(self::CANT_PAGINA);
             $tipo_carrera_buscado = Carrera::find($request->carrera);
@@ -99,7 +106,7 @@ class EstudianteController extends Controller
             if (isset($request->tipo_trabajo)) {
               $propuestas = Propuesta_Laboral::where('tipo_trabajo_id',$request->tipo_trabajo)
                 ->where('estado_propuesta','activo')
-                ->where('fecha_fin_propuesta','>=',Carbon::today())
+                ->where('fecha_fin_propuesta','>=',$today)
                 ->orderBy('created_at','DESC')
                 ->paginate(self::CANT_PAGINA);
               $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
@@ -110,7 +117,7 @@ class EstudianteController extends Controller
               if (isset($request->tipo_jornada)) {
                 $propuestas = Propuesta_Laboral::where('tipo_jornada_id',$request->tipo_jornada)
                   ->where('estado_propuesta','activo')
-                  ->where('fecha_fin_propuesta','>=',Carbon::today())
+                  ->where('fecha_fin_propuesta','>=',$today)
                   ->orderBy('created_at','DESC')
                   ->paginate(self::CANT_PAGINA);
                 $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
@@ -124,7 +131,7 @@ class EstudianteController extends Controller
                         $query->where('idioma_id',$idiomaId);
                     })
                     ->where('estado_propuesta','activo')
-                    ->where('fecha_fin_propuesta','>=',Carbon::today())
+                    ->where('fecha_fin_propuesta','>=',$today)
                     ->orderBy('propuestas_laborales.created_at','DESC')
                     ->paginate(self::CANT_PAGINA);
                   $idioma_buscado = Idioma::find($request->idioma);
@@ -134,7 +141,7 @@ class EstudianteController extends Controller
                   //Sin filtro, ultimas propuestas.
                   $busqueda = false;
                   $propuestas = Propuesta_Laboral::where('estado_propuesta','activo')
-                    ->where('fecha_fin_propuesta','>=',Carbon::today())
+                    ->where('fecha_fin_propuesta','>=',$today)
                     ->orderBy('created_at','DESC')
                     ->paginate(self::CANT_PAGINA);
                 }
@@ -176,19 +183,27 @@ class EstudianteController extends Controller
           return redirect()->route('in.buscar-ofertas');
         }
         else {
-          //Verifica si ya se ha postulado a la oferta
-          foreach ($propuesta->estudiantes as $estudiante) {
-            if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
-              $puede_postularse = false;
-            }
+          //Verifica que la propuesta no está finalizada.
+          $today = Carbon::today()->toDateString();
+          if ($today >= $propuesta->fecha_fin_propuesta) {
+            Flash::error('Oferta finalizada.')->important();
+            return redirect()->route('in.buscar-ofertas');
           }
-          $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
-          $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
+          else{
+            //Verifica si ya se ha postulado a la oferta
+            foreach ($propuesta->estudiantes as $estudiante) {
+              if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
+                $puede_postularse = false;
+              }
+            }
+            $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
+            $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
-          return view('in.estudiante.detalle-oferta')
-            ->with('propuesta',$propuesta)
-            ->with('postulacion',$postulacion)
-            ->with('puede_postularse',$puede_postularse);
+            return view('in.estudiante.detalle-oferta')
+              ->with('propuesta',$propuesta)
+              ->with('postulacion',$postulacion)
+              ->with('puede_postularse',$puede_postularse);
+          }
         }
 
       }else{
@@ -208,78 +223,86 @@ class EstudianteController extends Controller
           return redirect()->route('in.buscar-ofertas');
         }
         else {
-          $postulado = false;
-          foreach ($propuesta->estudiantes as $estudiante) {
-            if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
-              $postulado = true;
-            }
-          }
-
-          if (!$postulado) {
-            //Mail al Empleador.
-            define('BUDGETS_DIR', public_path('uploads/budgets'));
-
-            if (!is_dir(BUDGETS_DIR)){
-                mkdir(BUDGETS_DIR, 0755, true);
-            }
-
-            $data['nombre_estudiante'] = Auth::user()->persona->fisica->nombre_persona." ".Auth::user()->persona->fisica->apellido_persona;
-            $data['titulo_propuesta'] = $propuesta->titulo;
-            $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
-
-            $outputName = str_random(10);
-            $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.$data['titulo_propuesta']."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
-
-            // DATOS DEL CV
-            // Datos Personales y Objetivo Laboral
-            $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
-            $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
-            $telefono_fijo = '';
-            $telefono_celular = '';
-            foreach ($pfisica->persona->telefonos as $telefono) {
-              if ($telefono->tipo_telefono == 'fijo') {
-                $telefono_fijo = $telefono->nro_telefono;
-              }
-              if ($telefono->tipo_telefono == 'celular') {
-                $telefono_celular = $telefono->nro_telefono;
-              }
-            }
-
-            //Experiencias Laborales
-            $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Estudios Academicos
-            $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Idiomas
-            $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Informaticos
-            $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Adicionales
-            $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
-
-            Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
-                $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
-                $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
-                $message->to($data['email_empleador']);
-                $message->attach($pdfPath);
-            });
-
-            File::delete($pdfPath);
-
-            //Postulación.
-            $propuesta->estudiantes()->sync([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now()]]);
-
-            Flash::success('Postulación realizada.')->important();
+          //Verifica que la propuesta no está finalizada.
+          $today = Carbon::today()->toDateString();
+          if ($today >= $propuesta->fecha_fin_propuesta) {
+            Flash::error('Oferta finalizada.')->important();
             return redirect()->route('in.buscar-ofertas');
           }
           else {
-            Flash::error('Ya se ha postulado a ésta Oferta.')->important();
-            return redirect()->route('in.buscar-ofertas');
+            $postulado = false;
+            foreach ($propuesta->estudiantes as $estudiante) {
+              if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
+                $postulado = true;
+              }
+            }
+
+            if (!$postulado) {
+              //Mail al Empleador.
+              define('BUDGETS_DIR', public_path('uploads/budgets'));
+
+              if (!is_dir(BUDGETS_DIR)){
+                  mkdir(BUDGETS_DIR, 0755, true);
+              }
+
+              $data['nombre_estudiante'] = Auth::user()->persona->fisica->nombre_persona." ".Auth::user()->persona->fisica->apellido_persona;
+              $data['titulo_propuesta'] = $propuesta->titulo;
+              $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
+
+              $outputName = str_random(10);
+              $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.$data['titulo_propuesta']."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
+
+              // DATOS DEL CV
+              // Datos Personales y Objetivo Laboral
+              $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+              $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
+              $telefono_fijo = '';
+              $telefono_celular = '';
+              foreach ($pfisica->persona->telefonos as $telefono) {
+                if ($telefono->tipo_telefono == 'fijo') {
+                  $telefono_fijo = $telefono->nro_telefono;
+                }
+                if ($telefono->tipo_telefono == 'celular') {
+                  $telefono_celular = $telefono->nro_telefono;
+                }
+              }
+
+              //Experiencias Laborales
+              $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+              // Estudios Academicos
+              $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+              // Conocimientos Idiomas
+              $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+              // Conocimientos Informaticos
+              $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+              // Conocimientos Adicionales
+              $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+              File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+
+              Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
+                  $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+                  $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
+                  $message->to($data['email_empleador']);
+                  $message->attach($pdfPath);
+              });
+
+              File::delete($pdfPath);
+
+              //Postulación.
+              $propuesta->estudiantes()->sync([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now()]]);
+
+              Flash::success('Postulación realizada.')->important();
+              return redirect()->route('in.buscar-ofertas');
+            }
+            else {
+              Flash::error('Ya se ha postulado a ésta Oferta.')->important();
+              return redirect()->route('in.buscar-ofertas');
+            }
           }
         }
 

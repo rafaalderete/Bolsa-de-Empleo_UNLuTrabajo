@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Nivel Educativo
         @if(Entrust::can('crear_nivel_educativo'))
-          <a href="{{ route('in.nivel_educativo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.nivel_educativo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
             Registar Nivel Educativo
           </a>

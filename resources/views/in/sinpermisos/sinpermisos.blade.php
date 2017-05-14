@@ -9,9 +9,10 @@
 		<link href="../plugins/bootstrap/bootstrap.css" rel="stylesheet">
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<link href="../css/style.css" rel="stylesheet">
+		<link href="../css/style-no-template.css" rel="stylesheet">
 
 	</head>
-<body>
+<body class="body-sinpermisos">
 <div class="container-fluid">
 	<div class="row">
 		<div id="page-500" class="col-xs-12 text-center">

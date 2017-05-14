@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Nivel Conocimiento
         @if(Entrust::can('crear_nivel_conocimiento'))
-          <a href="{{ route('in.nivel_conocimiento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.nivel_conocimiento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
             Registar Nivel Conocimiento
           </a>

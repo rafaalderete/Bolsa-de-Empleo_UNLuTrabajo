@@ -82,159 +82,53 @@
       </li>
     @endif
 
-    @if(Entrust::can('listar_rubros_empresariales'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Rubros Empresariales</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.rubros-empresariales.index')}}">Tabla de Rubros Empresariales</a></li>
-          @if(Entrust::can('crear_rubro_empresarial'))
-            <li><a href="{{route('in.rubros-empresariales.create')}}">Registrar Rubro Empresarial</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-  
-   @if(Entrust::can('listar_idiomas'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Idiomas</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.idiomas.index')}}">Tabla Idioma</a></li>
-          @if(Entrust::can('crear_idioma'))
-            <li><a href="{{route('in.idiomas.create')}}">Registrar Idioma</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle">
+        <i class="fa fa-chevron-right"></i>
+        <span class="hidden-xs">Parametría Grupo 1</span>
+      </a>
+      <ul class="dropdown-menu">
+        @if(Entrust::can('listar_rubros_empresariales'))
+          <li><a href="{{route('in.rubros-empresariales.index')}}">Rubros Empresariales</a></li>
+        @endif
+        @if(Entrust::can('listar_idiomas'))
+          <li><a href="{{route('in.idiomas.index')}}">Idiomas</a></li>
+        @endif
+        @if(Entrust::can('listar_tipos_software'))
+          <li><a href="{{route('in.tipo_software.index')}}">Tipos de Software</a></li>
+        @endif
+        @if(Entrust::can('listar_estados_carrera'))
+          <li><a href="{{route('in.estado_carrera.index')}}">Estados de Carrera</a></li>
+        @endif
+        @if(Entrust::can('listar_tipos_jornada'))
+          <li><a href="{{route('in.tipo_jornada.index')}}">Tipos de Jornada</a></li>
+        @endif
+      </ul>
+    </li>
 
-    @if(Entrust::can('listar_tipos_software'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Tipo Software</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_software.index')}}">Tabla de Tipo Software</a></li>
-          @if(Entrust::can('crear_tipo_software'))
-            <li><a href="{{route('in.tipo_software.create')}}">Registrar Tipo Software</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-    <!-- ESTA MIERDA NO SE MUESTRA :@ -->
-     @if(Entrust::can('listar_estados_carrera'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Estado Carrera</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.estado_carrera.index')}}">Tabla de Estado Carrera</a></li>
-          @if(Entrust::can('crear_estado_carrera'))
-            <li><a href="{{route('in.estado_carrera.create')}}">Registrar Estado Carrera</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-     @if(Entrust::can('listar_tipos_jornada'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Tipo Jornada</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_jornada.index')}}">Tabla de Tipo Jornada</a></li>
-          @if(Entrust::can('crear_tipo_jornada'))
-            <li><a href="{{route('in.tipo_jornada.create')}}">Registrar Tipo Jornada</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-   @if(Entrust::can('listar_tipos_trabajo'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Tipo Trabajo</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_trabajo.index')}}">Tabla de Tipo Trabajo</a></li>
-          @if(Entrust::can('crear_tipo_trabajo'))
-            <li><a href="{{route('in.tipo_trabajo.create')}}">Registrar Tipo Trabajo</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-
-   @if(Entrust::can('listar_niveles_conocimiento'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Nivel Conocimiento</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.nivel_conocimiento.index')}}">Tabla de Nivel Conocimiento</a></li>
-          @if(Entrust::can('crear_nivel_conocimiento'))
-            <li><a href="{{route('in.nivel_conocimiento.create')}}">Registrar Nivel Conocimiento</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-    
-     @if(Entrust::can('listar_niveles_educativos'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Nivel Educativo</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.nivel_educativo.index')}}">Tabla de Nivel Educativo</a></li>
-          @if(Entrust::can('crear_nivel_conocimiento'))
-            <li><a href="{{route('in.nivel_educativo.create')}}">Registrar Nivel Educativo</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-    @if(Entrust::can('listar_tipos_conocimiento_idioma'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Tipo Conocimiento Idioma</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_conocimiento_idioma.index')}}">Tabla de Tipo Conocimiento Idioma</a></li>
-          @if(Entrust::can('crear_tipo_conocimiento_idioma'))
-            <li><a href="{{route('in.tipo_conocimiento_idioma.create')}}">Registrar Tipo Conocimiento Idioma</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
-
-
-    @if(Entrust::can('listar_tipos_documento'))
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle">
-          <i class="fa fa-chevron-right"></i>
-          <span class="hidden-xs">Tipo Documento</span>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="{{route('in.tipo_documento.index')}}">Tabla de Tipo Documento</a></li>
-          @if(Entrust::can('crear_tipo_documento'))
-            <li><a href="{{route('in.tipo_documento.create')}}">Registrar Tipo Documento</a></li>
-          @endif
-        </ul>
-      </li>
-    @endif
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle">
+        <i class="fa fa-chevron-right"></i>
+        <span class="hidden-xs">Parametría Grupo 2</span>
+      </a>
+      <ul class="dropdown-menu">
+        @if(Entrust::can('listar_tipos_trabajo'))
+          <li><a href="{{route('in.tipo_trabajo.index')}}">Tipos de Trabajo</a></li>
+        @endif
+        @if(Entrust::can('listar_niveles_conocimiento'))
+          <li><a href="{{route('in.nivel_conocimiento.index')}}">Niveles de Conocimiento</a></li>
+        @endif
+        @if(Entrust::can('listar_niveles_educativos'))
+          <li><a href="{{route('in.nivel_educativo.index')}}">Niveles Educativos</a></li>
+        @endif
+        @if(Entrust::can('listar_tipos_conocimiento_idioma'))
+          <li><a href="{{route('in.tipo_conocimiento_idioma.index')}}">Tipos de Conocimiento Idioma</a></li>
+        @endif
+        @if(Entrust::can('listar_tipos_documento'))
+          <li><a href="{{route('in.tipo_documento.index')}}">Tipos de Documento</a></li>
+        @endif
+      </ul>
+    </li>
 
     </ul>
 </div>
-

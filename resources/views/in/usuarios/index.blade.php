@@ -26,7 +26,7 @@
         <h4 class="page-header">Tabla de Usuarios
           @if(count($personas) > 0)
             @if(Entrust::can('crear_usuario'))
-              <a href="{{ route('in.usuarios.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+              <a href="{{ route('in.usuarios.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
                 <span><i class="fa fa-plus"></i></span>
                 Registar Usuario
               </a>

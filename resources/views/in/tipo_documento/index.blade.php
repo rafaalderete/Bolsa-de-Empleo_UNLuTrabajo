@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Tipo Documento
         @if(Entrust::can('crear_tipo_documento'))
-          <a href="{{ route('in.tipo_documento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.tipo_documento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
             Registar Tipo Documento
           </a>

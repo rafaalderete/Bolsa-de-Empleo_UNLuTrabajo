@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Permisos
         @if(Entrust::can('crear_permiso'))
-          <a href="{{ route('in.permisos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.permisos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
             Registar Permisos
           </a>

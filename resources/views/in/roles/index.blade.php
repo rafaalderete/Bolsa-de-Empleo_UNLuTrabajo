@@ -25,7 +25,7 @@
         <!-- Titulo del Cuerpo del Box -->
         <h4 class="page-header">Tabla de Roles
         @if(Entrust::can('crear_rol'))
-          <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
             Registar Rol
           </a>

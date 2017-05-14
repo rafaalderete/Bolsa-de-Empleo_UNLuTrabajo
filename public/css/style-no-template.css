@@ -27,6 +27,10 @@ html {
   background-size: cover;
 }
 
+.body-sinpermisos {
+  background: #ebebeb;
+}
+
 .#content {
   padding: 0 !important;
 }
@@ -292,4 +296,30 @@ html {
 
 .btn-info:hover {
   background-color: #1b8048 !important;
+}
+
+@media all and (max-width: 370px) {
+  .btn-registrar {
+    margin-top: 5px !important;
+    float: none !important;
+  }
+
+  div .pull-right {
+    margin-top: 5px !important;
+    float: none !important;
+  }
+}
+
+@media all and (max-width: 550px) {
+  .btn-registrar-2 {
+    margin-top: 5px !important;
+    float: none !important;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .btn-registrar-3 {
+    margin-top: 5px !important;
+    float: none !important;
+  }
 }
