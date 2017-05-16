@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-md-6">
               @if($pfisica->estudiante->cv->carta_presentacion != null)
-                <p>{{$pfisica->estudiante->cv->carta_presentacion}}</p>
+                <span>{!!$pfisica->estudiante->cv->carta_presentacion!!}</span>
               @else
                 <p>( Sin Descripción. )</p>
               @endif

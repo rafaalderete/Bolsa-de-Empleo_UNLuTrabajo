@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Experiencia_Laboral as Experiencia_Laboral;
 use App\Rubro_Empresarial as Rubro_Empresarial;
+use App\Http\Requests\StoreExperienciaLaboralRequest;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -54,9 +55,33 @@ class ExperienciaLaboralesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreExperienciaLaboralRequest $request)
     {
         if(Auth::user()->can('crear_experiencia_laboral_cv')){
+
+            if(!isset($request->presente)){
+                
+                if(strlen($request->periodo_fin) == 0){
+                    Flash::error('• El campo periodo fin es obligatorio.')->important();
+                    return redirect()->back();
+                }
+
+                $datetime1 = new \DateTime($request->periodo_inicio);
+                $datetime2 = new \DateTime($request->periodo_fin);
+                $interval = $datetime1->diff($datetime2);
+                
+                $esta_bien = false;
+                
+                if(($interval->format('%R%a')) > 0){
+                  $esta_bien = true;
+                }
+                
+                if($esta_bien == false && strlen($request->periodo_fin) != 0){
+                    Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
+                    return redirect()->back();
+                }
+            }
+
             $expLaboral = new Experiencia_Laboral();
             $expLaboral->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $expLaboral->nombre_empresa = $request->nombre_empresa;
@@ -118,9 +143,33 @@ class ExperienciaLaboralesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreExperienciaLaboralRequest $request, $id)
     {
         if(Auth::user()->can('modificar_experiencia_laboral_cv')){
+
+            if(!isset($request->presente)){
+                
+                if(strlen($request->periodo_fin) == 0){
+                    Flash::error('• El campo periodo fin es obligatorio.')->important();
+                    return redirect()->back();
+                }
+
+                $datetime1 = new \DateTime($request->periodo_inicio);
+                $datetime2 = new \DateTime($request->periodo_fin);
+                $interval = $datetime1->diff($datetime2);
+                
+                $esta_bien = false;
+                
+                if(($interval->format('%R%a')) > 0){
+                  $esta_bien = true;
+                }
+                
+                if($esta_bien == false && strlen($request->periodo_fin) != 0){
+                    Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
+                    return redirect()->back();
+                }
+            }
+
             $expLaboral = Experiencia_Laboral::find($id);
             $expLaboral->nombre_empresa = $request->nombre_empresa;
             $expLaboral->rubro_empresarial_id = $request->rubro_empresarial;

@@ -37,7 +37,7 @@
           <div class="form-group">
             {!! Form::label('carta_presentacion','Carta de Presentación: ', ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-8">
-              {!! Form::textarea('carta_presentacion',$pfisica->estudiante->cv->carta_presentacion, ['class' => 'form-control', 'placeholder' => 'Descripción'])!!}
+              {!! Form::textarea('carta_presentacion',$pfisica->estudiante->cv->carta_presentacion, ['class' => 'form-control', 'placeholder' => 'Descripción', 'id' => 'textarea_carta'])!!}
             </div>
           </div>
 
@@ -45,7 +45,7 @@
             {!! Form::label('sueldo','Sueldo Bruto Pretendido: ', ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-3">
               <div class="input-group">
-                {!! Form::number('sueldo_bruto_pretendido',$pfisica->estudiante->cv->sueldo_bruto_pretendido,['class' => 'form-control', 'placeholder' => '0'])!!}
+                {!! Form::number('sueldo_bruto_pretendido',$pfisica->estudiante->cv->sueldo_bruto_pretendido,['class' => 'form-control', 'placeholder' => '0', 'min' => '0'])!!}
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
               </div>
             </div>
@@ -77,5 +77,27 @@
     </div>  
   </div>
 </div>
+
+@endsection
+
+@section('bodyJS')
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+
+      $('#textarea_carta').summernote({
+        lang: 'es-ES',
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['font', ['superscript', 'subscript']],
+          ['fontsize', ['fontsize']],
+          ['para', ['ul', 'ol', 'paragraph']],
+        ]
+      });
+    });
+
+  </script>
 
 @endsection

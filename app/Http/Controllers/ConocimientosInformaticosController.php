@@ -10,6 +10,7 @@ use Laracasts\Flash\Flash;
 use App\Conocimiento_Informatico as Conocimiento_Informatico;
 use App\Tipo_Software as Tipo_Software;
 use App\Nivel_Conocimiento as Nivel_Conocimiento;
+use App\Http\Requests\StoreConocimientoInformaticoRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ConocimientosInformaticosController extends Controller
@@ -54,9 +55,18 @@ class ConocimientosInformaticosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConocimientoInformaticoRequest $request)
     {
         if(Auth::user()->can('crear_conocimiento_informatico_cv')){
+            $registro = Conocimiento_Informatico::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('tipo_software_id','=',$request->tipo_software)
+                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)->get();
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento informatico ya existe en el cv.')->important();
+                return redirect()->back();
+            }
+
             $conocimientoInformatico = new Conocimiento_Informatico();
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;
@@ -110,9 +120,19 @@ class ConocimientosInformaticosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreConocimientoInformaticoRequest $request, $id)
     {
         if(Auth::user()->can('modificar_conocimiento_informatico_cv')){
+            $registro = Conocimiento_Informatico::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('tipo_software_id','=',$request->tipo_software)
+                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)
+                ->where('id','<>',$id)->get();
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento informatico ya existe en el cv.')->important();
+                return redirect()->back();
+            }
+
             $conocimientoInformatico = Conocimiento_Informatico::find($id);
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;

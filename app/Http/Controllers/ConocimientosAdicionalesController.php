@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
 use App\Conocimiento_Adicional as Conocimiento_Adicional;
+use App\Http\Requests\StoreConocimientoAdicionalRequest;
 use Illuminate\Support\Facades\Auth;
 
 class ConocimientosAdicionalesController extends Controller
@@ -48,9 +49,18 @@ class ConocimientosAdicionalesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreConocimientoAdicionalRequest $request)
     {
         if(Auth::user()->can('crear_conocimiento_adicional_cv')){
+            $registro = Conocimiento_Adicional::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('nombre_conocimiento','=',$request->nombre_conocimiento)
+                ->where('descripcion_conocimiento','=',$request->descripcion_conocimiento)->get();
+            
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
+                return redirect()->back();
+            }
             $conocimientoAdicional = new Conocimiento_Adicional();
             $conocimientoAdicional->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoAdicional->nombre_conocimiento = $request->nombre_conocimiento;
@@ -100,9 +110,19 @@ class ConocimientosAdicionalesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreConocimientoAdicionalRequest $request, $id)
     {
         if(Auth::user()->can('modificar_conocimiento_adicional_cv')){
+            $registro = Conocimiento_Adicional::
+                where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
+                ->where('nombre_conocimiento','=',$request->nombre_conocimiento)
+                ->where('descripcion_conocimiento','=',$request->descripcion_conocimiento)
+                ->where('id','<>',$id)->get();
+            
+            if(count($registro)> 0){
+                Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
+                return redirect()->back();
+            }
             $conocimientoAdicional = Conocimiento_Adicional::find($id);
             $conocimientoAdicional->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoAdicional->nombre_conocimiento = $request->nombre_conocimiento;

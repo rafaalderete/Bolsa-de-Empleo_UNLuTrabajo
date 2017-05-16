@@ -70,18 +70,18 @@
 		<div class="form-group">
 		  {!! Form::label('materias_total','Materias Total:', ['class' => 'col-sm-2 control-label']) !!}
 		  <div class="col-sm-2">
-		    {!! Form::number('materias_total', null, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+		    {!! Form::number('materias_total', null, ['class' => 'form-control', 'placeholder' => '', 'min' => '0', 'required'])!!}
 		  </div>
 		  {!! Form::label('periodo_inicio','Periodo Inicio:', ['class' => 'col-sm-4 control-label']) !!}
 		  <div class="col-sm-2">
-		    {!! Form::text('periodo_inicio', null, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa'])!!}
+		    {!! Form::text('periodo_inicio', null, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
 		  </div>
 		</div>
 
 		<div class="form-group">
           {!! Form::label('materias_aprobadas','Materias Aprobadas:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::number('materias_aprobadas', null, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            {!! Form::number('materias_aprobadas', null, ['class' => 'form-control', 'placeholder' => '', 'min' => '0','required'])!!}
           </div>
           {!! Form::label('periodo_fin','Periodo Fin:', ['class' => 'col-sm-4 control-label']) !!}
           <div class="col-sm-2">
@@ -130,10 +130,10 @@
       
       // Select
       $('#selectSimpleNE').select2({
-        placeholder: "Tipo"
+        placeholder: "Nivel Educativo"
       });
       $('#selectSimpleEC').select2({
-        placeholder: "Tipo"
+        placeholder: "Estado Carrera"
       });
 
       $('#selectSimpleEC').on('change', function() {
@@ -164,7 +164,8 @@
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      maxDate: 'today'
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {

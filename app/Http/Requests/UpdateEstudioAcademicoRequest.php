@@ -6,7 +6,7 @@ use App\Http\Requests\Request;
 use App\Estado_Carrera as Estado_Carrera;
 use App\Nivel_Educativo as Nivel_Educativo;
 
-class StoreEstudioAcademicoRequest extends Request
+class UpdateEstudioAcademicoRequest extends Request
 {
     const CAMPO_CARRERA = 'Carrera';
     const CAMPO_NOMBRE_INSTITUTO = 'Instituto';
@@ -55,20 +55,20 @@ class StoreEstudioAcademicoRequest extends Request
             'materias_total' => 'required|min:0',
             'materias_aprobadas' => 'required|min:0', 
             'nivel_educativo' => $niveles_educativos_disponibles,
-            'estados_carrera' => $estados_carrera_disponibles,
+            'estado_carrera' => $estados_carrera_disponibles,
             'periodo_inicio' => 'required'
         ];
     }
 
     public function messages()
-  {
-    return [
-        'titulo.max' => 'El campo '. self::CAMPO_CARRERA .' no puede tener más de 50 caracteres.',
-        'nombre_instituto.max' => 'El campo ' . self::CAMPO_NOMBRE_INSTITUTO . ' no puede tener más de 50 caracteres.',
-        'materias_total.min' => 'El campo ' . self::CAMPO_MATERIAS_TOTAL . ' no puede ser negativo.',
-        'materias_aprobadas.min' => 'El campo ' . self::CAMPO_MATERIAS_APROBADAS . ' no puede ser negativo.',
-        'nivel_educativo.in' => 'Datos invalidos para el campo '. self::CAMPO_NIVEL_EDUCATIVO .'.',
-        'estados_carrera.in' => 'Datos invalidos para el campo '. self::CAMPO_ESTADO_CARRERA .'.'
-    ];
-  }
+    {
+        return [
+            'titulo.max' => 'El campo '. self::CAMPO_CARRERA .' no puede tener más de 50 caracteres.',
+            'nombre_instituto.max' => 'El campo ' . self::CAMPO_NOMBRE_INSTITUTO . ' no puede tener más de 50 caracteres.',
+            'materias_total.min' => 'El campo ' . self::CAMPO_MATERIAS_TOTAL . ' no puede ser negativo.',
+            'materias_aprobadas.min' => 'El campo ' . self::CAMPO_MATERIAS_APROBADAS . ' no puede ser negativo.',
+            'nivel_educativo.in' => 'Datos invalidos para el campo '. self::CAMPO_NIVEL_EDUCATIVO .'.',
+            'estado_carrera.in' => 'Datos invalidos para el campo '. self::CAMPO_ESTADO_CARRERA .'.'
+        ];
+      }
 }

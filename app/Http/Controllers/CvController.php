@@ -51,10 +51,11 @@ class CvController extends Controller
 
             // Conocimientos Adicionales
             $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
+            /*
             $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
             return $pdf->stream('Arch.pdf');
-            /*return view('in.cv.visualizarcv')
+            */
+            return view('in.cv.visualizarcv')
               ->with('pfisica',$pfisica)
               ->with('telefono_fijo',$telefono_fijo)
               ->with('telefono_celular',$telefono_celular)
@@ -62,7 +63,7 @@ class CvController extends Controller
               ->with('estudios',$estudios)
               ->with('conocimientosInformaticos',$conocimientosInformaticos)
               ->with('conocimientosIdiomas',$conocimientosIdiomas)
-              ->with('conocimientosAdicionales',$conocimientosAdicionales);*/
+              ->with('conocimientosAdicionales',$conocimientosAdicionales);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }  

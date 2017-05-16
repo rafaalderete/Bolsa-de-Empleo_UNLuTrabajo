@@ -187,14 +187,15 @@
   position: absolute;
   right: 0;
   top: 0;
-  color: #97AAC3;
+  color: #516E92;
 }
 .main-wrapper .company {
   margin-left: 20px;
   margin-bottom: 0px;
-  color: #A0A0A0;
+  color: #747474;
 }
 .main-wrapper .company-details {
+  color: #3F4650;
   margin-left: 20px;
   margin-top: 5px;
 }
@@ -203,6 +204,7 @@
   margin-bottom: 10px;
 }
 .main-wrapper .sueldo {
+  color: #3F4650;
   margin-left: 20px;
   margin-top: 5px;
 }
