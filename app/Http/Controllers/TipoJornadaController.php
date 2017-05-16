@@ -26,7 +26,7 @@ class TipoJornadaController extends Controller
      */
     public function index()
     {
-    
+
         #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
         if (Auth::user()->can('listar_tipos_jornada')) {
             $tipo_jornada = Tipo_Jornada::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
@@ -34,7 +34,7 @@ class TipoJornadaController extends Controller
             return view('in.tipo_jornada.index')->with('tipo_jornada', $tipo_jornada);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
-       
+
         }
 
     }
@@ -70,7 +70,7 @@ class TipoJornadaController extends Controller
         return redirect()->route('in.tipo_jornada.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
-      }  
+      }
     }
 
     /**
@@ -132,7 +132,7 @@ class TipoJornadaController extends Controller
     {
         if(Auth::user()->can('eliminar_tipo_jornada')){
             $tipo_jornada = Tipo_Jornada::find($id);
-            $propuestaLaboral = Propuesta_Laboral::where('id','=',$id)->get();
+            $propuestaLaboral = Propuesta_Laboral::where('tipo_jornada_id','=',$id)->get();
         if( (count($propuestaLaboral) == 0 ) ) {//Se verifica que no esta uso.
 
           $tipo_jornada->delete();

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Empresas | Tabla de Empresas')
+@section('headTitle', 'UNLu Trabajo | Empresas | Tabla de Empresas')
 
 @section('bodyIndice')
 

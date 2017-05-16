@@ -72,7 +72,7 @@ class EntrustSetupTables extends Migration
 
         Schema::drop('permission_role');
         Schema::drop('permissions');
-        Schema::drop('role_user');
+        Schema::drop('role_usuario');
         Schema::drop('roles');
 
     }

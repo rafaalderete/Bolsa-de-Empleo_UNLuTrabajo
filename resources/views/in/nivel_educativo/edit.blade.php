@@ -1,13 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Educativo | Editar Nivel Educativo')
+@section('headTitle', 'UNLu Trabajo | Niveles Educativos | Editar Nivel Educativo')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nivel Educativo</a></li>
+        <li><a>Niveles Educativos</a></li>
         <li><a>Editar Nivel Educativo</a></li>
       </ol>
     </div>
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (nivel_educativo){
+      $("input[name='nombre_nivel_educativo']").val(nivel_educativo['nombre_nivel_educativo']);
+      $('#selectEstado').select2().select2("val", nivel_educativo['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var nivel_educativo = [];
+      nivel_educativo['nombre_nivel_educativo'] = "{{$niveles_educativos->nombre_nivel_educativo}}";
+      nivel_educativo['estado'] = "{{$niveles_educativos->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(nivel_educativo);
       });
 
     });

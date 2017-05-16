@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTipoConocimientoIdiomaRequest;
 use App\Http\Requests\UpdateTipoConocimientoIdiomaRequest;
 
-#por la FK 
+#por la FK
 use App\Conocimiento_Idioma as Conocimiento_Idioma;
 use App\Requisito_Idioma as Requisito_Idioma;
 
@@ -28,7 +28,7 @@ class TipoConocimientoIdiomaController extends Controller
      */
     public function index()
     {
-    
+
         #primero debo asegurarme que la persoana que intenta acceder tenga los permisos
         if (Auth::user()->can('listar_tipos_conocimiento_idioma')) {
             $tipo_conocimiento_idioma = Tipo_Conocimiento_Idioma::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
@@ -36,7 +36,7 @@ class TipoConocimientoIdiomaController extends Controller
             return view('in.tipo_conocimiento_idioma.index')->with('tipos_conocimiento_idioma', $tipo_conocimiento_idioma);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
-       
+
         }
 
     }
@@ -72,7 +72,7 @@ class TipoConocimientoIdiomaController extends Controller
         return redirect()->route('in.tipo_conocimiento_idioma.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
-      }  
+      }
     }
 
     /**
@@ -134,10 +134,10 @@ class TipoConocimientoIdiomaController extends Controller
     {
         if(Auth::user()->can('eliminar_tipo_conocimiento_idioma')){
             $tipo_conocimiento_idioma = Tipo_Conocimiento_Idioma::find($id);
-            
-            $requisitoIdioma = Requisito_Idioma::where('id','=',$id)->get();
+            $conocimientoIdioma = Conocimiento_Idioma::where('tipo_conocimiento_idioma_id','=',$id)->get();
+            $requisitoIdioma = Requisito_Idioma::where('tipo_conocimiento_idioma_id','=',$id)->get();
 
-        if( (count($requisitoIdioma) == 0 ) ) {//Se verifica que no esta uso.
+        if( (count($requisitoIdioma) == 0 ) && (count($conocimientoIdioma) == 0 ) ) {//Se verifica que no esta uso.
 
           $tipo_conocimiento_idioma->delete();
 

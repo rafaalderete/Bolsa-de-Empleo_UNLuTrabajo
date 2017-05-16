@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Conocimiento | Tabla de Nivel Conocimiento')
+@section('headTitle', 'UNLu Trabajo | Niveles de Conocimiento | Tabla de Niveles de Conocimiento')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nivel Conocimiento</a></li>
-        <li><a>Tabla de Nivel Conocimiento</a></li>
+        <li><a>Niveles de Conocimiento</a></li>
+        <li><a>Tabla de Niveles de Conocimiento</a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Nivel Conocimiento
+        <h4 class="page-header">Tabla de Niveles de Conocimiento
         @if(Entrust::can('crear_nivel_conocimiento'))
           <a href="{{ route('in.nivel_conocimiento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Nivel Conocimiento
+            Registar Nivel de Conocimiento
           </a>
         @endif
         </h4>

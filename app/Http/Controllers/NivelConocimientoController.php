@@ -35,7 +35,7 @@ class NivelConocimientoController extends Controller
             return view('in.nivel_conocimiento.index')->with('nivel_conocimiento', $nivel_conocimiento);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
-       
+
         }
     }
 
@@ -66,7 +66,7 @@ class NivelConocimientoController extends Controller
 
         $nivel_conocimiento->save();
 
-        Flash::success('Nivel Conocimiento' . $nivel_conocimiento->nombre_nivel_conocimiento. ' agregado.')->important();
+        Flash::success('Nivel Conocimiento ' . $nivel_conocimiento->nombre_nivel_conocimiento. ' agregado.')->important();
         return redirect()->route('in.nivel_conocimiento.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
@@ -119,7 +119,7 @@ class NivelConocimientoController extends Controller
             return redirect()->route('in.nivel_conocimiento.index');
           }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
-          }    
+          }
       }
 
     /**
@@ -132,11 +132,8 @@ class NivelConocimientoController extends Controller
     {
         if(Auth::user()->can('eliminar_nivel_conocimiento')){
             $nivel_conocimiento = Nivel_Conocimiento::find($id);
-            
             $conocimientoIdioma = Conocimiento_Idioma::where('nivel_conocimiento_id','=',$id)->get();
-            
             $requisitoIdioma= Requisito_Idioma::where('nivel_conocimiento_id','=',$id)->get();
-
             $requisitoAdicional = Requisito_Adicional::where('nivel_conocimiento_id', '='. $id)->get();
 
             if( (count($conocimientoIdioma) == 0 ) && (count($requisitoIdioma) == 0 ) && (count($requisitoAdicional) == 0) ) {//Se verifica que no esta uso.

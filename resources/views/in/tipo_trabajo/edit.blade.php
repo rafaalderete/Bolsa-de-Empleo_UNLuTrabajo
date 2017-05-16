@@ -1,13 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Trabajo | Editar Tipo de Trabajo')
+@section('headTitle', 'UNLu Trabajo | Tipos de Trabajo | Editar Tipo de Trabajo')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo de Trabajo</a></li>
+        <li><a>Tipos de Trabajo</a></li>
         <li><a>Editar Tipo de Trabajo</a></li>
       </ol>
     </div>
@@ -34,7 +34,7 @@
       		<div class="form-group">
       			{!! Form::label('nombre_tipo_trabajo','Nombre de Tipo de Trabajo', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_rubro_empresarial', $tipo_trabajo->nombre_tipo_trabajo,['class' => 'form-control', 'placeholder' => 'Nombre Tipo de Trabajo', 'required'])!!}
+              {!! Form::text('nombre_tipo_trabajo', $tipo_trabajo->nombre_tipo_trabajo,['class' => 'form-control', 'placeholder' => 'Nombre Tipo de Trabajo', 'required'])!!}
             </div>
       		</div>
 
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (tipo_trabajo){
+      $("input[name='nombre_tipo_trabajo']").val(tipo_trabajo['nombre_tipo_trabajo']);
+      $('#selectEstado').select2().select2("val", tipo_trabajo['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var tipo_trabajo = [];
+      tipo_trabajo['nombre_tipo_trabajo'] = "{{$tipo_trabajo->nombre_tipo_trabajo}}";
+      tipo_trabajo['estado'] = "{{$tipo_trabajo->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(tipo_trabajo);
       });
 
     });

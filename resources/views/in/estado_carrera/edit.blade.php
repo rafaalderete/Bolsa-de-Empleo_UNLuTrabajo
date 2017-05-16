@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Estado Carrera | Editar Estado Carrera')
+@section('headTitle', 'UNLu Trabajo | Estados de Carrera | Editar Estado de Carrera')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Estado Carreral</a></li>
-        <li><a>Editar Estado Carrera</a></li>
+        <li><a>Estados de Carrera</a></li>
+        <li><a>Editar Estado de Carrera</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Estado Carrera - {{$estado_carrera->nombre_estado_carrera}} </h4>
+        <h4 class="page-header">Editar Estado de Carrera - {{$estado_carrera->nombre_estado_carrera}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (estado_carrera){
+      $("input[name='nombre_estado_carrera']").val(estado_carrera['nombre_estado_carrera']);
+      $('#selectEstado').select2().select2("val", estado_carrera['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var estado_carrera = [];
+      estado_carrera['nombre_estado_carrera'] = "{{$estado_carrera->nombre_estado_carrera}}";
+      estado_carrera['estado'] = "{{$estado_carrera->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(estado_carrera);
       });
 
     });

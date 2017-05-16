@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Realizar Propuesta Laboral')
+@section('headTitle', 'UNLu Trabajo | Realizar Propuesta Laboral')
 
 @section('bodyIndice')
 
@@ -118,7 +118,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="body_requisitos_residencia">
                 <tr class="hidden">
                   <td data-name="lugar">
                     <input type="text" name='lugar[]' placeholder='Lugar de Residencia' class="form-control"/>
@@ -162,7 +162,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="body_requisitos_idioma">
                 <tr class="hidden">
                   <td data-name="idioma">
                     <select name="idioma[]" placeholder='Idioma' class="form-control input_idioma input_idioma_idioma">
@@ -230,7 +230,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="body_requisitos_carrera">
                 <tr class="hidden">
                   <td data-name="carrera">
                     <select name="carrera[]" placeholder='Carrera' class="form-control input_carrera">
@@ -289,7 +289,7 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody class="body_requisitos_adicional">
                 <tr class="hidden">
                   <td data-name="nombre_requisito">
                     <input type="text" name='nombre_requisito[]' placeholder='Nombre Requisito' class="form-control"/>
@@ -327,7 +327,7 @@
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="reset" class="btn btn-default btn-label-left">
+            <button type="button" class="btn btn-default btn-label-left" id="reset">
               <span><i class="fa fa-times-circle txt-danger"></i></span>
               Borrar
             </button>
@@ -349,6 +349,21 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function borrar (){
+      $("input[type='text'],input[type='number']").val("");
+      $('#descripcion_textarea').summernote('code', '');
+      $('#selectTipoTrabajo').select2().select2("val", null);
+      $('#selectTipoTrabajo').attr('placeholder', 'Tipo de Trabajo');
+      $('#selectTipoTrabajo').select2();
+      $('#selectTipoJornada').select2().select2("val", null);
+      $('#selectTipoJornada').attr('placeholder', 'Tipo de Jornada');
+      $('#selectTipoJornada').select2();
+      $('.body_requisitos_residencia').children().not(':first').remove();
+      $('.body_requisitos_idioma').children().not(':first').remove();
+      $('.body_requisitos_carrera').children().not(':first').remove();
+      $('.body_requisitos_adicional').children().not(':first').remove();
+    }
 
     function eventoIdioma(input) {
       input.on('change', function() {
@@ -490,6 +505,16 @@
 
       $('#selectTipoJornada').select2({
         placeholder: "Tipo de Jornada"
+      });
+
+      $("#reset").on("click", function() {
+        borrar();
+
+        //Reinicia los valores de los checkbox.
+        pos_residencia = 1;
+        pos_idioma = 0;
+        pos_carrera = 0;
+        pos_adicional = 1;
       });
 
     });

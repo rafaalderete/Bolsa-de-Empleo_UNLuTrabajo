@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Documento | Editar Tipo Documento')
+@section('headTitle', 'UNLu Trabajo | Tipos de Documento | Editar Tipo de Documento')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Documentoles</a></li>
-        <li><a>Editar Tipo Documento</a></li>
+        <li><a>Tipos Documentos</a></li>
+        <li><a>Editar Tipo de Documento</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Tipo Documento - {{$tipo_documento->nombre_tipo_documento}} </h4>
+        <h4 class="page-header">Editar Tipo de Documento - {{$tipo_documento->nombre_tipo_documento}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (tipo_documento){
+      $("input[name='nombre_tipo_documento']").val(tipo_documento['nombre_tipo_documento']);
+      $('#selectEstado').select2().select2("val", tipo_documento['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var tipo_documento = [];
+      tipo_documento['nombre_tipo_documento'] = "{{$tipo_documento->nombre_tipo_documento}}";
+      tipo_documento['estado'] = "{{$tipo_documento->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(tipo_documento);
       });
 
     });

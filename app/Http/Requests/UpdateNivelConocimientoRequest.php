@@ -35,7 +35,7 @@ class UpdateNivelConocimientoRequest extends Request
     public function rules()
     {
       return [
-          'nombre_nivel_conocimiento' => 'min:4|required|unique:niveles_conocimiento,nombre_nivel_conocimiento,'.$this->route->getParameter('idioma'),
+          'nombre_nivel_conocimiento' => 'min:4|required|unique:niveles_conocimiento,nombre_nivel_conocimiento,'.$this->route->getParameter('nivel_conocimiento'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }

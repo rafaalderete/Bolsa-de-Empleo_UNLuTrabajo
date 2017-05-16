@@ -185,7 +185,7 @@ class EstudianteController extends Controller
         else {
           //Verifica que la propuesta no está finalizada.
           $today = Carbon::today()->toDateString();
-          if ($today >= $propuesta->fecha_fin_propuesta) {
+          if ($today > $propuesta->fecha_fin_propuesta) {
             Flash::error('Oferta finalizada.')->important();
             return redirect()->route('in.buscar-ofertas');
           }
@@ -225,7 +225,7 @@ class EstudianteController extends Controller
         else {
           //Verifica que la propuesta no está finalizada.
           $today = Carbon::today()->toDateString();
-          if ($today >= $propuesta->fecha_fin_propuesta) {
+          if ($today > $propuesta->fecha_fin_propuesta) {
             Flash::error('Oferta finalizada.')->important();
             return redirect()->route('in.buscar-ofertas');
           }

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Usuarios | Tabla de Usuarios')
+@section('headTitle', 'UNLu Trabajo | Usuarios | Tabla de Usuarios')
 
 @section('bodyIndice')
 

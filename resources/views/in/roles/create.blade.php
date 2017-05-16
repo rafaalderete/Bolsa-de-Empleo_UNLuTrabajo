@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Roles | Registrar Rol')
+@section('headTitle', 'UNLu Trabajo | Roles | Registrar Rol')
 
 @section('bodyIndice')
 
@@ -60,7 +60,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -83,10 +83,21 @@
 
   <script type="text/javascript">
 
+    function borrar (){
+      $("input[type='text']").val("");
+      $('#selectPermisos').select2().select2("val", null);
+      $('#selectPermisos').attr('placeholder', 'Asignar Permisos');
+      $('#selectPermisos').select2();
+    }
+
     $(document).ready(function() {
       // Select
       $('#selectPermisos').select2({
         placeholder: "Asignar Permisos"
+      });
+
+      $("#reset").on("click", function() {
+        borrar();
       });
     });
 

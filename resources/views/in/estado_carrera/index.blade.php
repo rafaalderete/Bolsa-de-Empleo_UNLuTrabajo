@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Estado Carrera | Tabla de Estado Carrera')
+@section('headTitle', 'UNLu Trabajo | Estados de Carrera | Tabla de Estados de Carrera')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Estado Carrera</a></li>
-        <li><a>Tabla de Estado Carrera</a></li>
+        <li><a>Estados de Carrera</a></li>
+        <li><a>Tabla de Estados de Carrera</a></li>
       </ol>
     </div>
   </div>
@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_estado_carrera'))
           <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Estado Carrera
+            Registar Estado de Carrera
           </a>
         @endif
         </h4>

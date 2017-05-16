@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Conocimiento Idioma | Editar Tipo Conocimiento Idioma')
+@section('headTitle', 'UNLu Trabajo | Tipos de Conocimiento de Idioma | Editar Tipo de Conocimiento de Idioma')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Conocimiento Idioma</a></li>
-        <li><a>Editar Tipo Conocimiento Idioma</a></li>
+        <li><a>Tipos de Conocimiento de Idioma</a></li>
+        <li><a>Editar Tipo de Conocimiento de Idioma</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Tipo Conocimiento Idioma - {{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}} </h4>
+        <h4 class="page-header">Editar Tipo de Conocimiento de Idioma - {{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (tipo_conocimiento_idioma){
+      $("input[name='nombre_tipo_conocimiento_idioma']").val(tipo_conocimiento_idioma['nombre_tipo_conocimiento_idioma']);
+      $('#selectEstado').select2().select2("val", tipo_conocimiento_idioma['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var tipo_conocimiento_idioma = [];
+      tipo_conocimiento_idioma['nombre_tipo_conocimiento_idioma'] = "{{$tipo_conocimiento_idioma->nombre_tipo_conocimiento_idioma}}";
+      tipo_conocimiento_idioma['estado'] = "{{$tipo_conocimiento_idioma->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(tipo_conocimiento_idioma);
       });
 
     });

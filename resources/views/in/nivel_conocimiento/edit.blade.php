@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Conocimiento| Editar Nivel Conocimiento')
+@section('headTitle', 'UNLu Trabajo | Niveles de Conocimiento | Editar Nivel de Conocimiento')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nivel Conocimiento</a></li>
-        <li><a>Editar Nivel Conocimiento</a></li>
+        <li><a>Niveles de Conocimiento</a></li>
+        <li><a>Editar Nivel de Conocimiento</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Editar Nivel Conocimiento - {{$nivel_conocimiento->nombre_nivel_conocimiento}} </h4>
+        <h4 class="page-header">Editar Nivel de Conocimiento - {{$nivel_conocimiento->nombre_nivel_conocimiento}} </h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (nivel_conocimiento){
+      $("input[name='nombre_nivel_conocimiento']").val(nivel_conocimiento['nombre_nivel_conocimiento']);
+      $('#selectEstado').select2().select2("val", nivel_conocimiento['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var nivel_conocimiento = [];
+      nivel_conocimiento['nombre_nivel_conocimiento'] = "{{$nivel_conocimiento->nombre_nivel_conocimiento}}";
+      nivel_conocimiento['estado'] = "{{$nivel_conocimiento->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(nivel_conocimiento);
       });
 
     });

@@ -1,9 +1,9 @@
 @extends('template.in_main')
 
 @if ($postulacion)
-  @section('headTitle', 'Visualizar Postulación')
+  @section('headTitle', 'UNLu Trabajo | Visualizar Postulación')
 @else
-  @section('headTitle', 'Visualizar Oferta Laboral')
+  @section('headTitle', 'UNLu Trabajo | Visualizar Oferta Laboral')
 @endif
 
 

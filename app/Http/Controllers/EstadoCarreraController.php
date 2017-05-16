@@ -11,8 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreEstadoCarreraRequest;
 use App\Http\Requests\UpdateEstadoCarreraRequest;
 use App\Estado_Carrera as Estado_Carrera;
-
-use App\Conocimiento_Informatico as Conocimiento_Informatico;
+use App\Requisito_Carrera as Requisito_Carrera;
+use App\Estudio_Academico as Estudio_Academico;
 
 class EstadoCarreraController extends Controller
 {
@@ -60,10 +60,10 @@ class EstadoCarreraController extends Controller
             $estado_carrera->save();
 
             Flash::success('Estado Carrera' . $estado_carrera->nombre_estado_carrera . ' agregado.')->important();
-            return redirect()->route('in.estados_carrera.index');
+            return redirect()->route('in.estado_carrera.index');
       }else{
          return redirect()->route('in.sinpermisos.sinpermisos');
-      }    
+      }
     }
 
     /**
@@ -112,7 +112,7 @@ class EstadoCarreraController extends Controller
             return redirect()->route('in.estado_carrera.index');
           }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
-          }    
+          }
     }
 
     /**
@@ -125,9 +125,10 @@ class EstadoCarreraController extends Controller
     {
          if(Auth::user()->can('eliminar_estado_carrera')){
             $estado_carrera = Estado_Carrera::find($id);
-            $cinformatico = Conocimiento_Informatico::where('id', '=',$id)->get();
-                       
-            if( (count($cinformatico) == 0) ) {//Se verifica que no esta uso.
+            $estudiosAcademicos = Estudio_Academico::where('estado_carrera_id', '=',$id)->get();
+            $requisitosCarrera = Requisito_Carrera::where('estado_carrera_id', '=',$id)->get();
+
+            if( (count($estudiosAcademicos) == 0) && (count($requisitosCarrera) == 0) ) {//Se verifica que no esta uso.
 
               $estado_carrera->delete();
 

@@ -27,7 +27,7 @@ class StoreIdiomaRequest extends Request
     public function rules()
     {
       return [
-          'nombre_idioma' => 'min:4|required|unique:idioma'
+          'nombre_idioma' => 'min:4|required|unique:idiomas'
       ];
     }
 

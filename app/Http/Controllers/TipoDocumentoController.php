@@ -127,13 +127,13 @@ class TipoDocumentoController extends Controller
     {
         if(Auth::user()->can('eliminar_tipo_documento')){
             $tipo_documento = Tipo_Documento::find($id);
-            $fisica = Fisica::where('id','=',$id)->get();
-          
+            $fisica = Fisica::where('tipo_documento_id','=',$id)->get();
+
         if( (count($fisica) == 0 ) ) {//Se verifica que no esta uso.
 
           $tipo_documento->delete();
 
-          Flash::error('Tipo Fisica ' . $tipo_documento->nombre_tipo_documento . ' eliminado.')->important();
+          Flash::error('Tipo de Documento ' . $tipo_documento->nombre_tipo_documento . ' eliminado.')->important();
           return redirect()->route('in.tipo_documento.index');
         }
         else {

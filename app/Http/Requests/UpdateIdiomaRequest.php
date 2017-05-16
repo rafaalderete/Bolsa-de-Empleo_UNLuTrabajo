@@ -35,7 +35,7 @@ class UpdateIdiomaRequest extends Request
     public function rules()
     {
       return [
-          'nombre_idioma' => 'min:4|required|unique:idioma,nombre_idioma,'.$this->route->getParameter('idioma'),
+          'nombre_idioma' => 'min:4|required|unique:idiomas,nombre_idioma,'.$this->route->getParameter('idiomas'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }

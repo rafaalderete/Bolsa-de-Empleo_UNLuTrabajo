@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Visualizar Propuesta Laboral')
+@section('headTitle', 'UNLu Trabajo | Visualizar Propuesta Laboral')
 
 @section('bodyIndice')
 

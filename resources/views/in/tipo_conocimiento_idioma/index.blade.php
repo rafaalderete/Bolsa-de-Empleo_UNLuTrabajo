@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Conocimiento Idioma | Tabla de Tipo Conococimiento Idioma')
+@section('headTitle', 'UNLu Trabajo | Tipos de Conocimiento de Idioma | Tabla de Tipos de Conococimiento de Idioma')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Conocimiento Idioma </a></li>
-        <li><a>Tabla de Tipo Conocimiento Idioma </a></li>
+        <li><a>Tipos de Conocimiento de Idioma </a></li>
+        <li><a>Tabla de Tipos de Conocimiento de Idioma </a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipo Conocimiento Idioma
+        <h4 class="page-header">Tabla de Tipos de Conocimiento de Idioma
         @if(Entrust::can('crear_tipo_conocimiento_idioma'))
           <a href="{{ route('in.tipo_conocimiento_idioma.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo Conocimiento Idioma
+            Registar Tipo de Conocimiento de Idioma
           </a>
         @endif
         </h4>

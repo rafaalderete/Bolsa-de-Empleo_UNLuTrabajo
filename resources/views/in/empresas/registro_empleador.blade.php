@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Registrar Empleador')
+@section('headTitle', 'UNLu Trabajo | Registrar Empleador')
 
 @section('bodyIndice')
 
@@ -112,7 +112,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -131,6 +131,13 @@
 
   <script type="text/javascript">
 
+    function borrar (){
+      $("input[type='text']").val("");
+      $('#selectSimple').select2().select2("val", null);
+      $('#selectSimple').attr('placeholder', 'Rubro');
+      $('#selectSimple').select2();
+    }
+
     $(document).ready(function() {
       // Fecha Nac.
       $('#input_date').datepicker({setDate: new Date()});
@@ -138,6 +145,10 @@
       // Select
       $('#selectSimple').select2({
         placeholder: "Rubro"
+      });
+
+      $("#reset").on("click", function() {
+        borrar();
       });
     });
 

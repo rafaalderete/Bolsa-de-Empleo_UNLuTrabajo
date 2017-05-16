@@ -219,8 +219,8 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA IDIOMAS -----------------------   #
 	##################################################################
-	Route::resource('idiomas','IdiomasController'); 
-	Route::delete('idioma/{id}/destroy', [
+	Route::resource('idiomas','IdiomasController');
+	Route::delete('idiomas/{id}/destroy', [
 		'uses'	=>	'IdiomasController@destroy',
 			'as'	=>	'in.idiomas.destroy',
 	]);
@@ -228,7 +228,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO SOFTWARE -----------------   #
 	##################################################################
-	Route::resource('tipo_software','TiposSoftwareController'); 
+	Route::resource('tipo_software','TiposSoftwareController');
 	Route::delete('tipo_software/{id}/destroy', [
 		'uses'	=>	'TiposSoftwareController@destroy',
 			'as'	=>	'in.tipo_software.destroy',
@@ -237,7 +237,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO ESTADO CARRERA---------------#
 	##################################################################
-	Route::resource('estado_carrera','EstadoCarreraController'); 
+	Route::resource('estado_carrera','EstadoCarreraController');
 	Route::delete('estado_carrera/{id}/destroy', [
 		'uses'	=>	'EstadoCarreraController@destroy',
 			'as'	=>	'in.estado_carrera.destroy',
@@ -245,7 +245,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO JORNADA  -----------------   #
 	##################################################################
-	Route::resource('tipo_jornada','TipoJornadaController'); 
+	Route::resource('tipo_jornada','TipoJornadaController');
 	Route::delete('tipo_jornada/{id}/destroy', [
 		'uses'	=>	'TipoJornadaController@destroy',
 			'as'	=>	'in.tipo_jornada.destroy',
@@ -254,7 +254,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA TIPO TRABAJO  -----------------   #
 	##################################################################
-	Route::resource('tipo_trabajo','TipoTrabajoController'); 
+	Route::resource('tipo_trabajo','TipoTrabajoController');
 	Route::delete('tipo_trabajo/{id}/destroy', [
 		'uses'	=>	'TipoTrabajoController@destroy',
 			'as'	=>	'in.tipo_trabajo.destroy',
@@ -264,7 +264,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------- RUTA PARA NIVEL CONOCIMIENTO -----------------   #
 	##################################################################
-	Route::resource('nivel_conocimiento','NivelConocimientoController'); 
+	Route::resource('nivel_conocimiento','NivelConocimientoController');
 	Route::delete('nivel_conocimiento/{id}/destroy', [
 		'uses'	=>	'NivelConocimientoController@destroy',
 			'as'	=>	'in.nivel_conocimiento.destroy',
@@ -273,7 +273,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA NIVEL EDUCATIVO ---------------   #
 	##################################################################
-	Route::resource('nivel_educativo','NivelEducativoController'); 
+	Route::resource('nivel_educativo','NivelEducativoController');
 	Route::delete('nivel_educativo/{id}/destroy', [
 		'uses'	=>	'NivelEducativoController@destroy',
 			'as'	=>	'in.nivel_educativo.destroy',
@@ -282,7 +282,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//-------RUTA PARA TIPO CONOCIMIENTO IDIOMA ------------------   #
 	##################################################################
-	Route::resource('tipo_conocimiento_idioma','TipoConocimientoIdiomaController'); 
+	Route::resource('tipo_conocimiento_idioma','TipoConocimientoIdiomaController');
 	Route::delete('tipo_conocimiento_idioma/{id}/destroy', [
 		'uses'	=>	'TipoConocimientoIdiomaController@destroy',
 			'as'	=>	'in.tipo_conocimiento_idioma.destroy',
@@ -291,7 +291,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//-------RUTA PARA TIPO DOCUMENTO -------------------------------#
 	##################################################################
-	Route::resource('tipo_documento','TipoDocumentoController'); 
+	Route::resource('tipo_documento','TipoDocumentoController');
 	Route::delete('tipo_documento/{id}/destroy', [
 		'uses'	=>	'TipoDocumentoController@destroy',
 			'as'	=>	'in.tipo_documento.destroy',

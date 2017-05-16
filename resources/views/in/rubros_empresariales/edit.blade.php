@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Rubros Empresariales | Editar Rubro Empresarial')
+@section('headTitle', 'UNLu Trabajo | Rubros Empresariales | Editar Rubro Empresarial')
 
 @section('bodyIndice')
 
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (rubro){
+      $("input[name='nombre_rubro_empresarial']").val(rubro['nombre_rubro_empresarial']);
+      $('#selectEstado').select2().select2("val", rubro['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var rubro= [];
+      rubro['nombre_rubro_empresarial'] = "{{$rubro->nombre_rubro_empresarial}}";
+      rubro['estado'] = "{{$rubro->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(rubro);
       });
 
     });

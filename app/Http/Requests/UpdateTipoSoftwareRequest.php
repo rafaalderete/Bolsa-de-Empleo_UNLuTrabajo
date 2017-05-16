@@ -35,7 +35,7 @@ class UpdateTipoSoftwareRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_software' => 'min:4|required|unique:tipo_software,nombre_tipo_software,'.$this->route->getParameter('tipo_software'),
+          'nombre_tipo_software' => 'min:4|required|unique:tipos_software,nombre_tipo_software,'.$this->route->getParameter('tipo_software'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }

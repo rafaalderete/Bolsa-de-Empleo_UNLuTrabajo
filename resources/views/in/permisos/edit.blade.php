@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Permisos | Registrar Permiso')
+@section('headTitle', 'UNLu Trabajo | Permisos | Registrar Permiso')
 
 @section('bodyIndice')
 
@@ -61,7 +61,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -83,10 +83,29 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (permiso){
+      $("input[name='name']").val(permiso['name']);
+      $("input[name='descripcion_permiso']").val(permiso['descripcion_permiso']);
+      $('#selectPermisos').attr('placeholder', 'Asignar Permisos');
+      $('#selectEstado').select2().select2("val", permiso['estado_permiso']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      //Valores para restableces.
+      var permiso = [];
+      permiso['name'] = "{{$permiso->name}}";
+      permiso['descripcion_permiso'] = "{{$permiso->descripcion_permiso}}";
+      permiso['estado_permiso'] = "{{$permiso->estado_permiso}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(permiso);
       });
 
     });

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Datos Personales')
+@section('headTitle', 'UNLu Trabajo | Datos Personales')
 
 @section('bodyIndice')
 
@@ -129,7 +129,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left" id="reset">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -149,7 +149,25 @@
 
   <script type="text/javascript">
 
+    function restablecer (pfisica){
+      $("input[name='domicilio_residencia']").val(pfisica['domicilio_residencia']);
+      $("input[name='localidad_residencia']").val(pfisica['localidad_residencia']);
+      $("input[name='provincia_residencia']").val(pfisica['provincia_residencia']);
+      $("input[name='pais_residencia']").val(pfisica['pais_residencia']);
+      $("input[name='telefono_fijo']").val(pfisica['telefono_fijo']);
+      $("input[name='telefono_celular']").val(pfisica['telefono_celular']);
+    }
+
     $(document).ready(function() {
+
+      //Valores para restableces.
+      var pfisica = [];
+      pfisica['domicilio_residencia'] = "{{$pfisica->persona->direccion->domicilio}}";
+      pfisica['localidad_residencia'] = "{{$pfisica->persona->direccion->localidad}}";
+      pfisica['provincia_residencia'] = "{{$pfisica->persona->direccion->provincia}}";
+      pfisica['pais_residencia'] = "{{$pfisica->persona->direccion->pais}}";
+      pfisica['telefono_fijo'] = "{{$telefono_fijo}}";
+      pfisica['telefono_celular'] = "{{$telefono_celular}}";
 
       function readURL(input) {
         if (input.files && input.files[0]) {
@@ -186,6 +204,7 @@
         $('#imgInp').val();
         $('#imagen_usuario').attr('src', $('#img_usuario_anterior').val());
         $('#imagen_cambiada').val(0);
+        restablecer(pfisica);
       });
 
     });

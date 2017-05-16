@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Personas | Editar Persona')
+@section('headTitle', 'UNLu Trabajo | Personas | Editar Persona')
 
 @section('bodyIndice')
 
@@ -34,11 +34,11 @@
           <div class="form-group">
             {!! Form::label('nombre_persona','Nombre', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('nombre_persona',$pfisica->nombre_persona,['class' => 'form-control', 'placeholder' => 'Nombre', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
+              {!! Form::text('nombre_persona',$pfisica->nombre_persona,['class' => 'form-control', 'placeholder' => 'Nombre', 'required'])!!}
             </div>
             {!! Form::label('apellido_persona','Apellido', ['class' => 'col-sm-1 control-label']) !!}
             <div class="col-sm-4">
-              {!! Form::text('apellido_persona',$pfisica->apellido_persona,['class' => 'form-control', 'placeholder' => 'Apellido', 'data-toggle' => "tooltip", 'data-placement' => "bottom", 'required'])!!}
+              {!! Form::text('apellido_persona',$pfisica->apellido_persona,['class' => 'form-control', 'placeholder' => 'Apellido','required'])!!}
             </div>
           </div>
 
@@ -115,7 +115,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -139,7 +139,38 @@
 
   <script type="text/javascript">
 
+    function restablecer (pfisica){
+      $("input[name='nombre_persona']").val(pfisica['nombre_persona']);
+      $("input[name='apellido_persona']").val(pfisica['apellido_persona']);
+      $("input[name='fecha_nacimiento']").val(pfisica['fecha_nacimiento']);
+      $('#selectSimple').select2().select2("val", pfisica['tipo_documento']);
+      $('#selectSimple').select2();
+      $("input[name='nro_documento']").val(pfisica['nro_documento']);
+      $("input[name='cuil']").val(pfisica['cuil']);
+      $("input[name='domicilio_residencia']").val(pfisica['domicilio_residencia']);
+      $("input[name='localidad_residencia']").val(pfisica['localidad_residencia']);
+      $("input[name='provincia_residencia']").val(pfisica['provincia_residencia']);
+      $("input[name='pais_residencia']").val(pfisica['pais_residencia']);
+      $("input[name='telefono_fijo']").val(pfisica['telefono_fijo']);
+      $("input[name='telefono_celular']").val(pfisica['telefono_celular']);
+    }
+
     $(document).ready(function() {
+
+      //Valores para restablecer.
+      var pfisica = [];
+      pfisica['nombre_persona'] = "{{$pfisica->nombre_persona}}";
+      pfisica['apellido_persona'] = "{{$pfisica->apellido_persona}}";
+      pfisica['fecha_nacimiento'] = "{{$pfisica->fecha_nacimiento}}";
+      pfisica['tipo_documento'] = {{$pfisica->tipo_documento_id}};
+      pfisica['nro_documento'] = "{{$pfisica->nro_documento}}";
+      pfisica['cuil'] = "{{$pfisica->cuil}}";
+      pfisica['domicilio_residencia'] = "{{$pfisica->persona->direccion->domicilio}}";
+      pfisica['localidad_residencia'] = "{{$pfisica->persona->direccion->localidad}}";
+      pfisica['provincia_residencia'] = "{{$pfisica->persona->direccion->provincia}}";
+      pfisica['pais_residencia'] = "{{$pfisica->persona->direccion->pais}}";
+      pfisica['telefono_fijo'] = "{{$telefono_fijo}}";
+      pfisica['telefono_celular'] = "{{$telefono_celular}}";
 
       // Fecha Nac.
       $('#input_date').datepicker({setDate: new Date()});
@@ -150,6 +181,10 @@
       });
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(pfisica);
       });
     });
 

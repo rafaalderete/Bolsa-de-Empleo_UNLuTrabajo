@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Conocimiento Idioma | Registrar Tipo Conocimiento Idioma')
+@section('headTitle', 'UNLu Trabajo | Tipos de Conocimiento de Idioma | Registrar Tipo de Conocimiento de Idioma')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Conocimiento Idioma</a></li>
-        <li><a>Registrar Tipo Conocimiento Idioma</a></li>
+        <li><a>Tipo de Conocimiento de Idioma</a></li>
+        <li><a>Registrar Tipo de Conocimiento de Idioma</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Registro de Tipo Conocimiento Idioma</h4>
+        <h4 class="page-header">Registro de Tipo de Conocimiento de Idioma</h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -46,7 +46,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -62,5 +62,25 @@
       </div>
     </div>
   </div>
+
+@endsection
+
+@section('bodyJS')
+
+  <script type="text/javascript">
+
+    function borrar (){
+      $("input[type='text']").val("");
+    }
+
+    $(document).ready(function() {
+
+      $("#reset").on("click", function() {
+        borrar();
+      });
+
+    });
+
+  </script>
 
 @endsection

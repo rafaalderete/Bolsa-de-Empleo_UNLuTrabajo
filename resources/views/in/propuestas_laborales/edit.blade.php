@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Mis Propuestas | Modificar Propuesta Laboral')
+@section('headTitle', 'UNLu Trabajo | Mis Propuestas | Modificar Propuesta Laboral')
 
 @section('bodyIndice')
 
@@ -406,7 +406,7 @@
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="reset" class="btn btn-default btn-label-left" id="reset">
+            <button type="button" class="btn btn-default btn-label-left" id="reset">
               <span><i class="fa fa-times-circle txt-danger"></i></span>
               Restablecer
             </button>
@@ -533,6 +533,17 @@
         ]
       });
 
+      //Valores para restablecer.
+      var propuesta = [];
+      propuesta['titulo'] = "{{$propuesta->titulo}}";
+      propuesta['descripcion'] = "{!!$propuesta->descripcion!!}";
+      propuesta['lugar_de_trabajo'] = "{{$propuesta->lugar_de_trabajo}}";
+      propuesta['tipo_trabajo'] = {{$propuesta->tipo_trabajo_id}};
+      propuesta['tipo_jornada'] = {{$propuesta->tipo_jornada_id}};
+      propuesta['vacantes'] = {{$propuesta->vacantes}};
+      propuesta['fecha_fin_propuesta'] = "{{$propuesta->fecha_fin_propuesta}}";
+      propuesta['requisito_años_experiencia_laboral'] = {{$propuesta->requisito_años_experiencia_laboral}};
+
       //Comienzo de la posición de los checkbox.
       var pos_residencia = {{count($propuesta->requisitosResidencia)}}+1;
       var pos_idioma = {{count($propuesta->requisitosIdioma)}};
@@ -583,6 +594,17 @@
       });
 
       $('#reset').on("click", function() {
+        $("input[name='titulo']").val(propuesta['titulo']);
+        $('#descripcion_textarea').summernote('code', propuesta['descripcion']);
+        $("input[name='lugar_de_trabajo']").val(propuesta['lugar_de_trabajo']);
+        $('#selectTipoTrabajo').select2().select2("val", propuesta['tipo_trabajo']);
+        $('#selectTipoTrabajo').select2();
+        $('#selectTipoJornada').select2().select2("val", propuesta['tipo_jornada']);
+        $('#selectTipoJornada').select2();
+        $("input[name='fecha_fin_propuesta']").val(propuesta['fecha_fin_propuesta']);
+        $("input[name='vacantes']").val(propuesta['vacantes']);
+        $("input[name='requisito_años_experiencia_laboral']").val(propuesta['requisito_años_experiencia_laboral']);
+
         $('.body_requisitos_residencia').children().not(':first').remove();
         $('.body_requisitos_residencia').append(requisitosResidencia);
 
@@ -599,6 +621,7 @@
             $(this).closest("tr").remove();
         });
 
+        //Reinicia los valores de los checkbox.
         pos_residencia = {{count($propuesta->requisitosResidencia)}}+1;
         pos_idioma = {{count($propuesta->requisitosIdioma)}};
         pos_carrera = {{count($propuesta->requisitosCarrera)}};

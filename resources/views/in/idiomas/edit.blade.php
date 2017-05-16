@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Idiomas| Editar Idioma')
+@section('headTitle', 'UNLu Trabajo | Idiomas | Editar Idioma')
 
 @section('bodyIndice')
 
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (idioma){
+      $("input[name='nombre_idioma']").val(idioma['nombre_idioma']);
+      $('#selectEstado').select2().select2("val", idioma['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var idioma = [];
+      idioma['nombre_idioma'] = "{{$idioma->nombre_idioma}}";
+      idioma['estado'] = "{{$idioma->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(idioma);
       });
 
     });

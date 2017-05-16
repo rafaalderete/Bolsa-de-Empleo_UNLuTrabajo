@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Personas | Editar Empresa')
+@section('headTitle', 'UNLu Trabajo | Empresas | Editar Empresa')
 
 @section('bodyIndice')
 
@@ -108,7 +108,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -132,7 +132,34 @@
 
   <script type="text/javascript">
 
+    function restablecer (pjuridica){
+      $("input[name='nombre_persona']").val(pjuridica['nombre_comercial']);
+      $("input[name='fecha_fundacion']").val(pjuridica['fecha_fundacion']);
+      $('#selectSimple').select2().select2("val", pjuridica['rubro_empresarial']);
+      $('#selectSimple').select2();
+      $("input[name='cuit']").val(pjuridica['cuit']);
+      $("input[name='domicilio_residencia']").val(pjuridica['domicilio_residencia']);
+      $("input[name='localidad_residencia']").val(pjuridica['localidad_residencia']);
+      $("input[name='provincia_residencia']").val(pjuridica['provincia_residencia']);
+      $("input[name='pais_residencia']").val(pjuridica['pais_residencia']);
+      $("input[name='telefono_fijo']").val(pjuridica['telefono_fijo']);
+      $("input[name='telefono_celular']").val(pjuridica['telefono_celular']);
+    }
+
     $(document).ready(function() {
+
+      //Valores para restableces.
+      var pjuridica = [];
+      pjuridica['nombre_comercial'] = "{{$pjuridica->nombre_comercial}}";
+      pjuridica['fecha_fundacion'] = "{{$pjuridica->fecha_fundacion}}";
+      pjuridica['rubro_empresarial'] = {{$pjuridica->rubro_empresarial_id}};
+      pjuridica['cuit'] = "{{$pjuridica->cuit}}";
+      pjuridica['domicilio_residencia'] = "{{$pjuridica->persona->direccion->domicilio}}";
+      pjuridica['localidad_residencia'] = "{{$pjuridica->persona->direccion->localidad}}";
+      pjuridica['provincia_residencia'] = "{{$pjuridica->persona->direccion->provincia}}";
+      pjuridica['pais_residencia'] = "{{$pjuridica->persona->direccion->pais}}";
+      pjuridica['telefono_fijo'] = "{{$telefono_fijo}}";
+      pjuridica['telefono_celular'] = "{{$telefono_celular}}";
 
       // Fecha Nac.
       $('#input_date').datepicker({setDate: new Date()});
@@ -143,6 +170,10 @@
       });
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(pjuridica);
       });
     });
 

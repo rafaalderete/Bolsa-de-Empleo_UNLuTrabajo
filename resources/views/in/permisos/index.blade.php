@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Permisos | Tabla de Permisos')
+@section('headTitle', 'UNLu Trabajo | Permisos | Tabla de Permisos')
 
 @section('bodyIndice')
 

@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Trabajo | Tabla de Tipo Trabajo')
+@section('headTitle', 'UNLu Trabajo | Tipos de Trabajo | Tabla de Tipos de Trabajo')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Trabajo</a></li>
-        <li><a>Tabla de Tipo Trabajo</a></li>
+        <li><a>Tipos de Trabajo</a></li>
+        <li><a>Tabla de Tipos de Trabajo</a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipo Trabajo
+        <h4 class="page-header">Tabla de Tipos de Trabajo
         @if(Entrust::can('crear_tipo_trabajo'))
           <a href="{{ route('in.tipo_trabajo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo Trabajo
+            Registar Tipo de Trabajo
           </a>
         @endif
         </h4>

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Mis Propuestas')
+@section('headTitle', 'UNLu Trabajo | Mis Propuestas')
 
 @section('bodyIndice')
 

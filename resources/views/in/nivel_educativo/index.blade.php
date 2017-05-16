@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Educativo | Tabla de Nivel Educativo')
+@section('headTitle', 'UNLu Trabajo | Niveles Educativos | Tabla de Niveles Educativos')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nivel Educativo</a></li>
-        <li><a>Tabla de Nivel Educativo</a></li>
+        <li><a>Niveles Educativos</a></li>
+        <li><a>Tabla de Niveles Educativos</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Nivel Educativo
+        <h4 class="page-header">Tabla de Niveles Educativos
         @if(Entrust::can('crear_nivel_educativo'))
           <a href="{{ route('in.nivel_educativo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>

@@ -35,7 +35,7 @@ class UpdateTipoConocimientoIdiomaRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_conocimiento_idioma' => 'min:4|required|unique:tipos_conocimiento_idioma,nombre_tipo_conocimiento_idioma,'.$this->route->getParameter('tipos_conocimiento_idioma'),
+          'nombre_tipo_conocimiento_idioma' => 'min:4|required|unique:tipos_conocimiento_idioma,nombre_tipo_conocimiento_idioma,'.$this->route->getParameter('tipo_conocimiento_idioma'),
           'estado'=> 'required|in:activo,inactivo'
       ];
     }

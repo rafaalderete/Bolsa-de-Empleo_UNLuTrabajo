@@ -12,6 +12,7 @@ use App\Http\Requests\StoreIdiomaRequest;
 use App\Http\Requests\UpdateIdiomaRequest;
 use App\Idioma as Idiomas;
 use App\Conocimiento_Idioma as Conocimiento_Idioma;
+use App\Requisito_Idioma as Requisito_Idioma;
 
 class IdiomasController extends Controller
 {
@@ -29,7 +30,7 @@ class IdiomasController extends Controller
             return view('in.idiomas.index')->with('idiomas', $idioma);
         } else {
             return redirect()->route('in.sinpermisos.sinpermisos');
-       
+
         }
     }
 
@@ -113,7 +114,7 @@ class IdiomasController extends Controller
             return redirect()->route('in.idiomas.index');
           }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
-          }    
+          }
       }
 
     /**
@@ -127,8 +128,9 @@ class IdiomasController extends Controller
         if(Auth::user()->can('eliminar_idioma')){
             $idioma = Idiomas::find($id);
             $cidioma = Conocimiento_Idioma::where('idioma_id','=',$id)->get();
-            
-            if( (count($cidioma) == 0) ) {//Se verifica que no esta uso.
+            $requisitosIdioma = Requisito_Idioma::where('idioma_id','=',$id)->get();
+
+            if( (count($cidioma) == 0) && (count($requisitosIdioma) == 0) ) {//Se verifica que no esta uso.
 
               $idioma->delete();
 

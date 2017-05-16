@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Roles | Tabla de Roles')
+@section('headTitle', 'UNLu Trabajo | Roles | Tabla de Roles')
 
 @section('bodyIndice')
 

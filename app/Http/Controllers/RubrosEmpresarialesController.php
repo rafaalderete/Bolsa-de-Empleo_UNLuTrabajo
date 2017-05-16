@@ -129,6 +129,7 @@ class RubrosEmpresarialesController extends Controller
         $rubro = Rubro_Empresarial::find($id);
         $pjuridicas = Juridica::where('rubro_empresarial_id','=',$id)->get();
         $experiencias_laborales = Experiencia_Laboral::where('rubro_empresarial_id','=',$id)->get();
+        
         if( (count($pjuridicas) == 0 ) && (count($experiencias_laborales) == 0 ) ) {//Se verifica que no esta uso.
 
           $rubro->delete();

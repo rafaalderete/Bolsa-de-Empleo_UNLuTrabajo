@@ -1,13 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Software| Editar Tipo Idioma')
+@section('headTitle', 'UNLu Trabajo | Tipos de Software| Editar Tipo de Idioma')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo Software</a></li>
+        <li><a>Tipos de Software</a></li>
         <li><a>Editar Tipo de Software</a></li>
       </ol>
     </div>
@@ -53,7 +53,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -75,10 +75,25 @@
 @section('bodyJS')
 
   <script type="text/javascript">
+
+    function restablecer (tipo_software){
+      $("input[name='nombre_tipo_software']").val(tipo_software['nombre_tipo_software']);
+      $('#selectEstado').select2().select2("val", tipo_software['estado']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      var tipo_software = [];
+      tipo_software['nombre_tipo_software'] = "{{$tipo_software->nombre_tipo_software}}";
+      tipo_software['estado'] = "{{$tipo_software->estado}}";
 
       $('#selectEstado').select2({
         placeholder: "Estado"
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(tipo_software);
       });
 
     });

@@ -27,17 +27,16 @@ class StoreTipoDocumentoRequest extends Request
     public function rules()
     {
       return [
-          'nombre_tipo_documento' => 'min:4|required|unique:tipos_documento'
+          'nombre_tipo_documento' => 'min:2|required|unique:tipos_documento'
       ];
     }
 
     public function messages()
     {
       return [
-        'nombre_tipo_documento.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
+        'nombre_tipo_documento.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 2 caracteres.',
         'nombre_tipo_documento.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 
 }
-

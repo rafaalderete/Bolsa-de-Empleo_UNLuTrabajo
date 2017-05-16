@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Roles | Editar Rol')
+@section('headTitle', 'UNLu Trabajo | Roles | Editar Rol')
 
 @section('bodyIndice')
 
@@ -68,7 +68,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -91,7 +91,25 @@
 
   <script type="text/javascript">
 
+    function restablecer (rol){
+      $("input[name='name']").val(rol['name']);
+      $("input[name='descripcion_rol']").val(rol['descripcion_rol']);
+      $("#selectPermisos").select2('val',rol['permisos_seleccionados']);
+      $('#selectPermisos').select2();
+      $('#selectPermisos').attr('placeholder', 'Asignar Permisos');
+      $('#selectEstado').select2().select2("val", rol['estado_rol']);
+      $('#selectEstado').select2();
+    }
+
     $(document).ready(function() {
+
+      //Valores para restablecer.
+      var rol = [];
+      rol['name'] = "{{$rol->name}}";
+      rol['descripcion_rol'] = "{{$rol->descripcion_rol}}";
+      rol['estado_rol'] = "{{$rol->estado_rol}}";
+      rol['permisos_seleccionados'] = {{ json_encode($my_permisos) }};
+
       // Select
       $('#selectEstado').select2({
         placeholder: "Estado"
@@ -99,6 +117,10 @@
 
       $('#selectPermisos').select2({
         placeholder: "Asignar Permisos"
+      });
+
+      $('#reset').click(function() {
+        restablecer(rol);
       });
     });
 

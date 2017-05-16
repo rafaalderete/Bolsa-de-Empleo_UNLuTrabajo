@@ -127,7 +127,7 @@ class NivelEducativoController extends Controller
   {
       if(Auth::user()->can('eliminar_nivel_educativo')){
         $nivel_educativo = Nivel_Educativo::find($id);
-        $estudio_academico = Estudio_Academico::where('id','=',$id)->get();
+        $estudio_academico = Estudio_Academico::where('nivel_educativo_id','=',$id)->get();
         if( (count($estudio_academico) == 0 ) ) {//Se verifica que no esta uso.
 
           $nivel_educativo->delete();

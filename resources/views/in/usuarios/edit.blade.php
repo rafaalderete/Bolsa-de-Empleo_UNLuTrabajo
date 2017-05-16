@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Usuarios | Editar Usuario')
+@section('headTitle', 'UNLu Trabajo | Usuarios | Editar Usuario')
 
 @section('bodyIndice')
 
@@ -119,7 +119,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left" id="reset">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -143,50 +143,76 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function() {
+    function restablecer (usuario){
+      $("input[name='nombre_usuario']").val(usuario['nombre_usuario']);
+      $("input[name='email']").val(usuario['email']);
+      $('#selectPersona').select2().select2("val", usuario['persona_id']);
+      $('#selectPersona').select2();
+      $("#selectRoles").empty();
+      $('#selectRoles').append(usuario['roles']);
+      $("#selectRoles").select2('val',usuario['roles_seleccionados']);
+      $('#selectRoles').select2();
+      $('#selectRoles').attr('placeholder', 'Roles');
+      $('#selectEstado').select2().select2("val", usuario['estado_usuario']);
+      $('#selectEstado').select2();
+    }
 
-      $('#selectPersona').on('change', function() {
-        var select = $("#selectRoles");
-        select.select2('data', null);
-        var url = '../../getRoles';
-        var data = {
-          "persona_id": this.value
-        }
-
-        $.get (url,data,function (result) {
-          select.empty();
-          $.each(result.roles, function(index,value) {
-            select.append($("<option></option>")
-               .attr("value", index).text(value));
-            select.prop('disabled', false);
-          });
-        })
-
-      });
-
-      function readURL(input) {
-        if (input.files && input.files[0]) {
-          if (input.files[0].size > 512000) {
-            $('.error-imagen').css('visibility', 'visible');
-            $('#imgInp').val(null);
-            $('#imagen_cambiada').val(0);
-          }
-          else {
-            $('#imagen_cambiada').val(1);
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-              $('#imagen_usuario').attr('src', e.target.result);
-              $('.error-imagen').css('visibility', 'hidden');
-            }
-
-            reader.readAsDataURL(input.files[0]);
-          }
-        }
+    function getRoles() {
+      var select = $("#selectRoles");
+      select.select2('data', null);
+      var url = '../../getRoles';
+      var data = {
+        "persona_id": $('#selectPersona').val()
       }
 
+      $.get (url,data,function (result) {
+        select.empty();
+        $.each(result.roles, function(index,value) {
+          select.append($("<option></option>")
+             .attr("value", index).text(value));
+          select.prop('disabled', false);
+        });
+      })
+    }
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        if (input.files[0].size > 512000) {
+          $('.error-imagen').css('visibility', 'visible');
+          $('#imgInp').val(null);
+          $('#imagen_cambiada').val(0);
+        }
+        else {
+          $('#imagen_cambiada').val(1);
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+            $('#imagen_usuario').attr('src', e.target.result);
+            $('.error-imagen').css('visibility', 'hidden');
+          }
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+    }
+
+    $(document).ready(function() {
+
+      //Valores para restableces.
+      var usuario = [];
+      usuario['nombre_usuario'] = "{{$usuario->nombre_usuario}}";
+      usuario['email'] = "{{$usuario->email}}";
+      usuario['persona_id'] = {{$my_persona}};
+      usuario['estado_usuario'] = "{{$usuario->estado_usuario}}";
+      usuario['roles'] = $("#selectRoles").children();
+      usuario['roles_seleccionados'] = {{ json_encode($my_roles) }};
+
+      $('#selectPersona').on('change', function() {
+        getRoles();
+      });
+
       $("#imgInp").change(function(){
-          readURL(this);
+        readURL(this);
       });
 
       $('.eliminar_imagen').click(function() {
@@ -199,6 +225,7 @@
         $('#imgInp').val();
         $('#imagen_usuario').attr('src', $('#img_usuario_anterior').val());
         $('#imagen_cambiada').val(0);
+        restablecer(usuario);
       });
 
       // Select
@@ -206,9 +233,8 @@
         placeholder: "Persona"
       });
 
-
       $('#selectRoles').select2({
-        placeholder: "Asignar Roles"
+        placeholder: "Roles"
       });
 
       $('#selectEstado').select2({

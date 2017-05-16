@@ -339,3 +339,9 @@ html {
     display: none;
   }
 }
+
+@media all and (max-width: 590px) {
+  .footer-in-auth p {
+    font-size: 12px;
+  }
+}

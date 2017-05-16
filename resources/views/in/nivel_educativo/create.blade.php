@@ -1,13 +1,13 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Nivel Educativo  | Registrar Nivel Educativo')
+@section('headTitle', 'UNLu Trabajo | Niveles Educativos | Registrar Nivel Educativo')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Nivel Educativo </a></li>
+        <li><a>Niveles Educativos </a></li>
         <li><a>Registrar Nivel Educativo </a></li>
       </ol>
     </div>
@@ -46,7 +46,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -62,5 +62,25 @@
       </div>
     </div>
   </div>
+
+@endsection
+
+@section('bodyJS')
+
+  <script type="text/javascript">
+
+    function borrar (){
+      $("input[type='text']").val("");
+    }
+
+    $(document).ready(function() {
+
+      $("#reset").on("click", function() {
+        borrar();
+      });
+
+    });
+
+  </script>
 
 @endsection

@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Estado Carrera | Registrar Estado Carrera')
+@section('headTitle', 'UNLu Trabajo | Estados de Carrera | Registrar Estado de Carrera')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Estado Carrerales</a></li>
-        <li><a>Registrar Estado Carrera</a></li>
+        <li><a>Estados de Carreras</a></li>
+        <li><a>Registrar Estado de Carrera</a></li>
       </ol>
     </div>
   </div>
@@ -22,7 +22,7 @@
     <div class="box">
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
-        <h4 class="page-header">Registro de Estado Carrera</h4>
+        <h4 class="page-header">Registro de Estado de Carrera</h4>
 
         <!-- Mostrar Mensaje -->
         @include('flash::message')
@@ -46,7 +46,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -65,3 +65,22 @@
 
 @endsection
 
+@section('bodyJS')
+
+  <script type="text/javascript">
+
+    function borrar (){
+      $("input[type='text']").val("");
+    }
+
+    $(document).ready(function() {
+
+      $("#reset").on("click", function() {
+        borrar();
+      });
+
+    });
+
+  </script>
+
+@endsection

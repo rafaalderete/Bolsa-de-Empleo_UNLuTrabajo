@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Configurar Cuenta | Cambiar E-mail')
+@section('headTitle', 'UNLu Trabajo | Configurar Cuenta | Cambiar E-mail')
 
 @section('bodyIndice')
 

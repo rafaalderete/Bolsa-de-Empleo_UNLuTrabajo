@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Usuario | Registrar Usuario')
+@section('headTitle', 'UNLu Trabajo | Usuario | Registrar Usuario')
 
 @section('bodyIndice')
 
@@ -115,7 +115,7 @@
             </button>
           </div>
           <div class="col-sm-2">
-            <button type="reset" class="btn btn-default btn-label-left" id="reset">
+            <button type="button" class="btn btn-default btn-label-left" id="reset">
               <span><i class="fa fa-times-circle txt-danger"></i></span>
               Borrar
             </button>
@@ -136,6 +136,36 @@
 @section('bodyJS')
 
 <script type="text/javascript">
+
+  function borrar (){
+    $("input[type='text']").val("");
+    $('#selectPersona').select2().select2("val", null);
+    $('#selectPersona').attr('placeholder', 'Persona');
+    $('#selectPersona').select2();
+    $('#selectRoles').select2().select2("val", null);
+    $('#selectRoles').attr('placeholder', 'Roles');
+    $('#selectRoles').select2();
+    $('#selectRoles').prop('disabled', true);
+  }
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+      if (input.files[0].size > 512000) {
+        $('.error-imagen').css('visibility', 'visible');
+        $('#imgInp').val(null);
+      }
+      else {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          $('#imagen_usuario').attr('src', e.target.result);
+          $('.error-imagen').css('visibility', 'hidden');
+        }
+
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+  }
 
   $(document).ready(function() {
 
@@ -158,25 +188,6 @@
 
     });
 
-    function readURL(input) {
-      if (input.files && input.files[0]) {
-        if (input.files[0].size > 512000) {
-          $('.error-imagen').css('visibility', 'visible');
-          $('#imgInp').val(null);
-        }
-        else {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-            $('#imagen_usuario').attr('src', e.target.result);
-            $('.error-imagen').css('visibility', 'hidden');
-          }
-
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
-    }
-
     $("#imgInp").change(function(){
         readURL(this);
     });
@@ -189,6 +200,7 @@
     $('#reset').click(function() {
       $('#imgInp').val(null);
       $('#imagen_usuario').attr('src', $('#img_default').val());
+      borrar();
     });
 
     $('#selectRoles').select2({

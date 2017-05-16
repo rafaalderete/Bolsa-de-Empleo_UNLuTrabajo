@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Idioma | Tabla de Idioma')
+@section('headTitle', 'UNLu Trabajo | Idioma | Tabla de Idioma')
 
 @section('bodyIndice')
 

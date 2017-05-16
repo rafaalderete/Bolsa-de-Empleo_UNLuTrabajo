@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Datos de la Empresa')
+@section('headTitle', 'UNLu Trabajo | Datos de la Empresa')
 
 @section('bodyIndice')
 
@@ -136,7 +136,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left" id="reset">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -156,7 +156,28 @@
 
   <script type="text/javascript">
 
+    function restablecer (pjuridica){
+      $('#selectSimple').select2().select2("val", pjuridica['rubro_empresarial']);
+      $('#selectSimple').select2();
+      $("input[name='domicilio_residencia']").val(pjuridica['domicilio_residencia']);
+      $("input[name='localidad_residencia']").val(pjuridica['localidad_residencia']);
+      $("input[name='provincia_residencia']").val(pjuridica['provincia_residencia']);
+      $("input[name='pais_residencia']").val(pjuridica['pais_residencia']);
+      $("input[name='telefono_fijo']").val(pjuridica['telefono_fijo']);
+      $("input[name='telefono_celular']").val(pjuridica['telefono_celular']);
+    }
+
     $(document).ready(function() {
+
+      //Valores para restableces.
+      var pjuridica = [];
+      pjuridica['rubro_empresarial'] = {{$pjuridica->rubro_empresarial_id}};
+      pjuridica['domicilio_residencia'] = "{{$pjuridica->persona->direccion->domicilio}}";
+      pjuridica['localidad_residencia'] = "{{$pjuridica->persona->direccion->localidad}}";
+      pjuridica['provincia_residencia'] = "{{$pjuridica->persona->direccion->provincia}}";
+      pjuridica['pais_residencia'] = "{{$pjuridica->persona->direccion->pais}}";
+      pjuridica['telefono_fijo'] = "{{$telefono_fijo}}";
+      pjuridica['telefono_celular'] = "{{$telefono_celular}}";
 
       function readURL(input) {
         if (input.files && input.files[0]) {
@@ -193,6 +214,7 @@
         $('#imgInp').val();
         $('#imagen_usuario').attr('src', $('#img_usuario_anterior').val());
         $('#imagen_cambiada').val(0);
+        restablecer(pjuridica);
       });
 
       // Select

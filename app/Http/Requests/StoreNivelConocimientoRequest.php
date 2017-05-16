@@ -35,7 +35,7 @@ class StoreNivelConocimientoRequest extends Request
     {
       return [
         'nombre_nivel_conocimiento.min' => 'El campo '.self::CAMPO_NOMBRE.' debe contener al menos 4 caracteres.',
-        'nombre_niveles_conocimiento.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
+        'nombre_nivel_conocimiento.unique' => 'El elemento '.self::CAMPO_NOMBRE.' ya está en uso.',
       ];
     }
 

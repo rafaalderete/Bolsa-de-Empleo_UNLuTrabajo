@@ -1,14 +1,14 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Tipo Jornada | Tabla de Tipo Jornada')
+@section('headTitle', 'UNLu Trabajo | Tipos de Jornada | Tabla de Tipos de Jornada')
 
 @section('bodyIndice')
 
   <div class="row">
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
-        <li><a>Tipo de Jornada</a></li>
-        <li><a>Tabla de Tipo de Jornada</a></li>
+        <li><a>Tipos de Jornada</a></li>
+        <li><a>Tabla de Tipos de Jornada</a></li>
       </ol>
     </div>
   </div>
@@ -23,11 +23,11 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipo Jornada
+        <h4 class="page-header">Tabla de Tipos de Jornada
         @if(Entrust::can('crear_tipo_jornada'))
           <a href="{{ route('in.tipo_jornada.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo Jornada
+            Registar Tipo de Jornada
           </a>
         @endif
         </h4>
