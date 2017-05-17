@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Experiencia Laboral')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Experiencia Laboral')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Modificar Experiencia Laboral</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => ['in.gestionar-cv.experiencia-laborales.update', $expLaboral], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
@@ -55,8 +55,8 @@
             {!! Form::text('periodo_inicio', $expLaboral->periodo_inicio, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
           </div>
         </div>
-        
-        <div class="form-group">
+
+        <div class="form-group descripcion">
           {!! Form::label('descripcion_tarea','Tareas:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
             {!! Form::textarea('descripcion_tarea', $expLaboral->descripcion_tarea, ['class' => 'form-control', 'placeholder' => '','id' => 'textarea_tarea', 'required'])!!}
@@ -100,7 +100,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -113,10 +113,10 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-      
-      
-      
-    </div>  
+
+
+
+    </div>
   </div>
 </div>
 
@@ -126,25 +126,93 @@
 
   <script type="text/javascript">
 
+    function restablecer (expLaboral){
+      $("input[name='nombre_empresa']").val(expLaboral['nombre_empresa']);
+      $('#selectSimple').select2().select2("val", expLaboral['rubro_empresarial']);
+      $('#selectSimple').select2();
+      $("input[name='puesto']").val(expLaboral['puesto']);
+      $('#textarea_tarea').summernote('code', expLaboral['descripcion_tarea']);
+      $("input[name='periodo_inicio']").val(expLaboral['periodo_inicio']);
+      $("input[name='periodo_fin']").datepicker('option', 'minDate', new Date(expLaboral['minY'] ,expLaboral['minM'],expLaboral['minD']));
+      if (expLaboral['presente']){
+        $("input[name='periodo_fin']").val('');
+        $("input[name='periodo_fin']").attr('placeholder',"dd-mm-aaaa");
+        $("input[name='periodo_fin']").prop('disabled',true);
+        $("input[name='periodo_fin']").prop('required',false);
+        $('#checkPresente').prop('checked',true);
+      }
+      else {
+        $("input[name='periodo_fin']").val(expLaboral['periodo_fin']);
+        $("input[name='periodo_fin']").prop('required',true);
+        $("input[name='periodo_fin']").prop('disabled',false);
+        $('#checkPresente').prop('checked',false);
+      }
+    }
+
     $(document).ready(function() {
+
+      //Valores para restablecer.
+      var expLaboral = [];
+      expLaboral['nombre_empresa'] = "{{$expLaboral->nombre_empresa}}";
+      expLaboral['rubro_empresarial'] = {{$expLaboral->rubro_empresarial_id}};
+      expLaboral['puesto'] = "{{$expLaboral->puesto}}";
+      expLaboral['descripcion_tarea'] = "{!!$expLaboral->descripcion_tarea!!}";
+      expLaboral['periodo_inicio'] = "{{$expLaboral->periodo_inicio}}";
+      expLaboral['periodo_fin'] = "{{$expLaboral->periodo_fin}}";
+      if ({{$expLaboral->periodo_fin}} == 0){
+        expLaboral['presente'] = true;
+      }
+      else {
+        expLaboral['presente'] = false;
+      }
+      expLaboral['minY'] = {{$minY}};
+      expLaboral['minM'] = {{$minM}}-1;
+      expLaboral['minD'] = {{$minD}};
+
       // Fecha
-      $('#input_date_inicio').datepicker({setDate: new Date()});
-      $('#input_date_fin').datepicker({setDate: new Date()});
-      
+      $('#input_date_inicio').datepicker({
+        setDate: new Date(),
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker('getDate'),
+                dia  = date.getDate(),
+                mes = date.getMonth(),
+                anio =  date.getFullYear();
+            $('#input_date_fin').val('');
+            $('#input_date_fin').datepicker('option', 'minDate', new Date(anio,mes,dia));
+        }
+      });
+      $('#input_date_fin').datepicker({
+        setDate: new Date(),
+        minDate: new Date(expLaboral['minY'] ,expLaboral['minM'],expLaboral['minD'])
+      });
+
       // Select
       $('#selectSimple').select2({
         placeholder: "Rubro Empresarial"
       });
 
+      //Inicializacion cuando falla request.
+      $("input[name='periodo_inicio']").val(expLaboral['periodo_inicio']);
+      $("input[name='periodo_fin']").val(expLaboral['periodo_fin']);
+      if($('#checkPresente').is(':checked')) {
+        $('#input_date_fin').prop('disabled', true);
+        $('#input_date_fin').val('');
+        $('#input_date_fin').prop('required', false);
+      }
+      else {
+        $('#input_date_fin').prop('disabled', false);
+        $('#input_date_fin').prop('required', true);
+      }
+
       $('#checkPresente').on('change', function() {
-        if($(this).is(':checked')){           
+        if($(this).is(':checked')){
           $('#input_date_fin').prop('disabled', true);
-          $('#input_date_fin').val('');   
+          $('#input_date_fin').val('');
           $('#input_date_fin').prop('required', false);
-        }else{          
+        }else{
           $('#input_date_fin').prop('disabled', false);
           $('#input_date_fin').prop('required', true);
-        }    
+        }
       });
 
       $('#textarea_tarea').summernote({
@@ -155,6 +223,10 @@
           ['fontsize', ['fontsize']],
           ['para', ['ul', 'ol', 'paragraph']],
         ]
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(expLaboral);
       });
     });
 
@@ -174,7 +246,8 @@
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      maxDate: 'today'
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {
@@ -184,4 +257,3 @@
   </script>
 
 @endsection
-

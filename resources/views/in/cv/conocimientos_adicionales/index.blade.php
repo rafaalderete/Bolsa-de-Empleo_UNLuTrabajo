@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Conocimientos Adicionales')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Conocimientos Adicionales')
 
 @section('bodyIndice')
 
@@ -20,7 +20,7 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
@@ -34,11 +34,11 @@
           </a>
         @endif
       </h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Tabla -->
       <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
         <!-- columnas de la tabla -->
@@ -71,8 +71,8 @@
           @endforeach
         </tbody>
       </table>
-      
-    </div>  
+
+    </div>
   </div>
 </div>
 

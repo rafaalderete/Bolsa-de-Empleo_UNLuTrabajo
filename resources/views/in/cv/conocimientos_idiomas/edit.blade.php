@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Conocimientos Idiomas')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Conocimientos Idiomas')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Modificar Conocimiento de Idioma</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => ['in.gestionar-cv.conocimientos-idiomas.update', $conocimientoIdioma], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
@@ -50,9 +50,9 @@
         </div>
 
 		    <div class="form-group">
-          {!! Form::label('nivel_conocicmiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
+          {!! Form::label('nivel_conocimiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::select('nivel_conocicmiento',$nivelesConocimientos, $conocimientoIdioma->nivel_conocimiento_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNC'])!!}
+            {!! Form::select('nivel_conocimiento',$nivelesConocimientos, $conocimientoIdioma->nivel_conocimiento_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNC'])!!}
           </div>
         </div>
 
@@ -64,7 +64,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -77,7 +77,7 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-    </div>  
+    </div>
   </div>
 </div>
 
@@ -87,22 +87,41 @@
 
   <script type="text/javascript">
 
-    $(document).ready(function() {
-    	// Select
-      	$('#selectSimpleI').select2({
-        	placeholder: "Idioma"
-      	});
+    function restablecer (conocimientoIdioma){
+      $('#selectSimpleI').select2().select2("val", conocimientoIdioma['idioma']);
+      $('#selectSimpleI').select2();
+      $('#selectSimpleTCI').select2().select2("val", conocimientoIdioma['tipo_conocimiento_idioma']);
+      $('#selectSimpleTCI').select2();
+      $('#selectSimpleNC').select2().select2("val", conocimientoIdioma['nivel_conocimiento']);
+      $('#selectSimpleNC').select2();
+    }
 
-      	$('#selectSimpleTCI').select2({
-        	placeholder: "Tipo Conocimiento"
-      	});
+    $(document).ready(function() {
+
+      //Valores para restablecer.
+      var conocimientoIdioma = [];
+      conocimientoIdioma['idioma'] = {{$conocimientoIdioma->idioma_id}};
+      conocimientoIdioma['tipo_conocimiento_idioma'] = {{$conocimientoIdioma->tipo_conocimiento_idioma_id}};
+      conocimientoIdioma['nivel_conocimiento'] = {{$conocimientoIdioma->nivel_conocimiento_id}};
+
+    	// Select
+    	$('#selectSimpleI').select2({
+      	placeholder: "Idioma"
+    	});
+
+    	$('#selectSimpleTCI').select2({
+      	placeholder: "Tipo Conocimiento"
+    	});
 
 	    $('#selectSimpleNC').select2({
         	placeholder: "Nivel Conocimiento"
       	});
 
+      $("#reset").on("click", function() {
+        restablecer(conocimientoIdioma);
+      });
+
     });
   </script>
 
 @endsection
-

@@ -148,7 +148,7 @@
 
     $(document).ready(function() {
 
-      //Valores para restableces.
+      //Valores para restablecer.
       var pjuridica = [];
       pjuridica['nombre_comercial'] = "{{$pjuridica->nombre_comercial}}";
       pjuridica['fecha_fundacion'] = "{{$pjuridica->fecha_fundacion}}";

@@ -35,7 +35,7 @@ class StoreConocimientoIdiomaRequest extends Request
         for ($x = 1; $x < sizeof($idiomas); $x++) {
             $idiomas_disponibles = $idiomas_disponibles.','.$idiomas[$x]->id;
         }
-        
+
         $tipos_conocimientos = Tipo_Conocimiento_Idioma::where('estado', 'activo')->get();
 
         $tipos_conocimientos_disponibles = 'required|in:'.$tipos_conocimientos[0]->id;
@@ -52,7 +52,7 @@ class StoreConocimientoIdiomaRequest extends Request
         return [
             'idioma' => $idiomas_disponibles,
             'tipo_conocimiento_idioma' => $tipos_conocimientos_disponibles,
-            'nivel_conocicmiento' => $niveles_conocimientos_disponibles
+            'nivel_conocimiento' => $niveles_conocimientos_disponibles
         ];
     }
 
@@ -61,7 +61,7 @@ class StoreConocimientoIdiomaRequest extends Request
         return [
             'idioma.in' => 'Datos invalidos para el campo '.self::CAMPO_IDIOMA.'.',
             'tipo_conocimiento_idioma.in' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_CONOCIMIENTO.'.',
-            'nivel_conocicmiento.in' => 'Datos invalidos para el campo '.self::CAMPO_NIVEL_CONOCIMIENTO.'.'
+            'nivel_conocimiento.in' => 'Datos invalidos para el campo '.self::CAMPO_NIVEL_CONOCIMIENTO.'.'
 
         ];
     }

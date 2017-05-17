@@ -42,7 +42,7 @@ class StoreConocimientoInformaticoRequest extends Request
         }
         return [
             'tipo_software' => $tipos_software_disponibles,
-            'nivel_conocicmiento' => $niveles_conocimientos_disponibles
+            'nivel_conocimiento' => $niveles_conocimientos_disponibles
         ];
     }
 
@@ -50,7 +50,7 @@ class StoreConocimientoInformaticoRequest extends Request
     {
         return [
             'tipo_software.in' => 'Datos invalidos para el campo '.self::CAMPO_TIPO_SOFTWARE.'.',
-            'nivel_conocicmiento.in' => 'Datos invalidos para el campo '.self::CAMPO_NIVEL_CONOCIMIENTO.'.'
+            'nivel_conocimiento.in' => 'Datos invalidos para el campo '.self::CAMPO_NIVEL_CONOCIMIENTO.'.'
         ];
     }
 }

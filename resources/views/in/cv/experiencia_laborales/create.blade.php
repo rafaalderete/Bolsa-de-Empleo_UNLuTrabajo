@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Experiencia Laboral')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Experiencia Laboral')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Agregar Experiencia Laboral</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => 'in.gestionar-cv.experiencia-laborales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
@@ -60,8 +60,8 @@
             {!! Form::text('periodo_inicio', null, ['id' => 'input_date_inicio', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
           </div>
         </div>
-        
-        <div class="form-group">
+
+        <div class="form-group descripcion">
           {!! Form::label('descripcion_tarea','Tareas:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
             {!! Form::textarea('descripcion_tarea', null, ['class' => 'form-control', 'placeholder' => '', 'id' => 'textarea_tarea', 'required'])!!}
@@ -89,7 +89,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -102,10 +102,10 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-      
-      
-      
-    </div>  
+
+
+
+    </div>
   </div>
 </div>
 
@@ -115,25 +115,47 @@
 
   <script type="text/javascript">
 
+    function borrar (){
+      $("input[type='text']").val("");
+      $('#selectSimple').select2().select2("val", null);
+      $('#selectSimple').attr('placeholder', 'Rubro Empresarial');
+      $('#selectSimple').select2();
+      $('#textarea_tarea').summernote('code', '');
+      $('#checkPresente').prop('checked', false);
+      $("input[name='periodo_fin']").prop('disabled', false);
+      $("input[name='periodo_fin']").datepicker("option", "minDate", null)
+    }
+
     $(document).ready(function() {
+
       // Fecha
-      $('#input_date_inicio').datepicker({setDate: new Date()});
+      $('#input_date_inicio').datepicker({
+        setDate: new Date(),
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker('getDate'),
+                dia  = date.getDate(),
+                mes = date.getMonth(),
+                anio =  date.getFullYear();
+            $('#input_date_fin').val('');
+            $('#input_date_fin').datepicker('option', 'minDate', new Date(anio,mes,dia));
+        }
+      });
       $('#input_date_fin').datepicker({setDate: new Date()});
-      
+
       // Select
       $('#selectSimple').select2({
         placeholder: "Rubro Empresarial"
       });
 
       $('#checkPresente').on('change', function() {
-        if($(this).is(':checked')){           
+        if($(this).is(':checked')){
           $('#input_date_fin').prop('disabled', true);
-          $('#input_date_fin').val('');   
+          $('#input_date_fin').val('');
           $('#input_date_fin').prop('required', false);
-        }else{          
+        }else{
           $('#input_date_fin').prop('disabled', false);
           $('#input_date_fin').prop('required', true);
-        }    
+        }
       });
 
       $('#textarea_tarea').summernote({
@@ -144,6 +166,15 @@
           ['fontsize', ['fontsize']],
           ['para', ['ul', 'ol', 'paragraph']],
         ]
+      });
+
+      $('#input_date_inicio').on('change', function() {
+        $('#input_date_fin').val('');
+        $('#input_date_fin').datepicker('option', 'minDate', new Date($('#input_date_inicio').val()));
+      });
+
+      $("#reset").on("click", function() {
+        borrar();
       });
     });
 
@@ -165,7 +196,8 @@
       firstDay: 1,
       isRTL: false,
       showMonthAfterYear: false,
-      yearSuffix: ''
+      yearSuffix: '',
+      maxDate: 'today'
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
     $(function () {
@@ -175,4 +207,3 @@
   </script>
 
 @endsection
-

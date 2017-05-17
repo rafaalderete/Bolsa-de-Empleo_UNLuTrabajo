@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Datos Personales')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Datos Personales')
 
 @section('bodyIndice')
 
@@ -20,7 +20,7 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
@@ -46,7 +46,7 @@
           </div>
           {!! Form::label('apellido_persona','Documento: ', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            <span>{{$pfisica->tipoDocumento->nombre_tipo_documento}}</span> - 
+            <span>{{$pfisica->tipoDocumento->nombre_tipo_documento}}</span> -
             <span>{{$pfisica->nro_documento}}</span>
           </div>
       </div>
@@ -94,13 +94,13 @@
                   <div class="avatar-grande">
                     <img id="imagen_usuario" src={{asset('img/usuarios'.'/'.Auth::user()->imagen)}} class='img-rounded' alt="Avatar" />
                   </div>
-                @endif      
+                @endif
               </div>
-            </div>      
+            </div>
           </div>
       </div>
-      
-    </div>  
+
+    </div>
   </div>
 </div>
 

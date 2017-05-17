@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Objetivo Laboral')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Objetivo Laboral')
 
 @section('bodyIndice')
 
@@ -20,7 +20,7 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
@@ -29,12 +29,12 @@
       <h4 class="page-header"> Modificar Objetivo Laboral</h4>
       <!-- Mostrar Mensaje -->
       @include('flash::message')
-      @include('template.partials.errors')      
-      
+      @include('template.partials.errors')
+
               <!-- Formulario -->
       {!! Form::open(['route' => ['in.cv.updateobjetivolaboralcv'], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
-          <div class="form-group">
+          <div class="form-group descripcion">
             {!! Form::label('carta_presentacion','Carta de Presentación: ', ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-8">
               {!! Form::textarea('carta_presentacion',$pfisica->estudiante->cv->carta_presentacion, ['class' => 'form-control', 'placeholder' => 'Descripción', 'id' => 'textarea_carta'])!!}
@@ -42,7 +42,7 @@
           </div>
 
           <div class="form-group">
-            {!! Form::label('sueldo','Sueldo Bruto Pretendido: ', ['class' => 'col-sm-3 control-label']) !!}
+            {!! Form::label('sueldo_bruto_pretendido','Sueldo Bruto Pretendido: ', ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-3">
               <div class="input-group">
                 {!! Form::number('sueldo_bruto_pretendido',$pfisica->estudiante->cv->sueldo_bruto_pretendido,['class' => 'form-control', 'placeholder' => '0', 'min' => '0'])!!}
@@ -59,7 +59,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Restablecer
               </button>
@@ -73,8 +73,8 @@
           Volver
       </a>
 
-    
-    </div>  
+
+    </div>
   </div>
 </div>
 
@@ -84,7 +84,17 @@
 
   <script type="text/javascript">
 
+    function restablecer (objetivo){
+      $('#textarea_carta').summernote('code', objetivo['carta_presentacion']);
+      $("input[name='sueldo_bruto_pretendido']").val(objetivo['sueldo_bruto_pretendido']);
+    }
+
     $(document).ready(function() {
+
+      //Valores para restablecer.
+      var objetivo = [];
+      objetivo['carta_presentacion'] = "{!!$pfisica->estudiante->cv->carta_presentacion!!}";
+      objetivo['sueldo_bruto_pretendido'] = {{$pfisica->estudiante->cv->sueldo_bruto_pretendido}};
 
       $('#textarea_carta').summernote({
         lang: 'es-ES',
@@ -95,6 +105,10 @@
           ['fontsize', ['fontsize']],
           ['para', ['ul', 'ol', 'paragraph']],
         ]
+      });
+
+      $("#reset").on("click", function() {
+        restablecer(objetivo);
       });
     });
 

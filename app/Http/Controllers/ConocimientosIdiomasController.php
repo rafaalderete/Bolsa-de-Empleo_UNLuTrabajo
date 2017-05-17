@@ -65,8 +65,7 @@ class ConocimientosIdiomasController extends Controller
             $registro = Conocimiento_Idioma::
                 where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
                 ->where('idioma_id','=',$request->idioma)
-                ->where('tipo_conocimiento_idioma_id','=',$request->tipo_conocimiento_idioma)
-                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)->get();
+                ->where('tipo_conocimiento_idioma_id','=',$request->tipo_conocimiento_idioma)->get();
             if(count($registro)> 0){
                 Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
                 return redirect()->back();
@@ -76,7 +75,7 @@ class ConocimientosIdiomasController extends Controller
             $conocimientoIdioma->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoIdioma->idioma_id = $request->idioma;
             $conocimientoIdioma->tipo_conocimiento_idioma_id = $request->tipo_conocimiento_idioma;
-            $conocimientoIdioma->nivel_conocimiento_id = $request->nivel_conocicmiento;
+            $conocimientoIdioma->nivel_conocimiento_id = $request->nivel_conocimiento;
             $conocimientoIdioma->save();
 
             Flash::success('Conocimiento ' . $conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma . ' del idioma ' . $conocimientoIdioma->idioma->nombre_idioma . ' agregado.')->important();
@@ -135,7 +134,6 @@ class ConocimientosIdiomasController extends Controller
                 where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
                 ->where('idioma_id','=',$request->idioma)
                 ->where('tipo_conocimiento_idioma_id','=',$request->tipo_conocimiento_idioma)
-                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)
                 ->where('id','<>',$id)->get();
             if(count($registro)> 0){
                 Flash::error('• El conocimiento idioma ya existe en el cv.')->important();
@@ -145,7 +143,7 @@ class ConocimientosIdiomasController extends Controller
             $conocimientoIdioma->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoIdioma->idioma_id = $request->idioma;
             $conocimientoIdioma->tipo_conocimiento_idioma_id = $request->tipo_conocimiento_idioma;
-            $conocimientoIdioma->nivel_conocimiento_id = $request->nivel_conocicmiento;
+            $conocimientoIdioma->nivel_conocimiento_id = $request->nivel_conocimiento;
             $conocimientoIdioma->save();
 
             Flash::warning('Conocimiento ' . $conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma . ' del idioma ' . $conocimientoIdioma->idioma->nombre_idioma . ' modificado.')->important();

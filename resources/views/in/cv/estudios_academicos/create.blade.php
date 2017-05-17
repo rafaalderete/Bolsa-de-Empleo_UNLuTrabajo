@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Estudio Academico')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Estudio Academico')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Agregar Estudio Académico</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => 'in.gestionar-cv.estudios-academicos.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
@@ -66,7 +66,7 @@
             </select>
           </div>
         </div>
-        
+
 		<div class="form-group">
 		  {!! Form::label('materias_total','Materias Total:', ['class' => 'col-sm-2 control-label']) !!}
 		  <div class="col-sm-2">
@@ -88,7 +88,7 @@
             {!! Form::text('periodo_fin', null, ['id' => 'input_date_fin', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa'])!!}
           </div>
         </div>
-        
+
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-info btn-label-left">
@@ -97,7 +97,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -110,10 +110,10 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-      
-      
-      
-    </div>  
+
+
+
+    </div>
   </div>
 </div>
 
@@ -123,11 +123,37 @@
 
   <script type="text/javascript">
 
+    function borrar (){
+      $("input[type='text'],input[type='number']").val("");
+      $('#descripcion_textarea').summernote('code', '');
+      $('#selectSimpleNE').select2().select2("val", null);
+      $('#selectSimpleNE').attr('placeholder', 'Nivel Educativo');
+      $('#selectSimpleNE').select2();
+      $('#selectSimpleEC').select2().select2("val", null);
+      $('#selectSimpleEC').attr('placeholder', 'Estado Carrera');
+      $('#selectSimpleEC').select2();
+      $('#input_date_fin').prop('disabled', false);
+      $('#input_date_fin').datepicker("option", "minDate", null)
+    }
+
     $(document).ready(function() {
+
+      $('#input_date_inicio').val("");
+      $('#input_date_fin').val("");
       // Fecha
-      $('#input_date_inicio').datepicker({setDate: new Date()});
+      $('#input_date_inicio').datepicker({
+        setDate: new Date(),
+        onSelect: function(dateText, inst) {
+            var date = $(this).datepicker('getDate'),
+                dia  = date.getDate(),
+                mes = date.getMonth(),
+                anio =  date.getFullYear();
+            $('#input_date_fin').val('');
+            $('#input_date_fin').datepicker('option', 'minDate', new Date(anio,mes,dia));
+        }
+      });
       $('#input_date_fin').datepicker({setDate: new Date()});
-      
+
       // Select
       $('#selectSimpleNE').select2({
         placeholder: "Nivel Educativo"
@@ -137,14 +163,18 @@
       });
 
       $('#selectSimpleEC').on('change', function() {
-        if($(this).val() == {{$finalizado}}){           
+        if($(this).val() == {{$finalizado}}){
           $('#input_date_fin').prop('disabled', false);
           $('#input_date_fin').prop('required', true);
-        }else{          
+        }else{
           $('#input_date_fin').prop('disabled', true);
           $('#input_date_fin').val('');
           $('#input_date_fin').prop('required', false);
-        }    
+        }
+      });
+
+      $("#reset").on("click", function() {
+        borrar();
       });
     });
 
@@ -175,4 +205,3 @@
   </script>
 
 @endsection
-

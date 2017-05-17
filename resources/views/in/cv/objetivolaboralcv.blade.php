@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Objetivo Laboral')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Objetivo Laboral')
 
 @section('bodyIndice')
 
@@ -20,7 +20,7 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
@@ -29,8 +29,8 @@
       <h4 class="page-header">Objetivo Laboral</h4>
       <!-- Mostrar Mensaje -->
       @include('flash::message')
-      @include('template.partials.errors')      
-      
+      @include('template.partials.errors')
+
       <div class="form-group detalle-descripcion col-sm-12">
           {!! Form::label('nombre_persona','Carta de Presentación:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="row">
@@ -63,8 +63,8 @@
           </button></a>
         </div>
       </div>
-    
-    </div>  
+
+    </div>
   </div>
 </div>
 

@@ -60,8 +60,7 @@ class ConocimientosInformaticosController extends Controller
         if(Auth::user()->can('crear_conocimiento_informatico_cv')){
             $registro = Conocimiento_Informatico::
                 where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
-                ->where('tipo_software_id','=',$request->tipo_software)
-                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)->get();
+                ->where('tipo_software_id','=',$request->tipo_software)->get();
             if(count($registro)> 0){
                 Flash::error('• El conocimiento informatico ya existe en el cv.')->important();
                 return redirect()->back();
@@ -70,7 +69,7 @@ class ConocimientosInformaticosController extends Controller
             $conocimientoInformatico = new Conocimiento_Informatico();
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;
-            $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocicmiento;
+            $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocimiento;
             $conocimientoInformatico->save();
 
             Flash::success('Conocimiento Informático en ' . $conocimientoInformatico->tipoSoftware->nombre_tipo_software . ' agregado.')->important();
@@ -126,7 +125,6 @@ class ConocimientosInformaticosController extends Controller
             $registro = Conocimiento_Informatico::
                 where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)
                 ->where('tipo_software_id','=',$request->tipo_software)
-                ->where('nivel_conocimiento_id','=',$request->nivel_conocicmiento)
                 ->where('id','<>',$id)->get();
             if(count($registro)> 0){
                 Flash::error('• El conocimiento informatico ya existe en el cv.')->important();
@@ -136,7 +134,7 @@ class ConocimientosInformaticosController extends Controller
             $conocimientoInformatico = Conocimiento_Informatico::find($id);
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;
-            $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocicmiento;
+            $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocimiento;
             $conocimientoInformatico->save();
 
             Flash::warning('Conocimiento Informatico en ' . $conocimientoInformatico->tipoSoftware->nombre_tipo_software . ' modificado.')->important();

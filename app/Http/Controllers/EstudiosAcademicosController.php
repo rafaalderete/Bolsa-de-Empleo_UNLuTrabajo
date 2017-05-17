@@ -68,7 +68,7 @@ class EstudiosAcademicosController extends Controller
 
             $estadoCarrera = Estado_Carrera::find($request->estados_carrera);
             if($estadoCarrera->nombre_estado_carrera =='Finalizado'){
-                
+
                 if(strlen($request->periodo_fin) == 0){
                     Flash::error('• El campo periodo fin es obligatorio.')->important();
                     return redirect()->back();
@@ -77,13 +77,13 @@ class EstudiosAcademicosController extends Controller
                 $datetime1 = new \DateTime($request->periodo_inicio);
                 $datetime2 = new \DateTime($request->periodo_fin);
                 $interval = $datetime1->diff($datetime2);
-                
+
                 $esta_bien = false;
-                
-                if(($interval->format('%R%a')) > 0){
+
+                if(($interval->format('%R%a')) >= 0){
                   $esta_bien = true;
                 }
-                
+
                 if($esta_bien == false && strlen($request->periodo_fin) != 0){
                     Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
                     return redirect()->back();
@@ -138,11 +138,18 @@ class EstudiosAcademicosController extends Controller
           $estadosCarrera = Estado_Carrera::where('estado','activo')->orderBy('id','ASC')->lists('nombre_estado_carrera','id');
           $finalizadoEstado = Estado_Carrera::where('nombre_estado_carrera','Finalizado')->first();
 
+          $minY = date('Y', strtotime($estudio->periodo_inicio));
+          $minM = date('m', strtotime($estudio->periodo_inicio));
+          $minD = date('d', strtotime($estudio->periodo_inicio));
+
           return view('in.cv.estudios_academicos.edit')
                                 ->with('estudio',$estudio)
                                 ->with('nivelesEducativos',$nivelesEducativos)
                                 ->with('estadosCarrera',$estadosCarrera)
-                                ->with('finalizado',$finalizadoEstado->id);
+                                ->with('finalizado',$finalizadoEstado->id)
+                                ->with('minY',$minY)
+                                ->with('minM',$minM)
+                                ->with('minD',$minD);
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -166,7 +173,7 @@ class EstudiosAcademicosController extends Controller
 
             $estadoCarrera = Estado_Carrera::find($request->estado_carrera);
             if($estadoCarrera->nombre_estado_carrera =='Finalizado'){
-                
+
                 if(strlen($request->periodo_fin) == 0){
                     Flash::error('• El campo periodo fin es obligatorio.')->important();
                     return redirect()->back();
@@ -175,13 +182,13 @@ class EstudiosAcademicosController extends Controller
                 $datetime1 = new \DateTime($request->periodo_inicio);
                 $datetime2 = new \DateTime($request->periodo_fin);
                 $interval = $datetime1->diff($datetime2);
-                
+
                 $esta_bien = false;
-                
-                if(($interval->format('%R%a')) > 0){
+
+                if(($interval->format('%R%a')) >= 0){
                   $esta_bien = true;
                 }
-                
+
                 if($esta_bien == false && strlen($request->periodo_fin) != 0){
                     Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
                     return redirect()->back();

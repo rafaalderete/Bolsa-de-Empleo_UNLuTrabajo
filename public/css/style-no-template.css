@@ -31,6 +31,10 @@ html {
   background: #ebebeb;
 }
 
+.no-box-shadow {
+  box-shadow: none;
+}
+
 .#content {
   padding: 0 !important;
 }

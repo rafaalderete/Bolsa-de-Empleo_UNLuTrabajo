@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Conocimientos Adicionales')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Conocimientos Adicionales')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Agregar Conocimiento Adicional</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => 'in.gestionar-cv.conocimientos-adicionales.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
@@ -43,12 +43,12 @@
         </div>
 
     		<div class="form-group">
-          {!! Form::label('descripcion_conocicmiento','Descripción Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
+          {!! Form::label('descripcion_conocimiento','Descripción Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="col-sm-6">
             {!! Form::text('descripcion_conocimiento', null, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
           </div>
         </div>
-    
+
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-info btn-label-left">
@@ -57,7 +57,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -70,10 +70,27 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-    </div>  
+    </div>
   </div>
 </div>
 
 @endsection
 
+@section('bodyJS')
 
+  <script type="text/javascript">
+
+    function borrar (){
+      $("input[type='text']").val("");
+    }
+
+    $(document).ready(function() {
+
+      $("#reset").on("click", function() {
+        borrar();
+      });
+
+    });
+  </script>
+
+@endsection

@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'Gestionar CV | Conocimientos Idiomas')
+@section('headTitle', 'UNLu Trabajo | Gestionar CV | Conocimientos Idiomas')
 
 @section('bodyIndice')
 
@@ -20,18 +20,18 @@
 
 <div class="row" style="margin-top:-20px">
   <!-- Box -->
-  <div class="box">
+  <div class="box no-box-shadow">
     <!-- Cuerpo del Box-->
 
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
       <h4 class="page-header">Agregar Conocimiento Informático</h4>
-        
+
       <!-- Mostrar Mensaje -->
       @include('flash::message')
       @include('template.partials.errors')
-      
+
       <!-- Formulario -->
       {!! Form::open(['route' => 'in.gestionar-cv.conocimientos-informaticos.store', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
@@ -48,9 +48,9 @@
         </div>
 
 		<div class="form-group">
-          {!! Form::label('nivel_conocicmiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
+          {!! Form::label('nivel_conocimiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="col-sm-3">
-            <select name="nivel_conocicmiento" class="populate placeholder" id="selectSimpleNC" required>
+            <select name="nivel_conocimiento" class="populate placeholder" id="selectSimpleNC" required>
               <option value=""></option>
               @foreach($nivelesConocimientos as $nivelConocimiento)
                 <option value="{{$nivelConocimiento->id}}">{{$nivelConocimiento->nombre_nivel_conocimiento}}</option>
@@ -59,7 +59,7 @@
           </div>
         </div>
 
-        
+
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-info btn-label-left">
@@ -68,7 +68,7 @@
               </button>
             </div>
             <div class="col-sm-2">
-              <button type="reset" class="btn btn-default btn-label-left">
+              <button type="button" class="btn btn-default btn-label-left" id="reset">
                 <span><i class="fa fa-times-circle txt-danger"></i></span>
                 Borrar
               </button>
@@ -81,7 +81,7 @@
           <span><i class="fa fa-reply"></i></span>
           Volver a la Tabla
         </a>
-    </div>  
+    </div>
   </div>
 </div>
 
@@ -91,19 +91,31 @@
 
   <script type="text/javascript">
 
+    function borrar (){
+      $('#selectSimpleTS').select2().select2("val", null);
+      $('#selectSimpleTS').attr('placeholder', 'Tipo Software');
+      $('#selectSimpleTS').select2();
+      $('#selectSimpleNC').select2().select2("val", null);
+      $('#selectSimpleNC').attr('placeholder', 'Nivel Conocimiento');
+      $('#selectSimpleNC').select2();
+    }
+
     $(document).ready(function() {
     	// Select
 
-      	$('#selectSimpleTS').select2({
-        	placeholder: "Tipo Software"
-      	});
+    	$('#selectSimpleTS').select2({
+      	placeholder: "Tipo Software"
+    	});
 
 	    $('#selectSimpleNC').select2({
         	placeholder: "Nivel Conocimiento"
       	});
 
+      $("#reset").on("click", function() {
+        borrar();
+      });
+
     });
   </script>
 
 @endsection
-

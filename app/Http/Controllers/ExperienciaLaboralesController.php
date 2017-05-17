@@ -60,7 +60,7 @@ class ExperienciaLaboralesController extends Controller
         if(Auth::user()->can('crear_experiencia_laboral_cv')){
 
             if(!isset($request->presente)){
-                
+
                 if(strlen($request->periodo_fin) == 0){
                     Flash::error('• El campo periodo fin es obligatorio.')->important();
                     return redirect()->back();
@@ -69,13 +69,13 @@ class ExperienciaLaboralesController extends Controller
                 $datetime1 = new \DateTime($request->periodo_inicio);
                 $datetime2 = new \DateTime($request->periodo_fin);
                 $interval = $datetime1->diff($datetime2);
-                
+
                 $esta_bien = false;
-                
-                if(($interval->format('%R%a')) > 0){
+
+                if(($interval->format('%R%a')) >= 0){
                   $esta_bien = true;
                 }
-                
+
                 if($esta_bien == false && strlen($request->periodo_fin) != 0){
                     Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
                     return redirect()->back();
@@ -128,9 +128,17 @@ class ExperienciaLaboralesController extends Controller
           $expLaboral = Experiencia_Laboral::find($id); // busca el usuario por su id
           $rubros_Empresariales = Rubro_Empresarial::where('estado','activo')->orderBy('id','ASC')->lists('nombre_rubro_empresarial','id');
 
+          //Fechas para el datepicker
+          $minY = date('Y', strtotime($expLaboral->periodo_inicio));
+          $minM = date('m', strtotime($expLaboral->periodo_inicio));
+          $minD = date('d', strtotime($expLaboral->periodo_inicio));
+
           return view('in.cv.experiencia_laborales.edit')
                                 ->with('expLaboral',$expLaboral)
-                                ->with('rubros_Empresariales',$rubros_Empresariales);
+                                ->with('rubros_Empresariales',$rubros_Empresariales)
+                                ->with('minY',$minY)
+                                ->with('minM',$minM)
+                                ->with('minD',$minD);
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -148,7 +156,7 @@ class ExperienciaLaboralesController extends Controller
         if(Auth::user()->can('modificar_experiencia_laboral_cv')){
 
             if(!isset($request->presente)){
-                
+
                 if(strlen($request->periodo_fin) == 0){
                     Flash::error('• El campo periodo fin es obligatorio.')->important();
                     return redirect()->back();
@@ -157,13 +165,13 @@ class ExperienciaLaboralesController extends Controller
                 $datetime1 = new \DateTime($request->periodo_inicio);
                 $datetime2 = new \DateTime($request->periodo_fin);
                 $interval = $datetime1->diff($datetime2);
-                
+
                 $esta_bien = false;
-                
-                if(($interval->format('%R%a')) > 0){
+
+                if(($interval->format('%R%a')) >= 0){
                   $esta_bien = true;
                 }
-                
+
                 if($esta_bien == false && strlen($request->periodo_fin) != 0){
                     Flash::error('• La fecha de inicio debe ser menor a la fecha de finalización.')->important();
                     return redirect()->back();
