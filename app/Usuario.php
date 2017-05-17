@@ -17,12 +17,12 @@ class Usuario extends Model implements AuthenticatableContract,
                                     CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
-    use EntrustUserTrait{
+    use EntrustUserTrait {
             EntrustUserTrait ::can insteadof Authorizable; //add insteadof avoid php trait conflict resolution
         }
 
-    protected $table = "usuarios";
-    protected $fillable = ['password','email','descripcion_usuario',
+    protected $table = 'usuarios';
+    protected $fillable = ['id','password','email','descripcion_usuario',
                           'estado_usuario','nombre_usuario','persona_id','imagen','verificacion_token'];
     protected $hidden = ['password', 'remember_token'];
 
@@ -31,6 +31,6 @@ class Usuario extends Model implements AuthenticatableContract,
     }
 
     public function roles(){
-    	return $this->belongsToMany('App\Role')->withTimestamps();
+    	return $this->belongsToMany('App\Role', 'role_usuario')->withTimestamps();
     }
 }

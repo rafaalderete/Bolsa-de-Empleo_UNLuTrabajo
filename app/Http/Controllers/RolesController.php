@@ -13,7 +13,6 @@ use App\Http\Requests\UpdateRolRequest;
 use App\Permission as Permiso;
 use Illuminate\Support\Facades\Auth;
 
-
 class RolesController extends Controller
 {
     /**

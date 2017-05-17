@@ -154,7 +154,7 @@
                     </div>
                   </div><!--//meta-->
                   <div class="company-details">
-                    <span>{{$expLaboral->descripcion_tarea}}</span>
+                    <span>{!!$expLaboral->descripcion_tarea!!}</span>
                   </div><!--//details-->
                 </div><!--//item-->
               @endforeach

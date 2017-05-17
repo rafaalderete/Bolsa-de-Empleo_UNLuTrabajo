@@ -15,7 +15,7 @@ class Role extends EntrustRole
     }
 
     public function usuarios() {
-      return $this->belongsToMany('App\Usuario')->withTimestamps();
+      return $this->belongsToMany('App\Usuario', 'role_usuario')->withTimestamps();
     }
 
 }
