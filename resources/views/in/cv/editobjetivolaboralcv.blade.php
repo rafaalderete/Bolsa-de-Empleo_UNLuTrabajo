@@ -94,7 +94,7 @@
       //Valores para restablecer.
       var objetivo = [];
       objetivo['carta_presentacion'] = "{!!$pfisica->estudiante->cv->carta_presentacion!!}";
-      objetivo['sueldo_bruto_pretendido'] = {{$pfisica->estudiante->cv->sueldo_bruto_pretendido}};
+      objetivo['sueldo_bruto_pretendido'] = {{$pfisica->estudiante->cv->sueldo_bruto_pretendido}}
 
       $('#textarea_carta').summernote({
         lang: 'es-ES',
