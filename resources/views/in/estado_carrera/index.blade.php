@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_estado_carrera'))
           <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Estado de Carrera
+            Registrar Estado de Carrera
           </a>
         @endif
         </h4>

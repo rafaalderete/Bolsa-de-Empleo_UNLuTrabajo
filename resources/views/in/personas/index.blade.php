@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_persona'))
           <a href="{{ route('in.personas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
-            Registar Persona
+            Registrar Persona
           </a>
         @endif
         </h4>

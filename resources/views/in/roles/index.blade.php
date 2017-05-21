@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_rol'))
           <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
-            Registar Rol
+            Registrar Rol
           </a>
         @endif
         </h4>

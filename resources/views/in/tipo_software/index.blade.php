@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_tipo_software'))
           <a href="{{ route('in.tipo_software.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo de Software
+            Registrar Tipo de Software
           </a>
         @endif
         </h4>

@@ -30,7 +30,7 @@
         @if(true)
           <a href="{{ route('in.gestionar-cv.conocimientos-adicionales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
-            Registar Conocimiento Adicional
+            Registrar Conocimiento Adicional
           </a>
         @endif
       </h4>

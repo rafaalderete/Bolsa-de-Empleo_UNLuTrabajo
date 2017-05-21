@@ -45,7 +45,7 @@
           <div class="form-group">
             {!! Form::label('fecha_nacimiento','Fecha Nacimiento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2">
-              {!! Form::text('fecha_nacimiento', null, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd/mm/aaaa', 'required'])!!}
+              {!! Form::text('fecha_nacimiento', null, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
             </div>
             {!! Form::label('tipo_documento','Documento', ['class' => 'col-sm-2 control-label']) !!}
             <div class="col-sm-2 selectTipoDocumento">

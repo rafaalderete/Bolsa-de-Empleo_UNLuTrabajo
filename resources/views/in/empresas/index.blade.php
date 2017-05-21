@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_empresa'))
           <a href="{{ route('in.empresas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
             <span><i class="fa fa-plus"></i></span>
-            Registar Empresa
+            Registrar Empresa
           </a>
         @endif
         </h4>

@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_tipo_conocimiento_idioma'))
           <a href="{{ route('in.tipo_conocimiento_idioma.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo de Conocimiento de Idioma
+            Registrar Tipo de Conocimiento de Idioma
           </a>
         @endif
         </h4>

@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_idioma'))
           <a href="{{ route('in.idiomas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>
-            Registar Idioma
+            Registrar Idioma
           </a>
         @endif
         </h4>

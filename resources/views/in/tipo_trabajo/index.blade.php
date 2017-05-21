@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_tipo_trabajo'))
           <a href="{{ route('in.tipo_trabajo.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo de Trabajo
+            Registrar Tipo de Trabajo
           </a>
         @endif
         </h4>

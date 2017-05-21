@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_rubro_empresarial'))
           <a href="{{ route('in.rubros-empresariales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Rubros Empresariales
+            Registrar Rubros Empresariales
           </a>
         @endif
         </h4>

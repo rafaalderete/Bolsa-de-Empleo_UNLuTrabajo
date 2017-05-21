@@ -76,7 +76,7 @@
           </div>
           {!! Form::label('fecha_fin_propuesta','Fecha Finalización Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::text('fecha_fin_propuesta', $propuesta->fecha_fin_propuesta, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd/mm/aaaa', 'required'])!!}
+            {!! Form::text('fecha_fin_propuesta', $propuesta->fecha_fin_propuesta, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
           </div>
         </div>
 

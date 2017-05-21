@@ -27,7 +27,7 @@
         @if(Entrust::can('crear_tipo_jornada'))
           <a href="{{ route('in.tipo_jornada.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>
-            Registar Tipo de Jornada
+            Registrar Tipo de Jornada
           </a>
         @endif
         </h4>
