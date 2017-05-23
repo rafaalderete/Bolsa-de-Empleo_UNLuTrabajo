@@ -118,7 +118,8 @@
     $(document).ready(function() {
     	// Select
     	$('#selectSimpleI').select2({
-      	placeholder: "Idioma"
+      	placeholder: "Idioma",
+        language: "es"
     	});
 
     	$('#selectSimpleTCI').select2({

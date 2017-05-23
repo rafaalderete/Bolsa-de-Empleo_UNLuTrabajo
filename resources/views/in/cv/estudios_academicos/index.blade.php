@@ -44,7 +44,7 @@
         <!-- columnas de la tabla -->
         <thead>
           <tr>
-            <th>Carrera</th>
+            <th>Titulo o Certificación</th>
             <th>Instituto</th>
             <th>Nivel de Estudio</th>
             <th>Periodo</th>
@@ -73,7 +73,7 @@
                 @endif
                 @if(true)
                   {!! Form::open(['route' => ['in.gestionar-cv.estudios-academicos.destroy', $estudio->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rol"
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Estudio Académico"
                       data-message="¿Seguro que quiere eliminar la carrera de {{$estudio->titulo}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                   {!! Form::close() !!}
                   @endif
@@ -118,7 +118,7 @@
       $('#dev-table').dataTable( {
         "bStateSave": "false",
         "aaSorting": [[ 0, "asc" ]],
-        "sDom": "rt<'text-center'p>",
+        "sDom": "<'pull-right'l>rt<'text-center'p>",
         "sPaginationType": "bootstrap",
         "oLanguage": {
           "sProcessing":     "Procesando...",

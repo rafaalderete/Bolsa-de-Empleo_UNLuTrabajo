@@ -56,7 +56,8 @@ class StoreEstudioAcademicoRequest extends Request
             'materias_aprobadas' => 'required|min:0', 
             'nivel_educativo' => $niveles_educativos_disponibles,
             'estados_carrera' => $estados_carrera_disponibles,
-            'periodo_inicio' => 'required'
+            'periodo_inicio' => 'required|date_format:d-m-Y',
+            'periodo_fin' => 'date_format:d-m-Y'
         ];
     }
 
@@ -67,6 +68,8 @@ class StoreEstudioAcademicoRequest extends Request
         'nombre_instituto.max' => 'El campo ' . self::CAMPO_NOMBRE_INSTITUTO . ' no puede tener más de 50 caracteres.',
         'materias_total.min' => 'El campo ' . self::CAMPO_MATERIAS_TOTAL . ' no puede ser negativo.',
         'materias_aprobadas.min' => 'El campo ' . self::CAMPO_MATERIAS_APROBADAS . ' no puede ser negativo.',
+        'periodo_inicio.date_format' => 'El campo '. self::CAMPO_PERIODO_INICIO .' debe ser una fecha válida.',
+        'periodo_fin.date_format' => 'El campo '.self::CAMPO_PERIODO_FIN.' debe ser una fecha válida.',
         'nivel_educativo.in' => 'Datos invalidos para el campo '. self::CAMPO_NIVEL_EDUCATIVO .'.',
         'estados_carrera.in' => 'Datos invalidos para el campo '. self::CAMPO_ESTADO_CARRERA .'.'
     ];

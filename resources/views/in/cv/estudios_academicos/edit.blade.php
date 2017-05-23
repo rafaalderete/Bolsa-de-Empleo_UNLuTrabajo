@@ -36,7 +36,7 @@
       {!! Form::open(['route' => ['in.gestionar-cv.estudios-academicos.update', $estudio], 'method' => 'PUT', 'class' => 'form-horizontal']) !!}
 
         <div class="form-group">
-          {!! Form::label('titulo','Carrera:', ['class' => 'col-sm-2 control-label']) !!}
+          {!! Form::label('titulo','Titulo o Certificación:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
             {!! Form::text('titulo', $estudio->titulo, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
           </div>
@@ -180,6 +180,13 @@
 
       // Fecha
       $('#input_date_inicio').datepicker({
+        beforeShow : function(input,inst){
+          var offset = $(input).offset();
+          var height = $(input).height();
+          window.setTimeout(function () {
+            $(inst.dpDiv).css({ top: (offset.top - height) + 'px', left:offset.left + 'px' })
+          }, 1);
+        },
         setDate: new Date(),
         onSelect: function(dateText, inst) {
             var date = $(this).datepicker('getDate'),
@@ -191,6 +198,13 @@
         }
       });
       $('#input_date_fin').datepicker({
+        beforeShow : function(input,inst){
+          var offset = $(input).offset();
+          var height = $(input).height();
+          window.setTimeout(function () {
+            $(inst.dpDiv).css({ top: (offset.top - height) + 'px', left:offset.left + 'px' })
+          }, 1);
+        },
         setDate: new Date(),
         minDate: new Date(estudio['minY'] ,estudio['minM'],estudio['minD'])
       });

@@ -73,7 +73,7 @@
                 @endif
                 @if(true)
                   {!! Form::open(['route' => ['in.gestionar-cv.experiencia-laborales.destroy', $expLaboral->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
-                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Rol"
+                    <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Experiencia Laboral"
                       data-message="¿Seguro que quiere eliminar la Experiencia Laboral de {{$expLaboral->puesto}} en {{$expLaboral->nombre_empresa}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                   {!! Form::close() !!}
                   @endif
@@ -118,7 +118,7 @@
       $('#dev-table').dataTable( {
         "bStateSave": "false",
         "aaSorting": [[ 0, "asc" ]],
-        "sDom": "rt<'text-center'p>",
+        "sDom": "<'pull-right'l>rt<'text-center'p>",
         "sPaginationType": "bootstrap",
         "oLanguage": {
           "sProcessing":     "Procesando...",

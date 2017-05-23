@@ -205,6 +205,16 @@
           @endif
         </div><!--//main-body-->
       </div>
+      
+      <div class="form-group">
+        <div class="col-sm-offset-6 col-sm-2">
+          <a  href="{{ route('in.cv.descargarcv') }}" ><button class="btn btn-info btn-label-left">
+            <span><i class="fa fa-download"></i></span>
+            Descargar CV
+          </button></a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

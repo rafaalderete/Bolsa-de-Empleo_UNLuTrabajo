@@ -178,6 +178,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.cv.updateobjetivolaboralcv'
 	]);
 
+	Route::get('gestionar-cv/descargar-cv', [
+		'uses'	=>	'CvController@descargarCv',
+		'as'	=>	'in.cv.descargarcv'
+	]);
+
 	Route::resource('gestionar-cv/experiencia-laborales', 'ExperienciaLaboralesController');
 	Route::delete('gestionar-cv/experiencia-laborales/{id}/destroy', [
 		'uses'	=>	'ExperienciaLaboralesController@destroy',

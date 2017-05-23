@@ -25,7 +25,7 @@ class CvController extends Controller
         if(Auth::user()->can('visualizar_cv')){
             // Datos Personales y Objetivo Laboral
             $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
-            $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
+            $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
             $telefono_fijo = '';
             $telefono_celular = '';
             foreach ($pfisica->persona->telefonos as $telefono) {
@@ -73,7 +73,7 @@ class CvController extends Controller
     {
         if(Auth::user()->can('visualizar_datos_personales_cv')){
     		    $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
-            $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
+            $pfisica->fecha_nacimiento = date('d - m - Y', strtotime($pfisica->fecha_nacimiento));
             $telefono_fijo = '';
             $telefono_celular = '';
             foreach ($pfisica->persona->telefonos as $telefono) {
@@ -124,8 +124,47 @@ class CvController extends Controller
             $cv->sueldo_bruto_pretendido = $request->sueldo_bruto_pretendido;
             $cv->save();
 
-            Flash::warning('Objevito Laboral actualizado con exito')->important();
+            Flash::warning('Objetivo Laboral actualizado con exito')->important();
             return redirect()->route('in.cv.objetivolaboralcv');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+    }
+
+    public function descargarCV()
+    {
+        if(Auth::user()->can('visualizar_cv')){
+            // Datos Personales y Objetivo Laboral
+            $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+            $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
+            $telefono_fijo = '';
+            $telefono_celular = '';
+            foreach ($pfisica->persona->telefonos as $telefono) {
+              if ($telefono->tipo_telefono == 'fijo') {
+                $telefono_fijo = $telefono->nro_telefono;
+              }
+              if ($telefono->tipo_telefono == 'celular') {
+                $telefono_celular = $telefono->nro_telefono;
+              }
+            }
+
+            //Experiencias Laborales
+            $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+            
+            // Estudios Academicos
+            $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Idiomas
+            $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Informaticos
+            $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Adicionales
+            $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+            
+            $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+            return $pdf->download('Curriculum-Vitae.pdf');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
