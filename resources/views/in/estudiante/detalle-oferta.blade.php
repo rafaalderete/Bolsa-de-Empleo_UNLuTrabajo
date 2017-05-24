@@ -114,94 +114,96 @@
         </div>
 
         <div class="row detalle-descripcion">
-          <div class="row">
-            <div class="col-md-12 requisitos-label">
-              <p>Requisitos:</p>
+          @if( ($propuesta->requisito_años_experiencia_laboral != 0) || (count($propuesta->requisitosResidencia) > 0) || (count($propuesta->requisitosCarrera) > 0) || (count($propuesta->requisitosIdioma) > 0) || (count($propuesta->requisitosAdicionales) > 0) )
+            <div class="row">
+              <div class="col-md-12 requisitos-label">
+                <p>Requisitos:</p>
+              </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="row">
-                <div class="col-md-12">
-                  <ul>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="col-md-12">
+                    <ul>
 
-                    @if($propuesta->requisito_años_experiencia_laboral != 0)
-                      <li>Años de Experiencia: {{ $propuesta->requisito_años_experiencia_laboral }}</li>
-                    @endif
+                      @if($propuesta->requisito_años_experiencia_laboral != 0)
+                        <li>Años de Experiencia: {{ $propuesta->requisito_años_experiencia_laboral }}</li>
+                      @endif
 
-                    @if(count($propuesta->requisitosResidencia) > 0)
-                      <li>Lugar de Residencia:</li>
-                      <li class="item-no-dot">
-                        <ul class="lista-interior">
-                          @foreach ($propuesta->requisitosResidencia as $requisito_residencia)
-                            <li>
-                              {{ $requisito_residencia->lugar }}
-                              @if($requisito_residencia->excluyente)
-                                 - <span class="excluyente">Excluyente</span>
-                              @endif
-                            </li>
-                          @endforeach
-                        </ul>
-                      </li>
-                    @endif
+                      @if(count($propuesta->requisitosResidencia) > 0)
+                        <li>Lugar de Residencia:</li>
+                        <li class="item-no-dot">
+                          <ul class="lista-interior">
+                            @foreach ($propuesta->requisitosResidencia as $requisito_residencia)
+                              <li>
+                                {{ $requisito_residencia->lugar }}
+                                @if($requisito_residencia->excluyente)
+                                   - <span class="excluyente">Excluyente</span>
+                                @endif
+                              </li>
+                            @endforeach
+                          </ul>
+                        </li>
+                      @endif
 
-                    @if(count($propuesta->requisitosCarrera) > 0)
-                      <li>Carrera:</li>
-                      <li class="item-no-dot">
-                        <ul class="lista-interior">
-                          @foreach ($propuesta->requisitosCarrera as $requisito_carrera)
-                            <li>
-                              {{ $requisito_carrera->carrera->nombre_carrera }} -
-                              {{ $requisito_carrera->estadoCarrera->nombre_estado_carrera }}
-                              @if($requisito_carrera->excluyente)
-                                 - <span class="excluyente">Excluyente</span>
-                              @endif
-                            </li>
-                          @endforeach
-                        </ul>
-                      </li>
-                    @endif
+                      @if(count($propuesta->requisitosCarrera) > 0)
+                        <li>Carrera:</li>
+                        <li class="item-no-dot">
+                          <ul class="lista-interior">
+                            @foreach ($propuesta->requisitosCarrera as $requisito_carrera)
+                              <li>
+                                {{ $requisito_carrera->carrera->nombre_carrera }} -
+                                {{ $requisito_carrera->estadoCarrera->nombre_estado_carrera }}
+                                @if($requisito_carrera->excluyente)
+                                   - <span class="excluyente">Excluyente</span>
+                                @endif
+                              </li>
+                            @endforeach
+                          </ul>
+                        </li>
+                      @endif
 
-                    @if(count($propuesta->requisitosIdioma) > 0)
-                      <li>Idioma:</li>
-                      <li class="item-no-dot">
-                        <ul class="lista-interior">
-                          @foreach ($propuesta->requisitosIdioma as $requisito_idioma)
-                            <li>
-                              {{ $requisito_idioma->idioma->nombre_idioma }} -
-                              {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
-                              {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
-                              @if($requisito_idioma->excluyente)
-                                 - <span class="excluyente">Excluyente</span>
-                              @endif
-                            </li>
-                          @endforeach
-                        </ul>
-                      </li>
-                    @endif
+                      @if(count($propuesta->requisitosIdioma) > 0)
+                        <li>Idioma:</li>
+                        <li class="item-no-dot">
+                          <ul class="lista-interior">
+                            @foreach ($propuesta->requisitosIdioma as $requisito_idioma)
+                              <li>
+                                {{ $requisito_idioma->idioma->nombre_idioma }} -
+                                {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
+                                {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
+                                @if($requisito_idioma->excluyente)
+                                   - <span class="excluyente">Excluyente</span>
+                                @endif
+                              </li>
+                            @endforeach
+                          </ul>
+                        </li>
+                      @endif
 
-                    @if(count($propuesta->requisitosAdicionales) > 0)
-                      <li>Requisitos Adicionales:</li>
-                      <li class="item-no-dot">
-                        <ul class="lista-interior">
-                          @foreach ($propuesta->requisitosAdicionales as $requisito_adicional)
-                            <li>
-                              {{ $requisito_adicional->nombre_requisito }} -
-                              {{ $requisito_adicional->nivelConocimiento->nombre_nivel_conocimiento }}
-                              @if($requisito_adicional->excluyente)
-                                 - <span class="excluyente">Excluyente</span>
-                              @endif
-                            </li>
-                          @endforeach
-                        </ul>
-                      </li>
-                    @endif
+                      @if(count($propuesta->requisitosAdicionales) > 0)
+                        <li>Requisitos Adicionales:</li>
+                        <li class="item-no-dot">
+                          <ul class="lista-interior">
+                            @foreach ($propuesta->requisitosAdicionales as $requisito_adicional)
+                              <li>
+                                {{ $requisito_adicional->nombre_requisito }} -
+                                {{ $requisito_adicional->nivelConocimiento->nombre_nivel_conocimiento }}
+                                @if($requisito_adicional->excluyente)
+                                   - <span class="excluyente">Excluyente</span>
+                                @endif
+                              </li>
+                            @endforeach
+                          </ul>
+                        </li>
+                      @endif
 
-                  </ul>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          @endif
         </div>
 
         @if (!$postulacion)

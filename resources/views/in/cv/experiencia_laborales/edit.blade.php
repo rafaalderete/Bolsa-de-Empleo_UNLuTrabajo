@@ -59,7 +59,13 @@
         <div class="form-group descripcion">
           {!! Form::label('descripcion_tarea','Tareas:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::textarea('descripcion_tarea', $expLaboral->descripcion_tarea, ['class' => 'form-control', 'placeholder' => '','id' => 'textarea_tarea', 'required'])!!}
+            <a href="#anchor" id="anchor"></a>
+            {!! Form::textarea('descripcion_tarea', $expLaboral->descripcion_tarea, ['class' => 'form-control', 'placeholder' => '','id' => 'textarea_tarea'])!!}
+            <div class="row error-descripcion">
+              <div class="col-sm-10">
+                <span>Debe completar las Tareas.</span>
+              </div>
+            </div>
           </div>
           @if($expLaboral->periodo_fin == 0)
             {!! Form::label('periodo_fin','Periodo Fin:', ['class' => 'col-sm-2 control-label']) !!}
@@ -231,6 +237,8 @@
 
       $('#textarea_tarea').summernote({
         lang: 'es-ES',
+        height: 130,
+        disableResizeEditor: true,
         toolbar: [
           // [groupName, [list of button]]
           ['style', ['bold', 'italic', 'underline']],
@@ -239,9 +247,25 @@
         ]
       });
 
+      //Para borrar el mensaje del summernote cuando no está vacio
+      $("#textarea_tarea").on("summernote.change", function (e) {
+        if (!$('#textarea_tarea').summernote('isEmpty')) {
+          $('.error-descripcion').css('display', 'none');
+        }
+      });
+
       $("#reset").on("click", function() {
         restablecer(expLaboral);
       });
+
+      $("form").on("submit", function(e) {
+        if ($('#textarea_tarea').summernote('isEmpty')) {
+          e.preventDefault();
+          $("#anchor").focus();
+          $('.error-descripcion').css('display', 'block');
+        }
+      });
+      
     });
 
     <!-- Cambiar el idioma de datepiker -->

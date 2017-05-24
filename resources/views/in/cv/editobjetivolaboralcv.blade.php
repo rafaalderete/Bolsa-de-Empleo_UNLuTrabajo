@@ -98,6 +98,8 @@
 
       $('#textarea_carta').summernote({
         lang: 'es-ES',
+        height: 150,
+        disableResizeEditor: true,
         toolbar: [
           // [groupName, [list of button]]
           ['style', ['bold', 'italic', 'underline']],

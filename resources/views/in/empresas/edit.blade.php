@@ -161,8 +161,16 @@
       pjuridica['telefono_fijo'] = "{{$telefono_fijo}}";
       pjuridica['telefono_celular'] = "{{$telefono_celular}}";
 
-      // Fecha Nac.
-      $('#input_date').datepicker({setDate: new Date()});
+      $('#input_date').datepicker({
+        beforeShow : function(input,inst){
+          var offset = $(input).offset();
+          var height = $(input).height();
+          window.setTimeout(function () {
+            $(inst.dpDiv).css({ top: (offset.top - height) + 'px', left:offset.left + 'px' })
+          }, 1);
+        },
+        setDate: new Date()
+      });
 
       // Select
       $('#selectSimple').select2({

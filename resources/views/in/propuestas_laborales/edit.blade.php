@@ -47,7 +47,13 @@
         <div class="form-group descripcion">
           {!! Form::label('descripcion','Descripción de la Propuesta', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-8">
-            {!! Form::textarea('descripcion',$propuesta->descripcion, ['id' => 'descripcion_textarea', 'class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta', 'required'])!!}
+            <a href="#anchor" id="anchor"></a>
+            {!! Form::textarea('descripcion',$propuesta->descripcion, ['id' => 'descripcion_textarea', 'class' => 'form-control', 'placeholder' => 'Descripción de la Propuesta'])!!}
+            <div class="row error-descripcion">
+              <div class="col-sm-10">
+                <span>Debe completar la descripción.</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -522,6 +528,8 @@
 
       $('#descripcion_textarea').summernote({
         lang: 'es-ES',
+        height: 300,
+        disableResizeEditor: true,
         toolbar: [
           // [groupName, [list of button]]
           ['style', ['bold', 'italic', 'underline']],
@@ -531,6 +539,13 @@
           ['para', ['ul', 'ol', 'paragraph']],
           ['height', ['height']]
         ]
+      });
+
+      //Para borrar el mensaje del summernote cuando no está vacio
+      $("#descripcion_textarea").on("summernote.change", function (e) {
+        if (!$('#descripcion_textarea').summernote('isEmpty')) {
+          $('.error-descripcion').css('display', 'none');
+        }
       });
 
       //Valores para restablecer.
@@ -582,7 +597,16 @@
       });
 
       // Fecha Nac.
-      $('#input_date').datepicker({setDate: new Date()});
+      $('#input_date').datepicker({
+        beforeShow : function(input,inst){
+          var offset = $(input).offset();
+          var height = $(input).height();
+          window.setTimeout(function () {
+            $(inst.dpDiv).css({ top: (offset.top - height) + 'px', left:offset.left + 'px' })
+          }, 1);
+        },
+        setDate: new Date()
+      });
 
       // Select
       $('#selectTipoTrabajo').select2({
@@ -626,6 +650,14 @@
         pos_idioma = {{count($propuesta->requisitosIdioma)}};
         pos_carrera = {{count($propuesta->requisitosCarrera)}};
         pos_adicional = {{count($propuesta->requisitosAdicionales)}}+1;
+      });
+
+      $("form").on("submit", function(e) {
+        if ($('#descripcion_textarea').summernote('isEmpty')) {
+          e.preventDefault();
+          $("#anchor").focus();
+          $('.error-descripcion').css('display', 'block');
+        }
       });
 
     });

@@ -23,7 +23,7 @@ class TiposSoftwareController extends Controller
      */
     public function index()
     {
-     
+
         if (Auth::user()->can('listar_tipos_software')) {
             $tipo_software = Tipo_Software::orderBy('id', 'DESC')->get(); #me traigo de la bd los idiomas cargados en id descendentes
 
@@ -61,11 +61,11 @@ class TiposSoftwareController extends Controller
 
         $tipo_software->save();
 
-        Flash::success('Tipo_Software' . $tipo_software->nombre_tipo_software . ' agregado.')->important();
+        Flash::success('Tipo Software ' . $tipo_software->nombre_tipo_software . ' agregado.')->important();
         return redirect()->route('in.tipo_software.index');
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
-      }    
+      }
   }
 
     /**
@@ -114,7 +114,7 @@ class TiposSoftwareController extends Controller
             return redirect()->route('in.tipo_software.index');
           }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
-          }    
+          }
     }
 
     /**
@@ -128,7 +128,7 @@ class TiposSoftwareController extends Controller
         if(Auth::user()->can('eliminar_tipo_software')){
             $tipo_software = Tipo_Software::find($id);
             $cinformatico = Conocimiento_Informatico::where('tipo_software_id', '=',$id)->get();
-                       
+
             if( (count($cinformatico) == 0) ) {//Se verifica que no esta uso.
 
               $tipo_software->delete();

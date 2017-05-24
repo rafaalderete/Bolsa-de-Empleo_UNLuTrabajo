@@ -95,6 +95,7 @@ html {
   border-bottom: 1px solid gray;
 }
 
+.lista-interior li,
 .detalle p,
 .detalle-descripcion p {
   word-wrap: break-word;
@@ -181,6 +182,7 @@ html {
 
 .error-imagen,
 .error-imagen,
+.error-descripcion,
 .error-idioma,
 .error-carrera {
   display: none;
@@ -188,6 +190,7 @@ html {
 
 .error-imagen span,
 .error-idioma span,
+.error-descripcion span,
 .error-carrera span,
 .excluyente {
   color: red;
