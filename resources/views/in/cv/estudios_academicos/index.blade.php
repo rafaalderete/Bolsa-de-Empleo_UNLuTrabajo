@@ -28,7 +28,7 @@
     <div class="box-content dropbox">
       <h4 class="page-header">Tabla de Estudios Académicos
         @if(true)
-          <a href="{{ route('in.gestionar-cv.estudios-academicos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
+          <a href="{{ route('in.gestionar-cv.estudios-academicos.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>
             Registrar Estudios Académicos
           </a>

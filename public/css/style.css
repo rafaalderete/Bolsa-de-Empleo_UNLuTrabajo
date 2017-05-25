@@ -33,6 +33,11 @@ h3,
   background: #525252 url(../img/devoops_pattern_b10.png) 0 0 repeat;
 }
 
+@font-face {
+    font-family: Righteous;
+    src: url('../fonts/Righteous-Regular.ttf');
+}
+
 #logo a {
   color: #fff;
   font-family: 'Righteous', cursive;
