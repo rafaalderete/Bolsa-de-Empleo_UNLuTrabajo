@@ -16,6 +16,7 @@ class CreateCarrerasTabla extends Migration
       Schema::create('carreras', function (Blueprint $table) {
           $table->increments('id');
           $table->string('nombre_carrera');
+          $table->integer('total_materias');
           $table->timestamps();
       });
 

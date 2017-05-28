@@ -61,6 +61,7 @@ class CreateCvsTablas extends Migration
           $table->foreign('tipo_software_id')->references('id')->on('tipos_software');
           $table->integer('nivel_conocimiento_id')->unsigned();
           $table->foreign('nivel_conocimiento_id')->references('id')->on('niveles_conocimiento');
+          $table->string('descripcion_conocimiento');
           $table->timestamps();
       });
 

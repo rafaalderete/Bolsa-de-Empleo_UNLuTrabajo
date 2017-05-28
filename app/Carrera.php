@@ -8,7 +8,7 @@ class Carrera extends Model
 {
 
     protected $table = "carreras";
-    protected $fillable = ['id','nombre_carrera'];
+    protected $fillable = ['id','nombre_carrera','total_materias'];
 
     public function estudiantes(){
       return $this->hasMany('App\Estudiante');

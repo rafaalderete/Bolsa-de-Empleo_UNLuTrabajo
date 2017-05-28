@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Curriculum Vitae</title>
-    <link rel="stylesheet" href="{{asset('plugins/orbit/css/styles-3.css')}}" >
+    <link rel="stylesheet" href="{{asset('plugins/orbit/css/styles.css')}}" >
 </head>
 
 <body>
@@ -19,9 +19,10 @@
             @endif
             <h1>{{$pfisica->apellido_persona}},</h1>
             <h4>{{$pfisica->nombre_persona}}</h4>
-          </div><!--//profile-container-->
-              
-          <div class="education-container container-block">
+          </div><!--//profile-container-->      
+        </div><!--//sidebar-wrapper-->
+        
+        <div class="education-container container-block">
               <h2 class="container-block-title">Datos Personales</h2>
                   <div class="item">
                       <span>Nacimiento</span> :
@@ -53,8 +54,7 @@
                       <span>{{Auth::user()->email}}</span>
                   </div><!--//item-->
           </div><!--//education-container-->
-        </div><!--//sidebar-wrapper-->
-        
+       
         
         <div class="main-wrapper">
           @if (($pfisica->estudiante->cv->carta_presentacion != null) || ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null))

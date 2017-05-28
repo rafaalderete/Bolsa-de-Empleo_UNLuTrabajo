@@ -8,7 +8,7 @@ class Conocimiento_Informatico extends Model
 {
 
     protected $table = "conocimientos_informaticos";
-    protected $fillable = ['id','cv_id','tipo_software_id','nivel_conocimiento_id'];
+    protected $fillable = ['id','cv_id','tipo_software_id','nivel_conocimiento_id','descripcion_conocimiento'];
 
     public function cv(){
       return $this->belongsTo('App\Cv');

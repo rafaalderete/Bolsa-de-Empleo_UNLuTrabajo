@@ -8,8 +8,7 @@ class Estudiante extends Model
 {
 
     protected $table = "estudiantes";
-    protected $fillable = ['id','fisica_id','unlu_estudiante_id','carrera_id',
-                            'legajo'];
+    protected $fillable = ['id','fisica_id','unlu_estudiante_id','carrera_id','legajo'];
 
     public function fisica(){
       return $this->belongsTo('App\Fisica');

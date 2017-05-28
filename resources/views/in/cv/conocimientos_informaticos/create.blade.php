@@ -47,7 +47,7 @@
           </div>
         </div>
 
-		<div class="form-group">
+		    <div class="form-group">
           {!! Form::label('nivel_conocimiento','Nivel Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
           <div class="col-sm-3">
             <select name="nivel_conocimiento" class="populate placeholder" id="selectSimpleNC" required>
@@ -56,6 +56,14 @@
                 <option value="{{$nivelConocimiento->id}}">{{$nivelConocimiento->nombre_nivel_conocimiento}}</option>
               @endforeach
             </select>
+          </div>
+        </div>
+
+        <div class="form-group descripcion">
+          {!! Form::label('descripcion_conocimiento','Descripción Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
+          <div class="col-sm-4">
+            <a href="#anchor" id="anchor"></a>
+            {!! Form::textarea('descripcion_conocimiento', null, ['class' => 'form-control', 'placeholder' => '', 'id' => 'textarea_tarea'])!!}
           </div>
         </div>
 
@@ -98,6 +106,7 @@
       $('#selectSimpleNC').select2().select2("val", null);
       $('#selectSimpleNC').attr('placeholder', 'Nivel Conocimiento');
       $('#selectSimpleNC').select2();
+      $('#textarea_tarea').summernote('code', '');
     }
 
     $(document).ready(function() {
@@ -113,6 +122,18 @@
 
       $("#reset").on("click", function() {
         borrar();
+      });
+
+      $('#textarea_tarea').summernote({
+        lang: 'es-ES',
+        height: 130,
+        disableResizeEditor: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['fontsize', ['fontsize']],
+          ['para', ['ul', 'ol', 'paragraph']],
+        ]
       });
 
     });

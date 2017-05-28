@@ -18,6 +18,10 @@ use App\Cv as Cv;
 use App\Unlu_Estudiante as Unlu_Estudiante;
 use App\Tipo_Documento as Tipo_Documento;
 use App\Role as Rol;
+use App\Estudio_Academico as Estudio_Academico;
+use App\Estado_Carrera as Estado_Carrera;
+use App\Nivel_Educativo as Nivel_Educativo;
+use App\Carrera as Carrera;
 use App\Rubro_Empresarial as Rubro_Empresarial;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
@@ -571,6 +575,21 @@ class UsuariosController extends PersonasController
             $cv = new Cv();
             $cv->estudiante_id = $estudiante->id;
             $cv->save();//Se inserta el Cv.
+
+            $estudio_academico = new Estudio_Academico();
+            $estudio_academico->cv_id = $estudiante->id;
+            $estudio_academico->nombre_instituto = "Universidad Nacional de Luján";
+            $carreraUNLu = Carrera::where('id',$unlu_estudiante[0]->unlu_carrera_id)->first();
+            $estudio_academico->titulo = $carreraUNLu->nombre_carrera;
+            $estudio_academico->materias_total = $carreraUNLu->total_materias;
+            $estudio_academico->materias_aprobadas = $unlu_estudiante[0]->total_materias_aprobadas;
+            $nivelEducativo = Nivel_Educativo::where('nombre_nivel_educativo','Universidad')->first();
+            $estudio_academico->nivel_educativo_id = $nivelEducativo->id;
+            $estadoCarrera = Estado_Carrera::where('nombre_estado_carrera','En curso')->first();
+            $estudio_academico->estado_carrera_id = $estadoCarrera->id;
+            $estudio_academico->periodo_inicio = $unlu_estudiante[0]->fecha_inicio_carrera;
+            $estudio_academico->periodo_fin = "00-00-0000";
+            $estudio_academico->save(); // Se inserta la carrera realizada por el estudiante en el cv
 
             $usuario = new Usuario();
             $usuario->nombre_usuario = $request->nombre_usuario;

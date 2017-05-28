@@ -70,6 +70,7 @@ class ConocimientosInformaticosController extends Controller
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;
             $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocimiento;
+            $conocimientoInformatico->descripcion_conocimiento = $request->descripcion_conocimiento;
             $conocimientoInformatico->save();
 
             Flash::success('Conocimiento Informático en ' . $conocimientoInformatico->tipoSoftware->nombre_tipo_software . ' agregado.')->important();
@@ -135,6 +136,7 @@ class ConocimientosInformaticosController extends Controller
             $conocimientoInformatico->cv_id = Auth::user()->persona->fisica->estudiante->cv->id;
             $conocimientoInformatico->tipo_software_id = $request->tipo_software;
             $conocimientoInformatico->nivel_conocimiento_id = $request->nivel_conocimiento;
+            $conocimientoInformatico->descripcion_conocimiento = $request->descripcion_conocimiento;
             $conocimientoInformatico->save();
 
             Flash::warning('Conocimiento Informatico en ' . $conocimientoInformatico->tipoSoftware->nombre_tipo_software . ' modificado.')->important();

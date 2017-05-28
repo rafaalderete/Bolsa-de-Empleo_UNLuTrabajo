@@ -282,6 +282,7 @@ class EstudianteController extends Controller
               // Conocimientos Adicionales
               $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
+              /*
               File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
 
               Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
@@ -292,10 +293,14 @@ class EstudianteController extends Controller
               });
 
               File::delete($pdfPath);
-
+              */
+              
               //Postulación.
               $propuesta->estudiantes()->sync([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now()]]);
-
+              
+              $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+              return $pdf->stream('CurriculumVitae.pdf');
+            
               Flash::success('Postulación realizada.')->important();
               return redirect()->route('in.buscar-ofertas');
             }

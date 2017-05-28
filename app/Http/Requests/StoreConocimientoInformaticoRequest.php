@@ -42,7 +42,8 @@ class StoreConocimientoInformaticoRequest extends Request
         }
         return [
             'tipo_software' => $tipos_software_disponibles,
-            'nivel_conocimiento' => $niveles_conocimientos_disponibles
+            'nivel_conocimiento' => $niveles_conocimientos_disponibles,
+            'descripcion_conocimiento' => 'max:150'
         ];
     }
 

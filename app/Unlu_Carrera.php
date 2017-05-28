@@ -8,7 +8,7 @@ class Unlu_Carrera extends Model
 {
 
     protected $table = "unlu_carreras";
-    protected $fillable = ['id','nombre_unlu_carrera'];
+    protected $fillable = ['id','nombre_unlu_carrera','total_materias'];
 
     public function unluEstudiantes(){
       return $this->hasMany('App\Unlu_Estudiante');

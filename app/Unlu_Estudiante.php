@@ -8,8 +8,8 @@ class Unlu_Estudiante extends Model
 {
 
     protected $table = "unlu_estudiantes";
-    protected $fillable = ['id','legajo','carrera_id','nombre','apellido',
-                            'fecha_nacimiento','cuil','tipo_documento','nro_documento',
+    protected $fillable = ['id','legajo','unlu_carrera_id','fecha_inicio_carrera','total_materias_aprobadas',
+                            'nombre','apellido','fecha_nacimiento','cuil','tipo_documento','nro_documento',
                             'email','telefono','celular','domicilio','localidad','residencia_provincia',
                             'residencia_pais'];
 

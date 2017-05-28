@@ -49,6 +49,15 @@
           </div>
         </div>
 
+        <div class="form-group descripcion">
+          {!! Form::label('descripcion_conocimiento','Descripción Conocimiento:', ['class' => 'col-sm-3 control-label']) !!}
+          <div class="col-sm-4">
+            <a href="#anchor" id="anchor"></a>
+            {!! Form::textarea('descripcion_conocimiento', $conocimientoInformatico->descripcion_conocimiento, ['class' => 'form-control', 'placeholder' => '', 'id' => 'textarea_tarea'])!!}
+          </div>
+        </div>
+
+
           <div class="form-group">
             <div class="col-sm-offset-2 col-sm-2">
               <button type="submit" class="btn btn-info btn-label-left">
@@ -85,6 +94,7 @@
       $('#selectSimpleTS').select2();
       $('#selectSimpleNC').select2().select2("val", conocimientoInformatico['nivel_conocimiento']);
       $('#selectSimpleNC').select2();
+      $('#textarea_tarea').summernote('code', expLaboral['descripcion_conocimiento']);
     }
 
     $(document).ready(function() {
@@ -105,6 +115,18 @@
 
       $("#reset").on("click", function() {
         restablecer(conocimientoInformatico);
+      });
+
+      $('#textarea_tarea').summernote({
+        lang: 'es-ES',
+        height: 130,
+        disableResizeEditor: true,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline']],
+          ['fontsize', ['fontsize']],
+          ['para', ['ul', 'ol', 'paragraph']],
+        ]
       });
 
     });

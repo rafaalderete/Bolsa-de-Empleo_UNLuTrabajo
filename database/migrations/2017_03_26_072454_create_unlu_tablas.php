@@ -16,6 +16,7 @@ class CreateUnluTablas extends Migration
       Schema::create('unlu_carreras', function (Blueprint $table) {
           $table->increments('id');
           $table->string('nombre_unlu_carrera');
+          $table->integer('total_materias');
           $table->timestamps();
       });
 
@@ -24,6 +25,8 @@ class CreateUnluTablas extends Migration
           $table->integer('legajo')->unsigned();
           $table->integer('unlu_carrera_id')->unsigned();
           $table->foreign('unlu_carrera_id')->references('id')->on('unlu_carreras');
+          $table->string('fecha_inicio_carrera');
+          $table->integer('total_materias_aprobadas');
           $table->string('nombre');
           $table->string('apellido');
           $table->date('fecha_nacimiento');

@@ -46,6 +46,7 @@
           <tr>
             <th>Tipo Software</th>
             <th>Nivel Conocimiento</th>
+            <th>Descripción</th>
             <th style="width:75px">Acción</th>
           </tr>
         </thead>
@@ -55,6 +56,7 @@
             <tr>
               <td>{{$conocimientoInformatico->tipoSoftware->nombre_tipo_software}}</td>
               <td>{{$conocimientoInformatico->nivelConocimiento->nombre_nivel_conocimiento}}</td>
+              <td>{!!$conocimientoInformatico->descripcion_conocimiento!!}</td>
               <!-- envio el parametro del metodo edit y destroy-->
               <td>
                 @if(true)
