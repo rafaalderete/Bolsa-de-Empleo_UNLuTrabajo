@@ -172,6 +172,37 @@
                   </div>
                 </div>
               </div>
+
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix"><span class="fa fa-briefcase titulo-filtro"></span>
+                      Empresa
+                    </a>
+                  </h4>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse">
+                  <div class="panel-body" id="columna">
+                    <table class="table">
+                      @foreach ($juridicas as $key => $juridica)
+                        <tr>
+                          @if ($key == 0)
+                            <td class="primer-elemento-filtro">
+                          @else
+                            <td>
+                          @endif
+                            {!! Form::open(['route' => ['in.buscar-ofertas'], 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                              <input type="hidden" name="juridica" value={{ $juridica->id }}>
+                              <a class="filtro-submit">{{ $juridica->nombre_comercial }}</a> <span class="label label-success">{{ $juridica->cantidad }}</span>
+                            {!! Form::close()!!}
+                          </td>
+                        </tr>
+                      @endforeach
+                    </table>
+                  </div>
+                </div>
+              </div>
+
               @if ($busqueda)
                 <div class="elminar-filtro">
                   <a href={{ route('in.buscar-ofertas') }}>Eliminar Filtro<span class="glyphicon glyphicon-remove"></span></a>

@@ -28,57 +28,61 @@
     <div class="box-content dropbox">
       <h4 class="page-header">Visualizar CV</h4>
       <div class="wrapper">
-        <div class="sidebar-wrapper">
-          <div class="profile-container">
-            @if(Auth::user()->imagen != null)
-              <!-- PHOTO (AVATAR) -->
-              <div id="photo">
-                <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" width="130" height="100" class="img-rounded" alt="avatar">
-              </div>
-            @endif
-            <h1>{{$pfisica->apellido_persona}},</h1>
-            <h4>{{$pfisica->nombre_persona}}</h4>
-          </div><!--//profile-container-->
-
-          <div class="education-container container-block">
-              <h2 class="container-block-title">Datos Personales</h2>
-                  <div class="item">
-                      <span>Nacimiento</span> :
-                      <span>{{$pfisica->fecha_nacimiento}}</span>
-                  </div><!--//item-->
-                  <div class="item">
-                      <span>{{$pfisica->tipoDocumento->nombre_tipo_documento}}</span> :
-                      <span>{{$pfisica->nro_documento}}</span>
-                  </div><!--//item-->
-                  <div class="item">
-                      <span>Domicilio</span> :
-                      <span>{{$pfisica->persona->direccion->domicilio}}</span>
-                  </div><!--//item-->
-                  <div class="item">
-                      <span>Localidad</span> :
-                      <span>{{$pfisica->persona->direccion->localidad}}</span>
-                  </div><!--//item-->
-
-                  <div class="item">
-                      <span>Telefono</span> :
-                      <span>{{$telefono_fijo}}</span>
-                  </div><!--//item-->
-                  <div class="item">
-                      <span>Celular</span> :
-                      <span>{{$telefono_celular}}</span>
-                  </div><!--//item-->
-                  <div class="item">
-                      <span>E-Mail</span> :
-                      <span>{{Auth::user()->email}}</span>
-                  </div><!--//item-->
-          </div><!--//education-container-->
-        </div><!--//sidebar-wrapper-->
-
-
+        
         <div class="main-wrapper" style="min-height:500px">
+
+            <section class="section experiences-section">
+              <h2 class="section-title page-header">Datos Personales</h2>
+                  
+              <div class="contenedor">
+                @if(Auth::user()->imagen != null)
+                <!-- PHOTO (AVATAR) -->
+                  <div class="imagen">
+                    <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" width="130" height="100" class="img-rounded" alt="avatar">
+                  </div>
+                @endif
+                <div class="col-sm-9">                                                       
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">Nacimiento</span> : 
+                    <span class="company">{{$pfisica->fecha_nacimiento}}</span>.
+                  </div>
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">{{$pfisica->tipoDocumento->nombre_tipo_documento}}</span> : 
+                    <span class="company">{{$pfisica->nro_documento}}</span>.
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">Domicilio</span> : 
+                    <span class="company">{{$pfisica->persona->direccion->domicilio}}</span>.
+                  </div>
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">Localidad</span> : 
+                    <span class="company">{{$pfisica->persona->direccion->localidad}}</span>.
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">Telefono</span> : 
+                    <span class="company">{{$telefono_fijo}}</span>.
+                  </div>
+                  <div class="info col-sm-6"> 
+                    <span class="job-title">Celular</span> : 
+                    <span class="company">{{$telefono_celular}}</span>.
+                  </div>
+                </div>
+                <div class="col-sm-9">
+                  <div class="info col-sm-12"> 
+                    <span class="job-title">E-Mail</span> : 
+                    <span class="company">{{Auth::user()->email}}</span>.
+                  </div>
+                </div>
+              </div>
+            </section>
+
           @if (($pfisica->estudiante->cv->carta_presentacion != null) || ($pfisica->estudiante->cv->sueldo_bruto_pretendido != null))
             <section class="section summary-section">
-              <h2 class="section-title2">Objetivo Laboral</h2>
+              <h2 class="section-title2 page-header">Objetivo Laboral</h2>
 
               @if ($pfisica->estudiante->cv->carta_presentacion != null)
                 <div class="sueldo">
@@ -101,7 +105,7 @@
 
           @if(count($estudios) > 0 )
             <section class="section experiences-section">
-              <h2 class="section-title">Estudio Académico</h2>
+              <h2 class="section-title page-header">Estudio Académico</h2>
               @foreach( $estudios as $estudio)
                 <div class="item">
                   <div class="meta">
@@ -133,7 +137,7 @@
 
           @if(count($expLaborales) > 0 )
             <section class="section experiences-section">
-              <h2 class="section-title"></i>Experiencia Laboral</h2>
+              <h2 class="section-title page-header"></i>Experiencia Laboral</h2>
               @foreach( $expLaborales as $expLaboral)
                 <div class="item">
                   <div class="meta">
@@ -163,7 +167,7 @@
 
           @if(count($conocimientosIdiomas) > 0 )
             <section class="skills-section section">
-              <h2 class="section-title">Conocimiento Idioma</h2>
+              <h2 class="section-title page-header">Conocimiento Idioma</h2>
               <div class="skillset">
                 @foreach( $conocimientosIdiomas as $conocimientoIdioma)
                   <div class="skill">
@@ -178,7 +182,7 @@
 
           @if(count($conocimientosInformaticos) > 0 )
             <section class="skills-section section">
-              <h2 class="section-title">Conocimiento Informático</h2>
+              <h2 class="section-title page-header">Conocimiento Informático</h2>
               <div class="skillset">
                 @foreach( $conocimientosInformaticos as $conocimientoInformatico)
                   <div class="skill">
@@ -192,7 +196,7 @@
 
           @if(count($conocimientosAdicionales) > 0 )
             <section class="skills-section section">
-              <h2 class="section-title">Conocimiento Adicional</h2>
+              <h2 class="section-title page-header">Conocimiento Adicional</h2>
               <div class="skillset">
                 @foreach( $conocimientosAdicionales as $conocimientoAdicional)
                   <div class="skill">

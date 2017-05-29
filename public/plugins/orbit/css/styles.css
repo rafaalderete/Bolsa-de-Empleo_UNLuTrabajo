@@ -33,24 +33,17 @@
   margin-bottom: 20px;
 }
 
-.main-wrapper .profile-container {
-  padding: 30px;
-  background: #5D9577;
-  position: relative;
-  top:0;
-  left: 0;
-  width: 240px;
-  height: 100%;
-  text-align: center;
-  color: #fff;
+.contenedor {
+    width: 100%;
+    text-align:justify;
 }
-
-.main-wrapper .datos-container {
-  background: #5D0007;
-  padding-left: 210px;
-  position: relative;
-  margin-top: 0;
-  margin-bottom: 20px;
+ 
+.imagen {
+    width: 125px;
+    height: 155px;
+    margin-right:20px;
+    margin-left:20px;
+    float:right;
 }
 
 
@@ -90,7 +83,13 @@
 }
 .main-wrapper .experiences-section .item {
   margin-bottom: 10px;
+  margin-left: 15px;
 }
+.main-wrapper .experiences-section .info {
+  margin-bottom: 10px;
+  margin-left: -10px;
+}
+
 .main-wrapper .upper-row {
   position: relative;
   overflow: hidden;
@@ -103,6 +102,7 @@
   margin-bottom: 0;
   font-weight: 500;
 }
+
 .main-wrapper .time {
   position: absolute;
   right: 0;
@@ -120,7 +120,7 @@
   margin-top: 5px;
 }
 .main-wrapper .skill {
-  margin-left: 0px;
+  margin-left: 15px;
   margin-bottom: 10px;
 }
 .main-wrapper .sueldo {

@@ -67,7 +67,7 @@
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Conocimiento Idioma"
                       data-message="¿Seguro que quiere eliminar el conocimiento {{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma}} del idioma {{$conocimientoIdioma->idioma->nombre_idioma}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>
                   {!! Form::close() !!}
-                  @endif
+                @endif
               </td>
             </tr>
           @endforeach
