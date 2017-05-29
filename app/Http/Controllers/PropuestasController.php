@@ -41,10 +41,12 @@ class PropuestasController extends Controller
         $busqueda = false;
 
         if(isset($request->buscar) && $request->buscar != null) {
-          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
+          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
           $busqueda = true;
           $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
             ->where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
+            ->orWhere('lugar_de_trabajo','LIKE', '%'.$palabra_a_buscar.'%')
+            ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')      
             ->where('estado_propuesta','activo')
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);

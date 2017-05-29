@@ -92,7 +92,7 @@ class EstudianteController extends Controller
 
         //Filtro palabra clave.
         if(isset($request->buscar) && $request->buscar != null) {
-          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
+          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
           //dd($request->buscar);
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
           $empresa = Juridica::Where('nombre_comercial','LIKE','%'.$palabra_a_buscar.'%')->first();
@@ -450,7 +450,7 @@ class EstudianteController extends Controller
 
         // Filtro por Palabra Clave
         if(isset($request->buscar) && $request->buscar != null) {
-          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9 ]/", '', $request->buscar);
+          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
           $empresa = Juridica::Where('nombre_comercial','LIKE','%'.$palabra_a_buscar.'%')->first();
           if($empresa != null){
