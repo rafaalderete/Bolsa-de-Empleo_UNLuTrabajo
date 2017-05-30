@@ -188,6 +188,11 @@
           @endif
         </div>
 
+        @if(Entrust::can('listar_postulantes'))
+          <a href="{{ route('in.propuestas-laborales.listado-postulantes', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info pull-left">
+            Listado de Postulantes
+          </a>
+        @endif
         @if(Entrust::can('eliminar_propuesta_laboral'))
           {!! Form::open(['route' => ['in.propuestas-laborales.destroy', $propuesta->id], 'method' => 'DELETE']) !!}
           <a href="" class="btn btn-default btn-label-left pull-right" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Propuesta"

@@ -86,7 +86,7 @@ class EstudianteController extends Controller
             ->count();
         }
 
-        
+
         $busqueda = true;
         $filtro = "Últimas Ofertas";
 
@@ -336,7 +336,7 @@ class EstudianteController extends Controller
               // Conocimientos Adicionales
               $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
-              
+
               File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
 
               Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
@@ -347,9 +347,9 @@ class EstudianteController extends Controller
               });
 
               File::delete($pdfPath);
-              
+
               //Postulación.
-              $propuesta->estudiantes()->sync([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now()]]);
+              $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now(), 'usuario_id' => Auth::user()->id]]);
               /*
               $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
               return $pdf->stream('CurriculumVitae.pdf');
@@ -389,7 +389,7 @@ class EstudianteController extends Controller
             $mostrar_filtro_carreras = true;
           }
         }
-        
+
         $mostrar_filtro_tipos_trabajo = false;
         $tipos_trabajo = Tipo_Trabajo::all()->where('estado', 'activo');
         foreach ($tipos_trabajo as $key => $tipo_trabajo) {

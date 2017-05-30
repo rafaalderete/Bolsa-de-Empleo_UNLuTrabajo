@@ -25,7 +25,7 @@ class Propuesta_Laboral extends Model
     }
 
     public function estudiantes(){
-      return $this->belongsToMany('App\Estudiante', 'estudiante_propuesta_laboral', 'propuesta_laboral_id', 'estudiante_id')->withPivot('fecha_postulacion')->withTimestamps();
+      return $this->belongsToMany('App\Estudiante', 'estudiante_propuesta_laboral', 'propuesta_laboral_id', 'estudiante_id')->withPivot('fecha_postulacion','usuario_id')->withTimestamps();
     }
 
     public function requisitosCarrera(){

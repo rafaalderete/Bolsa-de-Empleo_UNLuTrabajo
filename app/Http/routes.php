@@ -365,6 +365,16 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 
 	Route::resource('propuestas-laborales', 'PropuestasController');
 
+	Route::get('propuestas-laborales/{id}/listado-postulantes', [
+		'uses'	=>	'PropuestasController@getPostulantes',
+		'as'	=>	'in.propuestas-laborales.listado-postulantes'
+	]);
+
+	Route::get('propuestas-laborales/{id_propuesta}/listado-postulantes/{id_estudiante}/vizualizar-cv', [
+		'uses'	=>	'PropuestasController@getCvPostulante',
+		'as'	=>	'in.propuestas-laborales.listado-postulantes.vizualizar-cv'
+	]);
+
 	Route::get('propuestas-laborales/{id}/detalle', [
 		'uses'	=>	'PropuestasController@getDetallePropuesta',
 		'as'	=>	'in.propuestas-laborales.detalle'

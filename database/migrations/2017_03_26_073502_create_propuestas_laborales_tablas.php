@@ -38,6 +38,7 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->foreign('propuesta_laboral_id')->references('id')->on('propuestas_laborales')->onUpdate('cascade')->onDelete('cascade');
           $table->integer('estudiante_id')->unsigned();
           $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onUpdate('cascade')->onDelete('cascade');
+          $table->integer('usuario_id')->unsigned();
           $table->date('fecha_postulacion');
           $table->timestamps();
       });

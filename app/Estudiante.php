@@ -27,7 +27,7 @@ class Estudiante extends Model
     }
 
     public function propuestasLaborales(){
-      return $this->belongsToMany('App\Propuesta_Laboral', 'estudiante_propuesta_laboral', 'estudiante_id', 'propuesta_laboral_id')->withPivot('fecha_postulacion')->withTimestamps();
+      return $this->belongsToMany('App\Propuesta_Laboral', 'estudiante_propuesta_laboral', 'estudiante_id', 'propuesta_laboral_id')->withPivot('fecha_postulacion','usuario_id')->withTimestamps();
     }
 
 }

@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Laracasts\Flash\Flash;
+use App\Usuario as Usuario;
+use App\Estudiante as Estudiante;
+use App\Fisica as Fisica;
+use App\Experiencia_Laboral as Experiencia_Laboral;
+use App\Estudio_Academico as Estudio_Academico;
+use App\Conocimiento_Idioma as Conocimiento_Idioma;
+use App\Conocimiento_Informatico as Conocimiento_Informatico;
+use App\Conocimiento_Adicional as Conocimiento_Adicional;;
 use App\Propuesta_Laboral as Propuesta_Laboral;
 use App\Tipo_Trabajo as Tipo_Trabajo;
 use App\Tipo_Jornada as Tipo_Jornada;
@@ -21,6 +29,7 @@ use App\Requisito_Carrera as Requisito_Carrera;
 use App\Requisito_Adicional as Requisito_Adicional;
 use App\Http\Requests\StoreUpdatePropuestaLaboralRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class PropuestasController extends Controller
@@ -28,6 +37,7 @@ class PropuestasController extends Controller
 
     const CANT_PAGINA = 5;
     const DESCRIPCION = 350; //Cantidad de caracteres que se mostrarán en el index.
+    const TITULO = 10; //Cantidad de caracteres que se mostrarán del titulo.
 
     /**
      * Display a listing of the resource.
@@ -48,7 +58,7 @@ class PropuestasController extends Controller
                       $query->where('carrera_id',$carreraId)
                             ->where('juridica_id',Auth::user()->persona->juridica->id);
           })->count();
-          
+
           if($carreras[$key]->cantidad > 0 ){
             $mostrar_filtro_carreras = true;
           }
@@ -106,7 +116,7 @@ class PropuestasController extends Controller
           $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
             ->where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
             ->orWhere('lugar_de_trabajo','LIKE', '%'.$palabra_a_buscar.'%')
-            ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')      
+            ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')
             ->where('estado_propuesta','activo')
             ->orderBy('created_at','DESC')
             ->paginate(self::CANT_PAGINA);
@@ -589,6 +599,112 @@ class PropuestasController extends Controller
           }
         }
 
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function getPostulantes($id)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        if ($propuesta == null) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          $titulo = substr($propuesta->titulo,0,self::TITULO);
+          if (strlen($propuesta->titulo) > self::TITULO){
+            $titulo = $titulo."...";
+          }
+          $postulantes = $propuesta->estudiantes;
+          foreach ($postulantes as $postulante) {
+            $postulante->fecha_postulacion = date('d-m-Y', strtotime($postulante->pivot->fecha_postulacion));
+          }
+
+          return view('in.propuestas_laborales.listado-postulantes')
+            ->with('propuestaId', $id)
+            ->with('titulo',$titulo)
+            ->with('postulantes',$postulantes);
+        }
+
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function getCvPostulante($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          // Datos Personales y Objetivo Laboral
+          $postulante = Estudiante::where('id',$id_estudiante)->first();
+          $pfisica = Fisica::where('id',$postulante->fisica->id)->first();
+          $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
+          $usuarioPostulante = Usuario::where('id',$estudiantePropuesta->usuario_id)->first();
+          $usuarioImagen = $usuarioPostulante->imagen;
+          $usuarioEmail = $usuarioPostulante->email;
+          $telefono_fijo = '';
+          $telefono_celular = '';
+          foreach ($pfisica->persona->telefonos as $telefono) {
+            if ($telefono->tipo_telefono == 'fijo') {
+              $telefono_fijo = $telefono->nro_telefono;
+            }
+            if ($telefono->tipo_telefono == 'celular') {
+              $telefono_celular = $telefono->nro_telefono;
+            }
+          }
+
+          //Experiencias Laborales
+          $expLaborales = Experiencia_Laboral::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Estudios Academicos
+          $estudios = Estudio_Academico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Idiomas
+          $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Informaticos
+          $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Adicionales
+          $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+          /*
+          $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+          return $pdf->stream('Arch.pdf');
+          */
+          return view('in.propuestas_laborales.cv-postulante')
+            ->with('propuestaId', $id_propuesta)
+            ->with('pfisica',$pfisica)
+            ->with('usuarioImagen',$usuarioImagen)
+            ->with('usuarioEmail',$usuarioEmail)
+            ->with('telefono_fijo',$telefono_fijo)
+            ->with('telefono_celular',$telefono_celular)
+            ->with('expLaborales',$expLaborales)
+            ->with('estudios',$estudios)
+            ->with('conocimientosInformaticos',$conocimientosInformaticos)
+            ->with('conocimientosIdiomas',$conocimientosIdiomas)
+            ->with('conocimientosAdicionales',$conocimientosAdicionales);
+
+        }
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
