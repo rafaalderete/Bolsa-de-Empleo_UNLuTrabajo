@@ -62,6 +62,144 @@
                   </div>
                 </div>
               </div>
+
+              @if($mostrar_filtro_carreras)
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                        <span class="fa fa-university titulo-filtro"></span>
+                        Carrera
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body" id="columna">
+                      <table class="table">
+                        @foreach ($carreras as $key => $carrera)
+                          @if($carrera->cantidad > 0)
+                            <tr>
+                              @if ($key == 0)
+                                <td class="primer-elemento-filtro">
+                              @else
+                                <td>
+                              @endif
+                                {!! Form::open(['route' => ['in.propuestas-laborales.index'], 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                                  <input type="hidden" name="carrera" value={{ $carrera->id }}>
+                                  <a class="filtro-submit">{{ $carrera->nombre_carrera }}</a> <span class="label label-success">{{ $carrera->cantidad }}</span>
+                                {!! Form::close()!!}
+                              </td>
+                            </tr>
+                          @endif
+                        @endforeach
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              @endif
+              
+              @if($mostrar_filtro_tipos_trabajo)
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="fa fa-handshake-o titulo-filtro"></span>
+                        Tipo de Trabajo
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body" id="columna">
+                      <table class="table">
+                        @foreach ($tipos_trabajo as $key => $tipo_trabajo)
+                          @if($tipo_trabajo->cantidad > 0)
+                            <tr>
+                              @if ($key == 0)
+                                <td class="primer-elemento-filtro">
+                              @else
+                                <td>
+                              @endif
+                              {!! Form::open(['route' => ['in.propuestas-laborales.index'], 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                                <input type="hidden" name="tipo_trabajo" value={{ $tipo_trabajo->id }}>
+                                <a class="filtro-submit">{{ $tipo_trabajo->nombre_tipo_trabajo }}</a> <span class="label label-success">{{ $tipo_trabajo->cantidad }}</span>
+                              {!! Form::close()!!}
+                              </td>
+                            </tr>
+                          @endif
+                        @endforeach
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              @endif
+
+              @if($mostrar_filtro_tipos_trabajo)
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="fa fa-calendar titulo-filtro"></span>
+                        Tipo de Jornada
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseFour" class="panel-collapse collapse">
+                    <div class="panel-body" id="columna">
+                      <table class="table">
+                        @foreach ($tipos_jornada as $key => $tipo_jornada)
+                          @if($tipo_jornada->cantidad > 0)
+                            <tr>
+                              @if ($key == 0)
+                                <td class="primer-elemento-filtro">
+                              @else
+                                <td>
+                              @endif
+                                {!! Form::open(['route' => ['in.propuestas-laborales.index'], 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                                  <input type="hidden" name="tipo_jornada" value={{ $tipo_jornada->id }}>
+                                  <a class="filtro-submit">{{ $tipo_jornada->nombre_tipo_jornada }}</a> <span class="label label-success">{{ $tipo_jornada->cantidad }}</span>
+                                {!! Form::close()!!}
+                              </td>
+                            </tr>
+                          @endif
+                        @endforeach
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              @endif
+
+              @if($mostrar_filtro_idiomas)
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive"><span class="fa fa-language titulo-filtro"></span>
+                        Idioma
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseFive" class="panel-collapse collapse">
+                    <div class="panel-body" id="columna">
+                      <table class="table">
+                        @foreach ($idiomas as $key => $idioma)
+                          @if($idioma->cantidad > 0)
+                            <tr>
+                              @if ($key == 0)
+                                <td class="primer-elemento-filtro">
+                              @else
+                                <td>
+                              @endif
+                              {!! Form::open(['route' => ['in.propuestas-laborales.index'], 'method' => 'GET', 'class' => 'form-horizontal']) !!}
+                                <input type="hidden" name="idioma" value={{ $idioma->id }}>
+                                <a class="filtro-submit">{{ $idioma->nombre_idioma }}</a> <span class="label label-success">{{ $idioma->cantidad }}</span>
+                              {!! Form::close()!!}
+                              </td>
+                            </tr>
+                          @endif
+                        @endforeach
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              @endif
+
               
               @if ($busqueda)
                 <div class="elminar-filtro">
@@ -75,7 +213,7 @@
         <div class="col-sm-9 col-md-9">
           <div class="row">
             <div class="col-md-12">
-              <h4>Filtro -</h4>
+              <h4>Filtro - {{ $filtro }}</h4>
             </div>
           </div>          
 

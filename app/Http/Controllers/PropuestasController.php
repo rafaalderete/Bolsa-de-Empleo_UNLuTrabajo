@@ -38,11 +38,71 @@ class PropuestasController extends Controller
     {
       if(Auth::user()->can('listar_propuestas_laborales')){
 
-        $busqueda = false;
+        $juridicaId = Auth::user()->persona->juridica->id;
 
+        $mostrar_filtro_carreras = false;
+        $carreras = Carrera::all();
+        foreach ($carreras as $key => $carrera) {
+          $carreraId = $carrera->id;
+          $carreras[$key]->cantidad = Propuesta_Laboral::whereHas('requisitosCarrera', function($query) use ($carreraId){
+                      $query->where('carrera_id',$carreraId)
+                            ->where('juridica_id',Auth::user()->persona->juridica->id);
+          })->count();
+          
+          if($carreras[$key]->cantidad > 0 ){
+            $mostrar_filtro_carreras = true;
+          }
+        }
+
+        $mostrar_filtro_tipos_trabajo = false;
+        $tipos_trabajo = Tipo_Trabajo::all()->where('estado', 'activo');
+        foreach ($tipos_trabajo as $key => $tipo_trabajo) {
+          $tipo_trabajoId = $tipo_trabajo->id;
+          $tipos_trabajo[$key]->cantidad = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+                                                  ->where('tipo_trabajo_id',$tipo_trabajoId)
+                                                  ->count();
+
+          if($tipos_trabajo[$key]->cantidad > 0 ){
+            $mostrar_filtro_tipos_trabajo = true;
+          }
+        }
+
+        $mostrar_filtro_tipos_jornada = false;
+        $tipos_jornada = Tipo_Jornada::all()->where('estado', 'activo');
+        foreach ($tipos_jornada as $key => $tipo_jornada) {
+          $tipo_jornadaId = $tipo_jornada->id;
+          $tipos_jornada[$key]->cantidad = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+                                            ->where('tipo_jornada_id',$tipo_jornadaId)
+                                            ->count();
+
+          if($tipos_jornada[$key]->cantidad > 0 ){
+              $mostrar_filtro_tipos_jornada = true;
+          }
+        }
+
+        $mostrar_filtro_idiomas = false;
+        $idiomas = Idioma::all()->where('estado', 'activo');
+        foreach ($idiomas as $key => $idioma) {
+          $idiomaId = $idioma->id;
+          $idiomas[$key]->cantidad = Propuesta_Laboral::whereHas('requisitosIdioma', function($query) use ($idiomaId){
+                $query->where('idioma_id',$idiomaId)
+                      ->where('juridica_id',Auth::user()->persona->juridica->id);
+            })->count();
+          if($idiomas[$key]->cantidad > 0 ){
+              $mostrar_filtro_idiomas = true;
+          }
+        }
+
+        //dd($idiomas);
+
+        $busqueda = true;
+        $filtro = "Últimas Propuestas";
+
+        // Filtro por Palabra Clave
         if(isset($request->buscar) && $request->buscar != null) {
           $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
-          $busqueda = true;
+          $filtro = "Palabra Clave - ".$palabra_a_buscar;
+
           $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
             ->where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
             ->orWhere('lugar_de_trabajo','LIKE', '%'.$palabra_a_buscar.'%')
@@ -52,10 +112,64 @@ class PropuestasController extends Controller
             ->paginate(self::CANT_PAGINA);
         }
         else {
-          $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
-            ->where('estado_propuesta','activo')
-            ->orderBy('created_at','DESC')
-            ->paginate(self::CANT_PAGINA);
+          //Filtro carrera.
+          if (isset($request->carrera)) {
+            $carreraId = $request->carrera;
+            $propuestas = Propuesta_Laboral::whereHas('requisitosCarrera', function($query) use ($carreraId){
+                      $query->where('carrera_id',$carreraId)
+                            ->where('juridica_id',Auth::user()->persona->juridica->id);
+            })
+              ->orderBy('propuestas_laborales.created_at','DESC')
+              ->paginate(self::CANT_PAGINA);
+            $tipo_carrera_buscado = Carrera::find($request->carrera);
+            $filtro = "Carrera - ".$tipo_carrera_buscado->nombre_carrera;
+          }
+          else {
+            //Filtro tipo de trabajo.
+            if (isset($request->tipo_trabajo)) {
+              $tipo_trabajoId = $request->tipo_trabajo;
+              $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+                            ->where('tipo_trabajo_id',$tipo_trabajoId)
+                            ->orderBy('propuestas_laborales.created_at','DESC')
+                            ->paginate(self::CANT_PAGINA);
+              $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
+              $filtro = "Tipo de Trabajo - ".$tipo_trabajo_buscado->nombre_tipo_trabajo;
+            }
+            else{
+              //Filtro tipo de jornada.
+              if (isset($request->tipo_jornada)) {
+                $tipo_jornadaId = $request->tipo_jornada;
+                $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+                                ->where('tipo_jornada_id',$tipo_jornadaId)
+                                ->orderBy('propuestas_laborales.created_at','DESC')
+                                ->paginate(self::CANT_PAGINA);
+                $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
+                $filtro = "Tipo de Jornada - ".$tipo_jornada_buscado->nombre_tipo_jornada;
+              }
+              else {
+                //Filtro idioma
+                if (isset($request->idioma)) {
+                  $idiomaId = $request->idioma;
+                  $propuestas = Propuesta_Laboral::whereHas('requisitosIdioma', function($query) use ($idiomaId){
+                          $query->where('idioma_id',$idiomaId)
+                                ->where('juridica_id',Auth::user()->persona->juridica->id);
+                  })
+                    ->orderBy('propuestas_laborales.created_at','DESC')
+                    ->paginate(self::CANT_PAGINA);
+                  $idioma_buscado = Idioma::find($request->idioma);
+                  $filtro = "Idioma - ".$idioma_buscado->nombre_idioma;
+                }
+                else{
+                  // Sin Filtro, ultimas postulaciones.
+                  $busqueda = false;
+                  $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+                    ->where('estado_propuesta','activo')
+                    ->orderBy('created_at','DESC')
+                    ->paginate(self::CANT_PAGINA);
+                }
+              }
+            }
+          }
         }
 
         foreach ($propuestas as $key => $propuesta) {
@@ -70,7 +184,16 @@ class PropuestasController extends Controller
 
         return view('in.propuestas_laborales.index')
           ->with('propuestas',$propuestas)
-          ->with('busqueda',$busqueda);
+          ->with('busqueda',$busqueda)
+          ->with('filtro',$filtro)
+          ->with('carreras',$carreras)
+          ->with('mostrar_filtro_carreras',$mostrar_filtro_carreras)
+          ->with('tipos_trabajo',$tipos_trabajo)
+          ->with('mostrar_filtro_tipos_trabajo',$mostrar_filtro_tipos_trabajo)
+          ->with('tipos_jornada',$tipos_jornada)
+          ->with('mostrar_filtro_tipos_jornada',$mostrar_filtro_tipos_jornada)
+          ->with('idiomas',$idiomas)
+          ->with('mostrar_filtro_idiomas',$mostrar_filtro_idiomas);
 
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
