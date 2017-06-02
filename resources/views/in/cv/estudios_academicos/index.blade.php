@@ -53,7 +53,7 @@
         </thead>
         <!-- contenido de la tabla -->
         <tbody>
-          @foreach( $estudios as $estudio)
+          @foreach( $estudios as $key => $estudio)
             <tr>
               <td>{{$estudio->titulo}}</td>
               <td>{{$estudio->nombre_instituto}}</td>
@@ -67,11 +67,11 @@
                 @endif
               </td>
               <!-- envio el parametro del metodo edit y destroy-->
-              <td>
+              <td class="text-center">
                 @if(true)
                   <a href="{{ route('in.gestionar-cv.estudios-academicos.edit', $estudio->id) }}" class="btn btn-primary"><span class="fa fa-pencil" aria-hidden="true"></span></a>
                 @endif
-                @if(true)
+                @if($key != 0)
                   {!! Form::open(['route' => ['in.gestionar-cv.estudios-academicos.destroy', $estudio->id], 'method' => 'DELETE', 'style' => "display: inline-block"]) !!}
                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#delSpk" data-title="Eliminar Estudio Académico"
                       data-message="¿Seguro que quiere eliminar la carrera de {{$estudio->titulo}}?"><span class=" fa fa-trash-o" aria-hidden="true"></span></a>

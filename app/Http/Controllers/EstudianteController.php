@@ -14,6 +14,7 @@ use App\Carrera as Carrera;
 use App\Idioma as Idioma;
 use App\Fisica as Fisica;
 use App\Juridica as Juridica;
+use App\Estado_Carrera as Estado_Carrera;
 use App\Experiencia_Laboral as Experiencia_Laboral;
 use App\Estudio_Academico as Estudio_Academico;
 use App\Conocimiento_Idioma as Conocimiento_Idioma;
@@ -335,14 +336,17 @@ class EstudianteController extends Controller
               }
               if ($tieneExcluyente) {
                 $cumpleCarrera = false;
+                $estadoFinalizado = Estado_Carrera::where('nombre_estado_carrera','=','Finalizado')->first();
+                $estadoEnCurso = Estado_Carrera::where('nombre_estado_carrera','=','En curso')->first();
                 foreach ($propuesta->requisitosCarrera as $requisitoCarrera) {
                   if ($requisitoCarrera->excluyente) {
                     if ($requisitoCarrera->carrera_id == $carrera->id) {
-                      if ($estudio->estado_carrera_id == 2) {
+                      $estadoFinalizado = Estado_Carrera::where('nombre_estado_carrera','=','Finalizado')->first();
+                      if ($estudio->estado_carrera_id == $estadoFinalizado->id) {
                         $cumpleCarrera = true;
                       }
                       else {
-                        if (($estudio->estado_carrera_id == 1) && ($requisitoCarrera->estado_carrera_id == 1)) {
+                        if (($estudio->estado_carrera_id == $estadoEnCurso->id) && ($requisitoCarrera->estado_carrera_id == $estadoEnCurso->id)) {
                           $cumpleCarrera = true;
                         }
                       }

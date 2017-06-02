@@ -38,18 +38,31 @@
         <div class="form-group">
           {!! Form::label('titulo','Titulo o Certificación:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::text('titulo', $estudio->titulo, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            @if ($primerRegistro)
+              {!! Form::text('titulo', $estudio->titulo, ['class' => 'form-control', 'placeholder' => '', 'required', 'readonly'])!!}
+            @else
+              {!! Form::text('titulo', $estudio->titulo, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            @endif
           </div>
           {!! Form::label('nivel_educativo','Nivel Educativo:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
-            {!! Form::select('nivel_educativo',$nivelesEducativos, $estudio->nivel_educativo_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNE'])!!}
+            @if ($primerRegistro)
+              {!! Form::select('nivel_educativo',$nivelesEducativos, $estudio->nivel_educativo_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNE', 'disabled'])!!}
+              {!! Form::select('nivel_educativo',$nivelesEducativos, $estudio->nivel_educativo_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNE', 'hidden'])!!}
+            @else
+              {!! Form::select('nivel_educativo',$nivelesEducativos, $estudio->nivel_educativo_id, ['class' =>'populate placeholder', 'id' => 'selectSimpleNE'])!!}
+            @endif
           </div>
         </div>
 
         <div class="form-group">
           {!! Form::label('nombre_instituto','Instituto:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-4">
-            {!! Form::text('nombre_instituto', $estudio->nombre_instituto, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            @if ($primerRegistro)
+              {!! Form::text('nombre_instituto', $estudio->nombre_instituto, ['class' => 'form-control', 'placeholder' => '', 'required', 'readonly'])!!}
+            @else
+              {!! Form::text('nombre_instituto', $estudio->nombre_instituto, ['class' => 'form-control', 'placeholder' => '', 'required'])!!}
+            @endif
           </div>
           {!! Form::label('estado_carrera','Estado de la Carrera:', ['class' => 'col-sm-2 control-label']) !!}
           <div class="col-sm-2">
