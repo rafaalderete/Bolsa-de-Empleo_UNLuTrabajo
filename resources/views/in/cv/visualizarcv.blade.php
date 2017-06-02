@@ -239,7 +239,7 @@
                           @foreach($conocimientosIdiomas as $conocimientoIdioma)
                             @if ($idioma->id == $conocimientoIdioma->idioma_id)
                               <div class="cv-item-dato">
-                                <span class="cv-item-dato">{{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma." - ".$conocimientoIdioma->nivelConocimiento->nombre_nivel_conocimiento}}</span>
+                                <span>{{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma." - ".$conocimientoIdioma->nivelConocimiento->nombre_nivel_conocimiento}}</span>
                               </div>
                             @endif
                           @endforeach

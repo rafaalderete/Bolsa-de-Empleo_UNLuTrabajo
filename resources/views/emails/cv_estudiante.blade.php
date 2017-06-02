@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-3 no-margin-padding">
                   @if(Auth::user()->imagen != null)
-                    <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" class="cv-imagen img-rounded" alt="avatar">
+                    <img src="{{asset('img/usuarios').'/'.Auth::user()->imagen}}" class="cv-imagen-pdf img-rounded" alt="avatar">
                   @endif
                 </div>
               </div>
@@ -133,7 +133,7 @@
                       @foreach($estudios as $estudio)
                         <div class="item">
                           <div class="upper-row">
-                            <h3 class="cv-item-titulo">{{$estudio->titulo}}</h3>
+                            <span class="cv-item-titulo">{{$estudio->titulo}}</span>
                             <div class="time">
                               <span>{{$estudio->periodo_inicio}}</span> /
                                 @if($estudio->periodo_fin == 0)
@@ -173,7 +173,7 @@
                       @foreach($expLaborales as $expLaboral)
                         <div class="item">
                           <div class="upper-row">
-                            <h3 class="cv-item-titulo">{{$expLaboral->puesto}}</h3>
+                            <span class="cv-item-titulo">{{$expLaboral->puesto}}</span>
                             <div class="time">
                               <span>{{$expLaboral->periodo_inicio}}</span> /
                                 @if($expLaboral->periodo_fin == 0)

@@ -117,7 +117,7 @@
           @if( ($propuesta->requisito_años_experiencia_laboral != 0) || (count($propuesta->requisitosResidencia) > 0) || (count($propuesta->requisitosCarrera) > 0) || (count($propuesta->requisitosIdioma) > 0) || (count($propuesta->requisitosAdicionales) > 0) )
             <div class="row">
               <div class="col-md-12 requisitos-label">
-                <p>Requisitos:</p>
+                <p>Requisitos a considerar:</p>
               </div>
             </div>
             <div class="row">

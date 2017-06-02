@@ -27,6 +27,15 @@
   margin-right: 20px;
 }
 
+.cv-imagen-pdf {
+  position: absolute;
+  top:50px;
+  right: 0;
+  float:right;
+  width: 130px;
+  height: 100px;
+  margin-right: 20px;
+}
 .no-margin-padding {
   margin: 0;
   padding: 0;
@@ -65,7 +74,6 @@
 }
 
 .cv-objetivo {
-  color: #000;
   word-wrap: break-word;
 }
 
