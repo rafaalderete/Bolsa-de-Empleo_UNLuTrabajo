@@ -207,7 +207,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-sm-12">
                       @foreach($idiomas as $idioma)
                         <?php $cant = 0; ?>
                         @foreach($conocimientosIdiomas as $conocimientoIdioma)
@@ -216,19 +216,17 @@
                           @endif
                         @endforeach
                         @if ($cant > 0)
-                          <div class="row item">
-                            <div class="col-md-2">
+                          <div class="item">
+                            <div class="upper-row">
                               <span class="cv-item-titulo">{{$idioma->nombre_idioma}}</span>
                             </div>
-                            <div class="col-md-3">
-                              @foreach($conocimientosIdiomas as $conocimientoIdioma)
-                                @if ($idioma->id == $conocimientoIdioma->idioma_id)
-                                  <div class="row">
-                                    <span class="cv-item-dato">{{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma." - ".$conocimientoIdioma->nivelConocimiento->nombre_nivel_conocimiento}}</span>
-                                  </div>
-                                @endif
-                              @endforeach
-                            </div>
+                            @foreach($conocimientosIdiomas as $conocimientoIdioma)
+                              @if ($idioma->id == $conocimientoIdioma->idioma_id)
+                                <div class="cv-item-dato">
+                                  <span class="cv-item-dato">{{$conocimientoIdioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma." - ".$conocimientoIdioma->nivelConocimiento->nombre_nivel_conocimiento}}</span>
+                                </div>
+                              @endif
+                            @endforeach
                           </div>
                         @endif
                         <?php $cant = 0; ?>
@@ -252,7 +250,7 @@
                       @foreach($conocimientosInformaticos as $conocimientoInformatico)
                         <div class="item">
                           <div class="upper-row">
-                            <h3 class="cv-item-titulo">{{$conocimientoInformatico->tipoSoftware->nombre_tipo_software}}</h3>
+                            <span class="cv-item-titulo">{{$conocimientoInformatico->tipoSoftware->nombre_tipo_software}}</span>
                           </div>
                           <div class="cv-item-dato">
                             <span>{{$conocimientoInformatico->nivelConocimiento->nombre_nivel_conocimiento}}</span>
