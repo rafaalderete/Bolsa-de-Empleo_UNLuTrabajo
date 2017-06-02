@@ -97,7 +97,7 @@
                   </div>
                 </div>
               @endif
-              
+
               @if($mostrar_filtro_tipos_trabajo)
                 <div class="panel panel-default">
                   <div class="panel-heading">
@@ -200,7 +200,7 @@
                 </div>
               @endif
 
-              
+
               @if ($busqueda)
                 <div class="elminar-filtro">
                   <a href={{ route('in.propuestas-laborales.index') }}>Eliminar Filtro<span class="glyphicon glyphicon-remove"></span></a>
@@ -215,7 +215,7 @@
             <div class="col-md-12">
               <h4>Filtro - {{ $filtro }}</h4>
             </div>
-          </div>          
+          </div>
 
           <div class="anuncios">
             @if(count($propuestas) > 0)
@@ -248,9 +248,9 @@
                       <div class="row">
                         <div class="col-md-12 anuncio-subtitulo">
                           @if ($propuesta->finalizada)
-                            <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                            <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada - Postulantes: {{$propuesta->cant_postulantes}}</p>
                           @else
-                            <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
+                            <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Postulantes: {{$propuesta->cant_postulantes}}</p>
                           @endif
                         </div>
                       </div>
@@ -268,10 +268,13 @@
               </div>
             @endif
           </div>
-        </div>
-
-        <div class="text-center">
-          {!! $propuestas->render()!!}
+          <div class="text-center">
+            @if ($pagina == "")
+              {!!$propuestas->render()!!}
+            @else
+              {!!$propuestas->appends(Request::only($pagina))->render()!!}
+            @endif
+          </div>
         </div>
       </div>
     </div>

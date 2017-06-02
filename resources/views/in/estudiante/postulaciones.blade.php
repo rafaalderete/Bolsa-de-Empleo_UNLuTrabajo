@@ -55,7 +55,7 @@
                   </div>
                 </div>
               </div>
-              
+
               @if($mostrar_filtro_carreras)
                 <div class="panel panel-default">
                   <div class="panel-heading">
@@ -90,7 +90,7 @@
                   </div>
                 </div>
               @endif
-              
+
               @if($mostrar_filtro_tipos_trabajo)
                 <div class="panel panel-default">
                   <div class="panel-heading">
@@ -206,7 +206,7 @@
                   <div class="panel-body" id="columna">
                     <table class="table">
                       @foreach ($juridicas as $key => $juridica)
-                        @if($juridica->cantidad > 0)  
+                        @if($juridica->cantidad > 0)
                           <tr>
                             @if ($key == 0)
                               <td class="primer-elemento-filtro">
@@ -293,9 +293,13 @@
                 </div>
               @endif
             </div>
-          </div>
-          <div class="text-center">
-           {!! $propuestas->render()!!}
+            <div class="text-center">
+              @if ($pagina == "")
+                {!!$propuestas->render()!!}
+              @else
+                {!!$propuestas->appends(Request::only($pagina))->render()!!}
+              @endif
+            </div>
           </div>
         </div>
       </div>

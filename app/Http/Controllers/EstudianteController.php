@@ -24,6 +24,8 @@ use Carbon\Carbon;
 use Barryvdh\DomPDF\PDF;
 use File;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 
 class EstudianteController extends Controller
 {
@@ -86,14 +88,11 @@ class EstudianteController extends Controller
             ->count();
         }
 
-
         $busqueda = true;
-        $filtro = "Últimas Ofertas";
 
         //Filtro palabra clave.
         if(isset($request->buscar) && $request->buscar != null) {
           $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
-          //dd($request->buscar);
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
           $empresa = Juridica::Where('nombre_comercial','LIKE','%'.$palabra_a_buscar.'%')->first();
           if($empresa != null){
@@ -110,7 +109,7 @@ class EstudianteController extends Controller
                 ->where('estado_propuesta','activo')
                 ->where('fecha_fin_propuesta','>=',$today)
               ->orderBy('created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_buscar');
           }else{
             $propuestas = Propuesta_Laboral::where('titulo','LIKE', '%'.$palabra_a_buscar.'%')
                 ->where('estado_propuesta','activo')
@@ -122,8 +121,9 @@ class EstudianteController extends Controller
                 ->where('estado_propuesta','activo')
                 ->where('fecha_fin_propuesta','>=',$today)
               ->orderBy('created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_buscar');
           }
+          $pagina = "buscar";
         }
         else {
           //Filtro carrera.
@@ -135,7 +135,8 @@ class EstudianteController extends Controller
               ->where('estado_propuesta','activo')
               ->where('fecha_fin_propuesta','>=',$today)
               ->orderBy('propuestas_laborales.created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_carrera');
+            $pagina = "carrera";
             $tipo_carrera_buscado = Carrera::find($request->carrera);
             $filtro = "Carrera - ".$tipo_carrera_buscado->nombre_carrera;
           }
@@ -146,7 +147,8 @@ class EstudianteController extends Controller
                 ->where('estado_propuesta','activo')
                 ->where('fecha_fin_propuesta','>=',$today)
                 ->orderBy('created_at','DESC')
-                ->paginate(self::CANT_PAGINA);
+                ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_trabajo');
+              $pagina = "tipo_trabajo";
               $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
               $filtro = "Tipo de Trabajo - ".$tipo_trabajo_buscado->nombre_tipo_trabajo;
             }
@@ -157,7 +159,8 @@ class EstudianteController extends Controller
                   ->where('estado_propuesta','activo')
                   ->where('fecha_fin_propuesta','>=',$today)
                   ->orderBy('created_at','DESC')
-                  ->paginate(self::CANT_PAGINA);
+                  ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_jornada');
+                $pagina = "tipo_jornada";
                 $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
                 $filtro = "Tipo de Jornada - ".$tipo_jornada_buscado->nombre_tipo_jornada;
               }
@@ -171,7 +174,8 @@ class EstudianteController extends Controller
                     ->where('estado_propuesta','activo')
                     ->where('fecha_fin_propuesta','>=',$today)
                     ->orderBy('propuestas_laborales.created_at','DESC')
-                    ->paginate(self::CANT_PAGINA);
+                    ->paginate(self::CANT_PAGINA,['*'], 'pag_idioma');
+                  $pagina = "idioma";
                   $idioma_buscado = Idioma::find($request->idioma);
                   $filtro = "Idioma - ".$idioma_buscado->nombre_idioma;
                 }
@@ -185,17 +189,41 @@ class EstudianteController extends Controller
                       ->where('estado_propuesta','activo')
                       ->where('fecha_fin_propuesta','>=',$today)
                       ->orderBy('propuestas_laborales.created_at','DESC')
-                      ->paginate(self::CANT_PAGINA);
+                      ->paginate(self::CANT_PAGINA,['*'], 'pag_juridica');
+                    $pagina = "juridica";
                     $juridica_buscado = Juridica::find($request->juridica);
                     $filtro = "Empresa - ".$juridica_buscado->nombre_comercial;
                   }
                   else {
-                    //Sin filtro, ultimas propuestas.
+                    //Sin filtro, carrera del estudiante y últimas propuestas.
                     $busqueda = false;
-                    $propuestas = Propuesta_Laboral::where('estado_propuesta','activo')
+                    $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
+                    $carrera =  Carrera::find($carreraId);
+                    $propuestasCarrera = Propuesta_Laboral::whereHas('requisitosCarrera', function($query) use ($carreraId){
+                          $query->where('carrera_id',$carreraId);
+                      })
+                      ->where('estado_propuesta','activo')
                       ->where('fecha_fin_propuesta','>=',$today)
-                      ->orderBy('created_at','DESC')
-                      ->paginate(self::CANT_PAGINA);
+                      ->orderBy('propuestas_laborales.created_at','DESC')->get();
+
+                    $propuestasNoCarrera = Propuesta_Laboral::doesntHave('requisitosCarrera')
+                      ->where('estado_propuesta','activo')
+                      ->where('fecha_fin_propuesta','>=',$today)
+                      ->orderBy('propuestas_laborales.created_at','DESC')->get();
+
+                    $propuestasTotales = [];
+                    foreach($propuestasCarrera as $key => $prop) {
+                      array_push($propuestasTotales,$prop);
+                    }
+                    foreach($propuestasNoCarrera as $key => $prop) {
+                      array_push($propuestasTotales,$prop);
+                    }
+                    $propuestasPagina = LengthAwarePaginator::resolveCurrentPage();
+                    $propuestasPagina = array_slice($propuestasTotales, ($propuestasPagina - 1)*self::CANT_PAGINA, self::CANT_PAGINA);
+                    $propuestas = new LengthAwarePaginator($propuestasPagina, count($propuestasTotales), self::CANT_PAGINA);
+                    $propuestas->setPath("buscar-ofertas");
+                    $pagina = "";
+                    $filtro = "Carrera - ".$carrera->nombre_carrera.", Últimas Ofertas";
                   }
                 }
               }
@@ -214,6 +242,7 @@ class EstudianteController extends Controller
           ->with('carreras',$carreras)
           ->with('idiomas',$idiomas)
           ->with('propuestas',$propuestas)
+          ->with('pagina',$pagina)
           ->with('filtro',$filtro)
           ->with('busqueda',$busqueda)
           ->with('juridicas',$juridicas);
@@ -284,6 +313,7 @@ class EstudianteController extends Controller
             return redirect()->route('in.buscar-ofertas');
           }
           else {
+            //Control si ya está postulado
             $postulado = false;
             foreach ($propuesta->estudiantes as $estudiante) {
               if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
@@ -291,7 +321,38 @@ class EstudianteController extends Controller
               }
             }
 
-            if (!$postulado) {
+            //Control de requerimientos de la propuesta.
+            $estudio = Estudio_Academico::where('cv_id','=',Auth::user()->persona->fisica->estudiante->cv->id)->first();
+            $carrera = Carrera::find(Auth::user()->persona->fisica->estudiante->carrera_id);
+            $cumpleCarrera = true;
+            $tieneExcluyente = false;
+            if((count($propuesta->requisitosCarrera) > 0)) {
+              $tieneExcluyente = false;
+              foreach ($propuesta->requisitosCarrera as $requisitoCarrera) {
+                if ($requisitoCarrera->excluyente) {
+                  $tieneExcluyente = true;
+                }
+              }
+              if ($tieneExcluyente) {
+                $cumpleCarrera = false;
+                foreach ($propuesta->requisitosCarrera as $requisitoCarrera) {
+                  if ($requisitoCarrera->excluyente) {
+                    if ($requisitoCarrera->carrera_id == $carrera->id) {
+                      if ($estudio->estado_carrera_id == 2) {
+                        $cumpleCarrera = true;
+                      }
+                      else {
+                        if (($estudio->estado_carrera_id == 1) && ($requisitoCarrera->estado_carrera_id == 1)) {
+                          $cumpleCarrera = true;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (!$postulado && $cumpleCarrera) {
               //Mail al Empleador.
               define('BUDGETS_DIR', public_path('uploads/budgets'));
 
@@ -321,6 +382,8 @@ class EstudianteController extends Controller
                 }
               }
 
+              $idiomas = Idioma::all();
+
               //Experiencias Laborales
               $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
@@ -337,7 +400,7 @@ class EstudianteController extends Controller
               $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
 
-              File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+              File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
 
               Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
                   $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
@@ -358,7 +421,12 @@ class EstudianteController extends Controller
               return redirect()->route('in.buscar-ofertas');
             }
             else {
-              Flash::error('Ya se ha postulado a ésta Oferta.')->important();
+              if ($postulado) {
+                Flash::error('Ya se ha postulado a ésta Oferta.')->important();
+              }
+              if (!$cumpleCarrera) {
+                Flash::error('No cumple con los requerimientos de ésta Oferta.')->important();
+              }
               return redirect()->route('in.buscar-ofertas');
             }
           }
@@ -462,7 +530,7 @@ class EstudianteController extends Controller
               ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')
               ->orwhere('juridica_id','=',$empresa->id) // busca las propuestas de esas personas Juridicas
               ->orderBy('created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_buscar');
           }else{
             $propuestas = Propuesta_Laboral::whereHas('estudiantes', function($query) use ($estudianteId){
                   $query->where('estudiante_id',$estudianteId);
@@ -471,8 +539,9 @@ class EstudianteController extends Controller
               ->orWhere('lugar_de_trabajo','LIKE', '%'.$palabra_a_buscar.'%')
               ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')
               ->orderBy('created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_buscar');
           }
+          $pagina = "buscar";
         }
         else {
           //Filtro carrera.
@@ -484,7 +553,8 @@ class EstudianteController extends Controller
                       $query->where('estudiante_id',$estudianteId);
             })
               ->orderBy('propuestas_laborales.created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_carrera');
+            $pagina = "carrera";
             $tipo_carrera_buscado = Carrera::find($request->carrera);
             $filtro = "Carrera - ".$tipo_carrera_buscado->nombre_carrera;
           }
@@ -497,7 +567,8 @@ class EstudianteController extends Controller
                       ->where('tipo_trabajo_id',$tipo_trabajoId);
               })
                 ->orderBy('propuestas_laborales.created_at','DESC')
-                ->paginate(self::CANT_PAGINA);
+                ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_trabajo');
+              $pagina = "tipo_trabajo";
               $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
               $filtro = "Tipo de Trabajo - ".$tipo_trabajo_buscado->nombre_tipo_trabajo;
             }
@@ -510,7 +581,8 @@ class EstudianteController extends Controller
                       ->where('tipo_jornada_id',$tipo_jornadaId);
                 })
                   ->orderBy('propuestas_laborales.created_at','DESC')
-                  ->paginate(self::CANT_PAGINA);
+                  ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_jornada');
+                $pagina = "tipo_jornada";
                 $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
                 $filtro = "Tipo de Jornada - ".$tipo_jornada_buscado->nombre_tipo_jornada;
               }
@@ -524,7 +596,8 @@ class EstudianteController extends Controller
                       $query->where('estudiante_id',$estudianteId);
                   })
                     ->orderBy('propuestas_laborales.created_at','DESC')
-                    ->paginate(self::CANT_PAGINA);
+                    ->paginate(self::CANT_PAGINA,['*'], 'pag_idioma');
+                  $pagina = "idioma";
                   $idioma_buscado = Idioma::find($request->idioma);
                   $filtro = "Idioma - ".$idioma_buscado->nombre_idioma;
                 }
@@ -537,7 +610,8 @@ class EstudianteController extends Controller
                               ->where('juridica_id',$juridicaId);
                       })
                         ->orderBy('propuestas_laborales.created_at','DESC')
-                        ->paginate(self::CANT_PAGINA);
+                        ->paginate(self::CANT_PAGINA,['*'], 'pag_juridica');
+                    $pagina = "juridica";
                     $juridica_buscado = Juridica::find($request->juridica);
                     $filtro = "Empresa - ".$juridica_buscado->nombre_comercial;
                   }
@@ -549,6 +623,7 @@ class EstudianteController extends Controller
                     })
                       ->orderBy('propuestas_laborales.created_at','DESC')
                       ->paginate(self::CANT_PAGINA);
+                    $pagina = "";
                   }
                 }
               }
@@ -567,6 +642,7 @@ class EstudianteController extends Controller
         }
 
         return view('in.estudiante.postulaciones')
+          ->with('pagina',$pagina)
           ->with('propuestas',$propuestas)
           ->with('busqueda',$busqueda)
           ->with('filtro',$filtro)

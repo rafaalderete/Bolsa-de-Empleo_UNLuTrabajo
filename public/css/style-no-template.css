@@ -197,6 +197,11 @@ html {
   font-weight: bold;
 }
 
+.importante {
+  color: blue;
+  font-weight: bold;
+}
+
 .eliminar_imagen {
   cursor: pointer;
 }

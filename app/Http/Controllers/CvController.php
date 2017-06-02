@@ -14,6 +14,7 @@ use App\Conocimiento_Idioma as Conocimiento_Idioma;
 use App\Conocimiento_Informatico as Conocimiento_Informatico;
 use App\Conocimiento_Adicional as Conocimiento_Adicional;
 use App\Cv as Cv;
+use App\Idioma as Idioma;
 use App\Http\Requests\UpdateObjetivoLaboralRequest;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
@@ -37,9 +38,11 @@ class CvController extends Controller
               }
             }
 
+            $idiomas = Idioma::all();
+
             //Experiencias Laborales
             $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-            
+
             // Estudios Academicos
             $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
@@ -57,6 +60,7 @@ class CvController extends Controller
             */
             return view('in.cv.visualizarcv')
               ->with('pfisica',$pfisica)
+              ->with('idiomas',$idiomas)
               ->with('telefono_fijo',$telefono_fijo)
               ->with('telefono_celular',$telefono_celular)
               ->with('expLaborales',$expLaborales)
@@ -66,7 +70,7 @@ class CvController extends Controller
               ->with('conocimientosAdicionales',$conocimientosAdicionales);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
-        }  
+        }
     }
 
     public function visualizarDatosPersonales()
@@ -104,7 +108,7 @@ class CvController extends Controller
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
     }
-    
+
     public function editObjetivoLaboral()
     {
         if(Auth::user()->can('modificar_objetivo_laboral_cv')){
@@ -148,9 +152,11 @@ class CvController extends Controller
               }
             }
 
+            $idiomas = Idioma::all();
+
             //Experiencias Laborales
             $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-            
+
             // Estudios Academicos
             $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
@@ -162,8 +168,8 @@ class CvController extends Controller
 
             // Conocimientos Adicionales
             $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-            
-            $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+
+            $pdf = \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
             return $pdf->download('Curriculum-Vitae.pdf');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

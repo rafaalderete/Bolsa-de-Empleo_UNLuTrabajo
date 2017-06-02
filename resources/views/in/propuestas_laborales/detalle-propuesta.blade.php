@@ -37,9 +37,9 @@
           <div class="row">
             <div class="col-md-12 anuncio-subtitulo divisor">
               @if ($propuesta->finalizada)
-                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada - Postulantes: {{$propuesta->cant_postulantes}}</p>
               @else
-                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
+                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} - Postulantes: {{$propuesta->cant_postulantes}} </p>
               @endif
             </div>
           </div>
@@ -99,7 +99,7 @@
           @if( ($propuesta->requisito_años_experiencia_laboral != 0) || (count($propuesta->requisitosResidencia) > 0) || (count($propuesta->requisitosCarrera) > 0) || (count($propuesta->requisitosIdioma) > 0) || (count($propuesta->requisitosAdicionales) > 0) )
             <div class="row">
               <div class="col-md-12 requisitos-label">
-                <p>Requisitos:</p>
+                <p>Requisitos a considerar:</p>
               </div>
             </div>
             <div class="row">
@@ -120,7 +120,7 @@
                               <li>
                                 {{ $requisito_residencia->lugar }}
                                 @if($requisito_residencia->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach
@@ -155,7 +155,7 @@
                                 {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
                                 {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
                                 @if($requisito_idioma->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach
@@ -172,7 +172,7 @@
                                 {{ $requisito_adicional->nombre_requisito }} -
                                 {{ $requisito_adicional->nivelConocimiento->nombre_nivel_conocimiento }}
                                 @if($requisito_adicional->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach
@@ -199,7 +199,7 @@
             data-message="¿Seguro que quiere eliminar la Propuesta?" style="margin-top: -5px"><span><i class="fa fa-times-circle txt-danger"></i></span>Eliminar</a>
           {!! Form::close() !!}
         @endif
-        @if(Entrust::can('modificar_propuesta_laboral'))
+        @if(Entrust::can('modificar_propuesta_laboral') && $puede_modificar)
           <a href="{{ route('in.propuestas-laborales.edit', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
             <span><i class="fa fa-check-square"></i></span>
             Modificar

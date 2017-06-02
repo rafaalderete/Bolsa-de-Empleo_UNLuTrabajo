@@ -56,7 +56,7 @@
       </div>
 
      <div class="form-group">
-        <div class="col-sm-offset-5 col-sm-2">
+        <div class="col-sm-12 text-center">
           <a  href="{{ route('in.cv.editobjetivolaboralcv') }}" ><button class="btn btn-info btn-label-left">
             <span><i class="fa fa-pencil"></i></span>
             Modificar

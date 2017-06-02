@@ -158,6 +158,21 @@ class UsuariosController extends PersonasController
                 $cv = new Cv();
                 $cv->estudiante_id = $estudiante->id;
                 $cv->save();//Se inserta el Cv.
+
+                $estudio_academico = new Estudio_Academico();
+                $estudio_academico->cv_id = $cv->id;
+                $estudio_academico->nombre_instituto = "Universidad Nacional de Luján";
+                $carreraUNLu = Carrera::where('id',$unlu_estudiante->unlu_carrera_id)->first();
+                $estudio_academico->titulo = $carreraUNLu->nombre_carrera;
+                $estudio_academico->materias_total = $carreraUNLu->total_materias;
+                $estudio_academico->materias_aprobadas = $unlu_estudiante->total_materias_aprobadas;
+                $nivelEducativo = Nivel_Educativo::where('nombre_nivel_educativo','Universidad')->first();
+                $estudio_academico->nivel_educativo_id = $nivelEducativo->id;
+                $estadoCarrera = Estado_Carrera::where('nombre_estado_carrera','En curso')->first();
+                $estudio_academico->estado_carrera_id = $estadoCarrera->id;
+                $estudio_academico->periodo_inicio = $unlu_estudiante->fecha_inicio_carrera;
+                $estudio_academico->periodo_fin = "00-00-0000";
+                $estudio_academico->save();
               }
             }
 
@@ -352,6 +367,21 @@ class UsuariosController extends PersonasController
                 $cv = new Cv();
                 $cv->estudiante_id = $estudiante->id;
                 $cv->save();//Se inserta el Cv.
+
+                $estudio_academico = new Estudio_Academico();
+                $estudio_academico->cv_id = $cv->id;
+                $estudio_academico->nombre_instituto = "Universidad Nacional de Luján";
+                $carreraUNLu = Carrera::where('id',$unlu_estudiante->unlu_carrera_id)->first();
+                $estudio_academico->titulo = $carreraUNLu->nombre_carrera;
+                $estudio_academico->materias_total = $carreraUNLu->total_materias;
+                $estudio_academico->materias_aprobadas = $unlu_estudiante->total_materias_aprobadas;
+                $nivelEducativo = Nivel_Educativo::where('nombre_nivel_educativo','Universidad')->first();
+                $estudio_academico->nivel_educativo_id = $nivelEducativo->id;
+                $estadoCarrera = Estado_Carrera::where('nombre_estado_carrera','En curso')->first();
+                $estudio_academico->estado_carrera_id = $estadoCarrera->id;
+                $estudio_academico->periodo_inicio = $unlu_estudiante->fecha_inicio_carrera;
+                $estudio_academico->periodo_fin = "00-00-0000";
+                $estudio_academico->save();
               }
             }
 
@@ -577,7 +607,7 @@ class UsuariosController extends PersonasController
             $cv->save();//Se inserta el Cv.
 
             $estudio_academico = new Estudio_Academico();
-            $estudio_academico->cv_id = $estudiante->id;
+            $estudio_academico->cv_id = $cv->id;
             $estudio_academico->nombre_instituto = "Universidad Nacional de Luján";
             $carreraUNLu = Carrera::where('id',$unlu_estudiante[0]->unlu_carrera_id)->first();
             $estudio_academico->titulo = $carreraUNLu->nombre_carrera;

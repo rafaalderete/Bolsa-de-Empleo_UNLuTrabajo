@@ -266,7 +266,11 @@
               @endif
               </div>
               <div class="text-center">
-               {!! $propuestas->render()!!}
+                @if ($pagina == "")
+                  {!!$propuestas->render()!!}
+                @else
+                  {!!$propuestas->appends(Request::only($pagina))->render()!!}
+                @endif
               </div>
           </div>
 

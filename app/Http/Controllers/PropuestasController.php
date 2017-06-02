@@ -37,7 +37,7 @@ class PropuestasController extends Controller
 
     const CANT_PAGINA = 5;
     const DESCRIPCION = 350; //Cantidad de caracteres que se mostrarán en el index.
-    const TITULO = 10; //Cantidad de caracteres que se mostrarán del titulo.
+    const TITULO = 30; //Cantidad de caracteres que se mostrarán del titulo.
 
     /**
      * Display a listing of the resource.
@@ -119,7 +119,8 @@ class PropuestasController extends Controller
             ->orWhere('descripcion','LIKE', '%'.$palabra_a_buscar.'%')
             ->where('estado_propuesta','activo')
             ->orderBy('created_at','DESC')
-            ->paginate(self::CANT_PAGINA);
+            ->paginate(self::CANT_PAGINA,['*'], 'pag_buscar');
+            $pagina = "buscar";
         }
         else {
           //Filtro carrera.
@@ -130,9 +131,10 @@ class PropuestasController extends Controller
                             ->where('juridica_id',Auth::user()->persona->juridica->id);
             })
               ->orderBy('propuestas_laborales.created_at','DESC')
-              ->paginate(self::CANT_PAGINA);
+              ->paginate(self::CANT_PAGINA,['*'], 'pag_carrera');
             $tipo_carrera_buscado = Carrera::find($request->carrera);
             $filtro = "Carrera - ".$tipo_carrera_buscado->nombre_carrera;
+            $pagina = "carrera";
           }
           else {
             //Filtro tipo de trabajo.
@@ -141,7 +143,8 @@ class PropuestasController extends Controller
               $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
                             ->where('tipo_trabajo_id',$tipo_trabajoId)
                             ->orderBy('propuestas_laborales.created_at','DESC')
-                            ->paginate(self::CANT_PAGINA);
+                            ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_trabajo');
+              $pagina = "tipo_trabajo";
               $tipo_trabajo_buscado = Tipo_Trabajo::find($request->tipo_trabajo);
               $filtro = "Tipo de Trabajo - ".$tipo_trabajo_buscado->nombre_tipo_trabajo;
             }
@@ -152,7 +155,8 @@ class PropuestasController extends Controller
                 $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
                                 ->where('tipo_jornada_id',$tipo_jornadaId)
                                 ->orderBy('propuestas_laborales.created_at','DESC')
-                                ->paginate(self::CANT_PAGINA);
+                                ->paginate(self::CANT_PAGINA,['*'], 'pag_tipo_jornada');
+                $pagina = "tipo_jornada";
                 $tipo_jornada_buscado = Tipo_Jornada::find($request->tipo_jornada);
                 $filtro = "Tipo de Jornada - ".$tipo_jornada_buscado->nombre_tipo_jornada;
               }
@@ -165,7 +169,8 @@ class PropuestasController extends Controller
                                 ->where('juridica_id',Auth::user()->persona->juridica->id);
                   })
                     ->orderBy('propuestas_laborales.created_at','DESC')
-                    ->paginate(self::CANT_PAGINA);
+                    ->paginate(self::CANT_PAGINA,['*'], 'pag_idioma');
+                  $pagina = "idioma";
                   $idioma_buscado = Idioma::find($request->idioma);
                   $filtro = "Idioma - ".$idioma_buscado->nombre_idioma;
                 }
@@ -176,6 +181,7 @@ class PropuestasController extends Controller
                     ->where('estado_propuesta','activo')
                     ->orderBy('created_at','DESC')
                     ->paginate(self::CANT_PAGINA);
+                  $pagina = "";
                 }
               }
             }
@@ -188,11 +194,13 @@ class PropuestasController extends Controller
           if ($today > $propuestas[$key]->fecha_fin_propuesta) {
             $propuestas[$key]->finalizada = true;
           }
+          $propuestas[$key]->cant_postulantes = count($propuestas[$key]->estudiantes);
           $propuestas[$key]->descripcion = substr($propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
           $propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuestas[$key]->fecha_inicio_propuesta));
         }
 
         return view('in.propuestas_laborales.index')
+          ->with('pagina',$pagina)
           ->with('propuestas',$propuestas)
           ->with('busqueda',$busqueda)
           ->with('filtro',$filtro)
@@ -425,9 +433,15 @@ class PropuestasController extends Controller
           }
           $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
+          $puede_modificar = true;
+          if (count($propuesta->estudiantes) > 0) {
+            $puede_modificar = false;
+          }
+          $propuesta->cant_postulantes = count($propuesta->estudiantes);
 
           return view('in.propuestas_laborales.detalle-propuesta')
-            ->with('propuesta',$propuesta);
+            ->with('propuesta',$propuesta)
+            ->with('puede_modificar',$puede_modificar);
         }
 
       }else{
@@ -450,16 +464,11 @@ class PropuestasController extends Controller
           ->where('estado_propuesta','activo')
           ->first();
 
-        if ($propuesta == null) {
+        if (($propuesta == null) || (count($propuesta->estudiantes) > 0) ) {
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {
-          //Fechas para el datepicker.
-          $minY = date('Y', strtotime($propuesta->fecha_inicio_propuesta));
-          $minM = date('m', strtotime($propuesta->fecha_inicio_propuesta));
-          $minD = date('d', strtotime($propuesta->fecha_inicio_propuesta));
           $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
-
           $tipos_trabajo = Tipo_Trabajo::all()->where('estado', 'activo')
             ->lists('nombre_tipo_trabajo', 'id');
           $tipos_jornada= Tipo_Jornada::all()->where('estado', 'activo')
@@ -492,10 +501,7 @@ class PropuestasController extends Controller
               ->with('idiomas',$idiomas)
               ->with('array_idiomas',$array_idiomas)
               ->with('carreras',$carreras)
-              ->with('array_carreras',$array_carreras)
-              ->with('minY',$minY)
-              ->with('minM',$minM)
-              ->with('minD',$minD);
+              ->with('array_carreras',$array_carreras);
         }
 
       }else{
@@ -673,6 +679,8 @@ class PropuestasController extends Controller
             }
           }
 
+          $idiomas = Idioma::all();
+
           //Experiencias Laborales
           $expLaborales = Experiencia_Laboral::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
@@ -692,6 +700,7 @@ class PropuestasController extends Controller
           return $pdf->stream('Arch.pdf');
           */
           return view('in.propuestas_laborales.cv-postulante')
+            ->with('idiomas',$idiomas)
             ->with('propuestaId', $id_propuesta)
             ->with('pfisica',$pfisica)
             ->with('usuarioImagen',$usuarioImagen)

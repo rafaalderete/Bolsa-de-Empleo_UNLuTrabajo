@@ -10,6 +10,7 @@ use Laracasts\Flash\Flash;
 use App\Estudio_Academico as Estudio_Academico;
 use App\Nivel_Educativo as Nivel_Educativo;
 use App\Estado_Carrera as Estado_Carrera;
+use App\Cv as Cv;
 use App\Http\Requests\StoreEstudioAcademicoRequest;
 use App\Http\Requests\UpdateEstudioAcademicoRequest;
 use Illuminate\Support\Facades\Auth;
@@ -230,10 +231,16 @@ class EstudiosAcademicosController extends Controller
         if(Auth::user()->can('eliminar_estudio_academico_cv')){
           $estudio = Estudio_Academico::find($id); // busca el usuario por su id
 
-          $estudio->delete(); // lo elimina
+          $cv = Cv::find(Auth::user()->persona->fisica->estudiante->cv_id);
+          if ( ($cv->id == $estudio->cv->id) && ($cv->estudiosAcademicos[0]->id == $id) ) {
+            $estudio->delete(); // lo elimina
 
-          Flash::error('Estudio Academico de '. $estudio->titulo . ' eliminado.')->important();
-          return redirect()->route('in.gestionar-cv.estudios-academicos.index');
+            Flash::error('Estudio Academico de '. $estudio->titulo . ' eliminado.')->important();
+            return redirect()->route('in.gestionar-cv.estudios-academicos.index');
+          }
+          else {
+            return redirect()->route('in.gestionar-cv.estudios-academicos.index');
+          }
         }else{
           return redirect()->route('in.sinpermisos.sinpermisos');
         }

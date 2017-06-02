@@ -138,7 +138,7 @@
                               <li>
                                 {{ $requisito_residencia->lugar }}
                                 @if($requisito_residencia->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach
@@ -173,7 +173,7 @@
                                 {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
                                 {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
                                 @if($requisito_idioma->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach
@@ -190,7 +190,7 @@
                                 {{ $requisito_adicional->nombre_requisito }} -
                                 {{ $requisito_adicional->nivelConocimiento->nombre_nivel_conocimiento }}
                                 @if($requisito_adicional->excluyente)
-                                   - <span class="excluyente">Excluyente</span>
+                                   - <span class="importante">Importante</span>
                                 @endif
                               </li>
                             @endforeach

@@ -97,7 +97,7 @@
 
         <div class="form-group">
           <div class="col-sm-12 requisitos-label">
-            <p>Requisitos</p>
+            <p>Requisitos a considerar</p>
           </div>
         </div>
 
@@ -118,7 +118,7 @@
                     Lugar de Residencia
                   </th>
                   <th class="text-center col-sm-1">
-                    Excluyente
+                    Importante
                   </th>
                   <th class="text-center col-sm-1 requisitos-tabla">
                   </th>
@@ -162,7 +162,7 @@
                     Nivel
                   </th>
                   <th class="text-center col-sm-1">
-                    Excluyente
+                    Importante
                   </th>
                   <th class="text-center col-sm-1 requisitos-tabla">
                   </th>
@@ -289,7 +289,7 @@
                     Nivel
                   </th>
                   <th class="text-center col-sm-1">
-                    Excluyente
+                    Importante
                   </th>
                   <th class="text-center col-sm-1 requisitos-tabla">
                   </th>
