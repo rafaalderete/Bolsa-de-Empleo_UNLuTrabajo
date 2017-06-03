@@ -426,6 +426,7 @@ class PropuestasController extends Controller
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {
+          $idiomas = Idioma::all();
           $today = Carbon::today()->toDateString();
           $propuesta->finalizada = false;
           if ($today > $propuesta->fecha_fin_propuesta) {
@@ -440,6 +441,7 @@ class PropuestasController extends Controller
           $propuesta->cant_postulantes = count($propuesta->estudiantes);
 
           return view('in.propuestas_laborales.detalle-propuesta')
+            ->with('idiomas',$idiomas)
             ->with('propuesta',$propuesta)
             ->with('puede_modificar',$puede_modificar);
         }

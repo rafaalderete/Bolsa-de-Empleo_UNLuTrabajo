@@ -242,8 +242,7 @@
         toolbar: [
           // [groupName, [list of button]]
           ['style', ['bold', 'italic', 'underline']],
-          ['fontsize', ['fontsize']],
-          ['para', ['ul', 'ol', 'paragraph']],
+          ['para', ['ul', 'ol']],
         ]
       });
 
@@ -265,7 +264,7 @@
           $('.error-descripcion').css('display', 'block');
         }
       });
-      
+
     });
 
     <!-- Cambiar el idioma de datepiker -->

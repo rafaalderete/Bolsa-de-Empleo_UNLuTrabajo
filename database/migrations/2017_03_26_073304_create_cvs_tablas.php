@@ -17,7 +17,7 @@ class CreateCvsTablas extends Migration
           $table->increments('id');
           $table->integer('estudiante_id')->unsigned();
           $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onDelete('cascade');
-          $table->string('carta_presentacion');
+          $table->string('carta_presentacion', 1000);
           $table->string('sueldo_bruto_pretendido');
           $table->timestamps();
       });

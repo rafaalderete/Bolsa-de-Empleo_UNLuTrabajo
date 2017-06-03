@@ -167,15 +167,32 @@
                         <li>Idioma:</li>
                         <li class="item-no-dot">
                           <ul class="lista-interior">
-                            @foreach ($propuesta->requisitosIdioma as $requisito_idioma)
-                              <li>
-                                {{ $requisito_idioma->idioma->nombre_idioma }} -
-                                {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
-                                {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
-                                @if($requisito_idioma->excluyente)
-                                   - <span class="importante">Importante</span>
+                            @foreach ($idiomas as $idioma)
+                              <?php $cant = 0 ?>
+                              @foreach($propuesta->requisitosIdioma as $requisito_idioma)
+                                @if ($idioma->id == $requisito_idioma->idioma_id)
+                                  <?php $cant++; ?>
                                 @endif
-                              </li>
+                              @endforeach
+                              @if ($cant > 0)
+                                <li>
+                                  {{ $idioma->nombre_idioma }}
+                                  <ul>
+                                  @foreach ($propuesta->requisitosIdioma as $requisito_idioma)
+                                    @if ($idioma->id == $requisito_idioma->idioma_id)
+                                      <li>
+                                        {{ $requisito_idioma->tipoConocimientoIdioma->nombre_tipo_conocimiento_idioma }} -
+                                        {{ $requisito_idioma->nivelConocimiento->nombre_nivel_conocimiento }}
+                                        @if($requisito_idioma->excluyente)
+                                           - <span class="importante">Importante</span>
+                                        @endif
+                                      </li>
+                                    @endif
+                                  @endforeach
+                                  </ul>
+                                </li>
+                              @endif
+                              <?php $cant = 0 ?>
                             @endforeach
                           </ul>
                         </li>

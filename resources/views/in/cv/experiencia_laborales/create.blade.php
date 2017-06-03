@@ -186,8 +186,7 @@
         toolbar: [
           // [groupName, [list of button]]
           ['style', ['bold', 'italic', 'underline']],
-          ['fontsize', ['fontsize']],
-          ['para', ['ul', 'ol', 'paragraph']],
+          ['para', ['ul', 'ol']],
         ]
       });
 

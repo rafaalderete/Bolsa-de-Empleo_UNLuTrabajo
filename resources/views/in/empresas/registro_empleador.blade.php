@@ -43,7 +43,7 @@
               {!! Form::text('fecha_fundacion', null, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
             </div>
             {!! Form::label('rubro_empresarial','Rubro Empresarial', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               <select name="rubro_empresarial" class="populate placeholder" id="selectSimple" required>
                 <option value=""></option>
                 @foreach($rubros_empresariales as $rubro_empresarial)

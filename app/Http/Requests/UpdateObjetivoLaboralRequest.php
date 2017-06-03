@@ -7,7 +7,7 @@ use App\Http\Requests\Request;
 class UpdateObjetivoLaboralRequest extends Request
 {
      const CAMPO_CARTA = 'Carta de Presentación';
-     const CAMPO_SUELDO = 'Sueldo Bruto Pretendido';  
+     const CAMPO_SUELDO = 'Sueldo Bruto Pretendido';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +26,7 @@ class UpdateObjetivoLaboralRequest extends Request
     public function rules()
     {
         return [
-            'carta_presentacion' => 'max:500',
+            'carta_presentacion' => 'max:1000',
             'sueldo_bruto_pretendido' => 'numeric|min:0'
         ];
     }

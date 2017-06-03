@@ -52,7 +52,7 @@ class UpdatePersonaJuridicaRequest extends Request
       }
 
       return [
-        'nombre_comercial' => 'min:4|max:20|required',
+        'nombre_comercial' => 'min:4|max:50|required',
         'fecha_fundacion' => 'required|date_format:d-m-Y',
         'rubro_empresarial' => $rubros_disponibles,
         'cuit' => 'required|min:11|max:11|unique:juridicas,cuit,'.$this->route->getParameter('empresas'),

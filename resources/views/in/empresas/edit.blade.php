@@ -44,7 +44,7 @@
               {!! Form::text('fecha_fundacion', $pjuridica->fecha_fundacion, ['id' => 'input_date', 'class' => 'form-control', 'placeholder' => 'dd-mm-aaaa', 'required'])!!}
             </div>
             {!! Form::label('rubro_empresarial','Rubro Empresarial', ['class' => 'col-sm-2 control-label']) !!}
-            <div class="col-sm-2">
+            <div class="col-sm-3">
               {!! Form::select('rubro_empresarial',$rubros_empresariales, $pjuridica->rubro_empresarial_id, ['class' =>'populate placeholder', 'id' => 'selectSimple'])!!}
             </div>
           </div>

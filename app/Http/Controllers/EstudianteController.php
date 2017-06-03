@@ -274,6 +274,7 @@ class EstudianteController extends Controller
             return redirect()->route('in.buscar-ofertas');
           }
           else{
+            $idiomas = Idioma::all();
             //Verifica si ya se ha postulado a la oferta
             foreach ($propuesta->estudiantes as $estudiante) {
               if ($estudiante->id == Auth::user()->persona->fisica->estudiante->id) {
@@ -284,6 +285,7 @@ class EstudianteController extends Controller
             $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
             return view('in.estudiante.detalle-oferta')
+              ->with('idiomas',$idiomas)
               ->with('propuesta',$propuesta)
               ->with('postulacion',$postulacion)
               ->with('puede_postularse',$puede_postularse);
@@ -429,9 +431,9 @@ class EstudianteController extends Controller
                 Flash::error('Ya se ha postulado a ésta Oferta.')->important();
               }
               if (!$cumpleCarrera) {
-                Flash::error('No cumple con los requerimientos de ésta Oferta.')->important();
+                Flash::error('• No cumple con los requerimientos de ésta Oferta.')->important();
               }
-              return redirect()->route('in.buscar-ofertas');
+              return redirect()->back();
             }
           }
         }
@@ -680,6 +682,7 @@ class EstudianteController extends Controller
           return redirect()->route('in.buscar-ofertas');
         }
         else {
+          $idiomas = Idioma::all();
           //Verifica si realmente es una postulacion del usuario.
           $postulado = false;
           foreach ($propuesta->estudiantes as $estudiante) {
@@ -698,6 +701,7 @@ class EstudianteController extends Controller
             $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
 
             return view('in.estudiante.detalle-oferta')
+              ->with('idiomas',$idiomas)
               ->with('propuesta',$propuesta)
               ->with('postulacion',$postulacion)
               ->with('puede_postularse',$puede_postularse);
