@@ -340,6 +340,13 @@
           </div>
         </div>
 
+        <div class="form-group">
+        <div class="col-md-offset-1">
+          <p>* <span class="importante">Importante</span>: Requisitos que serán un plus para el estudiante y/o serán evaluados en la entrevista.</p>
+          <p>* <span class="excluyente">Excluyente</span>: Requisitos al cual el estudiante no podrá postularse al menos que lo cumpla.</p>
+        </div>
+      </div>
+
         {!! Form::close()!!}
 
         <a href="{{ route('in.propuestas-laborales.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
