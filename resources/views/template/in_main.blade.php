@@ -68,6 +68,7 @@
 	<script src="{{asset('js/devoops.js')}}"></script>
 	<!-- Se Agregaron -->
 	<script src="{{asset('plugins/select2/select2.js')}}"></script>
+	<script src="{{asset('plugins/canvas/canvasjs.min.js')}}"></script>
 
 	@yield('bodyJS')
 

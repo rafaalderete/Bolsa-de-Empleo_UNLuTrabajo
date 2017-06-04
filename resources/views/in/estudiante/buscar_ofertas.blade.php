@@ -293,7 +293,7 @@
         if(key == 13)  // the enter key code
         {
           e.preventDefault();
-          $(this).val($(this).val().replace(/[^a-zA-Z0-9+ .]/g, ""));
+          $(this).val($(this).val().replace(/[^a-zA-Z0-9+ .áÁéÉíÍóÓúÚñÑ-]/g, ""));
           $(this).closest("form").submit();
         }
       });
