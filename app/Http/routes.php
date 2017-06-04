@@ -213,6 +213,13 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.gestionar-cv.conocimientos-adicionales.destroy',
 	]);
 
+	//------------- RUTAS DE REPORTES -----------------------
+
+	Route::get('reportes-administrador/reportes', [
+		'uses'	=>	'ReportesAdministradorController@index',
+		'as'	=>	'in.reportes.administrador.index'
+	]);
+
 	//------------- RUTAS DE PARAMETRIA ---------------------
 
 	Route::resource('rubros-empresariales', 'RubrosEmpresarialesController');

@@ -110,7 +110,7 @@ class PropuestasController extends Controller
 
         // Filtro por Palabra Clave
         if(isset($request->buscar) && $request->buscar != null) {
-          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .]/", '', $request->buscar);
+          $palabra_a_buscar = preg_replace("/[^A-Za-z0-9+ .áÁéÉíÍóÓúÚñÑ-]/", '', $request->buscar);
           $filtro = "Palabra Clave - ".$palabra_a_buscar;
 
           $propuestas = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
