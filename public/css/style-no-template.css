@@ -314,6 +314,62 @@ html {
   background-color: #1b8048 !important;
 }
 
+.combo-cuadro ul {
+  list-style: none;
+  padding: 0;
+}
+
+.combo-cuadro-label {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.combo-cuadro-contenido {
+  margin-top: 5px;
+}
+
+.radiobtn {
+display: none;
+}
+
+.lista-radio {
+
+}
+
+.lista-radio li {
+display: block;
+}
+
+.lista-radio li label{
+padding-left: 30px;
+position: relative;
+left: -25px;
+font-weight: normal;
+}
+
+.lista-radio li label:hover {
+cursor: pointer;
+}
+
+.lista-radio li span {
+display: inline-block;
+position: relative;
+top: 5px;
+border: 2px solid #ccc;
+width: 16px;
+height: 16px;
+background: #fff;
+}
+
+.radiobtn:checked + span::before{
+content: '';
+border: 2px solid #fff;
+position: absolute;
+width: 14px;
+height: 14px;
+background-color: #48D09B;
+}
+
 @media all and (max-width: 370px) {
   .btn-registrar {
     margin-top: 5px !important;

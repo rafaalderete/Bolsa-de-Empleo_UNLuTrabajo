@@ -145,6 +145,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.getRoles'
 	]);
 
+	Route::get('getDatosReporteEstadisticaAdministrador', [
+		'uses'	=>	'ReportesAdministradorController@getDatosEstadistica',
+		'as'	=>	'in.getDatosReporteEstadisticaAdministrador'
+	]);
+
   Route::resource('permisos', 'PermissionsController');
 	Route::delete('permisos/{id}/destroy', [
 		'uses'	=>	'PermissionsController@destroy',
