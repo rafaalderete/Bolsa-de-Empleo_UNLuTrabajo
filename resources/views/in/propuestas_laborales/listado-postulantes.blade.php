@@ -37,6 +37,8 @@
             <th>Tel. Fijo</th>
             <th>Tel. Celular</th>
             <th>Fecha de Postulación</th>
+            <th>Estado Postulación</th>
+            <th style="width:120px">Cv Descargado</th>
             <th style="width:100px">Visualizar Cv</th>
           </tr>
         </thead>
@@ -59,6 +61,14 @@
                   @endforeach
                 </td>
                 <td>{{$postulante->fecha_postulacion}}</td>
+                <td>{{$postulante->estado_postulacion}}</td>
+                <td class="text-center">
+                  @if ($postulante->pivot->cv_descargado)
+                    <span class="fa fa-check icon-descargado-true"></span>
+                  @else
+                    <span class="fa fa-remove icon-descargado-false"></span>
+                  @endif
+                </td>
                 <td class="text-center">
                   <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv', ['id_propuesta' => $postulante->pivot->propuesta_laboral_id, 'id_estudiante' => $postulante->pivot->estudiante_id]) }}" class="btn btn-info">
                     <span class="fa fa-file-text-o" aria-hidden="true" style="color:white"></span></a>

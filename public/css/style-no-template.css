@@ -76,6 +76,7 @@ html {
 
 .anuncio-titulo h2 {
   color: #1e82c4;
+  word-wrap: break-word;
 }
 
 .anuncio-subtitulo {
@@ -368,6 +369,26 @@ position: absolute;
 width: 14px;
 height: 14px;
 background-color: #48D09B;
+}
+
+.icon-descargado-true {
+  font-size: 24px;
+  color: green;
+}
+
+.icon-descargado-false {
+  font-size: 24px;
+  color: red;
+}
+
+.aceptado {
+  font-weight: bold;
+  color: green;
+}
+
+.rechazado {
+  font-weight: bold;
+  color: red;
 }
 
 @media all and (max-width: 370px) {

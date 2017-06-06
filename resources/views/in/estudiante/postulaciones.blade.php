@@ -272,11 +272,20 @@
                           </div>
                           <div class="row">
                             <div class="col-md-12 anuncio-subtitulo">
-                              @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->finalizada) )
-                                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
-                              @else
-                                <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}</p>
-                              @endif
+                              <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }}
+                                @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->finalizada) )
+                                  - Finalizada
+                                @endif
+                                @if ($propuesta->estado_postulacion == "Aceptado")
+                                 - Estado de la Postulación: <span class="aceptado">{{$propuesta->estado_postulacion}}</span>
+                                @else
+                                  @if ($propuesta->estado_postulacion == "Rechazado")
+                                    - Estado de la Postulación: <span class="rechazado">{{$propuesta->estado_postulacion}}</span>
+                                  @else
+                                    - Estado de la Postulación: {{$propuesta->estado_postulacion}}
+                                  @endif
+                                @endif
+                              </p>
                             </div>
                           </div>
                         </div>

@@ -632,6 +632,17 @@ class PropuestasController extends Controller
           $postulantes = $propuesta->estudiantes;
           foreach ($postulantes as $postulante) {
             $postulante->fecha_postulacion = date('d-m-Y', strtotime($postulante->pivot->fecha_postulacion));
+            if ($postulante->pivot->estado_postulacion == "en espera") {
+              $postulante->estado_postulacion = "En Espera";
+            }
+            else {
+              if ($postulante->pivot->estado_postulacion == "rechazado") {
+                $postulante->estado_postulacion = "Rechazado";
+              }
+              else{
+                $postulante->estado_postulacion = "Aceptado";
+              }
+            }
           }
 
           return view('in.propuestas_laborales.listado-postulantes')
@@ -704,6 +715,7 @@ class PropuestasController extends Controller
           return view('in.propuestas_laborales.cv-postulante')
             ->with('idiomas',$idiomas)
             ->with('propuestaId', $id_propuesta)
+            ->with('estudianteId', $id_estudiante)
             ->with('pfisica',$pfisica)
             ->with('usuarioImagen',$usuarioImagen)
             ->with('usuarioEmail',$usuarioEmail)
@@ -713,12 +725,130 @@ class PropuestasController extends Controller
             ->with('estudios',$estudios)
             ->with('conocimientosInformaticos',$conocimientosInformaticos)
             ->with('conocimientosIdiomas',$conocimientosIdiomas)
-            ->with('conocimientosAdicionales',$conocimientosAdicionales);
+            ->with('conocimientosAdicionales',$conocimientosAdicionales)
+            ->with('estadoPostulacion',$estudiantePropuesta->estado_postulacion);
 
         }
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');
       }
+    }
+
+    public function aceptarPostulacion($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          if ($estudiantePropuesta->estado_postulacion != 'en espera') {
+            return redirect()->route('in.propuestas-laborales.index');
+          }
+          else {
+            $estudiante = Estudiante::find($id_estudiante);
+            $nombrePersona = $estudiante->fisica->nombre_persona." ".$estudiante->fisica->apellido_persona;
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['estado_postulacion' => 'aceptado']);
+
+              Flash::warning('Ha aceptado la postulación de '.$nombrePersona.".")->important();
+              return redirect()->route('in.propuestas-laborales.listado-postulantes', $id_propuesta);
+          }
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function rechazarPostulacion($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          if ($estudiantePropuesta->estado_postulacion != 'en espera') {
+            return redirect()->route('in.propuestas-laborales.index');
+          }
+          else {
+            $estudiante = Estudiante::find($id_estudiante);
+            $nombrePersona = $estudiante->fisica->nombre_persona." ".$estudiante->fisica->apellido_persona;
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['estado_postulacion' => 'rechazado']);
+
+              Flash::warning('Ha rechazado la postulación de '.$nombrePersona.".")->important();
+              return redirect()->route('in.propuestas-laborales.listado-postulantes', $id_propuesta);
+          }
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function descargarCvPostulante()
+    {
+        if(Auth::user()->can('visualizar_cv')){
+            // Datos Personales y Objetivo Laboral
+            $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+            $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
+            $telefono_fijo = '';
+            $telefono_celular = '';
+            foreach ($pfisica->persona->telefonos as $telefono) {
+              if ($telefono->tipo_telefono == 'fijo') {
+                $telefono_fijo = $telefono->nro_telefono;
+              }
+              if ($telefono->tipo_telefono == 'celular') {
+                $telefono_celular = $telefono->nro_telefono;
+              }
+            }
+
+            $idiomas = Idioma::all();
+
+            //Experiencias Laborales
+            $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Estudios Academicos
+            $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Idiomas
+            $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Informaticos
+            $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            // Conocimientos Adicionales
+            $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+            $pdf = \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+            return $pdf->download('Curriculum-Vitae.pdf');
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
     }
 
     /**

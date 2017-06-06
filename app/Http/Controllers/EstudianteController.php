@@ -27,12 +27,14 @@ use File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 
 class EstudianteController extends Controller
 {
 
     const CANT_PAGINA = 5;
     const DESCRIPCION = 350;
+    const TITULO = 20;
 
     public function buscarOferta(Request $request)
     {
@@ -370,8 +372,8 @@ class EstudianteController extends Controller
               $data['titulo_propuesta'] = $propuesta->titulo;
               $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
 
-              $outputName = str_random(10);
-              $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.$data['titulo_propuesta']."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
+              $outputName = str_random(8);
+              $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.substr($data['titulo_propuesta'],0,self::TITULO)."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
 
               // DATOS DEL CV
               // Datos Personales y Objetivo Laboral
@@ -418,7 +420,12 @@ class EstudianteController extends Controller
               File::delete($pdfPath);
 
               //Postulación.
-              $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => ['fecha_postulacion' => Carbon::now(), 'usuario_id' => Auth::user()->id]]);
+              $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
+               'usuario_id' => Auth::user()->id,
+               'estado_postulacion' => 'en espera',
+               'cv_descargado' => false
+              ];
+              $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => $datosPostulacion]);
               /*
               $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
               return $pdf->stream('CurriculumVitae.pdf');
@@ -645,6 +652,21 @@ class EstudianteController extends Controller
           }
           $propuestas[$key]->descripcion = substr($propuestas[$key]->descripcion,0,self::DESCRIPCION).'...';
           $propuestas[$key]->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuestas[$key]->fecha_inicio_propuesta));
+          $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                          ->where('propuesta_laboral_id', '=', $propuestas[$key]->id)
+                          ->where('estudiante_id', '=', Auth::user()->persona->fisica->estudiante->id)
+                          ->first();
+          if ($estudiantePropuesta->estado_postulacion == "en espera") {
+            $propuestas[$key]->estado_postulacion = "En Espera";
+          }
+          else {
+            if ($estudiantePropuesta->estado_postulacion == "rechazado") {
+              $propuestas[$key]->estado_postulacion = "Rechazado";
+            }
+            else{
+              $propuestas[$key]->estado_postulacion = "Aceptado";
+            }
+          }
         }
 
         return view('in.estudiante.postulaciones')
@@ -699,6 +721,21 @@ class EstudianteController extends Controller
             }
             $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
             $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
+            $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                            ->where('propuesta_laboral_id', '=', $propuesta->id)
+                            ->where('estudiante_id', '=', Auth::user()->persona->fisica->estudiante->id)
+                            ->first();
+            if ($estudiantePropuesta->estado_postulacion == "en espera") {
+              $propuesta->estado_postulacion = "En Espera";
+            }
+            else {
+              if ($estudiantePropuesta->estado_postulacion == "rechazado") {
+                $propuesta->estado_postulacion = "Rechazado";
+              }
+              else{
+                $propuesta->estado_postulacion = "Aceptado";
+              }
+            }
 
             return view('in.estudiante.detalle-oferta')
               ->with('idiomas',$idiomas)

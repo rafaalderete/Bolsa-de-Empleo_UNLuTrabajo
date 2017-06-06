@@ -305,6 +305,31 @@
         </div>
       </div>
 
+      @if ($estadoPostulacion == "en espera")
+        <div class="form-group col-sm-12 text-center">
+          <div class="row">
+            <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv.aceptar-postulacion', ['id_propuesta' => $propuestaId, 'id_estudiante' => $estudianteId]) }}"  style="margin-right:10px" class="btn btn-info btn-label-left">
+              <span><i class="fa fa-check-square"></i></span>
+              Aceptar Postulación
+            </a>
+            <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv.rechazar-postulacion', ['id_propuesta' => $propuestaId, 'id_estudiante' => $estudianteId]) }}"  style="margin-left:10px" class="btn btn-default btn-label-left">
+              <span><i class="fa fa-times-circle txt-danger"></i></span>
+              Rechazar Postulación
+            </a>
+          </div>
+        </div>
+      @else
+        <div class="form-group col-sm-12">
+          <div class="imagen-info">
+            @if ($estadoPostulacion == "aceptado")
+              <p>Ha aceptado ésta Postulación.</p>
+            @else
+              <p>Ha rechazado ésta Postulación.</p>
+            @endif
+          </div>
+        </div>
+      @endif
+
       <div class="form-group">
         <div class="col-sm-12 text-center" style="margin-top:20px">
           <a href="{{ route('in.propuestas-laborales.listado-postulantes', $propuestaId) }}"  style="margin-top: 10px" class="btn btn-info pull-right">

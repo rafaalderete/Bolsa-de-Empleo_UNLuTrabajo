@@ -39,6 +39,9 @@ class CreatePropuestasLaboralesTablas extends Migration
           $table->integer('estudiante_id')->unsigned();
           $table->foreign('estudiante_id')->references('id')->on('estudiantes')->onUpdate('cascade')->onDelete('cascade');
           $table->integer('usuario_id')->unsigned();
+          $table->enum('estado_postulacion', ['en espera','rechazado','aceptado']);
+          $table->string('archivo_adjunto');
+          $table->boolean('cv_descargado');
           $table->date('fecha_postulacion');
           $table->timestamps();
       });
