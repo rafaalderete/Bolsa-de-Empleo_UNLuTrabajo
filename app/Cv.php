@@ -8,7 +8,7 @@ class Cv extends Model
 {
 
     protected $table = "cvs";
-    protected $fillable = ['id','estudiante_id','carta_presentacion','sueldo_bruto_pretendido'];
+    protected $fillable = ['id','estudiante_id','carta_presentacion','sueldo_bruto_pretendido','archivo_adjunto'];
 
     public function estudiante(){
       return $this->belongsTo('App\Estudiante');
