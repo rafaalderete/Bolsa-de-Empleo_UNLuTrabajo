@@ -387,9 +387,9 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.propuestas-laborales.listado-postulantes.vizualizar-cv'
 	]);
 
-	Route::get('propuestas-laborales/{id_propuesta}/listado-postulantes/{id_estudiante}/descargar-cv', [
-		'uses'	=>	'PropuestasController@descargarCvPostulante',
-		'as'	=>	'in.propuestas-laborales.listado-postulantes.descargar-cv'
+	Route::get('propuestas-laborales/{id_propuesta}/listado-postulantes/{id_estudiante}/vizualizar-cv/descargar-archivos', [
+		'uses'	=>	'PropuestasController@descargarArchivosSimple',
+		'as'	=>	'in.propuestas-laborales.listado-postulantes.vizualizar-cv.descargar-archivos'
 	]);
 
 	Route::get('propuestas-laborales/{id_propuesta}/listado-postulantes/{id_estudiante}/vizualizar-cv/aceptar-postulacion', [
@@ -427,7 +427,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.detalle-postulacion'
 	]);
 
-	Route::get('{id}/postularse', [
+	Route::post('{id}/postularse', [
 		'uses'	=>	'EstudianteController@postularse',
 		'as'	=>	'in.postularse'
 	]);

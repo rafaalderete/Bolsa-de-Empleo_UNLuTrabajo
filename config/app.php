@@ -136,6 +136,7 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        Chumper\Zipper\ZipperServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -213,6 +214,7 @@ return [
         'Flash' => Laracasts\Flash\Flash::class,
         'Entrust' => Zizaco\Entrust\EntrustFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Zipper' => Chumper\Zipper\Zipper::class,
     ],
 
 ];

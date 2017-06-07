@@ -245,10 +245,24 @@
         @if (!$postulacion)
           @if(Entrust::can('postularse'))
             @if ($puede_postularse)
-              <a href="{{ route('in.postularse', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
-                <span><i class="fa fa-check-square"></i></span>
-                Postularse
-              </a>
+              {!! Form::open(['route' => ['in.postularse', $propuesta->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+
+                <div class="form-group col-md-12">
+                  <div class="row text-center">
+                    {!! Form::label('enviar_adjunto','Enviar Adjunto') !!}
+                    <div>
+                      <input type="checkbox" name="archivo_adjunto" id="check"/>
+                      <label for="check" style="font-weight:normal">{{$archivoAdjunto}}</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
+                  <span><i class="fa fa-check-square"></i></span>
+                  Postularse
+                </button>
+
+              {!! Form::close()!!}
             @else
               <div class="imagen-info">
                 <p>Ya se ha postulado a ésta Oferta</p>

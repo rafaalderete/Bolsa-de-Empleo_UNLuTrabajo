@@ -32,7 +32,7 @@
       @include('template.partials.errors')
 
               <!-- Formulario -->
-      {!! Form::open(['route' => ['in.cv.updateobjetivolaboralcv'], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+      {!! Form::open(['route' => ['in.cv.updateobjetivolaboralcv'], 'method' => 'POST', 'class' => 'form-horizontal','files' => true]) !!}
 
           <div class="form-group descripcion">
             {!! Form::label('carta_presentacion','Carta de Presentación: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -47,6 +47,33 @@
               <div class="input-group">
                 {!! Form::number('sueldo_bruto_pretendido',$pfisica->estudiante->cv->sueldo_bruto_pretendido,['class' => 'form-control', 'placeholder' => '0', 'min' => '0'])!!}
                 <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            {!! Form::label('archivo_adjunto','Cv Adjunto: ', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-4">
+              <div class="row">
+                <div class="col-sm-4" style="margin-right:50px">
+                  {!!Form::hidden('archivo_cargado',0,['id' => 'archivo_cargado'])!!}
+                  <span class="nombre_archivo">{{$nombreAdjunto}}</span>
+                </div>
+                <div class="col-sm-6">
+                  <div class="imagen-info">
+                    <p>El archivo debe ser .pdf y no pesar más de 1 Mb</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6"style="margin-top:10px">
+                  {!! Form::file('archivo_adjunto', ['id' => 'archivo']) !!}
+                </div>
+              </div>
+              <div class="row error-imagen">
+                <div class="col-sm-12">
+                  <span>El archivo no debe pesar más de 1Mb</span>
+                </div>
               </div>
             </div>
           </div>
@@ -85,8 +112,32 @@
   <script type="text/javascript">
 
     function restablecer (objetivo){
+      $('#archivo_cargado').val(0);
+      $('.nombre_archivo').text(objetivo['nombreAdjunto']);
       $('#textarea_carta').summernote('code', objetivo['carta_presentacion']);
       $("input[name='sueldo_bruto_pretendido']").val(objetivo['sueldo_bruto_pretendido']);
+      $('.error-imagen').css('display', 'none');
+    }
+
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        if (input.files[0].size <= 1024000) {
+          $('#archivo_cargado').val(1);
+          $('.error-imagen').css('display', 'none');
+          var fullPath = $("#archivo").val();
+          var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+          var filename = fullPath.substring(startIndex);
+          if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+              filename = filename.substring(1);
+          }
+          $('.nombre_archivo').text(filename.substring(0, filename.length-4));
+        }
+        else {
+          $('#archivo').val(null);
+          $('#archivo_cargado').val(0);
+          $('.error-imagen').css('display', 'block');
+        }
+      }
     }
 
     $(document).ready(function() {
@@ -94,7 +145,9 @@
       //Valores para restablecer.
       var objetivo = [];
       objetivo['carta_presentacion'] = "{!!$pfisica->estudiante->cv->carta_presentacion!!}";
+      objetivo['nombreAdjunto'] = "{!!$nombreAdjunto!!}";
       objetivo['sueldo_bruto_pretendido'] = {{$pfisica->estudiante->cv->sueldo_bruto_pretendido}}
+
 
       $('#textarea_carta').summernote({
         lang: 'es-ES',
@@ -105,6 +158,10 @@
           ['style', ['bold', 'italic', 'underline']],
           ['para', ['ul', 'ol']],
         ]
+      });
+
+      $("#archivo").change(function(){
+        readURL(this);
       });
 
       $("#reset").on("click", function() {

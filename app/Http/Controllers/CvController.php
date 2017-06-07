@@ -18,9 +18,14 @@ use App\Idioma as Idioma;
 use App\Http\Requests\UpdateObjetivoLaboralRequest;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Auth;
+use File;
 
 class CvController extends Controller
 {
+
+    const ADJUNTO = 25;
+    const RANDOM_STRING = 10;
+
     public function visualizarCv()
     {
         if(Auth::user()->can('visualizar_cv')){
@@ -102,8 +107,15 @@ class CvController extends Controller
     {
         if(Auth::user()->can('visualizar_objetivo_laboral_cv')){
             $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+            if ($pfisica->estudiante->cv->archivo_adjunto == null) {
+              $nombreAdjunto = "No se ha cargado ningún archivo";
+            }
+            else {
+              $nombreAdjunto = substr($pfisica->estudiante->cv->archivo_adjunto,0,strlen($pfisica->estudiante->cv->archivo_adjunto)-self::RANDOM_STRING-5);
+            }
             return view('in.cv.objetivolaboralcv')
-              ->with('pfisica',$pfisica);
+              ->with('pfisica',$pfisica)
+              ->with('nombreAdjunto',$nombreAdjunto);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -113,8 +125,15 @@ class CvController extends Controller
     {
         if(Auth::user()->can('modificar_objetivo_laboral_cv')){
             $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+            if ($pfisica->estudiante->cv->archivo_adjunto == null) {
+              $nombreAdjunto = "No se ha cargado ningún archivo";
+            }
+            else {
+              $nombreAdjunto = substr($pfisica->estudiante->cv->archivo_adjunto,0,strlen($pfisica->estudiante->cv->archivo_adjunto)-self::RANDOM_STRING-5);
+            }
             return view('in.cv.editobjetivolaboralcv')
-              ->with('pfisica',$pfisica);
+              ->with('pfisica',$pfisica)
+              ->with('nombreAdjunto',$nombreAdjunto);
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -126,6 +145,21 @@ class CvController extends Controller
             $cv = Cv::find(Auth::User()->persona->fisica->estudiante->cv->id);
             $cv->carta_presentacion = $request->carta_presentacion;
             $cv->sueldo_bruto_pretendido = $request->sueldo_bruto_pretendido;
+            if ($request->archivo_cargado) {
+              if ($request->file('archivo_adjunto')) {
+                if($cv->archivo_adjunto != null) {
+                  File::delete(public_path().'/adjuntos/'.$cv->archivo_adjunto);
+                }
+                $file = $request->file('archivo_adjunto');
+                $randomString = str_random(self::RANDOM_STRING);
+                $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                $name = substr($name,0,self::ADJUNTO)."_".$randomString.'.'. $file->getClientOriginalExtension();
+                $path = public_path(). '/adjuntos/';
+                $file->move($path, $name);
+                $cv->archivo_adjunto = $name;
+              }
+            }
+
             $cv->save();
 
             Flash::warning('Objetivo Laboral actualizado con exito')->important();

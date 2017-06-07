@@ -31,6 +31,9 @@ use App\Http\Requests\StoreUpdatePropuestaLaboralRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use File;
+use Chumper\Zipper\Zipper;
+use Illuminate\Http\Response;
 
 class PropuestasController extends Controller
 {
@@ -38,6 +41,8 @@ class PropuestasController extends Controller
     const CANT_PAGINA = 5;
     const DESCRIPCION = 350; //Cantidad de caracteres que se mostrarán en el index.
     const TITULO = 30; //Cantidad de caracteres que se mostrarán del titulo.
+    const TITULO_ARCHIVO = 20;
+    const ADJUNTO = 10;
 
     /**
      * Display a listing of the resource.
@@ -726,7 +731,8 @@ class PropuestasController extends Controller
             ->with('conocimientosInformaticos',$conocimientosInformaticos)
             ->with('conocimientosIdiomas',$conocimientosIdiomas)
             ->with('conocimientosAdicionales',$conocimientosAdicionales)
-            ->with('estadoPostulacion',$estudiantePropuesta->estado_postulacion);
+            ->with('estadoPostulacion',$estudiantePropuesta->estado_postulacion)
+            ->with('archivoAdjunto',$estudiantePropuesta->archivo_adjunto);
 
         }
       }else{
@@ -810,45 +816,105 @@ class PropuestasController extends Controller
       }
     }
 
-    public function descargarCvPostulante()
+    public function descargarArchivosSimple($id_propuesta, $id_estudiante)
     {
-        if(Auth::user()->can('visualizar_cv')){
-            // Datos Personales y Objetivo Laboral
-            $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
-            $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
-            $telefono_fijo = '';
-            $telefono_celular = '';
-            foreach ($pfisica->persona->telefonos as $telefono) {
-              if ($telefono->tipo_telefono == 'fijo') {
-                $telefono_fijo = $telefono->nro_telefono;
-              }
-              if ($telefono->tipo_telefono == 'celular') {
-                $telefono_celular = $telefono->nro_telefono;
-              }
-            }
+      if(Auth::user()->can('listar_postulantes')){
 
-            $idiomas = Idioma::all();
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
 
-            //Experiencias Laborales
-            $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
 
-            // Estudios Academicos
-            $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Idiomas
-            $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Informaticos
-            $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            // Conocimientos Adicionales
-            $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-            $pdf = \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
-            return $pdf->download('Curriculum-Vitae.pdf');
-        }else{
-            return redirect()->route('in.sinpermisos.sinpermisos');
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
         }
+        else {
+          $postulante = Estudiante::find($id_estudiante);
+          $pfisica = Fisica::where('id',$postulante->fisica->id)->first();
+          $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
+          $telefono_fijo = '';
+          $telefono_celular = '';
+          foreach ($pfisica->persona->telefonos as $telefono) {
+            if ($telefono->tipo_telefono == 'fijo') {
+              $telefono_fijo = $telefono->nro_telefono;
+            }
+            if ($telefono->tipo_telefono == 'celular') {
+              $telefono_celular = $telefono->nro_telefono;
+            }
+          }
+
+          $idiomas = Idioma::all();
+
+          //Experiencias Laborales
+          $expLaborales = Experiencia_Laboral::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Estudios Academicos
+          $estudios = Estudio_Academico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Idiomas
+          $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Informaticos
+          $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Adicionales
+          $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          $cvNombre = substr($propuesta->titulo,0,self::TITULO_ARCHIVO)."_".$pfisica->nombre_persona."_".$pfisica->apellido_persona.".pdf";
+
+          if ($estudiantePropuesta->archivo_adjunto == null) {
+            $pdf = \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+
+            //Se setea como descargado.
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['cv_descargado' => true]);
+              
+            return $pdf->download($cvNombre);
+          }
+          //El postulante mandó archivo adjunto.
+          else {
+            //Se crea la carpeta que se mandará a comprimir.
+            $carpetaNombre = substr($propuesta->titulo,0,self::TITULO_ARCHIVO)."_".$pfisica->nombre_persona."_".$pfisica->apellido_persona;
+            $carpetaPath = public_path().'/propuestas/'.$carpetaNombre;
+            File::makeDirectory($carpetaPath,493,false,false);
+
+            //Se copia el cv a la nueva carpeta.
+            $cvPath = $carpetaPath."/".$cvNombre;
+            File::put($cvPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+
+            //Se copia el archivo adjunto a la nueva carpeta.
+            $adjuntoPropuestaPath = public_path().'/propuestas/adjuntos/'.$estudiantePropuesta->archivo_adjunto;
+            $adjuntoPropuestaNombreDescarga = substr($estudiantePropuesta->archivo_adjunto,0,self::TITULO_ARCHIVO+self::ADJUNTO).".pdf";
+            $adjuntoPropuestaPathDescarga = $carpetaPath."/".$adjuntoPropuestaNombreDescarga;
+            File::copy($adjuntoPropuestaPath,$adjuntoPropuestaPathDescarga);
+
+            //Se comprimen los archivos.
+            $files = glob($carpetaPath.'/*');
+            $zipper = new \Chumper\Zipper\Zipper;
+            $zipper->make(public_path().'/propuestas/'.$carpetaNombre.'.zip')->add($files)->close();
+
+            //Se setea como descargado.
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['cv_descargado' => true]);
+
+            //Se borra la carpeta creada
+            File::deleteDirectory($carpetaPath, false);
+
+            return response()->download(public_path().'/propuestas/'.$carpetaNombre.'.zip')->deleteFileAfterSend(true);
+          }
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
     }
 
     /**

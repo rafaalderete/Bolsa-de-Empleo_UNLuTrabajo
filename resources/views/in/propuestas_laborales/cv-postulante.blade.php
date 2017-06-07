@@ -330,6 +330,47 @@
         </div>
       @endif
 
+      @if ($archivoAdjunto != null)
+        <div class="form-group col-sm-12 text-center" style="margin-top:-20px">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <div class="row text-center">
+                {!! Form::label('archivo_adjunto','Archivo Adjunto') !!}
+                <div>
+                  <label style="font-weight:normal">{{$archivoAdjunto}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv.descargar-archivos', ['id_propuesta' => $propuestaId, 'id_estudiante' => $estudianteId]) }}" ><button class="btn btn-info btn-label-left">
+                  <span><i class="fa fa-download"></i></span>
+                  Descargar Archivos
+                </button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      @else
+        <div class="form-group col-sm-12" style="margin-top:-20px">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <div class="row text-center">
+                {!! Form::label('archivo_adjunto','No hay archivo adjunto') !!}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12 text-center">
+                <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv.descargar-archivos', ['id_propuesta' => $propuestaId, 'id_estudiante' => $estudianteId]) }}" ><button class="btn btn-info btn-label-left">
+                  <span><i class="fa fa-download"></i></span>
+                  Descargar Cv
+                </button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endif
+
       <div class="form-group">
         <div class="col-sm-12 text-center" style="margin-top:20px">
           <a href="{{ route('in.propuestas-laborales.listado-postulantes', $propuestaId) }}"  style="margin-top: 10px" class="btn btn-info pull-right">
