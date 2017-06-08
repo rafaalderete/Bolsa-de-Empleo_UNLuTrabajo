@@ -150,6 +150,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.getDatosReporteEstadisticaAdministrador'
 	]);
 
+	Route::get('getDatosReporteEstadisticaEmpleador', [
+		'uses'	=>	'ReportesEmpleadorController@getDatosEstadistica',
+		'as'	=>	'in.getDatosReporteEstadisticaEmpleador'
+	]);
+
   Route::resource('permisos', 'PermissionsController');
 	Route::delete('permisos/{id}/destroy', [
 		'uses'	=>	'PermissionsController@destroy',
@@ -218,11 +223,50 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.gestionar-cv.conocimientos-adicionales.destroy',
 	]);
 
-	//------------- RUTAS DE REPORTES -----------------------
+	##################################################################
+	//------------------ RUTA PARA REPORTES ----------------------   #
+	##################################################################
+	
+	//------------- RUTAS DE REPORTES ADMIN -----------------------
 
 	Route::get('reportes-administrador/reportes', [
 		'uses'	=>	'ReportesAdministradorController@index',
 		'as'	=>	'in.reportes.administrador.index'
+	]);
+
+	//------------- RUTAS DE REPORTES EMPLEADOR ----------------------
+
+	Route::get('reportes-empleador/reportes', [
+		'uses'	=>	'ReportesEmpleadorController@index',
+		'as'	=>	'in.reportes.empleador.index'
+	]);
+
+	//------------- RUTAS DE REPORTES ESTUDIANTE ----------------------
+
+	Route::get('reportes-estudiante/reportes', [
+		'uses'	=>	'ReportesEstudianteController@index',
+		'as'	=>	'in.reportes.estudiante.index'
+	]);
+
+	Route::get('reportes-estudiante/reportes/tabla-idiomas-solicitados', [
+		'uses'	=>	'ReportesEstudianteController@getIdiomasSolicitados',
+		'as'	=>	'in.reportes.estudiante.tablasonline.idiomas-solicitados'
+	]);
+
+	Route::get('reportes-estudiante/reportes/tabla-idiomas-solicitados-pdf', [
+		'uses'	=>	'ReportesEstudianteController@getIdiomasSolicitadosPdf',
+		'as'	=>	'in.reportes.estudiante.tablaspdf.idiomas-solicitados'
+	]);
+
+	Route::get('reportes-estudiante/reportes/tabla-estados-postulaciones', [
+		'uses'	=>	'ReportesEstudianteController@getEstadosPostulaciones',
+		'as'	=>	'in.reportes.estudiante.tablasonline.estados-postulaciones'
+	]);
+
+	
+	Route::get('reportes-estudiante/reportes/tabla-empresas-propuestas-mi-carrera', [
+		'uses'	=>	'ReportesEstudianteController@getEmpresasPropuestasMiCarrera',
+		'as'	=>	'in.reportes.estudiante.tablasonline.empresas-propuestas-mi-carrera'
 	]);
 
 	//------------- RUTAS DE PARAMETRIA ---------------------

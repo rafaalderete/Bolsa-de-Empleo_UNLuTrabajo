@@ -28,11 +28,11 @@
         @include('template.partials.errors')
 
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-8">
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Empresas con más Propuestas</span>
+                  <span>Ranking de las 5 Carreras con más Estudiantes</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -55,11 +55,11 @@
             </div>
           </div>
 
-          <div class="col-xs-6">
+          <div class="col-xs-4">
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Empresas con más dias de Inactividad</span>
+                  <span>Estudiantes en mis Propuestas</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -84,11 +84,11 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-6">
+          <div class="col-xs-7">
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Carreras con más Estudiantes</span>
+                  <span>Sueldo bruto pretendido por Carrera</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -111,40 +111,11 @@
             </div>
           </div>
 
-          <div class="col-xs-6">
+          <div class="col-xs-5">
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Cantidad de Propuestas generadas en el último año</span>
-                </div>
-                <div class="box-icons">
-                  <a class="collapse-link">
-                    <i class="fa fa-chevron-up"></i>
-                  </a>
-                  <a class="close-link">
-                    <i class="fa fa-times"></i>
-                  </a>
-                </div>
-                <div class="no-move"></div>
-              </div>
-              <div class="box-content">
-                <div id="chartContainer-5" style="height: 300px;"></div>
-                <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
-                    Tabla de Detalle
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-xs-12">
-            <div class="box">
-              <div class="box-header">
-                <div class="box-name">
-                  <span>Cantidad de Empresas por Rubro Empresarial</span>
+                  <span>Estudiantes Para Observar</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -203,12 +174,7 @@
                     <div class="col-md-4">
                       <ul class="lista-radio">
                         <li>
-                          <input type="radio" id="radiobtn_1" name="filtro" value="empresa" class="radiobtn" checked>
-                          <span></span>
-                          <label for="radiobtn_1">Empresas</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_2" name="filtro" value="carrera" class="radiobtn">
+                          <input type="radio" id="radiobtn_2" name="filtro" value="carrera" class="radiobtn" checked>
                           <span></span>
                           <label for="radiobtn_2">Carreras</label>
                         </li>
@@ -272,7 +238,7 @@
                 <input type="button" name="calcular" value="Calcular" id="calcular" style="margin-top: 5px; margin-left:20px" class="btn btn-info pull-left">
               </div>
               <div class="row">
-                <div id="chartContainer-6" style="height: 300px; width: 100%;"></div>
+                <div id="chartContainer-5" style="height: 300px; width: 100%;"></div>
                 <div class="row">
                   <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                     Tabla de Detalle
@@ -287,6 +253,7 @@
     </div>
   </div>
 
+
 @endsection
 
 @section('bodyJS')
@@ -295,15 +262,15 @@
   window.onload = function () {
 
     $('#calcular').click(function() {
-      var url = '../getDatosReporteEstadisticaAdministrador';
+      var url = '../getDatosReporteEstadisticaEmpleador';
       var data = {
         "filtro": $('input[name=filtro]:checked').val(),
         "tiempo": $('input[name=tiempo]:checked').val(),
         "estado": $('input[name=estado]:checked').val()
       }
       $.get (url,data,function (result) {
-        var array6 = [];
-        console.log(result.cantidadPropuestas);
+        var array6 = []	
+       	console.log(result.cantidadPropuestas);
         console.log(result.filtro);
         console.log(result.tiempo);
         console.log(result.estado);
@@ -311,10 +278,10 @@
             array6.push({y: result.cantidadPropuestas[i].cantidad_propuestas, label: result.cantidadPropuestas[i].filtro});
         }
 
-        var chart = new CanvasJS.Chart("chartContainer-6",
+        var chart = new CanvasJS.Chart("chartContainer-5",
           {
             title:{
-              text: "Filtro por Mayores Propuestas"
+              text: "Filtro de Mis Propuestas"
             },
             data: [
             {
@@ -330,13 +297,14 @@
     });
 
     var array1 = [];
-    @foreach( $EmpresasConMasPropuestas as $propuestaPorEmpresa )
-        array1.push({"y":{{$propuestaPorEmpresa->cantidad_propuestas}},"label":"{!!$propuestaPorEmpresa->nombre_comercial!!}"});
+    
+    @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
+        array1.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
     @endforeach
 
     var chart = new CanvasJS.Chart("chartContainer-1", {
         title: {
-          text: "Empresas con más Propuestas"
+          text: "Carreras con más Estudiantes"
         },
         data: [{
           type: "column",
@@ -346,46 +314,54 @@
       chart.render();
 
     var array2 = [];
-    @foreach( $EmpresasMasInactivas as $empresa )
-        array2.push({"y":{{$empresa->dias_inactivo}},"label":"{!!$empresa->nombre_comercial!!}"});
+    @foreach( $cantEstadosPostulados as $estado )
+        array2.push({"y":{{$estado->postulados}},"indexLabel":"{!!$estado->estado_postulacion!!}"});
     @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-2", {
-        title: {
-          text: "Empresas con más dias de Inactividad"
-        },
-        data: [{
-          type: "column",
-          dataPoints: array2
-        }]
-      });
-      chart.render();
+    var chart = new CanvasJS.Chart("chartContainer-2",
+  	{
+  		title:{
+  			text: "Estados de Estudiantes en Mis Propuestas"
+  		},
+  		data: [{
+  			type: "pie",
+  			showInLegend: true,
+        toolTipContent: "{y} postulados ( #percent % )",
+        yValueFormatString: "#",
+        legendText: "{indexLabel}",
+  			dataPoints: array2
+  		}]
+  	});
+  	chart.render();
 
     var array3 = [];
-    @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
-        array3.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
+
+    @foreach( $carrerasConMayorSueldoPretendido as $sueldoCarrera )
+         array3.push({y: {{$sueldoCarrera->promedio_sueldo}}, label:"{!!$sueldoCarrera->carrera!!}" });
     @endforeach
 
-
     var chart = new CanvasJS.Chart("chartContainer-3", {
-        title: {
-          text: "Carreras con más Estudiantes"
-        },
-        data: [{
-          type: "column",
-          dataPoints: array3
-        }]
-      });
-      chart.render();
+				title: {
+					text: "Promedio de Sueldo Bruto pretendido por Carrera"
+				},
+				data: [{
+					type: "column",
+					yValueFormatString: "$#0.##",
+					indexLabel: "{y}",
+					dataPoints: array3
+				}]
+			});
+			chart.render();
 
     var array4 = [];
-    @foreach( $rubrosConMayorCantidadEmpresas as $rubro )
-        array4.push({"y":{{$rubro->cantidad_empresas}},"label":"{!!$rubro->nombre_rubro_empresarial!!}"});
+    
+    @foreach( $propConMayorEstSinDecidir as $EstSinDecidir )
+        array4.push({"y":{{$EstSinDecidir->postulados_sin_decidir}},"label":"{!!$EstSinDecidir->titulo!!}"});
     @endforeach
 
     var chart = new CanvasJS.Chart("chartContainer-4", {
         title: {
-          text: "Cantidad de Empresas por rubro empresarial."
+          text: "Propuestas con Mayor Cantidad de Estudiantes para Observar"
         },
         data: [{
           type: "column",
@@ -394,44 +370,17 @@
       });
       chart.render();
 
-    var array5 = [];
-    @foreach( $cantidadPropuestaPorMes as $mes )
-         array5.push({"x": new Date("{!!$mes->anio!!}-{!!$mes->mes!!}-01"),"y":{{$mes->cantidad_propuesta}}});
-    @endforeach
-
-
-    var chart = new CanvasJS.Chart("chartContainer-5", {
-      title:{
-        text: "Cantidad de Propuestas generadas en el último año"
-      },
-      axisX: {
-        valueFormatString: "MMM",
-        interval:1,
-        intervalType: "month"
-      },
-      axisY:{
-        includeZero: false
-      },
-      data: [
-      {
-        type: "line",
-        //lineThickness: 3,
-        dataPoints: array5
-      }
-      ]
-    });
-
-    chart.render();
 
     var array6 = [];
+
     @foreach( $cantidadPropuestas as $propuesta )
-         array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->nombre_comercial!!}" });
+         array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->filtro!!}" });
     @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-6",
+    var chart = new CanvasJS.Chart("chartContainer-5",
       {
         title:{
-          text: "Filtro por Mayores Propuestas"
+          text: "Filtro de Mis Propuestas"
         },
         data: [
         {
