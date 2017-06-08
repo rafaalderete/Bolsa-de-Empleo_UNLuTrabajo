@@ -156,96 +156,102 @@
               </div>
               <div class="no-move"></div>
             </div>
-            <div class="box-content">
-              <div class="row">
-                <div class="col-md-12 combo-cuadro">
-                  <div class="row text-center">
-                    <div class="col-md-4">
-                      <span class="combo-cuadro-label">Filtro</span>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="combo-cuadro-label">Tiempo</span>
-                    </div>
-                    <div class="col-md-4">
-                      <span class="combo-cuadro-label">Estado</span>
-                    </div>
-                  </div>
-                  <div class="row combo-cuadro-contenido">
-                    <div class="col-md-4">
-                      <ul class="lista-radio">
-                        <li>
-                          <input type="radio" id="radiobtn_2" name="filtro" value="carrera" class="radiobtn" checked>
-                          <span></span>
-                          <label for="radiobtn_2">Carreras</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_3" name="filtro" value="idioma" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_3">Idiomas</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_4" name="filtro" value="tipo_trabajo" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_4">Tipos de Trabajo</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_5" name="filtro" value="tipo_jornada" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_5">Tipos de Jornada</label>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-md-4">
-                      <ul class="lista-radio">
-                        <li>
-                          <input type="radio" id="radiobtn_6" name="tiempo" value="ultimo_mes" class="radiobtn" checked>
-                          <span></span>
-                          <label for="radiobtn_6">Último mes</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_7" name="tiempo" value="ultimos_6_meses" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_7">Últimos 6 meses</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_8" name="tiempo" value="ultimo_anio" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_8">Último año</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_9" name="tiempo" value="sin_limite" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_9">Sin límite</label>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="col-md-4">
-                      <ul class="lista-radio">
-                        <li>
-                          <input type="radio" id="radiobtn_10" name="estado" value="vigente" class="radiobtn" checked>
-                          <span></span>
-                          <label for="radiobtn_10">Vigente</label>
-                        </li>
-                        <li>
-                          <input type="radio" id="radiobtn_11" name="estado" value="todas" class="radiobtn">
-                          <span></span>
-                          <label for="radiobtn_11">Todas</label>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <input type="button" name="calcular" value="Calcular" id="calcular" style="margin-top: 5px; margin-left:20px" class="btn btn-info pull-left">
-              </div>
-              <div class="row">
-                <div id="chartContainer-5" style="height: 300px; width: 100%;"></div>
+
+            {!! Form::open(['route' => ['in.reportes.empleador.tablasonline.cantidad-propuestas'], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+
+              <div class="box-content">
                 <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
-                    Tabla de Detalle
-                  </a>
+                  <div class="col-md-12 combo-cuadro">
+                    <div class="row text-center">
+                      <div class="col-md-4">
+                        <span class="combo-cuadro-label">Filtro</span>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="combo-cuadro-label">Tiempo</span>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="combo-cuadro-label">Estado</span>
+                      </div>
+                    </div>
+                    <div class="row combo-cuadro-contenido">
+                      <div class="col-md-4">
+                        <ul class="lista-radio">
+                          <li>
+                            <input type="radio" id="radiobtn_2" name="filtro" value="carrera" class="radiobtn" checked>
+                            <span></span>
+                            <label for="radiobtn_2">Carreras</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_3" name="filtro" value="idioma" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_3">Idiomas</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_4" name="filtro" value="tipo_trabajo" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_4">Tipos de Trabajo</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_5" name="filtro" value="tipo_jornada" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_5">Tipos de Jornada</label>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4 lista-radio-medio">
+                        <ul class="lista-radio">
+                          <li>
+                            <input type="radio" id="radiobtn_6" name="tiempo" value="ultimo_mes" class="radiobtn" checked>
+                            <span></span>
+                            <label for="radiobtn_6">Último mes</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_7" name="tiempo" value="ultimos_6_meses" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_7">Últimos 6 meses</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_8" name="tiempo" value="ultimo_anio" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_8">Último año</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_9" name="tiempo" value="sin_limite" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_9">Sin límite</label>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-md-4">
+                        <ul class="lista-radio">
+                          <li>
+                            <input type="radio" id="radiobtn_10" name="estado" value="vigente" class="radiobtn" checked>
+                            <span></span>
+                            <label for="radiobtn_10">Vigente</label>
+                          </li>
+                          <li>
+                            <input type="radio" id="radiobtn_11" name="estado" value="todas" class="radiobtn">
+                            <span></span>
+                            <label for="radiobtn_11">Todas</label>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="button" name="calcular" value="Calcular" id="calcular" style="margin-top: 5px; margin-left:20px" class="btn btn-info pull-left">
                 </div>
-              </div>
+                <div class="row">
+                  <div id="chartContainer-5" style="height: 300px; width: 100%;"></div>
+                  <div class="row">
+                    <button type="submit" class="btn btn-info pull-right" style="margin-top: 5px; margin-right: 30px">
+                      Tabla de Detalle
+                    </button>
+                  </div>
+                </div>
             </div>
+
+            {!! Form::close()!!}
+
           </div>
         </div>
       </div>
@@ -269,7 +275,7 @@
         "estado": $('input[name=estado]:checked').val()
       }
       $.get (url,data,function (result) {
-        var array6 = []	
+        var array6 = []
        	console.log(result.cantidadPropuestas);
         console.log(result.filtro);
         console.log(result.tiempo);
@@ -297,7 +303,7 @@
     });
 
     var array1 = [];
-    
+
     @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
         array1.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
     @endforeach
@@ -354,7 +360,7 @@
 			chart.render();
 
     var array4 = [];
-    
+
     @foreach( $propConMayorEstSinDecidir as $EstSinDecidir )
         array4.push({"y":{{$EstSinDecidir->postulados_sin_decidir}},"label":"{!!$EstSinDecidir->titulo!!}"});
     @endforeach

@@ -86,7 +86,7 @@
 
         <div class="form-group">
           <div class="col-sm-12 text-center">
-            <button type="submit" class="btn btn-info btn-label-left">
+            <button type="submit" id="submit" class="btn btn-info btn-label-left" disabled>
               <span><i class="fa fa-download"></i></span>
               Descargar Archivos Seleccionados
             </button>
@@ -116,7 +116,28 @@
 
   <script type="text/javascript">
 
+    function checkCantidad(seleccionados) {
+      if (seleccionados == 0) {
+        $('#submit').prop('disabled', true);
+      }
+      else{
+        $('#submit').prop('disabled', false);
+      }
+    }
+
     $(document).ready(function(){
+
+      var seleccionados = 0;
+
+      $('input:checkbox').on("click", function() {
+        if(this.checked) {
+          seleccionados++;
+        }
+        else {
+          seleccionados--;
+        }
+        checkCantidad(seleccionados);
+      });
 
       // Tabla
       $('#dev-table').dataTable( {

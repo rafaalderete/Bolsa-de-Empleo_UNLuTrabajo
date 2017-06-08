@@ -395,6 +395,11 @@ background-color: #48D09B;
   width: 100% !important;
 }
 
+.lista-radio-medio {
+  border-left: 3px solid #bdbdbd;
+  border-right: 3px solid #bdbdbd;
+}
+
 @media all and (max-width: 370px) {
   .btn-registrar {
     margin-top: 5px !important;

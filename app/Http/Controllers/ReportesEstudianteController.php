@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use DB; 
+use DB;
 use Carbon\Carbon;
 
 class ReportesEstudianteController extends Controller
@@ -19,8 +19,8 @@ class ReportesEstudianteController extends Controller
      */
     public function index()
     {
-        
-        if(true){
+
+        if(Auth::user()->hasRole('postulante')){
 
             $estudianteId = Auth::user()->persona->fisica->estudiante->id;
             $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
@@ -37,7 +37,7 @@ class ReportesEstudianteController extends Controller
 
             $empConPropParaMiCarrera = DB::select('select count(*) cantidad, j.nombre_comercial
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join juridicas as j on pl.juridica_id = j.id 
+                                            join juridicas as j on pl.juridica_id = j.id
                                     where rc.carrera_id = ?
                                     group by j.nombre_comercial
                                     order by cantidad Desc',[$carreraId]);
@@ -54,7 +54,7 @@ class ReportesEstudianteController extends Controller
 
             $idiomasEnMiCarrera = DB::select('select count(*) cantidad, i.nombre_idioma
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join (select distinct propuesta_laboral_id, idioma_id 
+                                            join (select distinct propuesta_laboral_id, idioma_id
                                                   from requisitos_idioma) as ri on ri.propuesta_laboral_id = pl.id
                                             join idiomas as i on ri.idioma_id = i.id
                                     where rc.carrera_id = ?
@@ -68,7 +68,7 @@ class ReportesEstudianteController extends Controller
                     $idiomasMayorCantidadEnMiCarrera[$i] = $idiomasEnMiCarrera[$i];
                     $i++;
             }
-            
+
             return view('in.reportes.estudiante.index')
                     ->with('cantEstadosEnPostulaciones',$cantEstadosEnPostulaciones)
                     ->with('EmpConMayorPropParaMiCarrera',$EmpConMayorPropParaMiCarrera)
@@ -81,19 +81,19 @@ class ReportesEstudianteController extends Controller
 
     public function getIdiomasSolicitados()
     {
-        
-        if(true){
+
+        if(Auth::user()->hasRole('postulante')){
             $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
 
             $idiomasEnMiCarrera = DB::select('select count(*) cantidad, i.nombre_idioma
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join (select distinct propuesta_laboral_id, idioma_id 
+                                            join (select distinct propuesta_laboral_id, idioma_id
                                                   from requisitos_idioma) as ri on ri.propuesta_laboral_id = pl.id
                                             join idiomas as i on ri.idioma_id = i.id
                                     where rc.carrera_id = ?
                                     group by i.nombre_idioma
                                     order by cantidad Desc',[$carreraId]);
-            
+
             return view('in.reportes.estudiante.tablasonline.idiomas_solicitados')
                     ->with('idiomasEnMiCarrera',$idiomasEnMiCarrera);
         }else{
@@ -103,23 +103,23 @@ class ReportesEstudianteController extends Controller
 
     public function getIdiomasSolicitadosPdf()
     {
-        
-        if(true){
+
+        if(Auth::user()->hasRole('postulante')){
             $today = Carbon::today()->format('d-m-Y');
             $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
 
             $idiomasEnMiCarrera = DB::select('select count(*) cantidad, i.nombre_idioma
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join (select distinct propuesta_laboral_id, idioma_id 
+                                            join (select distinct propuesta_laboral_id, idioma_id
                                                   from requisitos_idioma) as ri on ri.propuesta_laboral_id = pl.id
                                             join idiomas as i on ri.idioma_id = i.id
                                     where rc.carrera_id = ?
                                     group by i.nombre_idioma
                                     order by cantidad Desc',[$carreraId]);
-            
+
             $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.idiomas_solicitados',['idiomasEnMiCarrera' => $idiomasEnMiCarrera, 'today' => $today]);
             return $pdf->stream('Reporte-idiomas-solicitados.pdf');
-            
+
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -127,7 +127,7 @@ class ReportesEstudianteController extends Controller
 
     public function getEstadosPostulaciones(){
 
-        if(true){
+        if(Auth::user()->hasRole('postulante')){
             $estudianteId = Auth::user()->persona->fisica->estudiante->id;
 
             $cantEstadosEnPostulaciones = DB::select('select count(*) cantidad, epl.estado_postulacion
@@ -135,10 +135,10 @@ class ReportesEstudianteController extends Controller
                                                 where epl.estudiante_id = ?
                                                 group by estado_postulacion
                                                 order by cantidad Desc',[$estudianteId]);
-            
+
              return view('in.reportes.estudiante.tablasonline.estados_postulaciones')
                     ->with('cantEstadosEnPostulaciones',$cantEstadosEnPostulaciones);
-            
+
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -146,7 +146,7 @@ class ReportesEstudianteController extends Controller
 
     public function getEstadosPostulacionesPdf(){
 
-        if(true){
+        if(Auth::user()->hasRole('postulante')){
             $today = Carbon::today()->format('d-m-Y');
             $estudianteId = Auth::user()->persona->fisica->estudiante->id;
 
@@ -155,10 +155,10 @@ class ReportesEstudianteController extends Controller
                                                 where epl.estudiante_id = ?
                                                 group by estado_postulacion
                                                 order by cantidad Desc',[$estudianteId]);
-            
+
              $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.estados_postulaciones',['cantEstadosEnPostulaciones' => $cantEstadosEnPostulaciones, 'today' => $today]);
             return $pdf->stream('Reporte-estados-postulaciones.pdf');
-            
+
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -167,19 +167,19 @@ class ReportesEstudianteController extends Controller
 
     public function getEmpresasPropuestasMiCarrera(){
 
-        if(true){
+        if(Auth::user()->hasRole('postulante')){
             $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
 
             $empConPropParaMiCarrera = DB::select('select count(*) cantidad, j.nombre_comercial
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join juridicas as j on pl.juridica_id = j.id 
+                                            join juridicas as j on pl.juridica_id = j.id
                                     where rc.carrera_id = ?
                                     group by j.nombre_comercial
                                     order by cantidad Desc',[$carreraId]);
-            
+
              return view('in.reportes.estudiante.tablasonline.empresas_propuestas_mi_carrera')
                     ->with('empConPropParaMiCarrera',$empConPropParaMiCarrera);
-            
+
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -188,20 +188,20 @@ class ReportesEstudianteController extends Controller
 
     public function getEmpresasPropuestasMiCarreraPdf(){
 
-         if(true){
+         if(Auth::user()->hasRole('postulante')){
             $today = Carbon::today()->format('d-m-Y');
             $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
 
             $empConPropParaMiCarrera = DB::select('select count(*) cantidad, j.nombre_comercial
                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
-                                            join juridicas as j on pl.juridica_id = j.id 
+                                            join juridicas as j on pl.juridica_id = j.id
                                     where rc.carrera_id = ?
                                     group by j.nombre_comercial
                                     order by cantidad Desc',[$carreraId]);
-            
+
              $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.empresas_propuestas_mi_carrera',['empConPropParaMiCarrera' => $empConPropParaMiCarrera, 'today' => $today]);
             return $pdf->stream('Reporte-empresas-propuestas-mi-carrera.pdf');
-            
+
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }

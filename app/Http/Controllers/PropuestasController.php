@@ -926,7 +926,7 @@ class PropuestasController extends Controller
           ->where('estado_propuesta','activo')
           ->first();
 
-        if ($propuesta == null) {
+        if (($propuesta == null) || !isset($request->estudiantes)) {
           return redirect()->route('in.propuestas-laborales.index');
         }
         else {

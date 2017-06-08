@@ -226,7 +226,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	##################################################################
 	//------------------ RUTA PARA REPORTES ----------------------   #
 	##################################################################
-	
+
 	//------------- RUTAS DE REPORTES ADMIN -----------------------
 
 	Route::get('reportes-administrador/reportes', [
@@ -284,6 +284,16 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.administrador.tablaspdf.empresas-rubro-empresarial'
 	]);
 
+	Route::post('reportes-administrador/reportes/tabla-cantidad-propuestas', [
+		'uses'	=>	'ReportesAdministradorController@getCantidadPropuestas',
+		'as'	=>	'in.reportes.administrador.tablasonline.cantidad-propuestas'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-cantidad-propuestas-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getCantidadPropuestasPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.cantidad-propuestas'
+	]);
+
 	//------------- RUTAS DE REPORTES EMPLEADOR ----------------------
 
 	Route::get('reportes-empleador/reportes', [
@@ -331,13 +341,13 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.empleador.tablaspdf.propuestas-mas-postulados-por-ver'
 	]);
 
-	Route::get('reportes-empleador/reportes/tabla-cantidad-propuestas', [
-		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuesta',
+	Route::post('reportes-empleador/reportes/tabla-cantidad-propuestas', [
+		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestas',
 		'as'	=>	'in.reportes.empleador.tablasonline.cantidad-propuestas'
 	]);
 
 	Route::get('reportes-empleador/reportes/tabla-cantidad-propuestas-pdf', [
-		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestaPdf',
+		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestasPdf',
 		'as'	=>	'in.reportes.empleador.tablaspdf.cantidad-propuestas'
 	]);
 
@@ -368,7 +378,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.estudiante.tablaspdf.estados-postulaciones'
 	]);
 
-	
+
 	Route::get('reportes-estudiante/reportes/tabla-empresas-propuestas-mi-carrera', [
 		'uses'	=>	'ReportesEstudianteController@getEmpresasPropuestasMiCarrera',
 		'as'	=>	'in.reportes.estudiante.tablasonline.empresas-propuestas-mi-carrera'
