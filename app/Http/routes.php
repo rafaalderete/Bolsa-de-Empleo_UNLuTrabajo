@@ -392,6 +392,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.propuestas-laborales.listado-postulantes.vizualizar-cv.descargar-archivos'
 	]);
 
+	Route::post('propuestas-laborales/{id_propuesta}/listado-postulantes/descargar-archivos-grupo', [
+		'uses'	=>	'PropuestasController@descargarArchivosGrupo',
+		'as'	=>	'in.propuestas-laborales.listado-postulantes.descargar-archivos-grupo'
+	]);
+
 	Route::get('propuestas-laborales/{id_propuesta}/listado-postulantes/{id_estudiante}/vizualizar-cv/aceptar-postulacion', [
 		'uses'	=>	'PropuestasController@aceptarPostulacion',
 		'as'	=>	'in.propuestas-laborales.listado-postulantes.vizualizar-cv.aceptar-postulacion'

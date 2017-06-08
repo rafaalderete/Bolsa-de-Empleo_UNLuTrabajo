@@ -29,54 +29,71 @@
       @include('flash::message')
       @include('template.partials.errors')
 
-      <!-- Tabla -->
-      <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Tel. Fijo</th>
-            <th>Tel. Celular</th>
-            <th>Fecha de Postulación</th>
-            <th>Estado Postulación</th>
-            <th style="width:120px">Cv Descargado</th>
-            <th style="width:100px">Visualizar Cv</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach( $postulantes as $postulante)
-              <tr>
-                <td>{{$postulante->fisica->nombre_persona." ".$postulante->fisica->apellido_persona}}</td>
-                <td>
-                  @foreach ($postulante->fisica->persona->telefonos as $telefono)
-                    @if ($telefono->tipo_telefono == 'fijo')
-                      {{$telefono->nro_telefono}}
+      {!! Form::open(['route' => ['in.propuestas-laborales.listado-postulantes.descargar-archivos-grupo', $propuestaId], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+
+        <!-- Tabla -->
+        <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
+          <thead>
+            <tr>
+              <th style="width:120px">Seleccionados</th>
+              <th>Nombre</th>
+              <th>Tel. Fijo</th>
+              <th>Tel. Celular</th>
+              <th>Fecha de Postulación</th>
+              <th>Estado Postulación</th>
+              <th style="width:120px">Cv Descargado</th>
+              <th style="width:100px">Visualizar Cv</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach( $postulantes as $postulante)
+                <tr>
+                  <td>
+                    <input type="checkbox" name="estudiantes[]" value={{$postulante->pivot->estudiante_id}} class="form-control check-listado"/>
+                  </td>
+                  <td>{{$postulante->fisica->nombre_persona." ".$postulante->fisica->apellido_persona}}</td>
+                  <td>
+                    @foreach ($postulante->fisica->persona->telefonos as $telefono)
+                      @if ($telefono->tipo_telefono == 'fijo')
+                        {{$telefono->nro_telefono}}
+                      @endif
+                    @endforeach
+                  </td>
+                  <td>
+                    @foreach ($postulante->fisica->persona->telefonos as $telefono)
+                      @if ($telefono->tipo_telefono == 'celular')
+                        {{$telefono->nro_telefono}}
+                      @endif
+                    @endforeach
+                  </td>
+                  <td>{{$postulante->fecha_postulacion}}</td>
+                  <td>{{$postulante->estado_postulacion}}</td>
+                  <td class="text-center">
+                    @if ($postulante->pivot->cv_descargado)
+                      <span class="fa fa-check icon-descargado-true"></span>
+                    @else
+                      <span class="fa fa-remove icon-descargado-false"></span>
                     @endif
-                  @endforeach
-                </td>
-                <td>
-                  @foreach ($postulante->fisica->persona->telefonos as $telefono)
-                    @if ($telefono->tipo_telefono == 'celular')
-                      {{$telefono->nro_telefono}}
-                    @endif
-                  @endforeach
-                </td>
-                <td>{{$postulante->fecha_postulacion}}</td>
-                <td>{{$postulante->estado_postulacion}}</td>
-                <td class="text-center">
-                  @if ($postulante->pivot->cv_descargado)
-                    <span class="fa fa-check icon-descargado-true"></span>
-                  @else
-                    <span class="fa fa-remove icon-descargado-false"></span>
-                  @endif
-                </td>
-                <td class="text-center">
-                  <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv', ['id_propuesta' => $postulante->pivot->propuesta_laboral_id, 'id_estudiante' => $postulante->pivot->estudiante_id]) }}" class="btn btn-info">
-                    <span class="fa fa-file-text-o" aria-hidden="true" style="color:white"></span></a>
-                </td>
-              </tr>
-          @endforeach
-        </tbody>
-      </table>
+                  </td>
+                  <td class="text-center">
+                    <a href="{{ route('in.propuestas-laborales.listado-postulantes.vizualizar-cv', ['id_propuesta' => $postulante->pivot->propuesta_laboral_id, 'id_estudiante' => $postulante->pivot->estudiante_id]) }}" class="btn btn-info">
+                      <span class="fa fa-file-text-o" aria-hidden="true" style="color:white"></span></a>
+                  </td>
+                </tr>
+            @endforeach
+          </tbody>
+        </table>
+
+        <div class="form-group">
+          <div class="col-sm-12 text-center">
+            <button type="submit" class="btn btn-info btn-label-left">
+              <span><i class="fa fa-download"></i></span>
+              Descargar Archivos Seleccionados
+            </button>
+          </div>
+        </div>
+
+      {!! Form::close()!!}
 
       <a href="{{ route('in.propuestas-laborales.detalle', $propuestaId) }}"  style="margin-top: -5px" class="btn btn-info pull-right">
         <span><i class="fa fa-reply"></i></span>
