@@ -228,4 +228,165 @@ class ReportesEmpleadorController extends Controller
       ]);
     }
 
+    public function getCarrerasMasEstudiantes(){
+
+        if(true){
+            $cantidadEstudiantePorCarrera = DB::select('
+                                                select count(*) as cantidad_estudiantes, c.nombre_carrera 
+                                                from estudiantes as e join carreras as c on e.carrera_id = c.id 
+                                                group by e.carrera_id
+                                                order by cantidad_estudiantes Desc');
+            
+             return view('in.reportes.empleador.tablasonline.carreras_mas_estudiantes')
+                    ->with('cantidadEstudiantePorCarrera',$cantidadEstudiantePorCarrera);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getCarrerasMasEstudiantesPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $cantidadEstudiantePorCarrera = DB::select('
+                                                select count(*) as cantidad_estudiantes, c.nombre_carrera 
+                                                from estudiantes as e join carreras as c on e.carrera_id = c.id 
+                                                group by e.carrera_id
+                                                order by cantidad_estudiantes Desc');
+            
+             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera, 'today' => $today]);
+            return $pdf->stream('Reporte-carreras-con-mas-estudiantes.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+
+    }
+
+    public function getEstadoEstudiantes(){
+
+        if(true){
+            
+            $empresaId = Auth::user()->persona->juridica->id;
+
+            $cantEstadosPostulados = DB::select('select count(*) postulados, epl.estado_postulacion
+                                                    from estudiante_propuesta_laboral as epl join propuestas_laborales pl on epl.propuesta_laboral_id = pl.id
+                                                    where pl.juridica_id = ?
+                                                    group by estado_postulacion
+                                                    order by postulados Desc',[$empresaId]);
+            
+             return view('in.reportes.empleador.tablasonline.estado_estudiantes')
+                    ->with('cantEstadosPostulados',$cantEstadosPostulados);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEstadoEstudiantesPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            
+            $empresaId = Auth::user()->persona->juridica->id;
+
+            $cantEstadosPostulados = DB::select('select count(*) postulados, epl.estado_postulacion
+                                                    from estudiante_propuesta_laboral as epl join propuestas_laborales pl on epl.propuesta_laboral_id = pl.id
+                                                    where pl.juridica_id = ?
+                                                    group by estado_postulacion
+                                                    order by postulados Desc',[$empresaId]);
+            
+             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.estado_estudiantes',['cantEstadosPostulados' => $cantEstadosPostulados, 'today' => $today]);
+            return $pdf->stream('Reporte-estado-postulados.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+
+    }
+
+    public function getPromedioSueldoCarreras(){
+
+        if(true){
+            $SueldoPorCarrera = DB::select('select avg(cvs.sueldo_bruto_pretendido) promedio_sueldo, ca.nombre_carrera as carrera
+                                            from cvs join estudiantes as es on cvs.estudiante_id = es.id join carreras as ca on es.carrera_id = ca.id
+                                            where cvs.sueldo_bruto_pretendido > 0
+                                            group by carrera
+                                            order by promedio_sueldo desc');
+            
+             return view('in.reportes.empleador.tablasonline.promedio_sueldo_carrera')
+                    ->with('SueldoPorCarrera',$SueldoPorCarrera);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getPromedioSueldoCarrerasPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+
+            $SueldoPorCarrera = DB::select('select avg(cvs.sueldo_bruto_pretendido) promedio_sueldo, ca.nombre_carrera as carrera
+                                            from cvs join estudiantes as es on cvs.estudiante_id = es.id join carreras as ca on es.carrera_id = ca.id
+                                            where cvs.sueldo_bruto_pretendido > 0
+                                            group by carrera
+                                            order by promedio_sueldo desc');
+            
+             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.promedio_sueldo_carrera',['SueldoPorCarrera' => $SueldoPorCarrera, 'today' => $today]);
+            return $pdf->stream('Reporte-promedio-sueldo-carreras.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+
+    }
+
+    public function getPropuestasMasPostuladosPorVer(){
+
+        if(true){
+            $empresaId = Auth::user()->persona->juridica->id;
+            $cantPostSinDecidirPorProp = DB::select('select count(*) postulados_sin_decidir, pl.titulo
+                                    from estudiante_propuesta_laboral as epl join propuestas_laborales pl on epl.propuesta_laboral_id = pl.id
+                                    where epl.estado_postulacion = "en espera" and pl.juridica_id = ?
+                                    group by titulo 
+                                    order by postulados_sin_decidir Desc',[$empresaId]);
+            
+             return view('in.reportes.empleador.tablasonline.propuestas_mas_estudiantes_observar')
+                    ->with('cantPostSinDecidirPorProp',$cantPostSinDecidirPorProp);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getPropuestasMasPostuladosPorVerPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $empresaId = Auth::user()->persona->juridica->id;
+
+            $cantPostSinDecidirPorProp = DB::select('select count(*) postulados_sin_decidir, pl.titulo
+                                    from estudiante_propuesta_laboral as epl join propuestas_laborales pl on epl.propuesta_laboral_id = pl.id
+                                    where epl.estado_postulacion = "en espera" and pl.juridica_id = ?
+                                    group by titulo 
+                                    order by postulados_sin_decidir Desc',[$empresaId]);
+            
+             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.propuestas_mas_estudiantes_observar',['cantPostSinDecidirPorProp' => $cantPostSinDecidirPorProp, 'today' => $today]);
+            return $pdf->stream('Reporte-propuestas-mas-postulados-por-ver.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
 }

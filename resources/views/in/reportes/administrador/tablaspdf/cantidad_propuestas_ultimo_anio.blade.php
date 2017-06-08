@@ -15,7 +15,7 @@
         <thead>
           <tr>
             <th align="center" style="width:20%"> INFORME :</th>
-            <th style="width:60%">Mi Estados en Postulaciones realizadas</th>
+            <th style="width:60%">Cantidad de Propuestas generadas en el último año</th>
             <th align="center" style="width:15%">{{$today}}</th>
           </tr>
         </thead>
@@ -25,21 +25,20 @@
         <thead>
           <tr>
             <th align="center" style="width:10%">#</th>
-            <th style="width:60%">Estados en Postulaciones</th>
-            <th style="width:30%">Cantidad</th>    
+            <th style="width:60%">Mes</th>
+            <th style="width:30%">Cantidad de Propuestas</th>    
           </tr>
         </thead>
         <tbody>
-          @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+          @foreach( $cantidadPropuestaPorMes as $key => $fecha )
             <tr>
               <td align="center">{{$key + 1}}</td>
-              <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-              <td>{{$estadoEnPostulacion->cantidad}}</td>
+              <td>{{$meses[$fecha->mes -1]}} - {{$fecha->anio}}</td>
+              <td>{{$fecha->cantidad_propuesta}}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
     </div>
-
   </body>
 </html>

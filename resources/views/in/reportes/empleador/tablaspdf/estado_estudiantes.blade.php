@@ -15,7 +15,7 @@
         <thead>
           <tr>
             <th align="center" style="width:20%"> INFORME :</th>
-            <th style="width:60%">Mi Estados en Postulaciones realizadas</th>
+            <th style="width:60%">Estudiantes en mis Propuestas</th>
             <th align="center" style="width:15%">{{$today}}</th>
           </tr>
         </thead>
@@ -25,21 +25,20 @@
         <thead>
           <tr>
             <th align="center" style="width:10%">#</th>
-            <th style="width:60%">Estados en Postulaciones</th>
-            <th style="width:30%">Cantidad</th>    
+            <th style="width:60%">Estado de la Postulación</th>
+            <th style="width:30%">Cantidad de estudiantes</th>    
           </tr>
         </thead>
         <tbody>
-          @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+          @foreach( $cantEstadosPostulados as $key => $estadoPostulado )
             <tr>
               <td align="center">{{$key + 1}}</td>
-              <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-              <td>{{$estadoEnPostulacion->cantidad}}</td>
+              <td>{{$estadoPostulado->estado_postulacion}}</td>
+              <td>{{$estadoPostulado->postulados}}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
     </div>
-
   </body>
 </html>

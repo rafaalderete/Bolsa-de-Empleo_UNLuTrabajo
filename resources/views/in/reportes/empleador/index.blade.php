@@ -47,7 +47,7 @@
               <div class="box-content">
                 <div id="chartContainer-1" style="height: 300px;"></div>
                 <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                  <a href="{{ route('in.reportes.empleador.tablasonline.carreras-mas-estudiantes') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                     Tabla de Detalle
                   </a>
                 </div>
@@ -74,7 +74,7 @@
               <div class="box-content">
                 <div id="chartContainer-2" style="height: 300px;"></div>
                 <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                  <a href="{{ route('in.reportes.empleador.tablasonline.estado-estudiantes') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                     Tabla de Detalle
                   </a>
                 </div>
@@ -103,7 +103,7 @@
               <div class="box-content">
                 <div id="chartContainer-3" style="height: 300px;"></div>
                 <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                  <a href="{{ route('in.reportes.empleador.tablasonline.promedio-sueldo-carreras') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                     Tabla de Detalle
                   </a>
                 </div>
@@ -130,7 +130,7 @@
               <div class="box-content">
                 <div id="chartContainer-4" style="height: 300px;"></div>
                 <div class="row">
-                  <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                  <a href="{{ route('in.reportes.empleador.tablasonline.propuestas-mas-postulados-por-ver') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                     Tabla de Detalle
                   </a>
                 </div>

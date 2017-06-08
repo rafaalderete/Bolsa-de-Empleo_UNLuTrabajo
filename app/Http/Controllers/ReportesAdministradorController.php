@@ -292,4 +292,284 @@ class ReportesAdministradorController extends Controller
         'cantidadPropuestas' => $cantidadPropuestas
       ]);
     }
+
+    public function getEmpresasMasPropuestas(){
+
+        if(true){
+            $propuestasPorEmpresa = DB::select('select count(*) as cantidad_propuestas, j.nombre_comercial 
+                                                from juridicas as j join propuestas_laborales as pl on j.id = pl.juridica_id join personas p on j.persona_id = p.id
+                                                where p.estado_persona = ?
+                                                group by j.nombre_comercial
+                                                order by cantidad_propuestas Desc',['activo']);
+            
+             return view('in.reportes.administrador.tablasonline.empresas_mas_propuestas')
+                    ->with('propuestasPorEmpresa',$propuestasPorEmpresa);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasMasPropuestasPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $propuestasPorEmpresa = DB::select('select count(*) as cantidad_propuestas, j.nombre_comercial 
+                                                from juridicas as j join propuestas_laborales as pl on j.id = pl.juridica_id join personas p on j.persona_id = p.id
+                                                where p.estado_persona = ?
+                                                group by j.nombre_comercial
+                                                order by cantidad_propuestas Desc',['activo']);
+            
+             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_mas_propuestas',['propuestasPorEmpresa' => $propuestasPorEmpresa, 'today' => $today]);
+            return $pdf->stream('Reporte-empresas-con-mas-propuestas.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasMasDiasInactividad(){
+
+        if(true){
+            // Busco las empresas Activas
+            $empresasActivas = DB::select('select j.id, j.nombre_comercial
+                                from juridicas as j join personas as p on j.persona_id = p.id
+                                where p.estado_persona = ?',['activo']);
+
+            // Busco las ultimas ofertas realizadas
+            foreach ($empresasActivas as $key => $empresaActiva) {
+                $ultima_propuesta = DB::select('select fecha_inicio_propuesta as fecha
+                                        from propuestas_laborales 
+                                        where juridica_id = ?
+                                        order by created_at Desc limit 1',[$empresaActiva->id]);
+                if ($ultima_propuesta != null){
+                    $empresasActivas[$key]->fecha_ultima_propuesta = $ultima_propuesta[0]->fecha;
+                }else{
+                    $empresasActivas[$key]->fecha_ultima_propuesta = null;
+                }
+            }
+
+            // ordemaniento por fecha de ultima oferta
+            for($i=1;$i<sizeof($empresasActivas);$i++){
+                for($j=0;$j<sizeof($empresasActivas)-$i;$j++){
+                    if($empresasActivas[$j]->fecha_ultima_propuesta > $empresasActivas[$j+1]->fecha_ultima_propuesta){
+                        $k=$empresasActivas[$j+1];
+                        $empresasActivas[$j+1]=$empresasActivas[$j];
+                        $empresasActivas[$j]=$k;
+                    }
+                }
+            }
+
+            $today = Carbon::today();
+            // Define la cantidad de dias inactivos
+            foreach ($empresasActivas as $key => $empresa) {
+                    $datetime1 = new \DateTime($empresa->fecha_ultima_propuesta);
+                    $datetime2 = new \DateTime($today);
+                    $interval = $datetime1->diff($datetime2);
+                    $empresasActivas[$key]->dias_inactivo = (int) $interval->format('%R%a');
+            }
+            
+            return view('in.reportes.administrador.tablasonline.empresas_mas_dias_inactividad')
+                    ->with('empresasActivas',$empresasActivas);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasMasDiasInactividadPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            // Busco las empresas Activas
+            $empresasActivas = DB::select('select j.id, j.nombre_comercial
+                                from juridicas as j join personas as p on j.persona_id = p.id
+                                where p.estado_persona = ?',['activo']);
+
+            // Busco las ultimas ofertas realizadas
+            foreach ($empresasActivas as $key => $empresaActiva) {
+                $ultima_propuesta = DB::select('select fecha_inicio_propuesta as fecha
+                                        from propuestas_laborales 
+                                        where juridica_id = ?
+                                        order by created_at Desc limit 1',[$empresaActiva->id]);
+                if ($ultima_propuesta != null){
+                    $empresasActivas[$key]->fecha_ultima_propuesta = $ultima_propuesta[0]->fecha;
+                }else{
+                    $empresasActivas[$key]->fecha_ultima_propuesta = null;
+                }
+            }
+
+            // ordemaniento por fecha de ultima oferta
+            for($i=1;$i<sizeof($empresasActivas);$i++){
+                for($j=0;$j<sizeof($empresasActivas)-$i;$j++){
+                    if($empresasActivas[$j]->fecha_ultima_propuesta > $empresasActivas[$j+1]->fecha_ultima_propuesta){
+                        $k=$empresasActivas[$j+1];
+                        $empresasActivas[$j+1]=$empresasActivas[$j];
+                        $empresasActivas[$j]=$k;
+                    }
+                }
+            }
+
+            $today = Carbon::today();
+            // Define la cantidad de dias inactivos
+            foreach ($empresasActivas as $key => $empresa) {
+                    $datetime1 = new \DateTime($empresa->fecha_ultima_propuesta);
+                    $datetime2 = new \DateTime($today);
+                    $interval = $datetime1->diff($datetime2);
+                    $empresasActivas[$key]->dias_inactivo = (int) $interval->format('%R%a');
+            }
+            
+            $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_mas_dias_inactividad',['empresasActivas' => $empresasActivas, 'today' => $today]);
+            return $pdf->stream('Reporte-empresas-mas-dias-inactividad.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+    
+    public function getCarrerasMasEstudiantes(){
+
+        if(true){
+            $cantidadEstudiantePorCarrera = DB::select('
+                                                select count(*) as cantidad_estudiantes, c.nombre_carrera 
+                                                from estudiantes as e join carreras as c on e.carrera_id = c.id 
+                                                group by e.carrera_id
+                                                order by cantidad_estudiantes Desc');
+            
+            return view('in.reportes.administrador.tablasonline.carreras_mas_estudiantes')
+                    ->with('cantidadEstudiantePorCarrera',$cantidadEstudiantePorCarrera);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getCarrerasMasEstudiantesPdf(){
+
+        if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $cantidadEstudiantePorCarrera = DB::select('
+                                                select count(*) as cantidad_estudiantes, c.nombre_carrera 
+                                                from estudiantes as e join carreras as c on e.carrera_id = c.id 
+                                                group by e.carrera_id
+                                                order by cantidad_estudiantes Desc');
+            
+             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera, 'today' => $today]);
+            return $pdf->stream('Reporte-carreras-mas-estudiantes.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasRubroEmpresarial(){
+
+        if(true){
+            $cantidadEmpresasPorRubro = DB::select('
+                                                select count(*) as cantidad_empresas, re.nombre_rubro_empresarial
+                                                from juridicas as j join rubros_empresariales as re on j.rubro_empresarial_id = re.id
+                                                group by j.rubro_empresarial_id
+                                                order by cantidad_empresas Desc');
+            
+            return view('in.reportes.administrador.tablasonline.empresas_por_rubro')
+                    ->with('cantidadEmpresasPorRubro',$cantidadEmpresasPorRubro);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasRubroEmpresarialPdf(){
+
+        if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $cantidadEmpresasPorRubro = DB::select('
+                                                select count(*) as cantidad_empresas, re.nombre_rubro_empresarial
+                                                from juridicas as j join rubros_empresariales as re on j.rubro_empresarial_id = re.id
+                                                group by j.rubro_empresarial_id
+                                                order by cantidad_empresas Desc');
+            
+             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_por_rubro',['cantidadEmpresasPorRubro' => $cantidadEmpresasPorRubro, 'today' => $today]);
+            return $pdf->stream('Reporte-empresas-por-rubro.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getPropuestasUltimoAnio(){
+
+        if(true){
+            $today = Carbon::today();
+            $desde = $today->subYear()->toDateString();
+            $hasta = Carbon::today()->toDateString();
+
+            $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+            $cantidadPropuestaPorMes = DB::select('select count(*) as cantidad_propuesta, MONTH(fecha_inicio_propuesta) as mes,  YEAR(fecha_inicio_propuesta) as anio 
+                                                    from propuestas_laborales
+                                                    where fecha_inicio_propuesta >= ? and fecha_inicio_propuesta <= ?
+                                                    group by Mes, Anio
+                                                    order by fecha_inicio_propuesta Desc',[$desde,$hasta]);
+
+            /*
+            $reporteanual = [];
+
+            for ($i = 0; $i < 12; $i++ ){
+                if($cantidadPropuestaPorMes[$i] != null){
+                    dd($cantidadPropuestaPorMes[$i]);
+                    $reporteanual->mes = $meses[$i];
+                    $reporteanual->cantidad = $cantidadPropuestaPorMes[$i]->cantidad_propuesta;
+                }else{
+                    $reporteanual->mes = $meses[$i];
+                    $reporteanual->cantidad = 0;
+                }
+            }
+
+            dd($reporteanual);
+            */
+            
+            return view('in.reportes.administrador.tablasonline.cantidad_propuestas_ultimo_anio')
+                    ->with('cantidadPropuestaPorMes',$cantidadPropuestaPorMes)
+                    ->with('meses',$meses);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getPropuestasUltimoAnioPdf(){
+
+        if(true){
+            $hoy = Carbon::today();
+            $desde = $hoy->subYear()->toDateString();
+            $hasta = Carbon::today()->toDateString();
+            $today = Carbon::today()->format('d-m-Y');
+
+            $meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+            $cantidadPropuestaPorMes = DB::select('select count(*) as cantidad_propuesta, MONTH(fecha_inicio_propuesta) as mes,  YEAR(fecha_inicio_propuesta) as anio 
+                                                    from propuestas_laborales
+                                                    where fecha_inicio_propuesta >= ? and fecha_inicio_propuesta <= ?
+                                                    group by Mes, Anio
+                                                    order by fecha_inicio_propuesta Desc',[$desde,$hasta]);
+            
+             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.cantidad_propuestas_ultimo_anio',['cantidadPropuestaPorMes' => $cantidadPropuestaPorMes, 'today' => $today, 'meses' => $meses]);
+            return $pdf->stream('Reporte-cantidad-propuestas-ultimo-anio.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
 }

@@ -234,11 +234,111 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.administrador.index'
 	]);
 
+	Route::get('reportes-administrador/reportes/tabla-empresas-mas-propuestas', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasMasPropuestas',
+		'as'	=>	'in.reportes.administrador.tablasonline.empresas-mas-propuestas'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-empresas-mas-propuestas-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasMasPropuestasPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.empresas-mas-propuestas'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-empresas-mas-dias-inactividad', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasMasDiasInactividad',
+		'as'	=>	'in.reportes.administrador.tablasonline.empresas-mas-dias-inactividad'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-empresas-mas-dias-inactividad-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasMasDiasInactividadPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.empresas-mas-dias-inactividad'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-carreras-mas-estudiantes', [
+		'uses'	=>	'ReportesAdministradorController@getCarrerasMasEstudiantes',
+		'as'	=>	'in.reportes.administrador.tablasonline.carreras-mas-estudiantes'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-carreras-mas-estudiantes-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getCarrerasMasEstudiantesPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.carreras-mas-estudiantes'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-propuestas-ultimo-anio', [
+		'uses'	=>	'ReportesAdministradorController@getPropuestasUltimoAnio',
+		'as'	=>	'in.reportes.administrador.tablasonline.propuestas-ultimo-anio'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-propuestas-ultimo-anio-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getPropuestasUltimoAnioPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.propuestas-ultimo-anio'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-empresas-rubro-empresarial', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasRubroEmpresarial',
+		'as'	=>	'in.reportes.administrador.tablasonline.empresas-rubro-empresarial'
+	]);
+
+	Route::get('reportes-administrador/reportes/tabla-empresas-rubro-empresarial-pdf', [
+		'uses'	=>	'ReportesAdministradorController@getEmpresasRubroEmpresarialPdf',
+		'as'	=>	'in.reportes.administrador.tablaspdf.empresas-rubro-empresarial'
+	]);
+
 	//------------- RUTAS DE REPORTES EMPLEADOR ----------------------
 
 	Route::get('reportes-empleador/reportes', [
 		'uses'	=>	'ReportesEmpleadorController@index',
 		'as'	=>	'in.reportes.empleador.index'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-carreras-mas-estudiantes', [
+		'uses'	=>	'ReportesEmpleadorController@getCarrerasMasEstudiantes',
+		'as'	=>	'in.reportes.empleador.tablasonline.carreras-mas-estudiantes'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-carreras-mas-estudiantes-pdf', [
+		'uses'	=>	'ReportesEmpleadorController@getCarrerasMasEstudiantesPdf',
+		'as'	=>	'in.reportes.empleador.tablaspdf.carreras-mas-estudiantes'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-estado-estudiantes', [
+		'uses'	=>	'ReportesEmpleadorController@getEstadoEstudiantes',
+		'as'	=>	'in.reportes.empleador.tablasonline.estado-estudiantes'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-estado-estudiantes-pdf', [
+		'uses'	=>	'ReportesEmpleadorController@getEstadoEstudiantesPdf',
+		'as'	=>	'in.reportes.empleador.tablaspdf.estado-estudiantes'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-promedio-sueldo-carreras', [
+		'uses'	=>	'ReportesEmpleadorController@getPromedioSueldoCarreras',
+		'as'	=>	'in.reportes.empleador.tablasonline.promedio-sueldo-carreras'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-promedio-sueldo-carreras-pdf', [
+		'uses'	=>	'ReportesEmpleadorController@getPromedioSueldoCarrerasPdf',
+		'as'	=>	'in.reportes.empleador.tablaspdf.promedio-sueldo-carreras'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-propuestas-mas-postulados-por-ver', [
+		'uses'	=>	'ReportesEmpleadorController@getPropuestasMasPostuladosPorVer',
+		'as'	=>	'in.reportes.empleador.tablasonline.propuestas-mas-postulados-por-ver'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-propuestas-mas-postulados-por-ver-pdf', [
+		'uses'	=>	'ReportesEmpleadorController@getPropuestasMasPostuladosPorVerPdf',
+		'as'	=>	'in.reportes.empleador.tablaspdf.propuestas-mas-postulados-por-ver'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-cantidad-propuestas', [
+		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuesta',
+		'as'	=>	'in.reportes.empleador.tablasonline.cantidad-propuestas'
+	]);
+
+	Route::get('reportes-empleador/reportes/tabla-cantidad-propuestas-pdf', [
+		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestaPdf',
+		'as'	=>	'in.reportes.empleador.tablaspdf.cantidad-propuestas'
 	]);
 
 	//------------- RUTAS DE REPORTES ESTUDIANTE ----------------------
@@ -263,10 +363,20 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.estudiante.tablasonline.estados-postulaciones'
 	]);
 
+	Route::get('reportes-estudiante/reportes/tabla-estados-postulaciones-pdf', [
+		'uses'	=>	'ReportesEstudianteController@getEstadosPostulacionesPdf',
+		'as'	=>	'in.reportes.estudiante.tablaspdf.estados-postulaciones'
+	]);
+
 	
 	Route::get('reportes-estudiante/reportes/tabla-empresas-propuestas-mi-carrera', [
 		'uses'	=>	'ReportesEstudianteController@getEmpresasPropuestasMiCarrera',
 		'as'	=>	'in.reportes.estudiante.tablasonline.empresas-propuestas-mi-carrera'
+	]);
+
+	Route::get('reportes-estudiante/reportes/tabla-empresas-propuestas-mi-carrera-pdf', [
+		'uses'	=>	'ReportesEstudianteController@getEmpresasPropuestasMiCarreraPdf',
+		'as'	=>	'in.reportes.estudiante.tablaspdf.empresas-propuestas-mi-carrera'
 	]);
 
 	//------------- RUTAS DE PARAMETRIA ---------------------

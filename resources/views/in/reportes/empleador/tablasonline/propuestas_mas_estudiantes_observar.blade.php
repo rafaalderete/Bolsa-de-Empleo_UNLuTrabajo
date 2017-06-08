@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle mi Estados en Postulaciones realizadas</a></li>
+        <li><a>Detalle Estudiantes para observar</a></li>
       </ol>
     </div>
   </div>
@@ -24,34 +24,34 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle mi Estados en Postulaciones realizadas
-        @if(count($cantEstadosEnPostulaciones) > 0)
+      <h4 class="page-header">Reporte - Detalle Estudiantes Para Observar
+        @if(count($cantPostSinDecidirPorProp) > 0)
           @if(true)
-            <a href="{{route('in.reportes.estudiante.tablaspdf.estados-postulaciones')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
+            <a href="{{route('in.reportes.empleador.tablaspdf.propuestas-mas-postulados-por-ver')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
               <span><i class="fa fa-download"></i></span>
               Descargar Reporte
             </a>
           @endif
         @endif
       </h4>
-      @if(count($cantEstadosEnPostulaciones) > 0)
+      @if(count($cantPostSinDecidirPorProp) > 0)
         <!-- Tabla -->
         <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
           <!-- columnas de la tabla -->
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Estados en Postulaciones</th>
-              <th style="width:30%">Cantidad</th>
+              <th style="width:60%">Propuesta</th>
+              <th style="width:30%">Postulados por ver</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+            @foreach( $cantPostSinDecidirPorProp as $key => $propuesta )
               <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-                <td>{{$estadoEnPostulacion->cantidad}}</td>
+                <td>{{$propuesta->titulo}}</td>
+                <td>{{$propuesta->postulados_sin_decidir}}</td>
               </tr>
             @endforeach
           </tbody>

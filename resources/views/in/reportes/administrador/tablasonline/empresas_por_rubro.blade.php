@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle mi Estados en Postulaciones realizadas</a></li>
+        <li><a>Detalle Cantidad de Empresas por Rubro Empresarial</a></li>
       </ol>
     </div>
   </div>
@@ -24,34 +24,34 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle mi Estados en Postulaciones realizadas
-        @if(count($cantEstadosEnPostulaciones) > 0)
+      <h4 class="page-header">Reporte - Detalle Cantidad de Empresas por Rubro Empresarial
+        @if(count($cantidadEmpresasPorRubro) > 0)
           @if(true)
-            <a href="{{route('in.reportes.estudiante.tablaspdf.estados-postulaciones')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
+            <a href="{{route('in.reportes.administrador.tablaspdf.empresas-rubro-empresarial')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
               <span><i class="fa fa-download"></i></span>
               Descargar Reporte
             </a>
           @endif
         @endif
       </h4>
-      @if(count($cantEstadosEnPostulaciones) > 0)
+      @if(count($cantidadEmpresasPorRubro) > 0)
         <!-- Tabla -->
         <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
           <!-- columnas de la tabla -->
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Estados en Postulaciones</th>
-              <th style="width:30%">Cantidad</th>
+              <th style="width:60%">Rubro Empresarial</th>
+              <th style="width:30%">Cantidad de Empresas</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+            @foreach( $cantidadEmpresasPorRubro as $key => $rubro )
               <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-                <td>{{$estadoEnPostulacion->cantidad}}</td>
+                <td>{{$rubro->nombre_rubro_empresarial}}</td>
+                <td>{{$rubro->cantidad_empresas}}</td>
               </tr>
             @endforeach
           </tbody>

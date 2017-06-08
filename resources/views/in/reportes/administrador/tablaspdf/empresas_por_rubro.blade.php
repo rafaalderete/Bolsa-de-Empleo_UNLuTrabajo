@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang='en'>
   <head>
@@ -15,7 +14,7 @@
         <thead>
           <tr>
             <th align="center" style="width:20%"> INFORME :</th>
-            <th style="width:60%">Mi Estados en Postulaciones realizadas</th>
+            <th style="width:60%">Cantidad de Empresas por Rubro Empresarial</th>
             <th align="center" style="width:15%">{{$today}}</th>
           </tr>
         </thead>
@@ -25,21 +24,20 @@
         <thead>
           <tr>
             <th align="center" style="width:10%">#</th>
-            <th style="width:60%">Estados en Postulaciones</th>
-            <th style="width:30%">Cantidad</th>    
+            <th style="width:60%">Rubro Empresarial</th>
+            <th style="width:30%">Cantidad de Empresas</th>    
           </tr>
         </thead>
         <tbody>
-          @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+          @foreach( $cantidadEmpresasPorRubro as $key => $rubro )
             <tr>
               <td align="center">{{$key + 1}}</td>
-              <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-              <td>{{$estadoEnPostulacion->cantidad}}</td>
+              <td>{{$rubro->nombre_rubro_empresarial}}</td>
+              <td>{{$rubro->cantidad_empresas}}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
     </div>
-
   </body>
 </html>

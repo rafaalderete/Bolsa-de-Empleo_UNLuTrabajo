@@ -125,4 +125,88 @@ class ReportesEstudianteController extends Controller
         }
     }
 
+    public function getEstadosPostulaciones(){
+
+        if(true){
+            $estudianteId = Auth::user()->persona->fisica->estudiante->id;
+
+            $cantEstadosEnPostulaciones = DB::select('select count(*) cantidad, epl.estado_postulacion
+                                                from estudiante_propuesta_laboral as epl
+                                                where epl.estudiante_id = ?
+                                                group by estado_postulacion
+                                                order by cantidad Desc',[$estudianteId]);
+            
+             return view('in.reportes.estudiante.tablasonline.estados_postulaciones')
+                    ->with('cantEstadosEnPostulaciones',$cantEstadosEnPostulaciones);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+    }
+
+    public function getEstadosPostulacionesPdf(){
+
+        if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $estudianteId = Auth::user()->persona->fisica->estudiante->id;
+
+            $cantEstadosEnPostulaciones = DB::select('select count(*) cantidad, epl.estado_postulacion
+                                                from estudiante_propuesta_laboral as epl
+                                                where epl.estudiante_id = ?
+                                                group by estado_postulacion
+                                                order by cantidad Desc',[$estudianteId]);
+            
+             $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.estados_postulaciones',['cantEstadosEnPostulaciones' => $cantEstadosEnPostulaciones, 'today' => $today]);
+            return $pdf->stream('Reporte-estados-postulaciones.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasPropuestasMiCarrera(){
+
+        if(true){
+            $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
+
+            $empConPropParaMiCarrera = DB::select('select count(*) cantidad, j.nombre_comercial
+                                    from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
+                                            join juridicas as j on pl.juridica_id = j.id 
+                                    where rc.carrera_id = ?
+                                    group by j.nombre_comercial
+                                    order by cantidad Desc',[$carreraId]);
+            
+             return view('in.reportes.estudiante.tablasonline.empresas_propuestas_mi_carrera')
+                    ->with('empConPropParaMiCarrera',$empConPropParaMiCarrera);
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getEmpresasPropuestasMiCarreraPdf(){
+
+         if(true){
+            $today = Carbon::today()->format('d-m-Y');
+            $carreraId = Auth::user()->persona->fisica->estudiante->carrera_id;
+
+            $empConPropParaMiCarrera = DB::select('select count(*) cantidad, j.nombre_comercial
+                                    from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id
+                                            join juridicas as j on pl.juridica_id = j.id 
+                                    where rc.carrera_id = ?
+                                    group by j.nombre_comercial
+                                    order by cantidad Desc',[$carreraId]);
+            
+             $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.empresas_propuestas_mi_carrera',['empConPropParaMiCarrera' => $empConPropParaMiCarrera, 'today' => $today]);
+            return $pdf->stream('Reporte-empresas-propuestas-mi-carrera.pdf');
+            
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+
+    }
+
 }

@@ -15,7 +15,7 @@
         <thead>
           <tr>
             <th align="center" style="width:20%"> INFORME :</th>
-            <th style="width:60%">Mi Estados en Postulaciones realizadas</th>
+            <th style="width:60%">Sueldo bruto pretendido por Carrera</th>
             <th align="center" style="width:15%">{{$today}}</th>
           </tr>
         </thead>
@@ -25,21 +25,20 @@
         <thead>
           <tr>
             <th align="center" style="width:10%">#</th>
-            <th style="width:60%">Estados en Postulaciones</th>
-            <th style="width:30%">Cantidad</th>    
+            <th style="width:60%">Carrera</th>
+            <th style="width:30%">Sueldo promedio</th>    
           </tr>
         </thead>
         <tbody>
-          @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+          @foreach( $SueldoPorCarrera as $key => $carrera )
             <tr>
               <td align="center">{{$key + 1}}</td>
-              <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-              <td>{{$estadoEnPostulacion->cantidad}}</td>
+              <td>{{$carrera->carrera}}</td>
+              <td>{{$carrera->promedio_sueldo}}</td>
             </tr>
           @endforeach
         </tbody>
       </table>
     </div>
-
   </body>
 </html>

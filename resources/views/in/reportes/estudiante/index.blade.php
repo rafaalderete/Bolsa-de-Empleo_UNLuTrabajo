@@ -76,7 +76,7 @@
                 <div class="box-content">
                   <div id="chartContainer-2" style="height: 300px;"></div>
                   <div class="row">
-                    <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                    <a href="{{ route('in.reportes.estudiante.tablasonline.estados-postulaciones') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                       Tabla de Detalle
                     </a>
                   </div>
@@ -105,7 +105,7 @@
                 <div class="box-content">
                   <div id="chartContainer-3" style="height: 300px;"></div>
                   <div class="row">
-                    <a href=""  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
+                    <a href="{{ route('in.reportes.estudiante.tablasonline.empresas-propuestas-mi-carrera') }}"  style="margin-top: 5px; margin-right: 30px" class="btn btn-info pull-right">
                       Tabla de Detalle
                     </a>
                   </div>
@@ -116,8 +116,6 @@
       </div>
     </div>
   </div>
-
-  
 
 @endsection
 

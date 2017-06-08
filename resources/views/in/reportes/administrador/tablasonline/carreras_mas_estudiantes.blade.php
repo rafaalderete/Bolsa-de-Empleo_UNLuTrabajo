@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle mi Estados en Postulaciones realizadas</a></li>
+        <li><a>Detalle Carreras con más Estudiantes</a></li>
       </ol>
     </div>
   </div>
@@ -24,34 +24,34 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle mi Estados en Postulaciones realizadas
-        @if(count($cantEstadosEnPostulaciones) > 0)
+      <h4 class="page-header">Reporte - Detalle Carreras con más Estudiantes
+        @if(count($cantidadEstudiantePorCarrera) > 0)
           @if(true)
-            <a href="{{route('in.reportes.estudiante.tablaspdf.estados-postulaciones')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
+            <a href="{{route('in.reportes.administrador.tablaspdf.carreras-mas-estudiantes')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
               <span><i class="fa fa-download"></i></span>
               Descargar Reporte
             </a>
           @endif
         @endif
       </h4>
-      @if(count($cantEstadosEnPostulaciones) > 0)
+      @if(count($cantidadEstudiantePorCarrera) > 0)
         <!-- Tabla -->
         <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
           <!-- columnas de la tabla -->
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Estados en Postulaciones</th>
-              <th style="width:30%">Cantidad</th>
+              <th style="width:60%">Carrera</th>
+              <th style="width:30%">Cantidad de estudiantes</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach( $cantEstadosEnPostulaciones as $key => $estadoEnPostulacion )
+            @foreach( $cantidadEstudiantePorCarrera as $key => $carrera )
               <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$estadoEnPostulacion->estado_postulacion}}</td>
-                <td>{{$estadoEnPostulacion->cantidad}}</td>
+                <td>{{$carrera->nombre_carrera}}</td>
+                <td>{{$carrera->cantidad_estudiantes}}</td>
               </tr>
             @endforeach
           </tbody>
