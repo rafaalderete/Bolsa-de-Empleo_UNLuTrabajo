@@ -46,16 +46,18 @@
               <ul>
                 @if(Entrust::hasRole('super_usuario') || Entrust::hasRole('administrador') )
                   <li class="col-xs-5 col-sm-4 opcion" title="Registrar Empleador"><a href={{ route('in.registro-empleador') }}><i class="fa fa-building-o"></i><span>Registrar Empleador</span></a></li>
-                  <li class="col-xs-5 col-sm-4 opcion" title="Reportes"><a href={{ route('in.reportes.administrador.index') }}><i class="fa fa-list-alt"></i><span>Reportes</span></a></li>
+                  <li class="col-xs-5 col-sm-4 opcion" title="Reportes"><a href={{ route('in.reportes.administrador.index') }}><i class="fa fa-bar-chart-o"></i><span>Reportes</span></a></li>
                 @endif
                 @if(Entrust::hasRole('postulante') )
-                  <li class="col-xs-4 col-sm-4 opcion" title="Buscar Ofertas"><a href={{ route('in.buscar-ofertas') }}><i class="fa fa-suitcase"></i><span>Buscar Ofertas</span></a></li>
-                  <li class="col-xs-4 col-sm-4 opcion" title="Mi Cv"><a href={{ route('in.cv.datospersonalescv') }}><i class="fa fa-file-text-o"></i><span>Mi Cv</span></a></li>
-                  <li class="col-xs-4 col-sm-4 opcion" title="Mis Postulaciones"><a href={{ route('in.mis-postulaciones') }}><i class="fa fa-tasks"></i><span>Mis Postulaciones</span></a></li>
+                  <li class="col-xs-4 col-sm-3 opcion" title="Buscar Ofertas"><a href={{ route('in.buscar-ofertas') }}><i class="fa fa-suitcase"></i><span>Buscar Ofertas</span></a></li>
+                  <li class="col-xs-4 col-sm-3 opcion" title="Mi Cv"><a href={{ route('in.cv.datospersonalescv') }}><i class="fa fa-file-text-o"></i><span>Mi Cv</span></a></li>
+                  <li class="col-xs-4 col-sm-3 opcion" title="Mis Postulaciones"><a href={{ route('in.mis-postulaciones') }}><i class="fa fa-tasks"></i><span>Mis Postulaciones</span></a></li>
+                  <li class="col-xs-5 col-sm-3 opcion" title="Reportes"><a href={{ route('in.reportes.estudiante.index') }}><i class="fa fa-bar-chart-o"></i><span>Reportes</span></a></li>
                 @endif
                 @if(Entrust::hasRole('empleador') )
                   <li class="col-xs-5 col-sm-4 opcion" title="Realizar Propuesta"><a href={{ route('in.propuestas-laborales.create') }}><i class="fa fa-suitcase"></i><span>Realizar Propuesta</span></a></li>
                   <li class="col-xs-5 col-sm-4 opcion" title="Mis Propuestas"><a href={{ route('in.propuestas-laborales.index') }}><i class="fa fa-tasks"></i><span>Mis Propuestas</span></a></li>
+                  <li class="col-xs-5 col-sm-4 opcion" title="Reportes"><a href={{ route('in.reportes.empleador.index') }}><i class="fa fa-bar-chart-o"></i><span>Reportes</span></a></li>
                 @endif
               </ul>
             </div>
