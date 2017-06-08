@@ -14,7 +14,7 @@
           <span class="hidden-xs">Personas</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.personas.index')}}">Tabla de Personas</a></li>
+          <li><a href="{{route('in.personas.index')}}">Listado de Personas</a></li>
           @if(Entrust::can('crear_persona'))
             <li><a href="{{route('in.personas.create')}}">Registrar Persona</a></li>
           @endif
@@ -29,7 +29,7 @@
           <span class="hidden-xs">Empresas</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.empresas.index')}}">Tabla de Empresas</a></li>
+          <li><a href="{{route('in.empresas.index')}}">Listado de Empresas</a></li>
           @if(Entrust::can('crear_empresa'))
             <li><a href="{{route('in.empresas.create')}}">Registrar Empresa</a></li>
           @endif
@@ -44,7 +44,7 @@
           <span class="hidden-xs">Usuarios</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.usuarios.index')}}">Tabla de Usuarios</a></li>
+          <li><a href="{{route('in.usuarios.index')}}">Listado de Usuarios</a></li>
           @if(Entrust::can('crear_usuario'))
             <li><a href="{{route('in.usuarios.create')}}">Registrar Usuario</a></li>
           @endif
@@ -59,7 +59,7 @@
           <span class="hidden-xs">Roles</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.roles.index')}}">Tabla de Roles</a></li>
+          <li><a href="{{route('in.roles.index')}}">Listado de Roles</a></li>
           @if(Entrust::can('crear_rol'))
             <li><a href="{{route('in.roles.create')}}">Registrar Rol</a></li>
           @endif
@@ -74,7 +74,7 @@
           <span class="hidden-xs">Permisos</span>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{{route('in.permisos.index')}}">Tabla de Permisos</a></li>
+          <li><a href="{{route('in.permisos.index')}}">Listado de Permisos</a></li>
           @if(Entrust::can('crear_permiso'))
             <li><a href="{{route('in.permisos.create')}}">Registrar Permiso</a></li>
           @endif
@@ -85,7 +85,7 @@
     <li class="dropdown">
       <a href="#" class="dropdown-toggle">
         <i class="fa fa-chevron-right"></i>
-        <span class="hidden-xs">Parametría Grupo 1</span>
+        <span class="hidden-xs">Configuraciones Grupo 1</span>
       </a>
       <ul class="dropdown-menu">
         @if(Entrust::can('listar_rubros_empresariales'))
@@ -109,7 +109,7 @@
     <li class="dropdown">
       <a href="#" class="dropdown-toggle">
         <i class="fa fa-chevron-right"></i>
-        <span class="hidden-xs">Parametría Grupo 2</span>
+        <span class="hidden-xs">Configuraciones Grupo 2</span>
       </a>
       <ul class="dropdown-menu">
         @if(Entrust::can('listar_tipos_trabajo'))

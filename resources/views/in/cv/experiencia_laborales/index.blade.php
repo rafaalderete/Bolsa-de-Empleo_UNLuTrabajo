@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Gestionar CV</a></li>
-        <li><a>Tabla de Experiencia Laborales</a></li>
+        <li><a>Listado de Experiencia Laborales</a></li>
       </ol>
     </div>
   </div>
@@ -26,7 +26,7 @@
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
-      <h4 class="page-header">Tabla de Experiencias Laborales
+      <h4 class="page-header">Listado de Experiencias Laborales
         @if(true)
           <a href="{{ route('in.gestionar-cv.experiencia-laborales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>

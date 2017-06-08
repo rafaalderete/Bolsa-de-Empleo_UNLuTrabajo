@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'UNLu Trabajo | Tipos de Documento | Tabla de Tipos de Documento')
+@section('headTitle', 'UNLu Trabajo | Tipos de Documento | Listado de Tipos de Documento')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Tipos de Documento</a></li>
-        <li><a>Tabla de Tipos de Documento</a></li>
+        <li><a>Listado de Tipos de Documento</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Tipos de Documento
+        <h4 class="page-header">Listado de Tipos de Documento
         @if(Entrust::can('crear_tipo_documento'))
           <a href="{{ route('in.tipo_documento.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>

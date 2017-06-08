@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Gestionar CV</a></li>
-        <li><a>Tabla de Conocimientos Adicionales</a></li>
+        <li><a>Listado de Conocimientos Adicionales</a></li>
       </ol>
     </div>
   </div>
@@ -26,7 +26,7 @@
     @include('template.partials.sidebar-gestionarcv')
 
     <div class="box-content dropbox">
-      <h4 class="page-header">Tabla Conocimientos Adicionales
+      <h4 class="page-header">Listado Conocimientos Adicionales
         @if(true)
           <a href="{{ route('in.gestionar-cv.conocimientos-adicionales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
             <span><i class="fa fa-plus"></i></span>

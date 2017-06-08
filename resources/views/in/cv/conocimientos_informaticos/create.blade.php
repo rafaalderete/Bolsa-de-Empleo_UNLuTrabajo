@@ -87,7 +87,7 @@
 
         <a href="{{ route('in.gestionar-cv.conocimientos-informaticos.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
           <span><i class="fa fa-reply"></i></span>
-          Volver a la Tabla
+          Volver al Listado
         </a>
     </div>
   </div>

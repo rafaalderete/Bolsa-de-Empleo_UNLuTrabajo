@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'UNLu Trabajo | Rubros Empresariales | Tabla de Rubros Empresariales')
+@section('headTitle', 'UNLu Trabajo | Rubros Empresariales | Listado de Rubros Empresariales')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Rubros Empresariales</a></li>
-        <li><a>Tabla de Rubros Empresariales</a></li>
+        <li><a>Listado de Rubros Empresariales</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Rubros Empresariales
+        <h4 class="page-header">Listado de Rubros Empresariales
         @if(Entrust::can('crear_rubro_empresarial'))
           <a href="{{ route('in.rubros-empresariales.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>

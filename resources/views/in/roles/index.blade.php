@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'UNLu Trabajo | Roles | Tabla de Roles')
+@section('headTitle', 'UNLu Trabajo | Roles | Listado de Roles')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Roles</a></li>
-        <li><a>Tabla de Roles</a></li>
+        <li><a>Listado de Roles</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Roles
+        <h4 class="page-header">Listado de Roles
         @if(Entrust::can('crear_rol'))
           <a href="{{ route('in.roles.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>

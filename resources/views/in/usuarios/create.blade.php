@@ -126,7 +126,7 @@
 
       <a href="{{ route('in.usuarios.index') }}"  style="margin-top: -5px" class="btn btn-info pull-right">
         <span><i class="fa fa-reply"></i></span>
-        Volver a la Tabla</a>
+        Volver al Listado</a>
       </div>
     </div>
   </div>

@@ -512,6 +512,18 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.configurar-cuenta-password'
 	]);
 
+	//------------- RUTAS PARA CONFIGURACION DE RECIBIR EMAIL ---------------------
+
+	Route::get('configurar-cuenta-recibir-email', [
+		'uses'	=>	'UsuariosController@getConfigurarCuentaRecibirEmail',
+		'as'	=>	'in.configurar-cuenta-recibir-email'
+	]);
+
+	Route::post('configurar-cuenta-recibir-email', [
+		'uses'	=>	'UsuariosController@postConfigurarCuentaRecibirEmail',
+		'as'	=>	'in.configurar-cuenta-recibir-email'
+	]);
+
 	//------------- RUTAS PARA CONFIGURACION DE DATOS ---------------------
 	Route::get('configurar-datos', [
 		'uses'	=>	'UsuariosController@getConfigurarDatos',

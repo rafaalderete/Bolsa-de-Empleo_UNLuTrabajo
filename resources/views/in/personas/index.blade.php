@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'UNLu Trabajo | Personas | Tabla de Personas')
+@section('headTitle', 'UNLu Trabajo | Personas | Listado de Personas')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Personas</a></li>
-        <li><a>Tabla de Personas</a></li>
+        <li><a>Listado de Personas</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Personas
+        <h4 class="page-header">Listado de Personas
         @if(Entrust::can('crear_persona'))
           <a href="{{ route('in.personas.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar">
             <span><i class="fa fa-plus"></i></span>

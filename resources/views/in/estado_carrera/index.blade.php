@@ -1,6 +1,6 @@
 @extends('template.in_main')
 
-@section('headTitle', 'UNLu Trabajo | Estados de Carrera | Tabla de Estados de Carrera')
+@section('headTitle', 'UNLu Trabajo | Estados de Carrera | Listado de Estados de Carrera')
 
 @section('bodyIndice')
 
@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Estados de Carrera</a></li>
-        <li><a>Tabla de Estados de Carrera</a></li>
+        <li><a>Listado de Estados de Carrera</a></li>
       </ol>
     </div>
   </div>
@@ -23,7 +23,7 @@
       <!-- Cuerpo del Box-->
       <div class="box-content dropbox">
         <!-- Titulo del Cuerpo del Box -->
-        <h4 class="page-header">Tabla de Estado Carrera
+        <h4 class="page-header">Listado de Estado Carrera
         @if(Entrust::can('crear_estado_carrera'))
           <a href="{{ route('in.estado_carrera.create') }}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-2">
             <span><i class="fa fa-plus"></i></span>

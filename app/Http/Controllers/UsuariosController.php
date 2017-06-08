@@ -550,6 +550,49 @@ class UsuariosController extends PersonasController
 
     }
 
+    public function getConfigurarCuentaRecibirEmail(){
+
+      if(Auth::user()->hasRole('empleador')){
+
+        $juridica = Juridica::find(Auth::user()->persona->juridica->id);
+        $recibeMail = $juridica->recibe_mail;
+
+        return view('in.usuarios.configurar-cuenta-recibir-email')
+          ->with('recibeMail',$recibeMail);
+
+      }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+
+    }
+
+    public function postConfigurarCuentaRecibirEmail(Request $request){
+
+      if(Auth::user()->hasRole('empleador')){
+
+        $juridica = Juridica::find(Auth::user()->persona->juridica->id);
+        if (isset($request->recibe_mail)) {
+          $juridica->recibe_mail = true;
+        }
+        else {
+          $juridica->recibe_mail = false;
+        }
+        $juridica->save();
+
+        if ($juridica->recibe_mail) {
+          Flash::warning('Recibirá E-mail con cada postulación.')->important();
+        }
+        else {
+          Flash::warning('Ya no recibirá E-mail con cada postulación.')->important();
+        }
+        return redirect()->route('in.configurar-cuenta-recibir-email');
+
+      }else{
+          return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+
+    }
+
     //------------- REGISTRO DE Estudiante -------------------
 
     protected function getRegistroEstudiante(){

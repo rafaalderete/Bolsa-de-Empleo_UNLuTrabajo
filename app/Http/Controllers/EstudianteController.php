@@ -367,108 +367,143 @@ class EstudianteController extends Controller
             }
 
             if (!$postulado && $cumpleCarrera) {
-              //Mail al Empleador.
-              define('BUDGETS_DIR', public_path('uploads/budgets'));
-
-              if (!is_dir(BUDGETS_DIR)){
-                  mkdir(BUDGETS_DIR, 0755, true);
-              }
-
-              $data['nombre_estudiante'] = Auth::user()->persona->fisica->nombre_persona." ".Auth::user()->persona->fisica->apellido_persona;
-              $data['titulo_propuesta'] = $propuesta->titulo;
-              $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
-
-              $outputName = str_random(self::RANDOM_STRING);
-              $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.substr($data['titulo_propuesta'],0,self::TITULO)."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
-
-              // DATOS DEL CV
-              // Datos Personales y Objetivo Laboral
-              $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
-              $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
-              $telefono_fijo = '';
-              $telefono_celular = '';
-              foreach ($pfisica->persona->telefonos as $telefono) {
-                if ($telefono->tipo_telefono == 'fijo') {
-                  $telefono_fijo = $telefono->nro_telefono;
-                }
-                if ($telefono->tipo_telefono == 'celular') {
-                  $telefono_celular = $telefono->nro_telefono;
-                }
-              }
-
-              $idiomas = Idioma::all();
-
-              //Experiencias Laborales
-              $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-              // Estudios Academicos
-              $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-              // Conocimientos Idiomas
-              $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-              // Conocimientos Informaticos
-              $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
-
-              // Conocimientos Adicionales
-              $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
 
               $estudiante = Estudiante::find(Auth::user()->persona->fisica->estudiante->id);
+              $recibeMail = $propuesta->juridica->recibe_mail;
 
-              //Si el usuario envía archivo adjunto.
-              if (isset($request->archivo_adjunto) && ($estudiante->cv->archivo_adjunto != null)) {
-                $archivoAdjuntoCv = $estudiante->cv->archivo_adjunto;
-                $randomString = str_random(self::RANDOM_STRING);
-                $archivoAdjuntoPropuesta = substr($propuesta->titulo,0,self::TITULO)."_".substr($archivoAdjuntoCv,0,self::ADJUNTO)."_".$randomString.".pdf";
-                $archivoAdjuntoCvPath = public_path().'/adjuntos/'.$archivoAdjuntoCv;
-                $archivoAdjuntoPropuestaPath = public_path().'/propuestas/adjuntos/'.$archivoAdjuntoPropuesta;
-                File::copy($archivoAdjuntoCvPath,$archivoAdjuntoPropuestaPath);
+              //El empleador está configurado para recibir E-mail.
+              if ($recibeMail) {
+                //Mail al Empleador.
+                define('BUDGETS_DIR', public_path('uploads/budgets'));
 
-                File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+                if (!is_dir(BUDGETS_DIR)){
+                    mkdir(BUDGETS_DIR, 0755, true);
+                }
 
-                Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data,$archivoAdjuntoPropuestaPath){
-                    $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
-                    $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
-                    $message->to($data['email_empleador']);
-                    $message->attach($pdfPath);
-                    $message->attach($archivoAdjuntoPropuestaPath);
-                });
+                $data['nombre_estudiante'] = Auth::user()->persona->fisica->nombre_persona." ".Auth::user()->persona->fisica->apellido_persona;
+                $data['titulo_propuesta'] = $propuesta->titulo;
+                $data['email_empleador'] = $propuesta->juridica->persona->usuarios[0]->email;
 
-                File::delete($pdfPath);
+                $outputName = str_random(self::RANDOM_STRING);
+                $pdfPath = BUDGETS_DIR.'/UNLuTrabajo_'.substr($data['titulo_propuesta'],0,self::TITULO)."_".$data['nombre_estudiante']."_".$outputName.'.pdf';
 
-                //Postulación.
-                $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
-                 'usuario_id' => Auth::user()->id,
-                 'estado_postulacion' => 'en espera',
-                 'archivo_adjunto' => $archivoAdjuntoPropuesta,
-                 'cv_descargado' => false
-                ];
+                // DATOS DEL CV
+                // Datos Personales y Objetivo Laboral
+                $pfisica = Fisica::where('persona_id',Auth::user()->persona_id)->first();
+                $pfisica->fecha_nacimiento = date('d / m / Y', strtotime($pfisica->fecha_nacimiento));
+                $telefono_fijo = '';
+                $telefono_celular = '';
+                foreach ($pfisica->persona->telefonos as $telefono) {
+                  if ($telefono->tipo_telefono == 'fijo') {
+                    $telefono_fijo = $telefono->nro_telefono;
+                  }
+                  if ($telefono->tipo_telefono == 'celular') {
+                    $telefono_celular = $telefono->nro_telefono;
+                  }
+                }
+
+                $idiomas = Idioma::all();
+
+                //Experiencias Laborales
+                $expLaborales = Experiencia_Laboral::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+                // Estudios Academicos
+                $estudios = Estudio_Academico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+                // Conocimientos Idiomas
+                $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+                // Conocimientos Informaticos
+                $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+                // Conocimientos Adicionales
+                $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',Auth::user()->persona->fisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+                //Si el usuario envía archivo adjunto.
+                if (isset($request->archivo_adjunto) && ($estudiante->cv->archivo_adjunto != null)) {
+                  $archivoAdjuntoCv = $estudiante->cv->archivo_adjunto;
+                  $randomString = str_random(self::RANDOM_STRING);
+                  $archivoAdjuntoPropuesta = substr($propuesta->titulo,0,self::TITULO)."_".substr($archivoAdjuntoCv,0,self::ADJUNTO)."_".$randomString.".pdf";
+                  $archivoAdjuntoCvPath = public_path().'/adjuntos/'.$archivoAdjuntoCv;
+                  $archivoAdjuntoPropuestaPath = public_path().'/propuestas/adjuntos/'.$archivoAdjuntoPropuesta;
+                  File::copy($archivoAdjuntoCvPath,$archivoAdjuntoPropuestaPath);
+
+                  File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+
+                  Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data,$archivoAdjuntoPropuestaPath){
+                      $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+                      $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
+                      $message->to($data['email_empleador']);
+                      $message->attach($pdfPath);
+                      $message->attach($archivoAdjuntoPropuestaPath);
+                  });
+
+                  File::delete($pdfPath);
+
+                  //Postulación.
+                  $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
+                   'usuario_id' => Auth::user()->id,
+                   'estado_postulacion' => 'en espera',
+                   'archivo_adjunto' => $archivoAdjuntoPropuesta,
+                   'cv_descargado' => false
+                  ];
+                }
+                else {//El usuario no envía archivo adjunto.
+                  File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+
+                  Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
+                      $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
+                      $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
+                      $message->to($data['email_empleador']);
+                      $message->attach($pdfPath);
+                  });
+
+                  File::delete($pdfPath);
+
+                  //Postulación.
+                  $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
+                   'usuario_id' => Auth::user()->id,
+                   'estado_postulacion' => 'en espera',
+                   'cv_descargado' => false
+                  ];
+                }
+
+                $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => $datosPostulacion]);
+                /*
+                $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+                return $pdf->stream('CurriculumVitae.pdf');
+                */
               }
-              else {//El usuario no envía archivo adjunto.
-                File::put($pdfPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+              else {//El empleador está configurado para NO recibir E-mail.
+                //Si el usuario envía archivo adjunto.
+                if (isset($request->archivo_adjunto) && ($estudiante->cv->archivo_adjunto != null)) {
+                  $archivoAdjuntoCv = $estudiante->cv->archivo_adjunto;
+                  $randomString = str_random(self::RANDOM_STRING);
+                  $archivoAdjuntoPropuesta = substr($propuesta->titulo,0,self::TITULO)."_".substr($archivoAdjuntoCv,0,self::ADJUNTO)."_".$randomString.".pdf";
+                  $archivoAdjuntoCvPath = public_path().'/adjuntos/'.$archivoAdjuntoCv;
+                  $archivoAdjuntoPropuestaPath = public_path().'/propuestas/adjuntos/'.$archivoAdjuntoPropuesta;
+                  File::copy($archivoAdjuntoCvPath,$archivoAdjuntoPropuestaPath);
 
-                Mail::send('emails.postulacion_a_oferta', ['data' => $data], function($message) use ($pdfPath,$data){
-                    $message->from('unlutrabajo@gmail.com', 'UNLu Trabajo');
-                    $message->subject('Nueva Postulación - '.$data['titulo_propuesta']." - ".$data['nombre_estudiante']);
-                    $message->to($data['email_empleador']);
-                    $message->attach($pdfPath);
-                });
+                  //Postulación.
+                  $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
+                   'usuario_id' => Auth::user()->id,
+                   'estado_postulacion' => 'en espera',
+                   'archivo_adjunto' => $archivoAdjuntoPropuesta,
+                   'cv_descargado' => false
+                  ];
+                }
+                else {
+                  //Postulación.
+                  $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
+                   'usuario_id' => Auth::user()->id,
+                   'estado_postulacion' => 'en espera',
+                   'cv_descargado' => false
+                  ];
+                }
 
-                File::delete($pdfPath);
-
-                //Postulación.
-                $datosPostulacion = ['fecha_postulacion' => Carbon::now(),
-                 'usuario_id' => Auth::user()->id,
-                 'estado_postulacion' => 'en espera',
-                 'cv_descargado' => false
-                ];
+                $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => $datosPostulacion]);
               }
 
-              $propuesta->estudiantes()->attach([Auth::user()->persona->fisica->estudiante->id => $datosPostulacion]);
-              /*
-              $pdf = \PDF::loadView('emails.cv_estudiante',['pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
-              return $pdf->stream('CurriculumVitae.pdf');
-              */
               Flash::success('Postulación realizada.')->important();
               return redirect()->route('in.buscar-ofertas');
             }
