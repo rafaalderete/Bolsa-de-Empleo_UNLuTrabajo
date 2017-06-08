@@ -55,6 +55,13 @@
           </div>
       </div>
 
+      <div class="form-group col-sm-12">
+          {!! Form::label('archivo_adjunto','Cv Adjunto:', ['class' => 'col-sm-3 control-label']) !!}
+          <div class="col-sm-4">
+            <p>{{$nombreAdjunto}}</p>
+          </div>
+      </div>
+
      <div class="form-group">
         <div class="col-sm-12 text-center">
           <a  href="{{ route('in.cv.editobjetivolaboralcv') }}" ><button class="btn btn-info btn-label-left">

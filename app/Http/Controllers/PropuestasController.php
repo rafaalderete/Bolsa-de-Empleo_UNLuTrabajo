@@ -31,6 +31,9 @@ use App\Http\Requests\StoreUpdatePropuestaLaboralRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use File;
+use Chumper\Zipper\Zipper;
+use Illuminate\Http\Response;
 
 class PropuestasController extends Controller
 {
@@ -38,6 +41,8 @@ class PropuestasController extends Controller
     const CANT_PAGINA = 5;
     const DESCRIPCION = 350; //Cantidad de caracteres que se mostrarán en el index.
     const TITULO = 30; //Cantidad de caracteres que se mostrarán del titulo.
+    const TITULO_ARCHIVO = 20;
+    const ADJUNTO = 10;
 
     /**
      * Display a listing of the resource.
@@ -632,6 +637,17 @@ class PropuestasController extends Controller
           $postulantes = $propuesta->estudiantes;
           foreach ($postulantes as $postulante) {
             $postulante->fecha_postulacion = date('d-m-Y', strtotime($postulante->pivot->fecha_postulacion));
+            if ($postulante->pivot->estado_postulacion == "en espera") {
+              $postulante->estado_postulacion = "En Espera";
+            }
+            else {
+              if ($postulante->pivot->estado_postulacion == "rechazado") {
+                $postulante->estado_postulacion = "Rechazado";
+              }
+              else{
+                $postulante->estado_postulacion = "Aceptado";
+              }
+            }
           }
 
           return view('in.propuestas_laborales.listado-postulantes')
@@ -704,6 +720,7 @@ class PropuestasController extends Controller
           return view('in.propuestas_laborales.cv-postulante')
             ->with('idiomas',$idiomas)
             ->with('propuestaId', $id_propuesta)
+            ->with('estudianteId', $id_estudiante)
             ->with('pfisica',$pfisica)
             ->with('usuarioImagen',$usuarioImagen)
             ->with('usuarioEmail',$usuarioEmail)
@@ -713,8 +730,187 @@ class PropuestasController extends Controller
             ->with('estudios',$estudios)
             ->with('conocimientosInformaticos',$conocimientosInformaticos)
             ->with('conocimientosIdiomas',$conocimientosIdiomas)
-            ->with('conocimientosAdicionales',$conocimientosAdicionales);
+            ->with('conocimientosAdicionales',$conocimientosAdicionales)
+            ->with('estadoPostulacion',$estudiantePropuesta->estado_postulacion)
+            ->with('archivoAdjunto',$estudiantePropuesta->archivo_adjunto);
 
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function aceptarPostulacion($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          if ($estudiantePropuesta->estado_postulacion != 'en espera') {
+            return redirect()->route('in.propuestas-laborales.index');
+          }
+          else {
+            $estudiante = Estudiante::find($id_estudiante);
+            $nombrePersona = $estudiante->fisica->nombre_persona." ".$estudiante->fisica->apellido_persona;
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['estado_postulacion' => 'aceptado']);
+
+              Flash::warning('Ha aceptado la postulación de '.$nombrePersona.".")->important();
+              return redirect()->route('in.propuestas-laborales.listado-postulantes', $id_propuesta);
+          }
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function rechazarPostulacion($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          if ($estudiantePropuesta->estado_postulacion != 'en espera') {
+            return redirect()->route('in.propuestas-laborales.index');
+          }
+          else {
+            $estudiante = Estudiante::find($id_estudiante);
+            $nombrePersona = $estudiante->fisica->nombre_persona." ".$estudiante->fisica->apellido_persona;
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['estado_postulacion' => 'rechazado']);
+
+              Flash::warning('Ha rechazado la postulación de '.$nombrePersona.".")->important();
+              return redirect()->route('in.propuestas-laborales.listado-postulantes', $id_propuesta);
+          }
+        }
+      }else{
+        return redirect()->route('in.sinpermisos.sinpermisos');
+      }
+    }
+
+    public function descargarArchivosSimple($id_propuesta, $id_estudiante)
+    {
+      if(Auth::user()->can('listar_postulantes')){
+
+        $propuesta = Propuesta_Laboral::where('juridica_id',Auth::user()->persona->juridica->id)
+          ->where('id',$id_propuesta)
+          ->where('estado_propuesta','activo')
+          ->first();
+
+        $estudiantePropuesta = DB::table('estudiante_propuesta_laboral')
+                        ->where('propuesta_laboral_id', '=', $id_propuesta)
+                        ->where('estudiante_id', '=', $id_estudiante)
+                        ->first();
+
+        if ( ($propuesta == null) || ($estudiantePropuesta == null) ) {
+          return redirect()->route('in.propuestas-laborales.index');
+        }
+        else {
+          $postulante = Estudiante::find($id_estudiante);
+          $pfisica = Fisica::where('id',$postulante->fisica->id)->first();
+          $pfisica->fecha_nacimiento = date('d-m-Y', strtotime($pfisica->fecha_nacimiento));
+          $telefono_fijo = '';
+          $telefono_celular = '';
+          foreach ($pfisica->persona->telefonos as $telefono) {
+            if ($telefono->tipo_telefono == 'fijo') {
+              $telefono_fijo = $telefono->nro_telefono;
+            }
+            if ($telefono->tipo_telefono == 'celular') {
+              $telefono_celular = $telefono->nro_telefono;
+            }
+          }
+
+          $idiomas = Idioma::all();
+
+          //Experiencias Laborales
+          $expLaborales = Experiencia_Laboral::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Estudios Academicos
+          $estudios = Estudio_Academico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Idiomas
+          $conocimientosIdiomas = Conocimiento_Idioma::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Informaticos
+          $conocimientosInformaticos = Conocimiento_Informatico::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          // Conocimientos Adicionales
+          $conocimientosAdicionales = Conocimiento_Adicional::where('cv_id',$pfisica->estudiante->cv->id)->orderBy('id','DESC')->get();
+
+          $cvNombre = substr($propuesta->titulo,0,self::TITULO_ARCHIVO)."_".$pfisica->nombre_persona."_".$pfisica->apellido_persona.".pdf";
+
+          if ($estudiantePropuesta->archivo_adjunto == null) {
+            $pdf = \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales]);
+
+            //Se setea como descargado.
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['cv_descargado' => true]);
+              
+            return $pdf->download($cvNombre);
+          }
+          //El postulante mandó archivo adjunto.
+          else {
+            //Se crea la carpeta que se mandará a comprimir.
+            $carpetaNombre = substr($propuesta->titulo,0,self::TITULO_ARCHIVO)."_".$pfisica->nombre_persona."_".$pfisica->apellido_persona;
+            $carpetaPath = public_path().'/propuestas/'.$carpetaNombre;
+            File::makeDirectory($carpetaPath,493,false,false);
+
+            //Se copia el cv a la nueva carpeta.
+            $cvPath = $carpetaPath."/".$cvNombre;
+            File::put($cvPath, \PDF::loadView('emails.cv_estudiante',['idiomas' => $idiomas, 'pfisica' => $pfisica, 'telefono_fijo' => $telefono_fijo, 'telefono_celular' => $telefono_celular, 'expLaborales' => $expLaborales, 'estudios' => $estudios, 'conocimientosInformaticos' => $conocimientosInformaticos, 'conocimientosIdiomas' => $conocimientosIdiomas, 'conocimientosAdicionales' => $conocimientosAdicionales])->output());
+
+            //Se copia el archivo adjunto a la nueva carpeta.
+            $adjuntoPropuestaPath = public_path().'/propuestas/adjuntos/'.$estudiantePropuesta->archivo_adjunto;
+            $adjuntoPropuestaNombreDescarga = substr($estudiantePropuesta->archivo_adjunto,0,self::TITULO_ARCHIVO+self::ADJUNTO).".pdf";
+            $adjuntoPropuestaPathDescarga = $carpetaPath."/".$adjuntoPropuestaNombreDescarga;
+            File::copy($adjuntoPropuestaPath,$adjuntoPropuestaPathDescarga);
+
+            //Se comprimen los archivos.
+            $files = glob($carpetaPath.'/*');
+            $zipper = new \Chumper\Zipper\Zipper;
+            $zipper->make(public_path().'/propuestas/'.$carpetaNombre.'.zip')->add($files)->close();
+
+            //Se setea como descargado.
+            DB::table('estudiante_propuesta_laboral')
+              ->where('propuesta_laboral_id', '=', $id_propuesta)
+              ->where('estudiante_id', '=', $id_estudiante)
+              ->update(['cv_descargado' => true]);
+
+            //Se borra la carpeta creada
+            File::deleteDirectory($carpetaPath, false);
+
+            return response()->download(public_path().'/propuestas/'.$carpetaNombre.'.zip')->deleteFileAfterSend(true);
+          }
         }
       }else{
         return redirect()->route('in.sinpermisos.sinpermisos');

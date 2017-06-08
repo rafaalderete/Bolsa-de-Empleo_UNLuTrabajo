@@ -54,10 +54,20 @@
                 <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
               @else
                 @if ( ($propuesta->estado_propuesta == "inactivo") || ($propuesta->finalizada) )
-                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada</p>
+                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finalizada
                 @else
-                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }} </p>
+                  <p>Publicado: {{ $propuesta->fecha_inicio_propuesta }} - Finaliza: {{ $propuesta->fecha_fin_propuesta }}
                 @endif
+                @if ($propuesta->estado_postulacion == "Aceptado")
+                 - Estado de la Postulación: <span class="aceptado">{{$propuesta->estado_postulacion}}</span>
+                @else
+                  @if ($propuesta->estado_postulacion == "Rechazado")
+                    - Estado de la Postulación: <span class="rechazado">{{$propuesta->estado_postulacion}}</span>
+                  @else
+                    - Estado de la Postulación: {{$propuesta->estado_postulacion}}
+                  @endif
+                @endif
+                </p>
               @endif
             </div>
           </div>
@@ -223,20 +233,36 @@
           @endif
         </div>
 
-        <div class="form-group">
-  <div>
-    <p>* <span class="importante">Importante</span>: Requisitos que serán un plus para el estudiante y/o serán evaluados en la entrevista.</p>
-    <p>* <span class="excluyente">Excluyente</span>: Requisitos al cual el estudiante no podrá postularse al menos que lo cumpla.</p>
-  </div>
-</div>
+        @if (!$postulacion)
+          <div class="form-group">
+            <div>
+              <p>* <span class="importante">Importante</span>: Requisitos que serán un plus para el estudiante y/o serán evaluados en la entrevista.</p>
+              <p>* <span class="excluyente">Excluyente</span>: Requisitos al cual el estudiante no podrá postularse al menos que lo cumpla.</p>
+            </div>
+          </div>
+        @endif
 
         @if (!$postulacion)
           @if(Entrust::can('postularse'))
             @if ($puede_postularse)
-              <a href="{{ route('in.postularse', $propuesta->id) }}"  style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
-                <span><i class="fa fa-check-square"></i></span>
-                Postularse
-              </a>
+              {!! Form::open(['route' => ['in.postularse', $propuesta->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+
+                <div class="form-group col-md-12">
+                  <div class="row text-center">
+                    {!! Form::label('enviar_adjunto','Enviar Adjunto') !!}
+                    <div>
+                      <input type="checkbox" name="archivo_adjunto" id="check"/>
+                      <label for="check" style="font-weight:normal">{{$archivoAdjunto}}</label>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
+                  <span><i class="fa fa-check-square"></i></span>
+                  Postularse
+                </button>
+
+              {!! Form::close()!!}
             @else
               <div class="imagen-info">
                 <p>Ya se ha postulado a ésta Oferta</p>

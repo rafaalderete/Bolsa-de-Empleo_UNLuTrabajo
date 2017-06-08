@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6f427b26d36bea17b562789ebc8688eb",
+    "content-hash": "b94132c823fa1aa8ebf9b54401efadfd",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -53,6 +53,56 @@
                 "pdf"
             ],
             "time": "2015-12-21T19:51:22+00:00"
+        },
+        {
+            "name": "chumper/zipper",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Chumper/Zipper.git",
+                "reference": "32fd3c1bd8ffaaa630a9023f8e0873eb58441d3d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Chumper/Zipper/zipball/32fd3c1bd8ffaaa630a9023f8e0873eb58441d3d",
+                "reference": "32fd3c1bd8ffaaa630a9023f8e0873eb58441d3d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "5.x",
+                "illuminate/support": "5.x",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "dev-master",
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Chumper\\Zipper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache2"
+            ],
+            "authors": [
+                {
+                    "name": "Nils Plaschke",
+                    "email": "github@nilsplaschke.de",
+                    "homepage": "http://nilsplaschke.de",
+                    "role": "Developer"
+                }
+            ],
+            "description": "This is a little neat helper for the ZipArchive methods with handy functions",
+            "homepage": "http://github.com/Chumper/zipper",
+            "keywords": [
+                "archive",
+                "laravel",
+                "zip"
+            ],
+            "time": "2017-01-30T11:32:54+00:00"
         },
         {
             "name": "classpreloader/classpreloader",

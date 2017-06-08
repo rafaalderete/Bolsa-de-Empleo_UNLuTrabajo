@@ -49,6 +49,7 @@ class CreatePersonasTablas extends Migration
           $table->string('cuit')->unique();
           $table->integer('rubro_empresarial_id')->unsigned();
           $table->foreign('rubro_empresarial_id')->references('id')->on('rubros_empresariales');
+          $table->boolean('recibe_mail')->default(1);
           $table->timestamps();
       });
 
