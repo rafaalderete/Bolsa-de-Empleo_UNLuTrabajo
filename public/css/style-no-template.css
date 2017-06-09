@@ -27,6 +27,31 @@ html {
   background-size: cover;
 }
 
+.body-preguntas {
+  background: #ebebeb;
+  width:80%;
+  height: 100%;
+}
+
+.preguntas-header {
+  margin-top: 30px;
+}
+
+.titulo-unlu-preguntas {
+  font-size: 25px;
+  font-family: 'Righteous', cursive;
+}
+
+.titulo-preguntas-manual {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.img-pregunta {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .body-sinpermisos {
   background: #ebebeb;
 }

@@ -91,6 +91,25 @@ Route::get('configurar-cuenta-email/verificacion/{token}', [
 	'as'	=>	'configurar-cuenta-email.verificacion'
 ]);
 
+Route::get('preguntas-frecuentes', ['as' => 'preguntas-frecuentes', function () {
+	if(Entrust::hasRole('administrador') || Entrust::hasRole('super_usuario')) {
+		return view('preguntas-frecuentes.administrador');
+	}
+	else {
+		if(Entrust::hasRole('empleador')) {
+			return view('preguntas-frecuentes.empleador');
+		}
+		else {
+			if(Entrust::hasRole('postulante')) {
+				return view('preguntas-frecuentes.postulante');
+			}
+			else {
+				return view('preguntas-frecuentes.invitado');
+			}
+		}
+	}
+ }]);
+
 //------------- RUTAS DE USUARIOS AUTENTICADOS -----------------------------------
 
 // las rutas dentro de este grupo deben cumplir con el middleware auth

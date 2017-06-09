@@ -247,15 +247,17 @@
             @if ($puede_postularse)
               {!! Form::open(['route' => ['in.postularse', $propuesta->id], 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
-                <div class="form-group col-md-12">
-                  <div class="row text-center">
-                    {!! Form::label('enviar_adjunto','Enviar Adjunto') !!}
-                    <div>
-                      <input type="checkbox" name="archivo_adjunto" id="check"/>
-                      <label for="check" style="font-weight:normal">{{$archivoAdjunto}}</label>
+                @if ($archivoAdjunto != null)
+                  <div class="form-group col-md-12">
+                    <div class="row text-center">
+                      {!! Form::label('enviar_adjunto','Enviar Adjunto') !!}
+                      <div>
+                        <input type="checkbox" name="archivo_adjunto" id="check"/>
+                        <label for="check" style="font-weight:normal">{{$archivoAdjunto}}</label>
+                      </div>
                     </div>
                   </div>
-                </div>
+                @endif
 
                 <button type="submit" style="margin-top: -5px; margin-right: 30px" class="btn btn-info btn-label-left pull-right">
                   <span><i class="fa fa-check-square"></i></span>

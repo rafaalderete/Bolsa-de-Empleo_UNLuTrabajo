@@ -289,7 +289,12 @@ class EstudianteController extends Controller
             $propuesta->fecha_inicio_propuesta = date('d-m-Y', strtotime($propuesta->fecha_inicio_propuesta));
             $propuesta->fecha_fin_propuesta = date('d-m-Y', strtotime($propuesta->fecha_fin_propuesta));
             $estudiante = Estudiante::find(Auth::user()->persona->fisica->estudiante->id);
-            $archivoAdjunto = substr($estudiante->cv->archivo_adjunto,0,strlen($estudiante->cv->archivo_adjunto)-15);
+            if ($estudiante->cv->archivo_adjunto == null) {
+              $archivoAdjunto = null;
+            }
+            else {
+              $archivoAdjunto = substr($estudiante->cv->archivo_adjunto,0,strlen($estudiante->cv->archivo_adjunto)-15);
+            }
 
             return view('in.estudiante.detalle-oferta')
               ->with('idiomas',$idiomas)
