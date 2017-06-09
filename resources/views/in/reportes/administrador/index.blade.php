@@ -32,7 +32,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Empresas con más Propuestas</span>
+                  <span>Ranking de las 5 empresas con más propuestas</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -59,7 +59,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Empresas con más dias de Inactividad</span>
+                  <span>Ranking de las 5 empresas con más dias de inactividad</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -88,7 +88,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Carreras con más Estudiantes</span>
+                  <span>Ranking de las 5 carreras con más estudiantes</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -115,7 +115,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Cantidad de Propuestas generadas en el último año</span>
+                  <span>Cantidad de propuestas generadas en el último año</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -144,7 +144,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Cantidad de Empresas por Rubro Empresarial</span>
+                  <span>Cantidad de empresas por rubro empresarial</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -173,7 +173,7 @@
           <div class="box">
             <div class="box-header">
               <div class="box-name">
-                <span>Cantidad de Propuestas</span>
+                <span>Cantidad de propuestas</span>
               </div>
               <div class="box-icons">
                 <a class="collapse-link">
@@ -335,14 +335,15 @@
 
     });
 
-    var array1 = [];
-    @foreach( $EmpresasConMasPropuestas as $propuestaPorEmpresa )
-        array1.push({"y":{{$propuestaPorEmpresa->cantidad_propuestas}},"label":"{!!$propuestaPorEmpresa->nombre_comercial!!}"});
-    @endforeach
+    @if(count($EmpresasConMasPropuestas) > 0 )
+      var array1 = [];
+      @foreach( $EmpresasConMasPropuestas as $propuestaPorEmpresa )
+          array1.push({"y":{{$propuestaPorEmpresa->cantidad_propuestas}},"label":"{!!$propuestaPorEmpresa->nombre_comercial!!}"});
+      @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-1", {
+      var chart = new CanvasJS.Chart("chartContainer-1", {
         title: {
-          text: "Empresas con más Propuestas"
+          text: "Empresas con más propuestas"
         },
         data: [{
           type: "column",
@@ -350,15 +351,24 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-1", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array2 = [];
-    @foreach( $EmpresasMasInactivas as $empresa )
-        array2.push({"y":{{$empresa->dias_inactivo}},"label":"{!!$empresa->nombre_comercial!!}"});
-    @endforeach
+    @if(count($EmpresasMasInactivas) > 0 )
+      var array2 = [];
+      @foreach( $EmpresasMasInactivas as $empresa )
+          array2.push({"y":{{$empresa->dias_inactivo}},"label":"{!!$empresa->nombre_comercial!!}"});
+      @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-2", {
+      var chart = new CanvasJS.Chart("chartContainer-2", {
         title: {
-          text: "Empresas con más dias de Inactividad"
+          text: "Empresas con más dias de inactividad"
         },
         data: [{
           type: "column",
@@ -366,16 +376,24 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-2", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array3 = [];
-    @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
-        array3.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
-    @endforeach
+    @if(count($carrerasConMayorCantidadEstudiantes) > 0 )
+      var array3 = [];
+      @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
+          array3.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
+      @endforeach
 
-
-    var chart = new CanvasJS.Chart("chartContainer-3", {
+      var chart = new CanvasJS.Chart("chartContainer-3", {
         title: {
-          text: "Carreras con más Estudiantes"
+          text: "Carreras con más estudiantes"
         },
         data: [{
           type: "column",
@@ -383,15 +401,24 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-3", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array4 = [];
-    @foreach( $rubrosConMayorCantidadEmpresas as $rubro )
-        array4.push({"y":{{$rubro->cantidad_empresas}},"label":"{!!$rubro->nombre_rubro_empresarial!!}"});
-    @endforeach
+    @if(count($rubrosConMayorCantidadEmpresas) > 0 )
+      var array4 = [];
+      @foreach( $rubrosConMayorCantidadEmpresas as $rubro )
+          array4.push({"y":{{$rubro->cantidad_empresas}},"label":"{!!$rubro->nombre_rubro_empresarial!!}"});
+      @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-4", {
+      var chart = new CanvasJS.Chart("chartContainer-4", {
         title: {
-          text: "Cantidad de Empresas por rubro empresarial."
+          text: "Cantidad de empresas por rubro empresarial."
         },
         data: [{
           type: "column",
@@ -399,45 +426,60 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-4", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array5 = [];
-    @foreach( $cantidadPropuestaPorMes as $mes )
-         array5.push({"x": new Date("{!!$mes->anio!!}-{!!$mes->mes!!}-01"),"y":{{$mes->cantidad_propuesta}}});
-    @endforeach
+    @if(count($cantidadPropuestaPorMes) > 0 )
+      var array5 = [];
+      @foreach( $cantidadPropuestaPorMes as $mes )
+           array5.push({"x": new Date("{!!$mes->anio!!}-{!!$mes->mes!!}-01"),"y":{{$mes->cantidad_propuesta}}});
+      @endforeach
 
-
-    var chart = new CanvasJS.Chart("chartContainer-5", {
-      title:{
-        text: "Cantidad de Propuestas generadas en el último año"
-      },
-      axisX: {
-        valueFormatString: "MMM",
-        interval:1,
-        intervalType: "month"
-      },
-      axisY:{
-        includeZero: false
-      },
-      data: [
-      {
-        type: "line",
-        //lineThickness: 3,
-        dataPoints: array5
-      }
-      ]
-    });
-
-    chart.render();
-
-    var array6 = [];
-    @foreach( $cantidadPropuestas as $propuesta )
-         array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->nombre_comercial!!}" });
-    @endforeach
-
-    var chart = new CanvasJS.Chart("chartContainer-6",
-      {
+      var chart = new CanvasJS.Chart("chartContainer-5", {
         title:{
-          text: "Filtro por Mayores Propuestas"
+          text: "Cantidad de propuestas generadas en el último año"
+        },
+        axisX: {
+          valueFormatString: "MMM",
+          interval:1,
+          intervalType: "month"
+        },
+        axisY:{
+          includeZero: false
+        },
+        data: [
+        {
+          type: "line",
+          //lineThickness: 3,
+          dataPoints: array5
+        }
+        ]
+      });
+      chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-5", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
+
+    @if(count($cantidadPropuestas) > 0 )
+      var array6 = [];
+      @foreach( $cantidadPropuestas as $propuesta )
+           array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->nombre_comercial!!}" });
+      @endforeach
+
+      var chart = new CanvasJS.Chart("chartContainer-6", {
+        title:{
+          text: "Filtro por mayores propuestas"
         },
         data: [
         {
@@ -446,8 +488,16 @@
         }
         ]
       });
-
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-6", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
+
   }
 
 </script>

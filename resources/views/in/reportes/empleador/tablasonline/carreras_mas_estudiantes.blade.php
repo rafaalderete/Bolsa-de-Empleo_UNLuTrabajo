@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Carreras con más Estudiantes</a></li>
+        <li><a>Detalle carreras con más estudiantes</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Carreras con más Estudiantes
+      <h4 class="page-header">Detalle carreras con más estudiantes
         @if(count($cantidadEstudiantePorCarrera) > 0)
           @if(true)
             <a href="{{route('in.reportes.empleador.tablaspdf.carreras-mas-estudiantes')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
@@ -42,7 +42,7 @@
             <tr>
               <th style="width:10%">#</th>
               <th style="width:60%">Carrera</th>
-              <th style="width:30%">Cantidad de Estudiantes</th>
+              <th style="width:30%">Cantidad de estudiantes</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Cantidad de Propuestas</a></li>
+        <li><a>Detalle cantidad de propuestas</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Cantidad de Propuestas
+      <h4 class="page-header">Detalle cantidad de propuestas
         @if(count($cantidadPropuestasPorFiltro) > 0)
           {!! Form::open(['route' => 'in.reportes.empleador.tablaspdf.cantidad-propuestas', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
               <input id="invisible_1" name="filtro" type="hidden" value="{{ $combo->filtro }}">
@@ -45,7 +45,7 @@
             <tr>
               <th style="width:10%">#</th>
               <th style="width:60%">Filtro por {{ $combo->filtro }}</th>
-              <th style="width:30%">Cantidad de Propuestas</th>
+              <th style="width:30%">Cantidad de propuestas</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

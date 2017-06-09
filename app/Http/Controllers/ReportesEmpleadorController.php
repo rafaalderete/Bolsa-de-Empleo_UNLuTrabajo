@@ -261,8 +261,16 @@ class ReportesEmpleadorController extends Controller
                                                 group by e.carrera_id
                                                 order by cantidad_estudiantes Desc');
 
-             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera, 'today' => $today]);
-            return $pdf->stream('Reporte-carreras-con-mas-estudiantes.pdf');
+            $carrerasConMayorCantidadEstudiantes = [];
+            $i = 0;
+            while ( ($i <= 4) && ( $i < sizeof($cantidadEstudiantePorCarrera))){
+              $carrerasConMayorCantidadEstudiantes[$i] = $cantidadEstudiantePorCarrera[$i];
+              $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera,'carrerasConMayorCantidadEstudiantes' => $carrerasConMayorCantidadEstudiantes, 'today' => $today]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-carreras-con-mas-estudiantes.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -305,8 +313,9 @@ class ReportesEmpleadorController extends Controller
                                                     group by estado_postulacion
                                                     order by postulados Desc',[$empresaId]);
 
-             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.estado_estudiantes',['cantEstadosPostulados' => $cantEstadosPostulados, 'today' => $today]);
-            return $pdf->stream('Reporte-estado-postulados.pdf');
+             $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.estado_estudiantes',['cantEstadosPostulados' => $cantEstadosPostulados, 'today' => $today]);
+             $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-estado-postulados.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -344,8 +353,16 @@ class ReportesEmpleadorController extends Controller
                                             group by carrera
                                             order by promedio_sueldo desc');
 
-             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.promedio_sueldo_carrera',['SueldoPorCarrera' => $SueldoPorCarrera, 'today' => $today]);
-            return $pdf->stream('Reporte-promedio-sueldo-carreras.pdf');
+            $carrerasConMayorSueldoPretendido = [];
+            $i = 0;
+            while ( ($i < 5) && ( $i < sizeof($SueldoPorCarrera))){
+              $carrerasConMayorSueldoPretendido[$i] = $SueldoPorCarrera[$i];
+              $i++;
+            }
+
+             $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.promedio_sueldo_carrera',['SueldoPorCarrera' => $SueldoPorCarrera,'carrerasConMayorSueldoPretendido' => $carrerasConMayorSueldoPretendido, 'today' => $today]);
+             $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-promedio-sueldo-carreras.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -385,8 +402,16 @@ class ReportesEmpleadorController extends Controller
                                     group by titulo
                                     order by postulados_sin_decidir Desc',[$empresaId]);
 
-             $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.propuestas_mas_estudiantes_observar',['cantPostSinDecidirPorProp' => $cantPostSinDecidirPorProp, 'today' => $today]);
-            return $pdf->stream('Reporte-propuestas-mas-postulados-por-ver.pdf');
+             $propConMayorEstSinDecidir = [];
+            $i = 0;
+            while ( ($i < 3) && ( $i < sizeof($cantPostSinDecidirPorProp))){
+                    $propConMayorEstSinDecidir[$i] = $cantPostSinDecidirPorProp[$i];
+                    $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.propuestas_mas_estudiantes_observar',['cantPostSinDecidirPorProp' => $cantPostSinDecidirPorProp,'propConMayorEstSinDecidir' => $propConMayorEstSinDecidir, 'today' => $today]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-propuestas-mas-postulados-por-ver.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -603,9 +628,16 @@ class ReportesEmpleadorController extends Controller
               }
           }
 
-          $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'filtro' => $request->filtro, 'today' => $hoy]);
+          $cantidadPropuestas = [];
+          $i = sizeof($cantidadPropuestasPorFiltro) - 1;
+          while ($i >= 0){
+            $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
+            $i--;
+          }
 
-          return $pdf->stream('Reporte-total-mis-propuestas.pdf');
+          $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => $request->filtro, 'today' => $hoy]);
+          $pdf->setOption('enable-javascript', true);
+          return $pdf->download('Reporte-total-mis-propuestas.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

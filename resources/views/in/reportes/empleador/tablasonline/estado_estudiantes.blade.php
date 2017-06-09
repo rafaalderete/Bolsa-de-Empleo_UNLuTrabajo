@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Estudiantes en mis Propuestas</a></li>
+        <li><a>Detalle estudiantes en mis propuestas</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Estudiantes en mis Propuestas
+      <h4 class="page-header">Detalle estudiantes en mis propuestas
         @if(count($cantEstadosPostulados) > 0)
           @if(true)
             <a href="{{route('in.reportes.empleador.tablaspdf.estado-estudiantes')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
@@ -41,8 +41,8 @@
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Estado de la Postulación</th>
-              <th style="width:30%">Cantidad de Estudiantes</th>
+              <th style="width:60%">Estado de la postulación</th>
+              <th style="width:30%">Cantidad de estudiantes</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

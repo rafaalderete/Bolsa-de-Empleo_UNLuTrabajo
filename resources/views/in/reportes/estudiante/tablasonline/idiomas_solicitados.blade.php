@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Idiomas más solicitados para mi Carrera</a></li>
+        <li><a>Detalle idiomas más solicitados para mi carrera</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Idiomas más solicitados para mi Carrera
+      <h4 class="page-header">Detalle idiomas más solicitados para mi carrera
         @if(count($idiomasEnMiCarrera) > 0)
           @if(true)
             <a href="{{route('in.reportes.estudiante.tablaspdf.idiomas-solicitados')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
@@ -42,7 +42,7 @@
             <tr>
               <th style="width:10%">#</th>
               <th style="width:60%">Idiomas más solicitados</th>
-              <th style="width:30%">En cantidad de solicitudes</th>
+              <th style="width:30%">Cantidad de solicitudes</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

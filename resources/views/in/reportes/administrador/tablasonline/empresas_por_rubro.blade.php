@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Cantidad de Empresas por Rubro Empresarial</a></li>
+        <li><a>Detalle cantidad de empresas por rubro empresarial</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Cantidad de Empresas por Rubro Empresarial
+      <h4 class="page-header">Detalle cantidad de empresas por rubro empresarial
         @if(count($cantidadEmpresasPorRubro) > 0)
           @if(true)
             <a href="{{route('in.reportes.administrador.tablaspdf.empresas-rubro-empresarial')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
@@ -41,8 +41,8 @@
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Rubro Empresarial</th>
-              <th style="width:30%">Cantidad de Empresas</th>
+              <th style="width:60%">Rubro empresarial</th>
+              <th style="width:30%">Cantidad de empresas</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

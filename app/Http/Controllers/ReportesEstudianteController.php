@@ -117,8 +117,16 @@ class ReportesEstudianteController extends Controller
                                     group by i.nombre_idioma
                                     order by cantidad Desc',[$carreraId]);
 
-            $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.idiomas_solicitados',['idiomasEnMiCarrera' => $idiomasEnMiCarrera, 'today' => $today]);
-            return $pdf->stream('Reporte-idiomas-solicitados.pdf');
+            $idiomasMayorCantidadEnMiCarrera = [];
+            $i = 0;
+            while ( ($i < 5) && ( $i < sizeof($idiomasEnMiCarrera))){
+                    $idiomasMayorCantidadEnMiCarrera[$i] = $idiomasEnMiCarrera[$i];
+                    $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.estudiante.tablaspdf.idiomas_solicitados',['idiomasEnMiCarrera' => $idiomasEnMiCarrera,'idiomasMayorCantidadEnMiCarrera'=> $idiomasMayorCantidadEnMiCarrera, 'today' => $today]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-idiomas-solicitados.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -156,8 +164,9 @@ class ReportesEstudianteController extends Controller
                                                 group by estado_postulacion
                                                 order by cantidad Desc',[$estudianteId]);
 
-             $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.estados_postulaciones',['cantEstadosEnPostulaciones' => $cantEstadosEnPostulaciones, 'today' => $today]);
-            return $pdf->stream('Reporte-estados-postulaciones.pdf');
+             $pdf = \PDFjs::loadView('in.reportes.estudiante.tablaspdf.estados_postulaciones',['cantEstadosEnPostulaciones' => $cantEstadosEnPostulaciones, 'today' => $today]);
+             $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-estados-postulaciones.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -199,8 +208,16 @@ class ReportesEstudianteController extends Controller
                                     group by j.nombre_comercial
                                     order by cantidad Desc',[$carreraId]);
 
-             $pdf = \PDF::loadView('in.reportes.estudiante.tablaspdf.empresas_propuestas_mi_carrera',['empConPropParaMiCarrera' => $empConPropParaMiCarrera, 'today' => $today]);
-            return $pdf->stream('Reporte-empresas-propuestas-mi-carrera.pdf');
+            $EmpConMayorPropParaMiCarrera = [];
+            $i = 0;
+            while ( ($i < 10 ) && ( $i < sizeof($empConPropParaMiCarrera))){
+                    $EmpConMayorPropParaMiCarrera[$i] = $empConPropParaMiCarrera[$i];
+                    $i++;
+            }
+
+             $pdf = \PDFjs::loadView('in.reportes.estudiante.tablaspdf.empresas_propuestas_mi_carrera',['empConPropParaMiCarrera' => $empConPropParaMiCarrera,'EmpConMayorPropParaMiCarrera'=>$EmpConMayorPropParaMiCarrera, 'today' => $today]);
+             $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-empresas-propuestas-mi-carrera.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

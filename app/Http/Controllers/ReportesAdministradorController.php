@@ -326,8 +326,15 @@ class ReportesAdministradorController extends Controller
                                                 where p.estado_persona = ?
                                                 group by j.nombre_comercial
                                                 order by cantidad_propuestas Desc',['activo']);
+            $EmpresasConMasPropuestas = [];
+            $i = 0;
+            while ( ($i <= 4) && ( $i < sizeof($propuestasPorEmpresa))){
+              $EmpresasConMasPropuestas[$i] = $propuestasPorEmpresa[$i];
+              $i++;
+            }
 
-             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_mas_propuestas',['propuestasPorEmpresa' => $propuestasPorEmpresa, 'today' => $today]);
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_mas_propuestas',['propuestasPorEmpresa' => $propuestasPorEmpresa,'EmpresasConMasPropuestas' => $EmpresasConMasPropuestas, 'today' => $today]);
+            $pdf->setOption('enable-javascript', true);
             return $pdf->stream('Reporte-empresas-con-mas-propuestas.pdf');
 
         }else{
@@ -389,7 +396,7 @@ class ReportesAdministradorController extends Controller
     public function getEmpresasMasDiasInactividadPdf(){
 
          if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')){
-            $today = Carbon::today()->format('d-m-Y');
+            $hoy = Carbon::today()->format('d-m-Y');
             // Busco las empresas Activas
             $empresasActivas = DB::select('select j.id, j.nombre_comercial
                                 from juridicas as j join personas as p on j.persona_id = p.id
@@ -428,8 +435,16 @@ class ReportesAdministradorController extends Controller
                     $empresasActivas[$key]->dias_inactivo = (int) $interval->format('%R%a');
             }
 
-            $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_mas_dias_inactividad',['empresasActivas' => $empresasActivas, 'today' => $today]);
-            return $pdf->stream('Reporte-empresas-mas-dias-inactividad.pdf');
+            $EmpresasMasInactivas = [];
+            $i = 0;
+            while ( ($i <= 4) && ( $i < sizeof($empresasActivas))){
+              $EmpresasMasInactivas[$i] = $empresasActivas[$i];
+              $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_mas_dias_inactividad',['empresasActivas' => $empresasActivas,'EmpresasMasInactivas' => $EmpresasMasInactivas, 'today' => $hoy]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-empresas-mas-dias-inactividad.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -465,8 +480,16 @@ class ReportesAdministradorController extends Controller
                                                 group by e.carrera_id
                                                 order by cantidad_estudiantes Desc');
 
-             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera, 'today' => $today]);
-            return $pdf->stream('Reporte-carreras-mas-estudiantes.pdf');
+            $carrerasConMayorCantidadEstudiantes = [];
+            $i = 0;
+            while ( ($i <= 4) && ( $i < sizeof($cantidadEstudiantePorCarrera))){
+              $carrerasConMayorCantidadEstudiantes[$i] = $cantidadEstudiantePorCarrera[$i];
+              $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.carreras_mas_estudiantes',['cantidadEstudiantePorCarrera' => $cantidadEstudiantePorCarrera,'carrerasConMayorCantidadEstudiantes' => $carrerasConMayorCantidadEstudiantes, 'today' => $today]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-carreras-mas-estudiantes.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -502,8 +525,16 @@ class ReportesAdministradorController extends Controller
                                                 group by j.rubro_empresarial_id
                                                 order by cantidad_empresas Desc');
 
-             $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.empresas_por_rubro',['cantidadEmpresasPorRubro' => $cantidadEmpresasPorRubro, 'today' => $today]);
-            return $pdf->stream('Reporte-empresas-por-rubro.pdf');
+            $rubrosConMayorCantidadEmpresas = [];
+            $i = 0;
+            while ( $i < sizeof($cantidadEmpresasPorRubro)){
+                $rubrosConMayorCantidadEmpresas[$i] = $cantidadEmpresasPorRubro[$i];
+                $i++;
+            }
+
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_por_rubro',['cantidadEmpresasPorRubro' => $cantidadEmpresasPorRubro,'rubrosConMayorCantidadEmpresas'=>$rubrosConMayorCantidadEmpresas, 'today' => $today]); 
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-empresas-por-rubro.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -561,8 +592,19 @@ class ReportesAdministradorController extends Controller
               $fecha = $fecha->subMonth();
             }
 
-            $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.cantidad_propuestas_ultimo_anio',['reporteMes' => $reporteMes, 'today' => $hoy]);
-            return $pdf->stream('Reporte-cantidad-propuestas-ultimo-anio.pdf');
+            $today = Carbon::today();
+            $desde = $today->subYear()->toDateString();
+            $hasta = Carbon::today()->toDateString();
+
+            $cantidadPropuestaPorMes = DB::select('select count(*) as cantidad_propuesta, MONTH(fecha_inicio_propuesta) as mes,  YEAR(fecha_inicio_propuesta) as anio
+                                                    from propuestas_laborales
+                                                    where fecha_inicio_propuesta >= ? and fecha_inicio_propuesta <= ?
+                                                    group by Mes, Anio
+                                                    order by fecha_inicio_propuesta Asc',[$desde,$hasta]);
+
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.cantidad_propuestas_ultimo_anio',['reporteMes' => $reporteMes,'cantidadPropuestaPorMes'=>$cantidadPropuestaPorMes, 'today' => $hoy]);
+            $pdf->setOption('enable-javascript', true);
+            return $pdf->download('Reporte-cantidad-propuestas-ultimo-anio.pdf');
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
@@ -817,8 +859,16 @@ class ReportesAdministradorController extends Controller
               }
           }
 
-          $pdf = \PDF::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'filtro' => $request->filtro, 'today' => $hoy]);
-          return $pdf->stream('Reporte-total-propuestas.pdf');
+          $cantidadPropuestas = [];
+          $i = sizeof($cantidadPropuestasPorFiltro) - 1;
+          while ($i >= 0){
+            $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
+            $i--;
+          }
+
+          $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => $request->filtro, 'today' => $hoy]);
+          $pdf->setOption('enable-javascript', true);
+          return $pdf->download('Reporte-total-propuestas.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

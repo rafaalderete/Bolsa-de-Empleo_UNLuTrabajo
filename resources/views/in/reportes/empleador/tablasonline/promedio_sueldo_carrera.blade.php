@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Sueldo bruto pretendido por Carrera</a></li>
+        <li><a>Detalle sueldo bruto pretendido por carrera</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Sueldo bruto pretendido por Carrera
+      <h4 class="page-header">Detalle sueldo bruto pretendido por carrera
         @if(count($SueldoPorCarrera) > 0)
           @if(true)
             <a href="{{route('in.reportes.empleador.tablaspdf.promedio-sueldo-carreras')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">

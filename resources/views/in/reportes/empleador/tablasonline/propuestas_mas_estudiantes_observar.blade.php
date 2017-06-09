@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Estudiantes Para Observar
+      <h4 class="page-header">Detalle estudiantes para observar
         @if(count($cantPostSinDecidirPorProp) > 0)
           @if(true)
             <a href="{{route('in.reportes.empleador.tablaspdf.propuestas-mas-postulados-por-ver')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">

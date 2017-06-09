@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Detalle Empresas con más Propuestas</a></li>
+        <li><a>Detalle empresas con más propuestas</a></li>
       </ol>
     </div>
   </div>
@@ -24,7 +24,7 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Detalle Empresas con más Propuestas
+      <h4 class="page-header">Detalle empresas con más propuestas
         @if(count($propuestasPorEmpresa) > 0)
           @if(true)
             <a href="{{route('in.reportes.administrador.tablaspdf.empresas-mas-propuestas')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
@@ -42,7 +42,7 @@
             <tr>
               <th style="width:10%">#</th>
               <th style="width:60%">Empresa</th>
-              <th style="width:30%">Cantidad de Propuestas</th>
+              <th style="width:30%">Cantidad de propuestas</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->

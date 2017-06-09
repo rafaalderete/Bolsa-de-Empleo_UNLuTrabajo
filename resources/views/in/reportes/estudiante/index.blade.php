@@ -32,7 +32,7 @@
               <div class="box">
                 <div class="box-header">
                   <div class="box-name">
-                    <span>Ranking de los 5 Idiomas más solicitados para mi Carrera</span>
+                    <span>Ranking de los 5 idiomas más solicitados para mi carrera</span>
                   </div>
                   <div class="box-icons">
                     <a class="collapse-link">
@@ -61,7 +61,7 @@
               <div class="box">
                 <div class="box-header">
                   <div class="box-name">
-                    <span>Mi Estados en Postulaciones realizadas</span>
+                    <span>Mi estados en postulaciones realizadas</span>
                   </div>
                   <div class="box-icons">
                     <a class="collapse-link">
@@ -90,7 +90,7 @@
               <div class="box">
                 <div class="box-header">
                   <div class="box-name">
-                    <span>Ranking de las 10 Empresas con más Propuestas para mi Carrera</span>
+                    <span>Ranking de las 10 empresas con más propuestas para mi carrera</span>
                   </div>
                   <div class="box-icons">
                     <a class="collapse-link">
@@ -133,7 +133,7 @@
     @if(count($idiomasMayorCantidadEnMiCarrera) > 0 )
       var chart = new CanvasJS.Chart("chartContainer-1", {
           title: {
-            text: "Idiomas más solicitados para mi Carrera"
+            text: "Idiomas más solicitados para mi carrera"
           },
           data: [{
             type: "column",
@@ -150,6 +150,7 @@
       chart.render();
     @endif
 
+
     @if(count($cantEstadosEnPostulaciones) > 0 )
       var array2 = [];
       @foreach( $cantEstadosEnPostulaciones as $estado )
@@ -159,7 +160,7 @@
       var chart = new CanvasJS.Chart("chartContainer-2",
     	{
     		title:{
-    			text: "Mi Estados en Postulaciones realizadas"
+    			text: "Mi estados en postulaciones realizadas"
     		},
     		data: [{
     			type: "pie",
@@ -171,25 +172,39 @@
     		}]
     	});
     	chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-2", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
     @endif
 
-    @if(count($EmpConMayorPropParaMiCarrera) > 0)
-      var array3 = [];
+    @if(count($EmpConMayorPropParaMiCarrera) > 0 )
+        var array3 = [];
 
-      @foreach( $EmpConMayorPropParaMiCarrera as $empresa )
-           array3.push({y: {{$empresa->cantidad}}, label:"{!!$empresa->nombre_comercial!!}" });
-      @endforeach
+        @foreach( $EmpConMayorPropParaMiCarrera as $empresa )
+             array3.push({y: {{$empresa->cantidad}}, label:"{!!$empresa->nombre_comercial!!}" });
+        @endforeach
 
+        var chart = new CanvasJS.Chart("chartContainer-3", {
+    				title: {
+    					text: "Empresas con más propuestas para mi carrera"
+    				},
+    				data: [{
+    					type: "column",
+    					dataPoints: array3
+    				}]
+    		});
+    		chart.render();
+    @else
       var chart = new CanvasJS.Chart("chartContainer-3", {
-  				title: {
-  					text: "Empresas con más Propuestas para mi Carrera"
-  				},
-  				data: [{
-  					type: "column",
-  					dataPoints: array3
-  				}]
-  		});
-  		chart.render();
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
     @endif
   }
 

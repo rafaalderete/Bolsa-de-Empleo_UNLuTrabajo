@@ -32,7 +32,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Ranking de las 5 Carreras con más Estudiantes</span>
+                  <span>Ranking de las 5 carreras con más estudiantes</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -59,7 +59,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Estudiantes en mis Propuestas</span>
+                  <span>Estudiantes en mis propuestas</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -88,7 +88,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Sueldo bruto pretendido por Carrera</span>
+                  <span>Sueldo bruto pretendido por carrera</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -115,7 +115,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Estudiantes Para Observar</span>
+                  <span>Estudiantes para observar</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
@@ -144,7 +144,7 @@
           <div class="box">
             <div class="box-header">
               <div class="box-name">
-                <span>Cantidad de Propuestas</span>
+                <span>Cantidad de propuestas</span>
               </div>
               <div class="box-icons">
                 <a class="collapse-link">
@@ -287,7 +287,7 @@
         var chart = new CanvasJS.Chart("chartContainer-5",
           {
             title:{
-              text: "Filtro de Mis Propuestas"
+              text: "Filtro de mis propuestas"
             },
             data: [
             {
@@ -302,15 +302,15 @@
 
     });
 
-    var array1 = [];
+    @if(count($carrerasConMayorCantidadEstudiantes) > 0 )
+      var array1 = [];
+      @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
+          array1.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
+      @endforeach
 
-    @foreach( $carrerasConMayorCantidadEstudiantes as $carrera )
-        array1.push({"y":{{$carrera->cantidad_estudiantes}},"label":"{!!$carrera->nombre_carrera!!}"});
-    @endforeach
-
-    var chart = new CanvasJS.Chart("chartContainer-1", {
+      var chart = new CanvasJS.Chart("chartContainer-1", {
         title: {
-          text: "Carreras con más Estudiantes"
+          text: "Carreras con más estudiantes"
         },
         data: [{
           type: "column",
@@ -318,37 +318,53 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-1", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array2 = [];
-    @foreach( $cantEstadosPostulados as $estado )
-        array2.push({"y":{{$estado->postulados}},"indexLabel":"{!!$estado->estado_postulacion!!}"});
-    @endforeach
+    @if(count($cantEstadosPostulados) > 0 )
+      var array2 = [];
+      @foreach( $cantEstadosPostulados as $estado )
+          array2.push({"y":{{$estado->postulados}},"indexLabel":"{!!$estado->estado_postulacion!!}"});
+      @endforeach
 
-    var chart = new CanvasJS.Chart("chartContainer-2",
-  	{
-  		title:{
-  			text: "Estados de Estudiantes en Mis Propuestas"
-  		},
-  		data: [{
-  			type: "pie",
-  			showInLegend: true,
-        toolTipContent: "{y} postulados ( #percent % )",
-        yValueFormatString: "#",
-        legendText: "{indexLabel}",
-  			dataPoints: array2
-  		}]
-  	});
-  	chart.render();
+      var chart = new CanvasJS.Chart("chartContainer-2", {
+    		title:{
+    			text: "Estados de estudiantes en mis propuestas"
+    		},
+    		data: [{
+    			type: "pie",
+    			showInLegend: true,
+          toolTipContent: "{y} postulados ( #percent % )",
+          yValueFormatString: "#",
+          legendText: "{indexLabel}",
+    			dataPoints: array2
+    		}]
+    	});
+    	chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-2", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array3 = [];
+    @if(count($carrerasConMayorSueldoPretendido) > 0 )
+      var array3 = [];
+      @foreach( $carrerasConMayorSueldoPretendido as $sueldoCarrera )
+           array3.push({y: {{$sueldoCarrera->promedio_sueldo}}, label:"{!!$sueldoCarrera->carrera!!}" });
+      @endforeach
 
-    @foreach( $carrerasConMayorSueldoPretendido as $sueldoCarrera )
-         array3.push({y: {{$sueldoCarrera->promedio_sueldo}}, label:"{!!$sueldoCarrera->carrera!!}" });
-    @endforeach
-
-    var chart = new CanvasJS.Chart("chartContainer-3", {
+      var chart = new CanvasJS.Chart("chartContainer-3", {
 				title: {
-					text: "Promedio de Sueldo Bruto pretendido por Carrera"
+					text: "Promedio de sueldo bruto pretendido por carrera"
 				},
 				data: [{
 					type: "column",
@@ -358,16 +374,24 @@
 				}]
 			});
 			chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-3", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
-    var array4 = [];
+    @if(count($propConMayorEstSinDecidir) > 0 )
+      var array4 = [];
+      @foreach( $propConMayorEstSinDecidir as $EstSinDecidir )
+          array4.push({"y":{{$EstSinDecidir->postulados_sin_decidir}},"label":"{!!$EstSinDecidir->titulo!!}"});
+      @endforeach
 
-    @foreach( $propConMayorEstSinDecidir as $EstSinDecidir )
-        array4.push({"y":{{$EstSinDecidir->postulados_sin_decidir}},"label":"{!!$EstSinDecidir->titulo!!}"});
-    @endforeach
-
-    var chart = new CanvasJS.Chart("chartContainer-4", {
+      var chart = new CanvasJS.Chart("chartContainer-4", {
         title: {
-          text: "Propuestas con Mayor Cantidad de Estudiantes para Observar"
+          text: "Propuestas con mayor cantidad de estudiantes para observar"
         },
         data: [{
           type: "column",
@@ -375,18 +399,26 @@
         }]
       });
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-4", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
 
+    @if(count($cantidadPropuestas) > 0 )
+      var array6 = [];
 
-    var array6 = [];
+      @foreach( $cantidadPropuestas as $propuesta )
+           array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->filtro!!}" });
+      @endforeach
 
-    @foreach( $cantidadPropuestas as $propuesta )
-         array6.push({y: {{$propuesta->cantidad_propuestas}}, label:"{!!$propuesta->filtro!!}" });
-    @endforeach
-
-    var chart = new CanvasJS.Chart("chartContainer-5",
+      var chart = new CanvasJS.Chart("chartContainer-5",
       {
         title:{
-          text: "Filtro de Mis Propuestas"
+          text: "Filtro de mis propuestas"
         },
         data: [
         {
@@ -395,8 +427,15 @@
         }
         ]
       });
-
       chart.render();
+    @else
+      var chart = new CanvasJS.Chart("chartContainer-5", {
+          title: {
+            text: "No hay datos."
+          }
+      });
+      chart.render();
+    @endif
   }
 
 </script>
