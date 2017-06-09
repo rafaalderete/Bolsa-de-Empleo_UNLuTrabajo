@@ -39,7 +39,7 @@ class ReportesEmpleadorController extends Controller
                                     group by titulo
                                     order by postulados_sin_decidir Desc',[$empresaId]);
 
-            $propConMayorEstSinDecidir;
+            $propConMayorEstSinDecidir = [];
             $i = 0;
             while ( ($i < 3) && ( $i < sizeof($cantPostSinDecidirPorProp))){
                     $cantPostSinDecidirPorProp[$i]->titulo = str_limit($cantPostSinDecidirPorProp[$i]->titulo, $limit = 20, $end = '...');
@@ -56,7 +56,7 @@ class ReportesEmpleadorController extends Controller
                                             order by promedio_sueldo desc');
 
             // LAS 5 CARRERAS CON MAYOR SUELDO
-            $carrerasConMayorSueldoPretendido;
+            $carrerasConMayorSueldoPretendido = [];
             $i = 0;
             while ( ($i < 5) && ( $i < sizeof($SueldoPorCarrera))){
                     $SueldoPorCarrera[$i]->carrera = str_limit($SueldoPorCarrera[$i]->carrera, $limit = 20, $end = '...');
@@ -73,7 +73,7 @@ class ReportesEmpleadorController extends Controller
                                                 order by cantidad_estudiantes Desc');
 
             // LAS 5 CARRERAS CON MAYOR CANTIDAD DE ESTUDIANTES
-            $carrerasConMayorCantidadEstudiantes;
+            $carrerasConMayorCantidadEstudiantes = [];
             $i = 0;
             while ( ($i <= 4) && ( $i < sizeof($cantidadEstudiantePorCarrera))){
                     $cantidadEstudiantePorCarrera[$i]->nombre_carrera = str_limit($cantidadEstudiantePorCarrera[$i]->nombre_carrera, $limit = 20, $end = '...');
@@ -95,7 +95,7 @@ class ReportesEmpleadorController extends Controller
                                                     group by filtro
                                                     order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
 
-            $cantidadPropuestas;
+            $cantidadPropuestas = [];
             $i = 0;
             while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
                     $cantidadPropuestasPorFiltro[$i]->filtro = str_limit($cantidadPropuestasPorFiltro[$i]->filtro, $limit = 20, $end = '...');
@@ -216,7 +216,7 @@ class ReportesEmpleadorController extends Controller
           }
 
 
-          $cantidadPropuestas;
+          $cantidadPropuestas = [];
           $i = 0;
           while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
                   $cantidadPropuestasPorFiltro[$i]->filtro = str_limit($cantidadPropuestasPorFiltro[$i]->filtro, $limit = 20, $end = '...');
@@ -397,7 +397,215 @@ class ReportesEmpleadorController extends Controller
     public function getCantidadPropuestas(Request $request){
 
          if(Auth::user()->hasRole('empleador')){
+            $today = Carbon::today();
+          if($request->tiempo == "ultimo_mes"){
+              $desde = $today->subMonth()->toDateString();
+          }else{
+              if($request->tiempo == "ultimos_6_meses"){
+                  $desde = $today->subMonth(6)->toDateString();
+              }else{
+                  if($request->tiempo =="ultimo_anio"){
+                      $desde = $today->subYear()->toDateString();
+                  }else{
+                      $desde = "0000-00-00"; //valor por defecto
+                  }
+              }
+          }
 
+          $empresaId = Auth::user()->persona->juridica->id;
+
+          if($request->filtro == "carrera"){
+              if($request->estado == "vigente"){
+                  $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
+                                                      from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+              }else{
+                  $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
+                                                      from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+              }
+          }else{
+              if($request->filtro == "idioma"){
+                  if($request->estado == "vigente"){
+                      $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, i.nombre_idioma as filtro
+                                                      from propuestas_laborales as pl join (select distinct propuesta_laboral_id, idioma_id
+                                                    from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                  }else{
+                      $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, i.nombre_idioma as filtro
+                                                      from propuestas_laborales as pl join (select distinct propuesta_laboral_id, idioma_id
+                                                    from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+                  }
+              }else{
+                  if($request->filtro == "tipo_trabajo"){
+                      if($request->estado == "vigente"){
+                          $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tt.nombre_tipo_trabajo as filtro
+                                                      from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                      }else{
+                          $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tt.nombre_tipo_trabajo as filtro
+                                                      from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+                      }
+                  }else{
+                      if($request->filtro == "tipo_jornada"){
+                          if($request->estado == "vigente"){
+                              $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tj.nombre_tipo_jornada filtro
+                                                      from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                          }else{
+                              $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tj.nombre_tipo_jornada filtro
+                                                      from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+                          }
+                      }
+                  }
+              }
+          }
+
+          return view('in.reportes.empleador.tablasonline.total_mis_propuestas')
+                    ->with('cantidadPropuestasPorFiltro',$cantidadPropuestasPorFiltro)
+                    ->with('combo',$request);
+
+        }else{
+            return redirect()->route('in.sinpermisos.sinpermisos');
+        }
+
+    }
+
+    public function getCantidadPropuestasPdf(Request $request){
+
+         if(Auth::user()->hasRole('empleador')){
+            $hoy = Carbon::today()->format('d-m-Y');
+            $today = Carbon::today();
+          if($request->tiempo == "ultimo_mes"){
+              $desde = $today->subMonth()->toDateString();
+          }else{
+              if($request->tiempo == "ultimos_6_meses"){
+                  $desde = $today->subMonth(6)->toDateString();
+              }else{
+                  if($request->tiempo =="ultimo_anio"){
+                      $desde = $today->subYear()->toDateString();
+                  }else{
+                      $desde = "0000-00-00"; //valor por defecto
+                  }
+              }
+          }
+
+          $empresaId = Auth::user()->persona->juridica->id;
+
+          if($request->filtro == "carrera"){
+              if($request->estado == "vigente"){
+                  $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
+                                                      from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+              }else{
+                  $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
+                                                      from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+              }
+          }else{
+              if($request->filtro == "idioma"){
+                  if($request->estado == "vigente"){
+                      $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, i.nombre_idioma as filtro
+                                                      from propuestas_laborales as pl join (select distinct propuesta_laboral_id, idioma_id
+                                                    from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                  }else{
+                      $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, i.nombre_idioma as filtro
+                                                      from propuestas_laborales as pl join (select distinct propuesta_laboral_id, idioma_id
+                                                    from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+                  }
+              }else{
+                  if($request->filtro == "tipo_trabajo"){
+                      if($request->estado == "vigente"){
+                          $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tt.nombre_tipo_trabajo as filtro
+                                                      from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                      }else{
+                          $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tt.nombre_tipo_trabajo as filtro
+                                                      from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+                      }
+                  }else{
+                      if($request->filtro == "tipo_jornada"){
+                          if($request->estado == "vigente"){
+                              $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tj.nombre_tipo_jornada filtro
+                                                      from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
+
+                          }else{
+                              $cantidadPropuestasPorFiltro = DB::select('
+                                                      select count(*) as cantidad_propuestas, tj.nombre_tipo_jornada filtro
+                                                      from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
+                                                      where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
+
+                          }
+                      }
+                  }
+              }
+          }
+
+          $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'filtro' => $request->filtro, 'today' => $hoy]);
+
+          return $pdf->stream('Reporte-total-mis-propuestas.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');

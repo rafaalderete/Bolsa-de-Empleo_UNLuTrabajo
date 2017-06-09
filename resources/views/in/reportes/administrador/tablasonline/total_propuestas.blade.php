@@ -8,7 +8,7 @@
     <div id="breadcrumb" class="col-xs-12">
       <ol class="breadcrumb">
         <li><a>Reportes</a></li>
-        <li><a>Cantidad de Propuestas generadas en el último año</a></li>
+        <li><a>Detalle Cantidad de Propuestas</a></li>
       </ol>
     </div>
   </div>
@@ -24,34 +24,37 @@
     <!-- Cuerpo del Box-->
 
     <div class="box-content dropbox" style="width:70%; margin: 0 auto;">
-      <h4 class="page-header">Reporte - Cantidad de Propuestas generadas en el último año
-        @if(count($reporteMes) > 0)
-          @if(true)
-            <a href="{{route('in.reportes.administrador.tablaspdf.propuestas-ultimo-anio')}}"  style="margin-top: -5px" class="btn btn-info pull-right btn-registrar-3">
-              <span><i class="fa fa-download"></i></span>
-              Descargar Reporte
-            </a>
-          @endif
+      <h4 class="page-header">Reporte - Detalle Cantidad de Propuestas
+        @if(count($cantidadPropuestasPorFiltro) > 0)
+          {!! Form::open(['route' => 'in.reportes.administrador.tablaspdf.cantidad-propuestas', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+              <input id="invisible_1" name="filtro" type="hidden" value="{{ $combo->filtro }}">
+              <input id="invisible_2" name="tiempo" type="hidden" value="{{ $combo->tiempo }}">
+              <input id="invisible_3" name="estado" type="hidden" value="{{ $combo->estado }}">
+              <button type="submit" class="btn btn-info pull-right btn-registrar-3" style="margin-top: -25px">
+                <span><i class="fa fa-download"></i></span>
+                Descargar Reporte
+              </button>
+          {!! Form::close()!!}
         @endif
       </h4>
-      @if(count($reporteMes) > 0)
+      @if(count($cantidadPropuestasPorFiltro) > 0)
         <!-- Tabla -->
         <table class="table table-bordered table-striped table-hover table-heading table-datatable" id="dev-table">
           <!-- columnas de la tabla -->
           <thead>
             <tr>
               <th style="width:10%">#</th>
-              <th style="width:60%">Mes</th>
+              <th style="width:60%">Filtro por {{ $combo->filtro }}</th>
               <th style="width:30%">Cantidad de Propuestas</th>
             </tr>
           </thead>
           <!-- contenido de la tabla -->
           <tbody>
-            @foreach($reporteMes as $key => $reporte)
+            @foreach( $cantidadPropuestasPorFiltro as $key => $tipo )
               <tr>
                 <td>{{$key + 1}}</td>
-                <td>{{$reporte['mes']}}</td>
-                <td>{{$reporte['cantidad']}}</td>
+                <td>{{ $tipo->filtro }}</td>
+                <td>{{ $tipo->cantidad_propuestas }}</td>
               </tr>
             @endforeach
           </tbody>

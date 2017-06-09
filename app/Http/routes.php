@@ -308,7 +308,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.administrador.tablasonline.cantidad-propuestas'
 	]);
 
-	Route::get('reportes-administrador/reportes/tabla-cantidad-propuestas-pdf', [
+	Route::post('reportes-administrador/reportes/tabla-cantidad-propuestas-pdf', [
 		'uses'	=>	'ReportesAdministradorController@getCantidadPropuestasPdf',
 		'as'	=>	'in.reportes.administrador.tablaspdf.cantidad-propuestas'
 	]);
@@ -365,7 +365,7 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.empleador.tablasonline.cantidad-propuestas'
 	]);
 
-	Route::get('reportes-empleador/reportes/tabla-cantidad-propuestas-pdf', [
+	Route::post('reportes-empleador/reportes/tabla-cantidad-propuestas-pdf', [
 		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestasPdf',
 		'as'	=>	'in.reportes.empleador.tablaspdf.cantidad-propuestas'
 	]);
