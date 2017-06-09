@@ -57,12 +57,18 @@
               <div class="row">
                 <div class="col-sm-4" style="margin-right:50px">
                   {!!Form::hidden('archivo_cargado',0,['id' => 'archivo_cargado'])!!}
+                  {!!Form::hidden('archivo_eliminado',0,['id' => 'archivo_eliminado'])!!}
                   <span class="nombre_archivo">{{$nombreAdjunto}}</span>
                 </div>
                 <div class="col-sm-6">
                   <div class="imagen-info">
                     <p>El archivo debe ser .pdf y no pesar más de 1 Mb</p>
                   </div>
+                </div>
+              </div>
+              <div class="row eliminar_archivo">
+                <div class="col-sm-12">
+                  <span class="fa fa-trash-o" aria-hidden="true"><a>Eliminar Archivo</a></span>
                 </div>
               </div>
               <div class="row">
@@ -162,10 +168,20 @@
 
       $("#archivo").change(function(){
         readURL(this);
+        $('#archivo_eliminado').val(0);
+      });
+
+      $('.eliminar_archivo').click(function() {
+        $('#archivo').val(null);
+        $('.nombre_archivo').text("No se ha cargado ningun archivo");
+        $('#archivo_eliminado').val(1);
+        $('#archivo_cargado').val(0);
       });
 
       $("#reset").on("click", function() {
         restablecer(objetivo);
+        $('#archivo_eliminado').val(0);
+        $('#archivo_cargado').val(0);
       });
     });
 
