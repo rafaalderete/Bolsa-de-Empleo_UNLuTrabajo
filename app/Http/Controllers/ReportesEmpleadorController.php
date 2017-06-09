@@ -495,7 +495,7 @@ class ReportesEmpleadorController extends Controller
 
           return view('in.reportes.empleador.tablasonline.total_mis_propuestas')
                     ->with('cantidadPropuestasPorFiltro',$cantidadPropuestasPorFiltro)
-                    ->with('filtro',$request->filtro);
+                    ->with('combo',$request);
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -506,6 +506,7 @@ class ReportesEmpleadorController extends Controller
     public function getCantidadPropuestasPdf(Request $request){
 
          if(Auth::user()->hasRole('empleador')){
+            $hoy = Carbon::today()->format('d-m-Y');
             $today = Carbon::today();
           if($request->tiempo == "ultimo_mes"){
               $desde = $today->subMonth()->toDateString();
@@ -602,7 +603,8 @@ class ReportesEmpleadorController extends Controller
               }
           }
 
-          $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'filtro' => $$request->filtro]);
+          $pdf = \PDF::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'filtro' => $request->filtro, 'today' => $hoy]);
+
           return $pdf->stream('Reporte-total-mis-propuestas.pdf');
 
         }else{
