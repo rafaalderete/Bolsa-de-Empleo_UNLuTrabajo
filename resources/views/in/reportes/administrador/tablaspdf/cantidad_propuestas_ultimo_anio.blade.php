@@ -30,13 +30,13 @@
           </tr>
         </thead>
         <tbody>
-          @foreach( $cantidadPropuestaPorMes as $key => $fecha )
-            <tr>
-              <td align="center">{{$key + 1}}</td>
-              <td>{{$meses[$fecha->mes -1]}} - {{$fecha->anio}}</td>
-              <td>{{$fecha->cantidad_propuesta}}</td>
-            </tr>
-          @endforeach
+          @foreach($reporteMes as $key => $reporte)
+              <tr>
+                <td>{{$key + 1}}</td>
+                <td>{{$reporte['mes']}}</td>
+                <td>{{$reporte['cantidad']}}</td>
+              </tr>
+            @endforeach
         </tbody>
       </table>
     </div>
