@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4007799de42b46f8fd740bfa2c7c4f63",
-    "content-hash": "b17ce08a5ef67d31718d715af0210fe8",
+    "hash": "57945a9b87b5e2272f971c50c828c418",
+    "content-hash": "941a69fd2cf0530e4548a03df15da9e8",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -210,6 +210,39 @@
                 "preload"
             ],
             "time": "2016-09-16 12:50:15"
+        },
+        {
+            "name": "clegginabox/pdf-merger",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/clegginabox/pdf-merger.git",
+                "reference": "88e641ca2aa732b4f05e423a8ebc662af495e6ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/clegginabox/pdf-merger/zipball/88e641ca2aa732b4f05e423a8ebc662af495e6ad",
+                "reference": "88e641ca2aa732b4f05e423a8ebc662af495e6ad",
+                "shasum": ""
+            },
+            "require": {
+                "itbz/fpdi": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/PDFMerger/PDFMerger.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Paul Clegg",
+                    "email": "paul@clegginabox.co.uk"
+                }
+            ],
+            "description": "PDF File Merger for PHP5",
+            "time": "2016-10-13 11:57:21"
         },
         {
             "name": "danielstjules/stringy",
@@ -487,6 +520,78 @@
                 "wkhtmltopdf"
             ],
             "time": "2016-02-02 19:38:55"
+        },
+        {
+            "name": "itbz/fpdf",
+            "version": "1.7.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hanneskod/fpdf.git",
+                "reference": "63340096907ef7525a9002d1ae3d0fd1ff376a6d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hanneskod/fpdf/zipball/63340096907ef7525a9002d1ae3d0fd1ff376a6d",
+                "reference": "63340096907ef7525a9002d1ae3d0fd1ff376a6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "fpdf": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "no usage restriction"
+            ],
+            "description": "Unofficial PSR-0 compliant version of the FPDF library",
+            "homepage": "http://www.fpdf.org/",
+            "time": "2016-05-27 09:02:54"
+        },
+        {
+            "name": "itbz/fpdi",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hanneskod/fpdi.git",
+                "reference": "004ce22954cdf16b94ad841bda406e422b446325"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hanneskod/fpdi/zipball/004ce22954cdf16b94ad841bda406e422b446325",
+                "reference": "004ce22954cdf16b94ad841bda406e422b446325",
+                "shasum": ""
+            },
+            "require": {
+                "itbz/fpdf": "~1.7",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "hanneskod/classtools": "~1.0",
+                "nikic/php-parser": "~1.0",
+                "phpunit/phpunit": "4.*",
+                "symfony/finder": "~2.3",
+                "tecnickcom/tcpdf": "^6.2.12"
+            },
+            "suggest": {
+                "tecnickcom/tcpdf": "FPDI supports TCPDF as a replacement for FPDF"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "fpdi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Unofficial PSR-4 compliant version of the FPDI library",
+            "time": "2017-01-08 13:02:41"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -3873,7 +3978,9 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "zizaco/entrust": 20
+        "zizaco/entrust": 20,
+        "itbz/fpdi": 20,
+        "clegginabox/pdf-merger": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

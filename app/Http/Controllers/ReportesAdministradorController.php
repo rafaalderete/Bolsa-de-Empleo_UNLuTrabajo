@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use File;
 
 class ReportesAdministradorController extends Controller
 {
@@ -871,6 +872,102 @@ class ReportesAdministradorController extends Controller
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
         }
+
+    }
+
+    public function getReporteTotalFiltro(){
+
+      $hoy = Carbon::today()->format('d-m-Y');
+      $today = Carbon::today();
+
+      $cantidadPropuestasPorFiltro = DB::select('
+                                              select count(*) as cantidad_propuestas, j.nombre_comercial as filtro
+                                              from propuestas_laborales as pl join juridicas as j on pl.juridica_id = j.id join personas p on j.persona_id = p.id
+                                              where pl.fecha_fin_propuesta >= ? and p.estado_persona = ?
+                                              group by pl.juridica_id
+                                              order by cantidad_propuestas Desc',[$today,'activo']);
+
+      $cantidadPropuestas = [];
+      $i = 0;
+      while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
+        $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
+        $i++;
+      }
+
+      $pdfPathEmpresas = public_path().'/reporte_por_empresas.pdf';
+
+      File::put($pdfPathEmpresas, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Empresas', 'today' => $hoy])->output());
+
+      //------------------------------------------------------------------
+
+      $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
+                                                      from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
+                                                      where pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$today]);
+
+      $cantidadPropuestas = [];
+      $i = 0;
+      while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
+        $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
+        $i++;
+      }
+
+      $pdfPathCarreras = public_path().'/reporte_por_carreras.pdf';
+
+      File::put($pdfPathCarreras, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Carreras', 'today' => $hoy])->output());
+
+      //-----------------------------------------------------------------
+      $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, i.nombre_idioma as filtro
+                                                      from propuestas_laborales as pl join (select distinct propuesta_laboral_id, idioma_id
+                                                    from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
+                                                      where pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$today]);
+
+      $cantidadPropuestas = [];
+      $i = 0;
+      while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
+        $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
+        $i++;
+      }
+
+      $pdfPathIdiomas = public_path().'/reporte_por_idiomas.pdf';
+
+      File::put($pdfPathIdiomas, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Idiomas', 'today' => $hoy])->output());
+
+      //-----------------------------------------------------------------
+
+      $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, tt.nombre_tipo_trabajo as filtro
+                                                      from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
+                                                      where pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$today]);
+
+      $pdfPathTipoTrabajo = public_path().'/reporte_por_tipo_trabajo.pdf';
+
+      File::put($pdfPathTipoTrabajo, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Idiomas', 'today' => $hoy])->output());
+
+      //-------------------------------------------------------------------
+
+      $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, tj.nombre_tipo_jornada filtro
+                                                      from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
+                                                      where pl.fecha_fin_propuesta >= ?
+                                                      group by filtro
+                                                      order by cantidad_propuestas Desc',[$today]);
+
+      $pdfPathTipoJornada = public_path().'/reporte_por_tipo_jornada.pdf';
+
+      File::put($pdfPathTipoJornada, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Idiomas', 'today' => $hoy])->output());
+
+      $pdfMerger = new \Clegginabox\PDFMerger\PDFMerger;
+            $pdfMerger->addPDF($pdfPathEmpresas, '1');
+            $pdfMerger->addPDF($pdfPathCarreras, '1');
+            $pdfMerger->addPDF($pdfPathIdiomas, '1');
+            $pdfMerger->addPDF($pdfPathTipoTrabajo, '1');
+            $pdfMerger->addPDF($pdfPathTipoJornada, '1');
+            return $pdfMerger->merge('download', 'Reporte-full-filtros.pdf');
+      File::delete($pdfPath);
 
     }
 

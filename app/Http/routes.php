@@ -313,6 +313,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 		'as'	=>	'in.reportes.administrador.tablaspdf.cantidad-propuestas'
 	]);
 
+	Route::get('reportes-administrador/reportes/reporte-total-filtro-full', [
+		'uses'	=>	'ReportesAdministradorController@getReporteTotalFiltro',
+		'as'	=>	'in.reportes.administrador.tablaspdf.reporte-total-filtro-full'
+	]);
+
 	//------------- RUTAS DE REPORTES EMPLEADOR ----------------------
 
 	Route::get('reportes-empleador/reportes', [
@@ -368,6 +373,11 @@ Route::group(['prefix' => 'in', 'middleware' => 'auth'], function(){
 	Route::post('reportes-empleador/reportes/tabla-cantidad-propuestas-pdf', [
 		'uses'	=>	'ReportesEmpleadorController@getCantidadPropuestasPdf',
 		'as'	=>	'in.reportes.empleador.tablaspdf.cantidad-propuestas'
+	]);
+
+	Route::get('reportes-empleador/reportes/reporte-total-filtro-full', [
+		'uses'	=>	'ReportesEmpleadorController@getReporteTotalFiltro',
+		'as'	=>	'in.reportes.empleador.tablaspdf.reporte-total-filtro-full'
 	]);
 
 	//------------- RUTAS DE REPORTES ESTUDIANTE ----------------------
