@@ -36,8 +36,8 @@ class ReportesAdministradorController extends Controller
 
             //--------------------------------------------//
             // Busco las empresas Activas
-            $empresasActivas = DB::select('select j.id, j.nombre_comercial
-                                from juridicas as j join personas as p on j.persona_id = p.id
+            $empresasActivas = DB::select('select distinct j.id, j.nombre_comercial
+                                from juridicas as j join personas as p on j.persona_id = p.id join propuestas_laborales as pl on j.id = pl.juridica_id
                                 where p.estado_persona = ?',['activo']);
 
             // Busco las ultimas ofertas realizadas
@@ -48,8 +48,6 @@ class ReportesAdministradorController extends Controller
                                         order by created_at Desc limit 1',[$empresaActiva->id]);
                 if ($ultima_propuesta != null){
                     $empresasActivas[$key]->fecha_ultima_propuesta = $ultima_propuesta[0]->fecha;
-                }else{
-                    $empresasActivas[$key]->fecha_ultima_propuesta = null;
                 }
             }
 
@@ -110,7 +108,7 @@ class ReportesAdministradorController extends Controller
             // LOS RUBROS CON MAYOR CANTIDAD DE EMPRESAS
             $rubrosConMayorCantidadEmpresas = [];
             $i = 0;
-            while ( $i < sizeof($cantidadEmpresasPorRubro)){
+            while (($i <= 9) && ($i < sizeof($cantidadEmpresasPorRubro))){
                     $cantidadEmpresasPorRubro[$i]->nombre_rubro_empresarial = str_limit($cantidadEmpresasPorRubro[$i]->nombre_rubro_empresarial, $limit = 20, $end = '...');
                     $rubrosConMayorCantidadEmpresas[$i] = $cantidadEmpresasPorRubro[$i];
                     $i++;
@@ -141,7 +139,7 @@ class ReportesAdministradorController extends Controller
                                         from propuestas_laborales as pl join juridicas as j on pl.juridica_id = j.id join personas p on j.persona_id = p.id
                                         where fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ? and p.estado_persona = ?
                                         group by pl.juridica_id
-                                        order by cantidad_propuestas Asc',[$desde,$today,'activo']);
+                                        order by cantidad_propuestas Desc',[$desde,$today,'activo']);
 
             $cantidadPropuestas = [];
             $i = 0;
@@ -191,14 +189,14 @@ class ReportesAdministradorController extends Controller
                                               from propuestas_laborales as pl join juridicas as j on pl.juridica_id = j.id join personas p on j.persona_id = p.id
                                               where fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ? and p.estado_persona = ?
                                               group by pl.juridica_id
-                                              order by cantidad_propuestas Asc',[$desde,$today,'activo']);
+                                              order by cantidad_propuestas Desc',[$desde,$today,'activo']);
               }else{
                   $cantidadPropuestasPorFiltro = DB::select('
                                               select count(*) as cantidad_propuestas, j.nombre_comercial as filtro
                                               from propuestas_laborales as pl join juridicas as j on pl.juridica_id = j.id join personas p on j.persona_id = p.id
                                               where fecha_inicio_propuesta >= ? and p.estado_persona = ?
                                               group by pl.juridica_id
-                                              order by cantidad_propuestas Asc',[$desde,'activo']);
+                                              order by cantidad_propuestas Desc',[$desde,'activo']);
               }
           }else{
               if($request->filtro == "carrera"){
@@ -207,14 +205,14 @@ class ReportesAdministradorController extends Controller
                                                       from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
                                                       where pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$desde,$today]);
 
                   }else{
                       $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
                                                       from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
                                                       where pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde]);
+                                                      order by cantidad_propuestas Desc',[$desde]);
 
                   }
               }else{
@@ -226,7 +224,7 @@ class ReportesAdministradorController extends Controller
                                                     from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
                                                       where pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$desde,$today]);
 
                       }else{
                           $cantidadPropuestasPorFiltro = DB::select('
@@ -235,7 +233,7 @@ class ReportesAdministradorController extends Controller
                                                     from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
                                                       where pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde]);
+                                                      order by cantidad_propuestas Desc',[$desde]);
 
                       }
                   }else{
@@ -246,7 +244,7 @@ class ReportesAdministradorController extends Controller
                                                       from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
                                                       where pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$desde,$today]);
 
                           }else{
                               $cantidadPropuestasPorFiltro = DB::select('
@@ -254,7 +252,7 @@ class ReportesAdministradorController extends Controller
                                                       from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
                                                       where pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde]);
+                                                      order by cantidad_propuestas Desc',[$desde]);
                           }
                       }else{
                           if($request->filtro == "tipo_jornada"){
@@ -264,7 +262,7 @@ class ReportesAdministradorController extends Controller
                                                       from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
                                                       where pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$desde,$today]);
 
                               }else{
                                   $cantidadPropuestasPorFiltro = DB::select('
@@ -272,7 +270,7 @@ class ReportesAdministradorController extends Controller
                                                       from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
                                                       where pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$desde]);
+                                                      order by cantidad_propuestas Desc',[$desde]);
 
                               }
                           }
@@ -284,7 +282,7 @@ class ReportesAdministradorController extends Controller
 
           $cantidadPropuestas = [];
           $i = 0;
-          while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
+          while ( ($i <= 10) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
                   $cantidadPropuestasPorFiltro[$i]->filtro = str_limit($cantidadPropuestasPorFiltro[$i]->filtro, $limit = 20, $end = '...');
                   $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
                   $i++;
@@ -335,7 +333,7 @@ class ReportesAdministradorController extends Controller
 
             $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_mas_propuestas',['propuestasPorEmpresa' => $propuestasPorEmpresa,'EmpresasConMasPropuestas' => $EmpresasConMasPropuestas, 'today' => $today]);
             $pdf->setOption('enable-javascript', true);
-            return $pdf->stream('Reporte-empresas-con-mas-propuestas.pdf');
+            return $pdf->download('Reporte-empresas-con-mas-propuestas.pdf');
 
         }else{
             return redirect()->route('in.sinpermisos.sinpermisos');
@@ -347,8 +345,8 @@ class ReportesAdministradorController extends Controller
 
         if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')){
             // Busco las empresas Activas
-            $empresasActivas = DB::select('select j.id, j.nombre_comercial
-                                from juridicas as j join personas as p on j.persona_id = p.id
+            $empresasActivas = DB::select('select distinct j.id, j.nombre_comercial
+                                from juridicas as j join personas as p on j.persona_id = p.id join propuestas_laborales as pl on j.id = pl.juridica_id
                                 where p.estado_persona = ?',['activo']);
 
             // Busco las ultimas ofertas realizadas
@@ -398,8 +396,8 @@ class ReportesAdministradorController extends Controller
          if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')){
             $hoy = Carbon::today()->format('d-m-Y');
             // Busco las empresas Activas
-            $empresasActivas = DB::select('select j.id, j.nombre_comercial
-                                from juridicas as j join personas as p on j.persona_id = p.id
+            $empresasActivas = DB::select('select distinct j.id, j.nombre_comercial
+                                from juridicas as j join personas as p on j.persona_id = p.id join propuestas_laborales as pl on j.id = pl.juridica_id
                                 where p.estado_persona = ?',['activo']);
 
             // Busco las ultimas ofertas realizadas
@@ -527,7 +525,7 @@ class ReportesAdministradorController extends Controller
 
             $rubrosConMayorCantidadEmpresas = [];
             $i = 0;
-            while ( $i < sizeof($cantidadEmpresasPorRubro)){
+            while (($i <= 4) && ($i < sizeof($cantidadEmpresasPorRubro))){
                 $rubrosConMayorCantidadEmpresas[$i] = $cantidadEmpresasPorRubro[$i];
                 $i++;
             }
@@ -860,10 +858,10 @@ class ReportesAdministradorController extends Controller
           }
 
           $cantidadPropuestas = [];
-          $i = sizeof($cantidadPropuestasPorFiltro) - 1;
-          while ($i >= 0){
+          $i = 0;
+          while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
             $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
-            $i--;
+            $i++;
           }
 
           $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro, 'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => $request->filtro, 'today' => $hoy]);

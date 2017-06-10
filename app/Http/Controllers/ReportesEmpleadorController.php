@@ -93,7 +93,7 @@ class ReportesEmpleadorController extends Controller
                                                     from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
                                                     where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                     group by filtro
-                                                    order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
+                                                    order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
 
             $cantidadPropuestas = [];
             $i = 0;
@@ -142,14 +142,14 @@ class ReportesEmpleadorController extends Controller
                                                       from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
 
               }else{
                   $cantidadPropuestasPorFiltro = DB::select('select count(*) as cantidad_propuestas, ca.nombre_carrera as filtro
                                                       from propuestas_laborales as pl join requisitos_carrera as rc on pl.id = rc.propuesta_laboral_id join carreras as ca on rc.carrera_id = ca.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
 
               }
           }else{
@@ -161,7 +161,7 @@ class ReportesEmpleadorController extends Controller
                                                     from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
 
                   }else{
                       $cantidadPropuestasPorFiltro = DB::select('
@@ -170,7 +170,7 @@ class ReportesEmpleadorController extends Controller
                                                     from requisitos_idioma) as ri on pl.id = ri.propuesta_laboral_id join idiomas as i on ri.idioma_id = i.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
 
                   }
               }else{
@@ -181,7 +181,7 @@ class ReportesEmpleadorController extends Controller
                                                       from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
 
                       }else{
                           $cantidadPropuestasPorFiltro = DB::select('
@@ -189,7 +189,7 @@ class ReportesEmpleadorController extends Controller
                                                       from propuestas_laborales as pl join tipos_trabajo as tt on pl.tipo_trabajo_id = tt.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
                       }
                   }else{
                       if($request->filtro == "tipo_jornada"){
@@ -199,7 +199,7 @@ class ReportesEmpleadorController extends Controller
                                                       from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ? and pl.fecha_fin_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde,$today]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde,$today]);
 
                           }else{
                               $cantidadPropuestasPorFiltro = DB::select('
@@ -207,7 +207,7 @@ class ReportesEmpleadorController extends Controller
                                                       from propuestas_laborales as pl join tipos_jornada as tj on pl.tipo_jornada_id = tj.id
                                                       where pl.juridica_id = ? and pl.fecha_inicio_propuesta >= ?
                                                       group by filtro
-                                                      order by cantidad_propuestas Asc',[$empresaId,$desde]);
+                                                      order by cantidad_propuestas Desc',[$empresaId,$desde]);
 
                           }
                       }
@@ -629,11 +629,12 @@ class ReportesEmpleadorController extends Controller
           }
 
           $cantidadPropuestas = [];
-          $i = sizeof($cantidadPropuestasPorFiltro) - 1;
-          while ($i >= 0){
+          $i = 0;
+          while ( ($i <= 9) && ( $i < sizeof($cantidadPropuestasPorFiltro))){
             $cantidadPropuestas[$i] = $cantidadPropuestasPorFiltro[$i];
-            $i--;
+            $i++;
           }
+
 
           $pdf = \PDFjs::loadView('in.reportes.empleador.tablaspdf.total_mis_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => $request->filtro, 'today' => $hoy]);
           $pdf->setOption('enable-javascript', true);

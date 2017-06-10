@@ -144,7 +144,7 @@
             <div class="box">
               <div class="box-header">
                 <div class="box-name">
-                  <span>Cantidad de empresas por rubro empresarial</span>
+                  <span>Ranking de los 10 rubros empresariales mas utilizados</span>
                 </div>
                 <div class="box-icons">
                   <a class="collapse-link">
