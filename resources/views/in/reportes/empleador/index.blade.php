@@ -243,6 +243,9 @@
                 <div class="row">
                   <div id="chartContainer-5" style="height: 300px; width: 100%;"></div>
                   <div class="row">
+                    <a href="{{ route('in.reportes.empleador.tablaspdf.reporte-total-filtro-full') }}"  style="margin-top: 5px; margin-left: 25px" class="btn btn-info pull-left">
+                      Total de reportes por filtro
+                    </a>
                     <button type="submit" class="btn btn-info pull-right" style="margin-top: 5px; margin-right: 30px">
                       Tabla de Detalle
                     </button>
