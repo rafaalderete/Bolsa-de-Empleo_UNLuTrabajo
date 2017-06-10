@@ -145,18 +145,26 @@ class CvController extends Controller
             $cv = Cv::find(Auth::User()->persona->fisica->estudiante->cv->id);
             $cv->carta_presentacion = $request->carta_presentacion;
             $cv->sueldo_bruto_pretendido = $request->sueldo_bruto_pretendido;
-            if ($request->archivo_cargado) {
-              if ($request->file('archivo_adjunto')) {
-                if($cv->archivo_adjunto != null) {
-                  File::delete(public_path().'/adjuntos/'.$cv->archivo_adjunto);
+            if ($request->archivo_eliminado == 1) {
+              if($cv->archivo_adjunto != null) {
+                File::delete(public_path().'/adjuntos/'.$cv->archivo_adjunto);
+                $cv->archivo_adjunto = null;
+              }
+            }
+            else {
+              if ($request->archivo_cargado == 1) {
+                if ($request->file('archivo_adjunto')) {
+                  if($cv->archivo_adjunto != null) {
+                    File::delete(public_path().'/adjuntos/'.$cv->archivo_adjunto);
+                  }
+                  $file = $request->file('archivo_adjunto');
+                  $randomString = str_random(self::RANDOM_STRING);
+                  $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+                  $name = substr($name,0,self::ADJUNTO)."_".$randomString.'.'. $file->getClientOriginalExtension();
+                  $path = public_path(). '/adjuntos/';
+                  $file->move($path, $name);
+                  $cv->archivo_adjunto = $name;
                 }
-                $file = $request->file('archivo_adjunto');
-                $randomString = str_random(self::RANDOM_STRING);
-                $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $name = substr($name,0,self::ADJUNTO)."_".$randomString.'.'. $file->getClientOriginalExtension();
-                $path = public_path(). '/adjuntos/';
-                $file->move($path, $name);
-                $cv->archivo_adjunto = $name;
               }
             }
 
