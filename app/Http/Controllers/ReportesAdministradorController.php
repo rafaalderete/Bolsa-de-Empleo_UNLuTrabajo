@@ -531,7 +531,7 @@ class ReportesAdministradorController extends Controller
                 $i++;
             }
 
-            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_por_rubro',['cantidadEmpresasPorRubro' => $cantidadEmpresasPorRubro,'rubrosConMayorCantidadEmpresas'=>$rubrosConMayorCantidadEmpresas, 'today' => $today]); 
+            $pdf = \PDFjs::loadView('in.reportes.administrador.tablaspdf.empresas_por_rubro',['cantidadEmpresasPorRubro' => $cantidadEmpresasPorRubro,'rubrosConMayorCantidadEmpresas'=>$rubrosConMayorCantidadEmpresas, 'today' => $today]);
             $pdf->setOption('enable-javascript', true);
             return $pdf->download('Reporte-empresas-por-rubro.pdf');
 
@@ -613,7 +613,7 @@ class ReportesAdministradorController extends Controller
     public function getCantidadPropuestas(Request $request){
 
         if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')){
-          
+
           $today = Carbon::today();
           if($request->tiempo == "ultimo_mes"){
               $desde = $today->subMonth()->toDateString();
@@ -744,7 +744,7 @@ class ReportesAdministradorController extends Controller
         if(Auth::user()->hasRole('administrador') || Auth::user()->hasRole('super_usuario')){
 
           //dd($request->tiempo);
-          
+
           $today = Carbon::today();
           if($request->tiempo == "ultimo_mes"){
               $desde = $today->subMonth()->toDateString();
@@ -946,7 +946,7 @@ class ReportesAdministradorController extends Controller
 
       $pdfPathTipoTrabajo = public_path().'/reporte_por_tipo_trabajo.pdf';
 
-      File::put($pdfPathTipoTrabajo, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Idiomas', 'today' => $hoy])->output());
+      File::put($pdfPathTipoTrabajo, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Tipo Trabajo', 'today' => $hoy])->output());
 
       //-------------------------------------------------------------------
 
@@ -958,7 +958,7 @@ class ReportesAdministradorController extends Controller
 
       $pdfPathTipoJornada = public_path().'/reporte_por_tipo_jornada.pdf';
 
-      File::put($pdfPathTipoJornada, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Idiomas', 'today' => $hoy])->output());
+      File::put($pdfPathTipoJornada, \PDFjs::loadView('in.reportes.administrador.tablaspdf.total_propuestas',['cantidadPropuestasPorFiltro' => $cantidadPropuestasPorFiltro,'cantidadPropuestas' => $cantidadPropuestas, 'filtro' => 'Tipo Jornada', 'today' => $hoy])->output());
 
       $pdfMerger = new \Clegginabox\PDFMerger\PDFMerger;
             $pdfMerger->addPDF($pdfPathEmpresas, '1');
