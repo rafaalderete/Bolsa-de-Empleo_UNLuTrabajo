@@ -4,23 +4,23 @@ Sistema Web de una bolsa de empleo para la materia Práctica Profesional en la U
 
 Tecnologias utilizadas:
 * PHP y Framework Laravel 5.1
-* Servidor Web: Apache.
+* Servidor Web: Apache
 * BD: MySQL
 
 ### Funcionalidades Principales
 
-SuperUsuario/Administrador
+SuperUsuario/Administrador:
 * Gestión de Personas, Usuarios y Parametría.
 * Registro de Empleadores.
 * Reportes.
 
-Empleador
+Empleador:
 * Gestiòn de Propuestas Laborales.
 * Visualización de Postulantes.
 * Descarga de archivos adjuntos de Postulantes.
 * Reportes.
 
-Postulante
+Postulante:
 * Bùsqueda de Ofertas Laborales.
 * Visualización de postulaciones realizadas.
 * Gestión de Cv
@@ -35,7 +35,7 @@ $ git git@github.com:rafaalderete/Bolsa-de-Empleo_UNLuTrabajo.git
 $ cd Bolsa-de-Empleo_UNLuTrabajo
 $ composer install
 $ touch .env
-$ php artisan migrate
+$ php artisan migrate (crear previamente la db)
 ```
 Completar el archivo .env con los siguientes datos, segun corresponda (o utilizar el env.example):
 >   APP_ENV=local
@@ -71,9 +71,16 @@ Completar el archivo .env con los siguientes datos, segun corresponda (o utiliza
 >   MAIL_ENCRYPTION=
 
 Para la configuración del envío de mails, ademas de completar de completar la sección correspondiente en el .env, modificar en archivo de configuración que se encuentra en config/mail.php.
+
 Modificar las siguientes variables segun corresponda:
 ```sh
 $ 'host' => env('MAIL_HOST', 'smtp.proveedor.com'),
 $ 'port' => env('MAIL_PORT', 465)
 $ 'from' => ['address' => 'email@ejemplo.com', 'name' => 'UNLu Trabajo']
 ```
+
+### Colaboradores
+* Alexis Alderete (https://github.com/rafaalderete).
+* Pedro Guerrero (https://github.com/Pebros).
+* Victoria Medina (https://github.com/victoriamedina).
+* Maria Eliana Pighin (https://github.com/mepighin).
