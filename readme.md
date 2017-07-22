@@ -70,7 +70,7 @@ Completar el archivo .env con los siguientes datos, segun corresponda (o utiliza
 
 >   MAIL_ENCRYPTION=
 
-Para la configuración del envío de mails, ademas de completar de completar la sección correspondiente en el .env, modificar en archivo de configuración que se encuentra en config/mail.php.
+Para la configuración del envío de mails, ademas de completar de completar la sección correspondiente en el .env, modificar el archivo de configuración que se encuentra en config/mail.php.
 
 Modificar las siguientes variables segun corresponda:
 ```sh
