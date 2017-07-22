@@ -1,27 +1,79 @@
-## Laravel PHP Framework
+# UNLuTrabajo
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Sistema Web de una bolsa de empleo para la materia Práctica Profesional en la Universidad Nacional de Luján.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+Tecnologias utilizadas:
+* PHP y Framework Laravel 5.1
+* Servidor Web: Apache.
+* BD: MySQL
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+### Funcionalidades Principales
 
-## Official Documentation
+SuperUsuario/Administrador
+* Gestión de Personas, Usuarios y Parametría.
+* Registro de Empleadores.
+* Reportes.
 
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
+Empleador
+* Gestiòn de Propuestas Laborales.
+* Visualización de Postulantes.
+* Descarga de archivos adjuntos de Postulantes.
+* Reportes.
 
-## Contributing
+Postulante
+* Bùsqueda de Ofertas Laborales.
+* Visualización de postulaciones realizadas.
+* Gestión de Cv
+* Reportes.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+### Instalación
 
-## Security Vulnerabilities
+Se requiere tener previamente instalado "Composer" y "wkhtmltox"(Necesario para la generación de reportes).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+```sh
+$ git git@github.com:rafaalderete/Bolsa-de-Empleo_UNLuTrabajo.git
+$ cd Bolsa-de-Empleo_UNLuTrabajo
+$ composer install
+$ touch .env
+$ php artisan migrate
+```
+Completar el archivo .env con los siguientes datos, segun corresponda (o utilizar el env.example):
+>   APP_ENV=local
 
-### License
+>   APP_DEBUG=true
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+>   APP_KEY=AGggRwhhU3Pho3VZA52OCY70ZXGTMTeg
+
+>   DB_HOST=localhost
+
+>   DB_DATABASE=db
+
+>   DB_USERNAME=root
+
+>   DB_PASSWORD=""
+
+>   CACHE_DRIVER=file
+
+>   SESSION_DRIVER=file
+
+>   QUEUE_DRIVER=sync
+
+>   MAIL_DRIVER=
+
+>   MAIL_HOST=
+
+>   MAIL_PORT=
+
+>   MAIL_USERNAME=
+
+>   MAIL_PASSWORD=
+
+>   MAIL_ENCRYPTION=
+
+Para la configuración del envío de mails, ademas de completar de completar la sección correspondiente en el .env, modificar en archivo de configuración que se encuentra en config/mail.php.
+Modificar las siguientes variables segun corresponda:
+```sh
+$ 'host' => env('MAIL_HOST', 'smtp.proveedor.com'),
+$ 'port' => env('MAIL_PORT', 465)
+$ 'from' => ['address' => 'email@ejemplo.com', 'name' => 'UNLu Trabajo']
+```
