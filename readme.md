@@ -2,7 +2,7 @@
 
 Sistema Web de una bolsa de empleo para la materia Práctica Profesional en la Universidad Nacional de Luján.
 
-Tecnologias utilizadas:
+Tecnologías utilizadas:
 * PHP y Framework Laravel 5.1
 * Servidor Web: Apache
 * BD: MySQL
@@ -15,13 +15,13 @@ SuperUsuario/Administrador:
 * Reportes.
 
 Empleador:
-* Gestiòn de Propuestas Laborales.
+* Gestión de Propuestas Laborales.
 * Visualización de Postulantes.
 * Descarga de archivos adjuntos de Postulantes.
 * Reportes.
 
 Postulante:
-* Bùsqueda de Ofertas Laborales.
+* Búsqueda de Ofertas Laborales.
 * Visualización de postulaciones realizadas.
 * Gestión de Cv
 * Reportes.
